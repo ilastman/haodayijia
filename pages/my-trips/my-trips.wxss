@@ -68,6 +68,20 @@
   background: #EDE5D6;
 }
 
+.mt-del-btn {
+  position: absolute;
+  top: 22rpx;
+  right: 22rpx;
+  z-index: 2;
+  padding: 9rpx 26rpx;
+  font-size: 22rpx;
+  letter-spacing: 3rpx;
+  color: #8A7F6A;
+  background: rgba(252, 249, 241, 0.9);
+  border: 1rpx solid rgba(240, 234, 220, 0.9);
+  border-radius: 999rpx;
+}
+
 .mt-body {
   display: flex;
   flex-direction: column;
@@ -125,6 +139,16 @@
   color: #ADA690;
   text-align: center;
   line-height: 1.7;
+}
+
+.mt-empty-btn {
+  margin-top: 44rpx;
+  padding: 20rpx 56rpx;
+  font-size: 26rpx;
+  letter-spacing: 2rpx;
+  color: #FCF9F1;
+  background: #8A7152;
+  border-radius: 999rpx;
 }
 
 .safe-bottom {

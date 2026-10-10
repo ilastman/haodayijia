@@ -42,6 +42,10 @@ Page({
     wx.navigateTo({ url: '/pages/custom-preview/custom-preview?trip=' + e.currentTarget.dataset.id });
   },
 
+  goCreate() {
+    wx.navigateTo({ url: '/pages/custom/custom' });
+  },
+
   point(e) {
     const t = e && (e.touches && e.touches[0] || e.changedTouches && e.changedTouches[0]);
     return t ? { x: t.clientX, y: t.clientY } : { x: 0, y: 0 };

@@ -315,12 +315,13 @@ const copy = {
   myTrips: {
     title: '我的行程',
     daysUnit: '天',
-    empty: '还没有保存的定制行程',
+    empty: '暂无自定义行程，去创建你的专属旅行计划',
     emptyDesc: '在“私人定制行程”页点击【保存到我的行程】，这里会收藏你的专属旅途',
+    emptyBtn: '去创建我的行程',
     del: '删除',
-    delConfirm: '确定要删除这条行程方案吗？',
+    delConfirm: '确定要删除这条自定义行程吗？删除后无法恢复',
     cancel: '取消',
-    confirm: '确认'
+    confirm: '确认删除'
   },
 
   // 灵感广场

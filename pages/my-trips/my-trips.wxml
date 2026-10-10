@@ -16,6 +16,7 @@
       <view class="mt-del" catchtap="onDeleteTap" data-id="{{item.id}}">{{c.del}}</view>
       <view class="mt-card {{item.open ? 'on' : ''}}" bindtap="goTrip" data-id="{{item.id}}">
         <image class="mt-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="mt-del-btn" catchtap="onDeleteTap" data-id="{{item.id}}">{{c.del}}</view>
         <view class="mt-body">
           <view class="mt-days">{{item.daysText}}</view>
           <view class="mt-name ellipsis">{{item.name}}</view>
@@ -28,7 +29,7 @@
   <view class="mt-empty" wx:else>
     <view class="mt-empty-icon">◇</view>
     <text class="mt-empty-text">{{c.empty}}</text>
-    <text class="mt-empty-desc">{{c.emptyDesc}}</text>
+    <view class="mt-empty-btn" bindtap="goCreate">{{c.emptyBtn}}</view>
   </view>
 
   <view class="safe-bottom"></view>
