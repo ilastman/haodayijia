@@ -1,0 +1,40 @@
+<view class="mask" wx:if="{{visible}}" bindtap="close">
+  <view class="panel" catchtap="noop">
+    <view class="panel-head">
+      <text class="panel-title">{{title}}</text>
+      <view class="close-btn" bindtap="close" aria-label="关闭">✕</view>
+    </view>
+    <view class="route-tip" wx:if="{{routeTitle}}">咨询线路：{{routeTitle}}</view>
+
+    <view class="field">
+      <view class="label">{{labels.name}}<text class="req">{{labels.required}}</text></view>
+      <input class="input" placeholder="{{ph.name}}" placeholder-class="ph" value="{{form.name}}" data-k="name" bindinput="onInput" maxlength="20" />
+    </view>
+
+    <view class="field">
+      <view class="label">{{labels.phone}}<text class="req">{{labels.required}}</text></view>
+      <input class="input" type="number" placeholder="{{ph.phone}}" placeholder-class="ph" value="{{form.phone}}" data-k="phone" bindinput="onInput" maxlength="11" />
+    </view>
+
+    <view class="field">
+      <view class="label">{{labels.people}}</view>
+      <input class="input" placeholder="{{ph.people}}" placeholder-class="ph" value="{{form.people}}" data-k="people" bindinput="onInput" maxlength="20" />
+    </view>
+
+    <view class="field">
+      <view class="label">{{labels.date}}</view>
+      <picker mode="date" value="{{form.date}}" start="{{minDate}}" bindchange="onDateChange">
+        <view class="input picker-input {{form.date ? '' : 'ph'}}">{{form.date || '请选择出行日期'}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <view class="label">{{labels.remark}}</view>
+      <textarea class="textarea" placeholder="{{ph.remark}}" placeholder-class="ph" value="{{form.remark}}" data-k="remark" bindinput="onInput" maxlength="200" auto-height />
+    </view>
+
+    <view class="error" wx:if="{{error}}">{{error}}</view>
+
+    <button class="btn-primary submit" bindtap="submit">{{labels.submit}}</button>
+  </view>
+</view>

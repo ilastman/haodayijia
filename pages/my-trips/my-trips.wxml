@@ -1,0 +1,45 @@
+<view class="page">
+
+  <view class="mt-head">
+    <view class="mt-title">{{c.title}}</view>
+    <view class="mt-sub">{{c.emptyDesc}}</view>
+  </view>
+
+  <view class="mt-list" wx:if="{{!showEmpty}}">
+    <view class="mt-row"
+          wx:for="{{list}}" wx:key="id"
+          data-id="{{item.id}}"
+          bindtouchstart="onSwipeStart"
+          bindtouchmove="onSwipeMove"
+          bindtouchend="onSwipeEnd"
+          bindlongpress="onLongPress">
+      <view class="mt-del" catchtap="onDeleteTap" data-id="{{item.id}}">{{c.del}}</view>
+      <view class="mt-card {{item.open ? 'on' : ''}}" bindtap="goTrip" data-id="{{item.id}}">
+        <image class="mt-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="mt-body">
+          <view class="mt-days">{{item.daysText}}</view>
+          <view class="mt-name ellipsis">{{item.name}}</view>
+          <view class="mt-brief ellipsis">{{item.brief}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="mt-empty" wx:else>
+    <view class="mt-empty-icon">◇</view>
+    <text class="mt-empty-text">{{c.empty}}</text>
+    <text class="mt-empty-desc">{{c.emptyDesc}}</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+
+  <view class="mt-mask" wx:if="{{delVisible}}" bindtap="onCancelDel">
+    <view class="mt-dialog" catchtap="noop">
+      <view class="mt-dialog-text">{{c.delConfirm}}</view>
+      <view class="mt-dialog-row">
+        <view class="mt-dialog-btn" catchtap="onCancelDel">{{c.cancel}}</view>
+        <view class="mt-dialog-btn danger" catchtap="onConfirmDel">{{c.confirm}}</view>
+      </view>
+    </view>
+  </view>
+</view>

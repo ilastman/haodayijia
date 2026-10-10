@@ -1,0 +1,57 @@
+.page {
+  background: #FCF9F1;
+  min-height: 100vh;
+}
+
+.head {
+  padding: 36rpx 32rpx 24rpx;
+  border-bottom: 2rpx solid #F1EBDE;
+}
+
+.cat-tag {
+  display: inline-block;
+  font-size: 22rpx;
+  color: #8A7152;
+  background: #EDE4D2;
+  border-radius: 8rpx;
+  padding: 6rpx 16rpx;
+}
+
+.title {
+  margin-top: 20rpx;
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #443A2C;
+  line-height: 1.45;
+}
+
+.meta {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: #ADA690;
+}
+
+.body {
+  padding: 30rpx 32rpx;
+}
+
+.p {
+  font-size: 30rpx;
+  color: #4A4436;
+  line-height: 1.9;
+  margin-bottom: 26rpx;
+}
+
+.img {
+  width: 100%;
+  border-radius: 16rpx;
+  background: #EDE5D6;
+  margin-bottom: 26rpx;
+}
+
+.foot {
+  text-align: center;
+  font-size: 24rpx;
+  color: #BBB49F;
+  padding: 20rpx 0 50rpx;
+}

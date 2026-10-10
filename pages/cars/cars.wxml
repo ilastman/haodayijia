@@ -1,0 +1,48 @@
+<view class="page">
+
+  <!-- 头部 -->
+  <view class="head">
+    <view class="head-title">{{title}}</view>
+    <view class="head-sub">{{subtitle}}</view>
+    <view class="head-search">
+      <image class="car-ic" src="{{carIcon}}" mode="aspectFit" />
+      <text>草原自驾 · 接站送机 · 团队包车</text>
+    </view>
+  </view>
+
+  <!-- 车辆列表 -->
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="car" wx:for="{{list}}" wx:key="id">
+      <image class="car-img" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="car-info">
+        <view class="car-name-row">
+          <text class="car-name ellipsis">{{item.name}}</text>
+          <text class="car-type">{{item.type}}</text>
+        </view>
+        <view class="car-meta">{{item.seats}}{{seatLabel}} · {{item.type}}</view>
+        <view class="tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+        </view>
+        <view class="car-price-row">
+          <view class="price">
+            <text class="price-symbol">¥</text>
+            <text class="price-num">{{item.price}}</text>
+            <text class="per">{{perDay}}</text>
+          </view>
+          <view class="rent-btn" bindtap="rent" data-name="{{item.name}}">{{rentLabel}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">◇</view>
+    <text>{{emptyText}}</text>
+  </view>
+
+  <view class="tip">* 实际价格以顾问确认为准，节假日略有浮动</view>
+
+  <view class="safe-bottom"></view>
+
+  <consult-modal visible="{{consultVisible}}" route-title="{{currentName}}" bind:close="onConsultClose" />
+</view>

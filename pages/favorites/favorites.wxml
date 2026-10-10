@@ -1,0 +1,29 @@
+<view class="page">
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="fav-card" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="fav-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="fav-info">
+        <view class="fav-title ellipsis-2">{{item.title}}</view>
+        <view class="tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+        </view>
+        <view class="fav-meta">{{item.days}}天 · {{item.type}} · {{item.departure}}</view>
+        <view class="fav-price-row">
+          <view class="price">
+            <text class="price-symbol">¥</text>
+            <text class="price-num">{{item.price}}</text>
+            <text class="per">/人起</text>
+          </view>
+          <text class="fav-go">查看详情 ›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">♡</view>
+    <text>{{emptyText}}</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

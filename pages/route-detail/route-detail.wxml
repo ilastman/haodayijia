@@ -1,0 +1,200 @@
+<view class="page" wx:if="{{route}}">
+
+  <!-- A. 上部杂志种草区 -->
+  <view class="story-zone">
+
+    <!-- 第一屏：通栏 16:9 主视觉 -->
+    <view class="hero">
+      <image class="hero-img" src="{{route.images[0]}}" mode="aspectFill" bindtap="previewImage" data-src="{{route.images[0]}}" lazy-load="{{true}}" />
+      <view class="hero-mask"></view>
+      <view class="hero-caption">
+        <view class="hero-title">{{route.title}}</view>
+        <view class="hero-slogan">{{extra.slogan}}</view>
+      </view>
+    </view>
+
+    <!-- 第二屏：大留白叙事 -->
+    <view class="story">
+      <view class="story-note">{{extra.story}}</view>
+      <view class="story-labels">
+        <text class="story-label" wx:for="{{extra.labels}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <!-- 第三屏：4 张风景小图 + 4 条权益 -->
+    <view class="perks">
+      <view class="perk" wx:for="{{perks}}" wx:key="index">
+        <image class="perk-img" src="{{item.img}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="perk-text">{{item.text}}</view>
+      </view>
+    </view>
+
+  </view>
+
+  <!-- 过渡线 -->
+  <view class="zone-line"></view>
+
+  <!-- B. 下部专业行程区 -->
+  <view class="detail-zone">
+
+    <!-- 基础行程信息栏 -->
+    <view class="info-bar">
+      <view class="info-item">
+        <text class="info-k">{{d.baseInfo[0]}}</text>
+        <text class="info-v">{{route.days}}天</text>
+      </view>
+      <view class="info-item">
+        <text class="info-k">{{d.baseInfo[1]}}</text>
+        <text class="info-v">{{extra.people}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-k">{{d.baseInfo[2]}}</text>
+        <text class="info-v">{{extra.pace}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-k">{{d.baseInfo[3]}}</text>
+        <text class="info-v">{{extra.season}}</text>
+      </view>
+    </view>
+
+    <!-- ② 每日行程安排（沉浸式 · 左右滑动切换） -->
+    <view class="block rd-block">
+      <view class="block-title rd-block-title">{{d.itinerary}}</view>
+      <view class="rd-head">
+        <view class="rd-arrow {{activeDay === 0 ? 'disabled' : ''}}" catchtap="onDayPrev">‹</view>
+        <scroll-view class="rd-tabs" scroll-x>
+          <view class="rd-row">
+            <view wx:for="{{days}}" wx:key="d"
+              class="rd-tab {{activeDay === index ? 'on' : ''}}"
+              bindtap="onDayTap" data-idx="{{index}}">{{d.dayLabel}}{{item.d}}{{d.dayUnit}}</view>
+          </view>
+        </scroll-view>
+        <view class="rd-arrow {{activeDay === days.length - 1 ? 'disabled' : ''}}" catchtap="onDayNext">›</view>
+      </view>
+
+      <swiper class="rd-swiper {{swCls}}" current="{{activeDay}}" bindchange="onDayChange">
+        <swiper-item wx:for="{{days}}" wx:key="d">
+          <view class="rd-cell">
+            <view class="rd-scene-line">{{d.dayLabel}}{{item.d}}{{d.dayUnit}} · {{item.scene}}</view>
+
+            <view class="rd-tags">
+              <text class="rd-tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+            </view>
+
+            <view class="rd-timeline">
+              <view class="rd-node" wx:for="{{item.nodes}}" wx:for-item="nd" wx:key="time">
+                <view class="rd-line">
+                  <view class="rd-dot"></view>
+                  <view class="rd-thumb-box">
+                    <image class="rd-thumb" src="{{nd.thumb}}" mode="aspectFill" lazy-load="{{true}}" />
+                  </view>
+                  <view class="rd-main">
+                    <text class="rd-time">{{nd.time}}</text>
+                    <view class="rd-text">
+                      <block wx:for="{{nd.parts}}" wx:for-item="p" wx:key="index">
+                        <text wx:if="{{p.spot}}" class="rd-link" bindtap="goScenic" data-id="{{p.spot}}">{{p.v}}</text>
+                        <text wx:else>{{p.v}}</text>
+                      </block>
+                    </view>
+                  </view>
+                </view>
+              </view>
+            </view>
+
+            <view class="rd-perks">
+              <view class="rd-title">{{d.dayPerk}}</view>
+              <view class="rd-item" wx:for="{{item.perks}}" wx:for-item="pk" wx:key="index">
+                <text class="rd-mark">◆</text>
+                <view class="rd-item-text">
+                  <block wx:for="{{pk.parts}}" wx:for-item="p" wx:key="index">
+                    <text wx:if="{{p.spot}}" class="rd-link" bindtap="goScenic" data-id="{{p.spot}}">{{p.v}}</text>
+                    <text wx:else>{{p.v}}</text>
+                  </block>
+                </view>
+              </view>
+            </view>
+
+            <view class="rd-card" wx:if="{{item.stay}}">
+              <view class="rd-title">{{d.dayStay}}</view>
+              <view class="rd-s-card">
+                <image class="rd-s-img" src="{{item.stay.image}}" mode="aspectFill" bindtap="goHotel" data-id="{{item.stay.hotelId}}" />
+                <view class="rd-s-main">
+                  <view class="rd-s-name rd-link" bindtap="goHotel" data-id="{{item.stay.hotelId}}">{{item.stay.name}}</view>
+                  <text class="rd-s-note">{{item.stay.note}}</text>
+                </view>
+              </view>
+            </view>
+
+            <view class="rd-card" wx:if="{{item.meals}}">
+              <view class="rd-title">{{d.dayMeal}}</view>
+              <view class="rd-note-line">{{item.meals}}</view>
+            </view>
+
+            <view class="rd-card" wx:if="{{item.tips.length}}">
+              <view class="rd-title">{{d.dayTip}}</view>
+              <view class="rd-note-line" wx:for="{{item.tips}}" wx:key="*this">{{item}}</view>
+            </view>
+          </view>
+        </swiper-item>
+      </swiper>
+    </view>
+  </view>
+
+  <!-- 过渡线 -->
+  <view class="zone-line"></view>
+
+  <!-- C. 页尾商业化区 -->
+  <view class="commercial">
+    <view class="ref-price">
+      <text class="ref-label">{{d.refPrice}}</text>
+      <text class="ref-num">¥{{route.price}}</text>
+      <text class="ref-per">/人起</text>
+      <text class="ref-old" wx:if="{{route.originalPrice}}">门市价 ¥{{route.originalPrice}}</text>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.feeInclude}}</view>
+      <view class="sec-item" wx:for="{{route.include}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.feeExclude}}</view>
+      <view class="sec-item" wx:for="{{route.exclude}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.notice}}</view>
+      <view class="sec-sub">{{d.noticeItems[0]}}</view>
+      <view class="sec-item" wx:for="{{route.notices.tips}}" wx:key="*this">{{item}}</view>
+      <view class="sec-sub">{{d.noticeItems[1]}}</view>
+      <view class="sec-chips">
+        <text class="chip" wx:for="{{route.notices.gear}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.refund}}</view>
+      <view class="sec-item" wx:for="{{route.notices.refund}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.review}}（{{route.reviews.length}}）</view>
+      <view class="review" wx:for="{{route.reviews}}" wx:key="date">
+        <view class="review-head">
+          <view class="review-avatar">{{item.name[0]}}</view>
+          <view class="review-name">{{item.name}}</view>
+          <view class="review-stars">{{item.starStr}}</view>
+        </view>
+        <view class="review-date">{{item.date}}</view>
+        <view class="review-content">{{item.content}}</view>
+      </view>
+    </view>
+
+    <button class="consult-line-btn" bindtap="openConsult">{{d.consultBook}}</button>
+  </view>
+
+  <view class="bottom-space"></view>
+
+  <consult-modal visible="{{consultVisible}}" route-id="{{route.id}}" route-title="{{route.title}}"
+    bind:close="onConsultClose" />
+</view>

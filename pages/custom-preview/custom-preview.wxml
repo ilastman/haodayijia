@@ -1,0 +1,108 @@
+<view class="cp-page">
+
+  <!-- 首屏：16:9 拼合大图 + 标题 -->
+  <view class="cp-hero">
+    <view class="cp-hero-tile" wx:for="{{heroTiles}}" wx:key="id">
+      <image wx:if="{{item.img}}" class="cp-hero-img" src="{{item.img}}" mode="aspectFill" />
+    </view>
+    <view class="cp-hero-shade"></view>
+    <view class="cp-hero-cap">
+      <view class="cp-hero-title">{{heroTitle}}</view>
+      <view class="cp-hero-slogan">{{c.slogan}}</view>
+    </view>
+  </view>
+
+  <!-- 基础信息标签区（自动匹配天数与出行月份） -->
+  <view class="info-bar">
+    <view class="info-item" wx:for="{{infoTags}}" wx:key="k">
+      <text class="info-k">{{item.k}}</text>
+      <text class="info-v">{{item.v}}</text>
+    </view>
+  </view>
+
+  <!-- 按天行程 -->
+  <view class="cp-plan">
+    <view class="cp-day" wx:for="{{dayList}}" wx:key="index" wx:for-item="day">
+      <view class="cp-day-scene">
+        <text class="cp-day-no">第{{day.index + 1}}</text>
+        <text class="cp-day-unit">{{c.dayUnit}}</text>
+        <text class="cp-day-dot">·</text>
+        <text class="cp-day-name">{{day.scene}}</text>
+      </view>
+
+      <view class="cp-spots">
+        <view class="cp-spot" wx:for="{{day.scenics}}" wx:key="id" bindtap="goScenic" data-id="{{item.id}}">
+          <view class="cp-thumb"><image class="cp-thumb-img" src="{{item.img}}" mode="aspectFill" /></view>
+          <view class="cp-spot-body">
+            <view class="cp-spot-name">{{item.name}}</view>
+            <view class="cp-spot-sub">{{item.dest}}</view>
+          </view>
+          <view class="cp-arrow">›</view>
+        </view>
+        <view class="cp-spots-empty" wx:if="{{day.scenics.length === 0}}">
+          <text class="cp-dot-row"></text>
+          <text class="cp-empty-text">{{c.noScenic}}</text>
+        </view>
+      </view>
+
+      <view class="cp-hotel" wx:if="{{day.hotel}}" bindtap="goHotel" data-id="{{day.hotel.id}}">
+        <view class="cp-thumb"><image class="cp-thumb-img" src="{{day.hotel.img}}" mode="aspectFill" /></view>
+        <view class="cp-spot-body">
+          <view class="cp-spot-name">{{c.hotelLabel}} · {{day.hotel.name}}</view>
+          <view class="cp-spot-sub">{{day.hotel.meta}}</view>
+        </view>
+        <view class="cp-arrow">›</view>
+      </view>
+
+      <view class="cp-note" wx:if="{{day.note}}">
+        <view class="cp-note-label">{{c.noteLabel}}</view>
+        <view class="cp-note-text">{{day.note}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 总体温馨提示 -->
+  <view class="cp-commercial">
+    <view class="cp-tips">
+      <view class="sec-title">{{c.tipsTitle}}</view>
+      <view class="rd-note-line" wx:for="{{overallTips}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 出行说明（全局固定模板） -->
+  <view class="cp-commercial cp-travel">
+    <view class="cp-banner">{{c.travel.banner}}</view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.feeInclude}}</view>
+      <view class="sec-item" wx:for="{{c.travel.include}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.feeExclude}}</view>
+      <view class="sec-item" wx:for="{{c.travel.exclude}}" wx:key="*this">{{item}}</view>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.notice}}</view>
+      <view class="sec-sub">{{d.noticeItems[0]}}</view>
+      <view class="sec-item" wx:for="{{c.travel.tips}}" wx:key="*this">{{item}}</view>
+      <view class="sec-sub">{{d.noticeItems[1]}}</view>
+      <view class="sec-chips">
+        <text class="chip" wx:for="{{c.travel.gear}}" wx:key="*this">{{item}}</text>
+      </view>
+    </view>
+
+    <view class="sec">
+      <view class="sec-title">{{d.refund}}</view>
+      <view class="sec-item" wx:for="{{c.travel.refund}}" wx:key="*this">{{item}}</view>
+    </view>
+  </view>
+
+  <!-- 底部按钮 -->
+  <view class="cp-bottom">
+    <view class="cp-btn cp-btn-outline" bindtap="goPublish">{{c.publishBtn}}</view>
+    <view class="cp-btn cp-btn-outline" bindtap="onRight">{{fromList ? c.editBtn : c.saveBtn}}</view>
+  </view>
+  <view class="cp-safe"></view>
+</view>

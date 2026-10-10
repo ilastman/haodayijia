@@ -1,0 +1,29 @@
+<view class="rc rc-{{mode}}" bindtap="onTap">
+  <view class="cover-box">
+    <image class="cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+    <view class="fav {{faved ? 'fav-on' : ''}}" catchtap="onFavorite">{{faved ? '♥' : '♡'}}</view>
+    <view class="type-badge">{{item.type}}</view>
+  </view>
+
+  <view class="info">
+    <view class="title ellipsis-2">{{item.title}}</view>
+
+    <view class="tags">
+      <text class="tag" wx:for="{{item.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+
+    <view class="meta">
+      <text class="days">{{item.days}}天</text>
+      <text class="dep">{{item.departure}}</text>
+    </view>
+
+    <view class="price-row">
+      <view class="price">
+        <text class="price-symbol">¥</text>
+        <text class="price-num">{{item.price}}</text>
+        <text class="per">/人起</text>
+      </view>
+      <text class="price-old" wx:if="{{item.originalPrice}}">¥{{item.originalPrice}}</text>
+    </view>
+  </view>
+</view>

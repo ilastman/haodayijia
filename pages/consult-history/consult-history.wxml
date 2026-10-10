@@ -1,0 +1,28 @@
+<view class="page">
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="rec-card" wx:for="{{list}}" wx:key="time">
+      <view class="rec-head">
+        <view class="rec-name">{{item.name}}</view>
+        <view class="rec-time">{{item.time}}</view>
+      </view>
+      <view class="rec-route" wx:if="{{item.routeTitle}}">咨询线路：{{item.routeTitle}}</view>
+      <view class="rec-rows">
+        <view class="rec-row"><text class="k">手机号</text><text class="v">{{item.phone}}</text></view>
+        <view class="rec-row"><text class="k">出行人数</text><text class="v">{{item.people}}</text></view>
+        <view class="rec-row"><text class="k">出行日期</text><text class="v">{{item.date}}</text></view>
+        <view class="rec-row" wx:if="{{item.remark}}"><text class="k">需求备注</text><text class="v">{{item.remark}}</text></view>
+      </view>
+      <view class="rec-foot">
+        <view class="rec-status">顾问跟进中</view>
+        <view class="rec-call" bindtap="callAgain" data-phone="{{item.phone}}">再次联系</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">◇</view>
+    <text>{{emptyText}}</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

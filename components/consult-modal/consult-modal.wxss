@@ -1,0 +1,136 @@
+.mask {
+  position: fixed;
+  inset: 0;
+  background: rgba(60, 50, 38, 0.4);
+  z-index: 999;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+.panel {
+  width: 100%;
+  background: #FCF9F1;
+  border-radius: 32rpx 32rpx 0 0;
+  padding: 40rpx 36rpx calc(40rpx + env(safe-area-inset-bottom));
+  max-height: 86vh;
+  overflow-y: auto;
+}
+
+.panel-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.panel-title {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #443A2C;
+  position: relative;
+  padding-left: 16rpx;
+}
+
+.panel-title::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8rpx;
+  bottom: 8rpx;
+  width: 8rpx;
+  border-radius: 4rpx;
+  background: linear-gradient(180deg, #8A7152, #C6A870);
+}
+
+.close-btn {
+  width: 56rpx;
+  height: 56rpx;
+  border-radius: 50%;
+  background: #EFE7D5;
+  color: #948D7D;
+  font-size: 28rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.route-tip {
+  font-size: 24rpx;
+  color: #8A7152;
+  background: #EDE4D2;
+  border-radius: 10rpx;
+  padding: 10rpx 16rpx;
+  margin: 16rpx 0 6rpx;
+  display: inline-block;
+}
+
+.field {
+  margin-top: 26rpx;
+}
+
+.label {
+  font-size: 26rpx;
+  color: #4A4A4A;
+  margin-bottom: 12rpx;
+}
+
+.req {
+  color: #A4653A;
+  margin-left: 6rpx;
+}
+
+.input {
+  height: 84rpx;
+  background: #F6F1E7;
+  border: 2rpx solid #EBE3D3;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 28rpx;
+  color: #3D362A;
+  width: 100%;
+}
+
+.picker-input {
+  line-height: 84rpx;
+}
+
+.textarea {
+  min-height: 140rpx;
+  background: #F6F1E7;
+  border: 2rpx solid #EBE3D3;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  font-size: 28rpx;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.ph {
+  color: #B5B0A6;
+}
+
+.error {
+  margin-top: 20rpx;
+  color: #E8622D;
+  font-size: 24rpx;
+}
+
+.submit {
+  margin-top: 36rpx;
+  width: 100%;
+  background: linear-gradient(135deg, #8A7152, #5F4B33);
+  color: #FCF9F1;
+  border: none;
+  border-radius: 44rpx;
+  font-size: 30rpx;
+  font-weight: 500;
+  height: 88rpx;
+  line-height: 88rpx;
+  text-align: center;
+  padding: 0;
+}
+
+.submit::after {
+  border: none;
+}

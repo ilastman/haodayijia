@@ -1,0 +1,47 @@
+<view class="page">
+
+  <!-- 状态 tabs -->
+  <view class="tabs">
+    <view class="tab {{activeTab === index ? 'on' : ''}}" wx:for="{{tabs}}" wx:key="*this" bindtap="onTab"
+      data-idx="{{index}}">{{item}}</view>
+  </view>
+
+  <!-- 订单列表 -->
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="order" wx:for="{{list}}" wx:key="id">
+      <view class="order-head">
+        <text class="order-no">订单号：{{item.id}}</text>
+        <text class="order-status st-{{item.status}}">{{statusText[item.status]}}</text>
+      </view>
+      <view class="order-body">
+        <image class="order-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="order-info">
+          <view class="order-title ellipsis-2">{{item.title}}</view>
+          <view class="order-row">出行日期：{{item.date}}</view>
+          <view class="order-row">出行人数：{{item.people}} 人</view>
+          <view class="order-amount">
+            <block wx:if="{{item.amount > 0}}">
+              <text class="price"><text class="price-symbol">¥</text><text class="price-num-sm">{{item.amount}}</text></text>
+            </block>
+            <block wx:else><text class="wait-quote">待顾问报价</text></block>
+          </view>
+        </view>
+      </view>
+      <view class="order-foot">
+        <view class="foot-btn" bindtap="callService">联系客服</view>
+        <view class="foot-btn primary" bindtap="openConsult">{{againLabel}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:else>
+    <view class="empty-icon">◇</view>
+    <text>{{emptyText}}</text>
+    <view class="empty-btn" bindtap="openConsult">去咨询</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+
+  <consult-modal visible="{{consultVisible}}" bind:close="onConsultClose" />
+</view>

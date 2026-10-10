@@ -1,0 +1,48 @@
+<view class="page" wx:if="{{scenic}}">
+
+  <!-- 顶部大图轮播 -->
+  <swiper class="gallery" indicator-dots="{{true}}" indicator-active-color="#FFFFFF" indicator-color="rgba(255,255,255,.5)"
+    circular="{{true}}" autoplay="{{true}}" interval="4000">
+    <swiper-item wx:for="{{scenic.images}}" wx:key="*this" bindtap="previewImage" data-src="{{item}}">
+      <image class="gallery-img" src="{{item}}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 基础信息 -->
+  <view class="base">
+    <view class="base-title">{{scenic.name}}</view>
+    <view class="tags">
+      <text class="tag">{{scenic.dest}}</text>
+    </view>
+    <view class="intro">{{scenic.intro}}</view>
+  </view>
+
+  <!-- 景区介绍 -->
+  <view class="block">
+    <view class="block-title">{{d.descTitle}}</view>
+    <text class="desc">{{scenic.description}}</text>
+  </view>
+
+  <!-- 游玩时长 / 最佳季节 -->
+  <view class="block">
+    <view class="info-row">
+      <text class="info-label">{{d.durationLabel}}</text>
+      <text class="info-value">{{scenic.duration}}</text>
+    </view>
+    <view class="info-row">
+      <text class="info-label">{{d.seasonLabel}}</text>
+      <text class="info-value">{{scenic.bestSeason}}</text>
+    </view>
+  </view>
+
+  <!-- 注意事项 -->
+  <view class="block">
+    <view class="block-title">{{d.tipsLabel}}</view>
+    <view class="tip" wx:for="{{scenic.tips}}" wx:key="*this">
+      <text class="tip-mark">·</text>
+      <text class="tip-text">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

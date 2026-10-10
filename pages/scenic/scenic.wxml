@@ -1,0 +1,35 @@
+<view class="page">
+
+  <!-- 头部 -->
+  <view class="head">
+    <view class="head-title">{{title}}</view>
+    <view class="head-sub">{{subtitle}}</view>
+  </view>
+
+  <!-- 目的地筛选标签 -->
+  <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="cat-scroll">
+    <view class="cat {{activeCat === item ? 'on' : ''}}" wx:for="{{cats}}" wx:key="*this" bindtap="onCat" data-cat="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 景区列表 -->
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="scenic" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="scenic-img" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="scenic-info">
+        <view class="scenic-name ellipsis">{{item.name}}</view>
+        <view class="scenic-intro ellipsis-2">{{item.intro}}</view>
+        <view class="scenic-foot">
+          <text class="scenic-dest">{{item.dest}}</text>
+          <text class="visit">{{visit}} ›</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">◇</view>
+    <text>{{emptyText}}</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

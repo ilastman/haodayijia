@@ -1,0 +1,24 @@
+{
+  "description": "轻奢草原风旅行社微信小程序",
+  "appid": "touristappid",
+  "projectname": "travel-agency-miniapp",
+  "compileType": "miniprogram",
+  "libVersion": "3.4.0",
+  "setting": {
+    "urlCheck": false,
+    "es6": true,
+    "enhance": true,
+    "postcss": true,
+    "minified": true,
+    "newFeature": true,
+    "nodeModules": false
+  },
+  "compileOptions": {
+    "postcss": true,
+    "minified": true
+  },
+  "editorSetting": {
+    "tabIndent": "insertSpaces",
+    "tabSize": 2
+  }
+}

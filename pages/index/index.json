@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "你的旅行社名称",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "consult-modal": "/components/consult-modal/consult-modal",
+    "route-card": "/components/route-card/route-card"
+  }
+}

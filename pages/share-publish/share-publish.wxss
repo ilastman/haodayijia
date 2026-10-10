@@ -1,0 +1,428 @@
+.page {
+  background: #F6F1E7;
+  padding-bottom: 40rpx;
+}
+
+/* 类型二选一 */
+.mode-bar {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 40rpx 6rpx;
+}
+
+.mode-item {
+  font-size: 26rpx;
+  color: #948D7D;
+  margin-right: 36rpx;
+  padding: 8rpx 4rpx 14rpx;
+  border-bottom: 3rpx solid transparent;
+}
+
+.mode-item.on {
+  color: #5F4B33;
+  border-bottom-color: #8A7152;
+}
+
+/* 多图网格 */
+.img-grid {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 6rpx;
+}
+
+.img-item,
+.img-add {
+  position: relative;
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 14rpx;
+  margin: 0 16rpx 16rpx 0;
+  overflow: hidden;
+  background: #F5EFE1;
+}
+
+.img-thumb {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.img-del {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 44rpx;
+  height: 44rpx;
+  background: rgba(61, 54, 42, 0.5);
+  color: #FCF9F1;
+  font-size: 22rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 0 0 0 14rpx;
+}
+
+.img-add {
+  border: 2rpx dashed #D6CDB8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.img-plus {
+  font-size: 52rpx;
+  color: #A79F8D;
+  line-height: 1;
+}
+
+.img-add-text {
+  font-size: 20rpx;
+  color: #A79F8D;
+  margin-top: 8rpx;
+}
+
+.note-content {
+  min-height: 240rpx;
+}
+
+.chips.wrap {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.chips.wrap .chip {
+  margin: 0 14rpx 14rpx 0;
+}
+
+.section {
+  background: #FCF9F1;
+  border-radius: 24rpx;
+  margin: 20rpx 24rpx;
+  padding: 26rpx 28rpx;
+  box-shadow: 0 4rpx 16rpx rgba(90, 82, 66, 0.045);
+}
+
+.section-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #3D362A;
+  margin-bottom: 20rpx;
+}
+
+/* 封面 */
+.cover-field {
+  margin-bottom: 8rpx;
+}
+
+.cover-img {
+  width: 100%;
+  height: 320rpx;
+  border-radius: 20rpx;
+  display: block;
+}
+
+.cover-place {
+  height: 240rpx;
+  border: 2rpx dashed #D6CDB8;
+  border-radius: 20rpx;
+  background: #F5EFE1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+}
+
+.cover-plus {
+  font-size: 64rpx;
+  color: #AEA693;
+  line-height: 1;
+}
+
+.cover-text {
+  font-size: 24rpx;
+  color: #9E9886;
+  margin-top: 10rpx;
+}
+
+/* 字段 */
+.field {
+  margin-top: 24rpx;
+}
+
+.label {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #5D5547;
+  margin-bottom: 12rpx;
+}
+
+.row-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12rpx;
+}
+
+.row-label .label {
+  margin-bottom: 0;
+}
+
+.add-link {
+  font-size: 24rpx;
+  color: #8A7152;
+  font-weight: 500;
+}
+
+.input {
+  height: 72rpx;
+  background: #F1EADA;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 26rpx;
+  color: #3D362A;
+}
+
+.textarea {
+  width: 100%;
+  min-height: 140rpx;
+  background: #F1EADA;
+  border-radius: 16rpx;
+  padding: 20rpx 24rpx;
+  font-size: 26rpx;
+  color: #3D362A;
+  box-sizing: border-box;
+  line-height: 1.5;
+}
+
+.ph {
+  color: #AEA693;
+}
+
+/* 天数/季节 chips */
+.chips {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.chip {
+  font-size: 24rpx;
+  color: #817A6A;
+  background: #F1EADA;
+  border-radius: 24rpx;
+  padding: 10rpx 28rpx;
+  margin: 0 14rpx 14rpx 0;
+}
+
+.chip.on {
+  background: #8A7152;
+  color: #FCF9F1;
+  font-weight: 500;
+}
+
+.custom-days {
+  height: 64rpx;
+  width: 240rpx;
+  background: #F1EADA;
+  border-radius: 16rpx;
+  padding: 0 24rpx;
+  font-size: 26rpx;
+  color: #3D362A;
+}
+
+/* 天数标签页 */
+.day-scroll {
+  white-space: nowrap;
+}
+
+.day-tabs {
+  display: inline-flex;
+}
+
+.day-tab {
+  font-size: 24rpx;
+  color: #817A6A;
+  background: #F1EADA;
+  border-radius: 24rpx;
+  padding: 12rpx 28rpx;
+  margin: 0 14rpx 16rpx 0;
+}
+
+.day-tab.on {
+  background: #3D362A;
+  color: #FCF9F1;
+  font-weight: 500;
+}
+
+/* 已选景区/酒店 */
+.sel-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.sel-item {
+  display: flex;
+  align-items: center;
+  background: #F5EFE1;
+  border-radius: 16rpx;
+  padding: 16rpx;
+  margin-top: 12rpx;
+}
+
+.sel-pic {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+}
+
+.sel-main {
+  flex: 1;
+  min-width: 0;
+  margin-left: 16rpx;
+}
+
+.sel-name {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 500;
+  color: #3D362A;
+}
+
+.sel-lv {
+  display: block;
+  font-size: 22rpx;
+  color: #9E9886;
+  margin-top: 6rpx;
+}
+
+.sel-del {
+  font-size: 24rpx;
+  color: #A4653A;
+  padding: 8rpx 10rpx;
+  flex-shrink: 0;
+}
+
+.empty-hint {
+  font-size: 24rpx;
+  color: #A79F8D;
+  background: #F5EFE1;
+  border-radius: 16rpx;
+  padding: 28rpx 20rpx;
+  text-align: center;
+}
+
+/* 发布栏 */
+.publish-bar {
+  margin: 24rpx;
+}
+
+.publish-btn {
+  height: 100rpx;
+  border-radius: 50rpx;
+  background: #8A7152;
+  color: #FBF7EF;
+  font-size: 29rpx;
+  letter-spacing: 4rpx;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 弹层 */
+.sheet-mask {
+  position: fixed;
+  left: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(28, 28, 30, 0.55);
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+}
+
+.sheet {
+  width: 100%;
+  background: #FCF9F1;
+  border-radius: 32rpx 32rpx 0 0;
+  padding-bottom: 30rpx;
+  max-height: 70vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.sheet-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 28rpx 32rpx;
+  border-bottom: 1rpx solid #EDE6D6;
+}
+
+.sheet-title {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #3D362A;
+}
+
+.sheet-confirm {
+  font-size: 26rpx;
+  color: #8A7152;
+  font-weight: 500;
+}
+
+.sheet-body {
+  flex: 1;
+  max-height: 60vh;
+}
+
+.sheet-item {
+  display: flex;
+  align-items: center;
+  padding: 20rpx 32rpx;
+}
+
+.sheet-item.on {
+  background: #F1EADD;
+}
+
+.sheet-pic {
+  width: 96rpx;
+  height: 96rpx;
+  border-radius: 14rpx;
+  flex-shrink: 0;
+}
+
+.sheet-main {
+  flex: 1;
+  min-width: 0;
+  margin-left: 18rpx;
+}
+
+.sheet-name {
+  display: block;
+  font-size: 27rpx;
+  font-weight: 500;
+  color: #3D362A;
+}
+
+.sheet-desc {
+  display: block;
+  font-size: 22rpx;
+  color: #9E9886;
+  margin-top: 6rpx;
+  max-width: 460rpx;
+}
+
+.sheet-check {
+  font-size: 34rpx;
+  color: #8A7152;
+  font-weight: 600;
+  margin-left: 12rpx;
+}

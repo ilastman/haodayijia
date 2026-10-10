@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "线路详情",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "consult-modal": "/components/consult-modal/consult-modal"
+  }
+}

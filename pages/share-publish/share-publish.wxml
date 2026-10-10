@@ -1,0 +1,193 @@
+<view class="page">
+
+  <!-- 类型二选一 -->
+  <view class="mode-bar">
+    <view class="mode-item {{mode === 'plan' ? 'on' : ''}}" bindtap="onMode" data-mode="plan">{{c.modePlan}}</view>
+    <view class="mode-item {{mode === 'note' ? 'on' : ''}}" bindtap="onMode" data-mode="note">{{c.modeNote}}</view>
+  </view>
+
+  <!-- 发布行程方案 -->
+  <block wx:if="{{mode === 'plan'}}">
+    <view class="section">
+      <view class="cover-field" bindtap="onCover">
+        <image wx:if="{{cover}}" class="cover-img" src="{{cover}}" mode="aspectFill" />
+        <view class="cover-place" wx:else>
+          <text class="cover-plus">＋</text>
+          <text class="cover-text">{{c.coverPlaceholder}}</text>
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.titleLabel}}</text>
+        <input class="input" value="{{title}}" bindinput="onTitle" placeholder="{{c.titlePlaceholder}}" placeholder-class="ph" maxlength="30" />
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.introLabel}}</text>
+        <textarea class="textarea" value="{{intro}}" bindinput="onIntro" placeholder="{{c.introPlaceholder}}" placeholder-class="ph" maxlength="80" />
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.daysLabel}}</text>
+        <view class="chips">
+          <text wx:for="{{['3','5','7']}}" wx:key="*this"
+            class="chip {{days === Number(item) ? 'on' : ''}}"
+            bindtap="onDays" data-v="{{item}}">{{item}}天</text>
+          <text class="chip {{days !== 3 && days !== 5 && days !== 7 ? 'on' : ''}}" bindtap="onCustomDays" data-v="custom">自定义</text>
+        </view>
+        <input wx:if="{{days !== 3 && days !== 5 && days !== 7}}" class="custom-days" type="number"
+          value="{{customDays}}" bindinput="onCustomDays" placeholder="输入天数 (1-15)" placeholder-class="ph" maxlength="2" />
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.seasonLabel}}</text>
+        <view class="chips">
+          <text wx:for="{{seasons}}" wx:key="*this"
+            class="chip {{season === item ? 'on' : ''}}"
+            bindtap="onSeason" data-s="{{item}}">{{item}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="section">
+      <view class="section-title">{{c.dayPlanTitle}}</view>
+
+      <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="day-scroll">
+        <view class="day-tabs">
+          <text wx:for="{{dayTabs}}" wx:key="*this"
+            class="day-tab {{activeDay === index ? 'on' : ''}}"
+            bindtap="onDay" data-idx="{{index}}">{{c.dayLabel}}{{item}}{{c.dayUnit}}</text>
+        </view>
+      </scroll-view>
+
+      <view class="field">
+        <view class="row-label">
+          <text class="label">{{c.scenicTitle}}</text>
+          <text class="add-link" bindtap="openScenic">{{c.addScenic}} ›</text>
+        </view>
+        <view class="sel-list" wx:if="{{curScenics.length > 0}}">
+          <view class="sel-item" wx:for="{{curScenics}}" wx:key="id">
+            <image class="sel-pic" src="{{item.thumb}}" mode="aspectFill" />
+            <view class="sel-main">
+              <text class="sel-name">{{item.name}}</text>
+              <text class="sel-lv">{{item.level}}</text>
+            </view>
+            <view class="sel-del" bindtap="removeScenic" data-id="{{item.id}}">{{c.remove}}</view>
+          </view>
+        </view>
+        <view class="empty-hint" wx:else>{{c.scenicEmpty}}</view>
+      </view>
+
+      <view class="field">
+        <view class="row-label">
+          <text class="label">{{c.hotelTitle}}</text>
+          <text class="add-link" bindtap="openHotel" wx:if="{{!curHotel}}">{{c.addHotelShort}} ›</text>
+        </view>
+        <view class="sel-item" wx:if="{{curHotel}}">
+          <image class="sel-pic" src="{{curHotel.pic}}" mode="aspectFill" />
+          <view class="sel-main">
+            <text class="sel-name">{{curHotel.name}}</text>
+            <text class="sel-lv">{{curHotel.level}}</text>
+          </view>
+          <view class="sel-del" bindtap="clearHotel">{{c.remove}}</view>
+        </view>
+        <view class="empty-hint" wx:else>{{c.hotelEmpty}}</view>
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.noteTitle}}</text>
+        <textarea class="textarea" value="{{plans[activeDay].note}}" bindinput="onNote"
+          placeholder="{{c.notePlaceholder}}" placeholder-class="ph" maxlength="120" />
+      </view>
+    </view>
+  </block>
+
+  <!-- 发布旅行笔记 -->
+  <block wx:else>
+    <view class="section">
+      <view class="field">
+        <text class="label">{{c.noteImagesLabel}}</text>
+        <view class="img-grid">
+          <view class="img-item" wx:for="{{noteImages}}" wx:key="*this">
+            <image class="img-thumb" src="{{item}}" mode="aspectFill" />
+            <view class="img-del" catchtap="onRemoveImage" data-idx="{{index}}">✕</view>
+          </view>
+          <view class="img-add" wx:if="{{noteImages.length < 6}}" bindtap="onAddImage">
+            <text class="img-plus">＋</text>
+            <text class="img-add-text">{{c.noteAddImage}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.noteTitleLabel}}</text>
+        <input class="input" value="{{noteTitle}}" bindinput="onNoteTitle"
+          placeholder="{{c.noteTitlePlaceholder}}" placeholder-class="ph" maxlength="30" />
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.noteContentLabel}}</text>
+        <textarea class="textarea note-content" value="{{noteContent}}" bindinput="onNoteContent"
+          placeholder="{{c.noteContentPlaceholder}}" placeholder-class="ph" maxlength="500" />
+      </view>
+
+      <view class="field">
+        <text class="label">{{c.noteTagLabel}}</text>
+        <view class="chips wrap">
+          <text wx:for="{{noteTags}}" wx:key="*this"
+            class="chip {{noteTag === item ? 'on' : ''}}"
+            bindtap="onNoteTag" data-t="{{item}}">{{item}}</text>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <!-- 发布 -->
+  <view class="publish-bar">
+    <view class="publish-btn" bindtap="publish">{{c.publishBtn}}</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+
+  <!-- 景区选择弹层 -->
+  <view class="sheet-mask" wx:if="{{sheetType === 'scenic'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetScenicTitle}}</text>
+        <text class="sheet-confirm" bindtap="confirmScenic">{{c.sheetConfirm}}</text>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-body">
+        <view class="sheet-item {{item.checked ? 'on' : ''}}" wx:for="{{sheetScenics}}" wx:key="id"
+          bindtap="onSheetScenic" data-id="{{item.id}}">
+          <image class="sheet-pic" src="{{item.thumb}}" mode="aspectFill" />
+          <view class="sheet-main">
+            <text class="sheet-name">{{item.name}}</text>
+            <text class="sheet-desc ellipsis">{{item.address}}</text>
+          </view>
+          <text class="sheet-check">{{item.checked ? '✓' : ''}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 酒店选择弹层 -->
+  <view class="sheet-mask" wx:if="{{sheetType === 'hotel'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetHotelTitle}}</text>
+        <text class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</text>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-body">
+        <view class="sheet-item {{curHotel && curHotel.id === item.id ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id"
+          bindtap="onSheetHotel" data-id="{{item.id}}">
+          <image class="sheet-pic" src="{{item.pic}}" mode="aspectFill" />
+          <view class="sheet-main">
+            <text class="sheet-name">{{item.name}}</text>
+            <text class="sheet-desc ellipsis">{{item.level}}</text>
+          </view>
+          <text class="sheet-check">{{curHotel && curHotel.id === item.id ? '✓' : ''}}</text>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+</view>

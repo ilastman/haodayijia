@@ -1,0 +1,7 @@
+{
+  "navigationBarTitleText": "车辆租车",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "consult-modal": "/components/consult-modal/consult-modal"
+  }
+}

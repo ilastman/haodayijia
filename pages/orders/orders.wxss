@@ -1,0 +1,173 @@
+.page {
+  min-height: 100vh;
+  padding-bottom: 20rpx;
+}
+
+/* tabs */
+.tabs {
+  display: flex;
+  background: #FCF9F1;
+  padding: 0 12rpx;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 2rpx solid #F1EBDE;
+}
+
+.tab {
+  flex: 1;
+  text-align: center;
+  font-size: 27rpx;
+  color: #817A6A;
+  padding: 26rpx 0 22rpx;
+  position: relative;
+}
+
+.tab.on {
+  color: #8A7152;
+  font-weight: 600;
+}
+
+.tab.on::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 6rpx;
+  width: 48rpx;
+  height: 6rpx;
+  border-radius: 3rpx;
+  background: #8A7152;
+}
+
+/* 订单卡片 */
+.list {
+  padding: 24rpx 24rpx 0;
+}
+
+.order {
+  background: #FCF9F1;
+  border-radius: 20rpx;
+  box-shadow: 0 4rpx 20rpx rgba(90, 82, 66, 0.04);
+  margin-bottom: 24rpx;
+  overflow: hidden;
+}
+
+.order-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22rpx 24rpx;
+  border-bottom: 2rpx solid #F1EBDE;
+}
+
+.order-no {
+  font-size: 22rpx;
+  color: #ADA690;
+}
+
+.order-status {
+  font-size: 24rpx;
+  font-weight: 500;
+}
+
+.st-pending {
+  color: #E8A23A;
+}
+
+.st-done {
+  color: #8A7152;
+}
+
+.st-cancelled {
+  color: #ADA690;
+}
+
+.order-body {
+  display: flex;
+  padding: 22rpx 24rpx;
+}
+
+.order-cover {
+  width: 180rpx;
+  height: 140rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+  background: #EDE5D6;
+}
+
+.order-info {
+  flex: 1;
+  margin-left: 20rpx;
+  min-width: 0;
+}
+
+.order-title {
+  font-size: 27rpx;
+  font-weight: 500;
+  color: #443A2C;
+  line-height: 1.4;
+}
+
+.order-row {
+  font-size: 23rpx;
+  color: #948D7D;
+  margin-top: 8rpx;
+}
+
+.order-amount {
+  margin-top: 10rpx;
+}
+
+.price {
+  color: #A4653A;
+  font-weight: 600;
+}
+
+.price-symbol {
+  font-size: 20rpx;
+}
+
+.price-num-sm {
+  font-size: 32rpx;
+}
+
+.wait-quote {
+  font-size: 24rpx;
+  color: #E8A23A;
+}
+
+.order-foot {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 24rpx 24rpx;
+}
+
+.order-foot .foot-btn {
+  margin-left: 18rpx;
+}
+
+.foot-btn {
+  font-size: 24rpx;
+  color: #817A6A;
+  border: 2rpx solid #E2DAC9;
+  border-radius: 30rpx;
+  padding: 10rpx 28rpx;
+}
+
+.foot-btn.primary {
+  color: #FCF9F1;
+  background: linear-gradient(135deg, #8A7152, #5F4B33);
+  border: none;
+}
+
+/* 空态 */
+.empty-btn {
+  margin-top: 30rpx;
+  display: inline-block;
+  background: linear-gradient(135deg, #8A7152, #5F4B33);
+  color: #FCF9F1;
+  font-size: 26rpx;
+  border-radius: 34rpx;
+  padding: 16rpx 56rpx;
+}

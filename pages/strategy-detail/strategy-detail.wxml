@@ -1,0 +1,22 @@
+<view class="page" wx:if="{{article}}">
+
+  <view class="head">
+    <view class="cat-tag">{{article.category}}</view>
+    <view class="title">{{article.title}}</view>
+    <view class="meta">
+      <text>{{publishLabel}}：{{article.date}}</text>
+    </view>
+  </view>
+
+  <view class="body">
+    <block wx:for="{{article.content}}" wx:key="index">
+      <view wx:if="{{item.t === 'p'}}" class="p">{{item.text}}</view>
+      <image wx:else class="img" src="{{item.ph}}" mode="widthFix" lazy-load="{{true}}" bindtap="previewImage"
+        data-src="{{item.ph}}" />
+    </block>
+  </view>
+
+  <view class="foot">— {{article.category}} · 了解更多详情欢迎在线咨询 —</view>
+
+  <view class="safe-bottom"></view>
+</view>

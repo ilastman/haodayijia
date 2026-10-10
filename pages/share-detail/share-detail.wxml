@@ -1,0 +1,89 @@
+<view class="page" wx:if="{{share}}">
+
+  <!-- 通栏封面大图 -->
+  <image class="cover" src="{{share.cover}}" mode="widthFix" />
+
+  <!-- 大图下方留白 + 精简文字 -->
+  <view class="base">
+    <view class="p-title">{{share.title}}</view>
+    <view class="p-meta">
+      <text class="p-tag">{{share.days}}{{c.dayUnit}}</text>
+      <text class="p-tag season">{{share.season}}</text>
+    </view>
+    <view class="p-author">
+      <image class="p-avatar" src="{{share.author.avatar}}" mode="aspectFill" />
+      <text class="p-name">{{share.author.name}}</text>
+      <text class="p-time">{{share.time}}</text>
+    </view>
+  </view>
+
+  <!-- 行程亮点 -->
+  <view class="block">
+    <view class="block-title">{{c.highlight}}</view>
+    <view class="hl" wx:for="{{share.highlights}}" wx:key="*this">
+      <text class="hl-mark">·</text>
+      <text class="hl-text">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 每日行程时间线 -->
+  <view class="block">
+    <view class="block-title">{{c.timeline}}</view>
+    <view class="day" wx:for="{{days}}" wx:for-item="day" wx:key="index">
+      <view class="day-head">
+        <text class="day-dot"></text>
+        <text class="day-title">{{c.dayLabel}}{{index + 1}}{{c.dayUnit}}</text>
+      </view>
+      <view class="day-card" wx:if="{{day.thumb || day.scenics.length > 0 || day.hotel || day.note}}">
+        <image wx:if="{{day.thumb}}" class="day-thumb" src="{{day.thumb}}" mode="aspectFill" />
+        <view class="day-info">
+          <view class="day-scenics" wx:if="{{day.scenics.length > 0}}">
+            <text class="day-chip" wx:for="{{day.scenics}}" wx:for-item="sc" wx:key="id">{{sc.name}}</text>
+          </view>
+          <view class="day-line" wx:if="{{day.hotel}}">
+            <text class="day-label">{{c.hotelLabel}}</text>
+            <text class="day-value">{{day.hotel.name}}</text>
+          </view>
+          <view class="day-line" wx:if="{{day.note}}">
+            <text class="day-label">{{c.noteLabel}}</text>
+            <text class="day-value note">{{day.note}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 评论区 -->
+  <view class="block">
+    <view class="block-title comments-title">{{c.comments}}</view>
+    <view class="comment" wx:for="{{comments}}" wx:for-item="cm" wx:key="index">
+      <image class="c-avatar" src="{{cm.avatar}}" mode="aspectFill" />
+      <view class="c-body">
+        <text class="c-name">{{cm.name}}</text>
+        <text class="c-text">{{cm.text}}</text>
+        <text class="c-likes" wx:if="{{cm.likes > 0}}">{{cm.likes}} {{c.like}}</text>
+      </view>
+    </view>
+    <view class="no-comment" wx:if="{{comments.length === 0}}">{{c.noComment}}</view>
+  </view>
+
+  <view class="safe-bottom"></view>
+
+  <!-- 底部悬浮：照此方案定制 -->
+  <view class="cta" bindtap="goCustom">{{c.customCta}}</view>
+
+  <!-- 底部互动栏 -->
+  <view class="bar">
+    <input class="bar-input" placeholder="{{c.commentPlaceholder}}" placeholder-class="ph"
+      value="{{commentDraft}}" confirm-type="send" maxlength="60"
+      bindinput="onCommentInput" bindconfirm="onCommentSend" />
+    <view class="act {{liked ? 'on' : ''}}" bindtap="onLike">
+      <text class="act-ico">{{liked ? '♥' : '♡'}}</text>
+      <text class="act-label">{{liked ? c.liked : c.like}}</text>
+    </view>
+    <view class="act {{faved ? 'on' : ''}}" bindtap="onFav">
+      <text class="act-ico">{{faved ? '★' : '☆'}}</text>
+      <text class="act-label">{{faved ? c.faved : c.fav}}</text>
+    </view>
+  </view>
+</view>

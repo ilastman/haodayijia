@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>旅行社小程序 · 在线预览</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; }
+    html, body {
+      margin: 0; padding: 0; height: 100%;
+      background: #E7E3DA;
+      font-family: -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Helvetica Neue", sans-serif;
+      color: #2C2C2E;
+    }
+    .stage {
+      min-height: 100%;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 14px 10px 22px;
+    }
+
+    /* 工具栏 */
+    .pv-toolbar {
+      display: flex; align-items: center; flex-wrap: wrap; justify-content: center;
+      gap: 10px; margin-bottom: 12px;
+    }
+    .pv-toolbar .pv-logo {
+      font-size: 14px; font-weight: 700; color: #23342B;
+      background: #fff; border-radius: 999px; padding: 7px 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+    }
+    .pv-toolbar button {
+      font-size: 13px; color: #2F8F5B; background: #fff;
+      border: 1px solid #CFE3D7; border-radius: 999px;
+      padding: 7px 16px; cursor: pointer;
+    }
+    .pv-toolbar button:hover { background: #EAF5EE; }
+    .pv-toolbar .pv-hint { font-size: 12px; color: #8A8F8B; }
+
+    /* 手机外框 */
+    .device {
+      position: relative;
+      width: 390px; max-width: 100%;
+      height: min(812px, calc(100vh - 92px));
+      min-height: 560px;
+      background: #fff;
+      border: 2px solid #141414;
+      border-radius: 38px;
+      overflow: hidden;
+      display: flex; flex-direction: column;
+      box-shadow: 0 26px 64px rgba(0,0,0,.3);
+      transform: translateZ(0);
+    }
+
+    /* 状态栏 */
+    .statusbar {
+      height: 34px; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 22px;
+      background: #fff;
+      font-size: 12px; font-weight: 600; color: #141414;
+    }
+    .statusbar .sb-right { letter-spacing: 1px; font-size: 11px; }
+
+    /* 导航栏 */
+    .navbar {
+      height: 44px; flex-shrink: 0;
+      position: relative;
+      display: flex; align-items: center;
+      background: #fff;
+      border-bottom: 1px solid #F0EDE6;
+    }
+    .nav-back {
+      width: 44px; text-align: center;
+      font-size: 26px; line-height: 1; color: #141414;
+      cursor: pointer; user-select: none;
+      font-family: -apple-system, sans-serif;
+    }
+    .nav-title {
+      position: absolute; left: 60px; right: 60px;
+      text-align: center;
+      font-size: 16px; font-weight: 600; color: #141414;
+      overflow: hidden; white-space: nowrap; text-overflow: ellipsis;
+    }
+
+    /* 页面滚动区（fixed 定位基准层，不滚动） */
+    .screen-frame {
+      flex: 1;
+      min-height: 0;
+      position: relative;
+      overflow: hidden;
+      transform: translateZ(0);
+    }
+
+    /* 页面滚动区（实际滚动层，无 transform，保证子元素 fixed 生效） */
+    .screen {
+      position: absolute;
+      inset: 0;
+      overflow-y: auto; overflow-x: hidden;
+      background: #F6F1E7;
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: auto;
+    }
+
+    /* 底部 Tab */
+    .tabbar {
+      height: 56px; flex-shrink: 0;
+      display: flex;
+      background: #fff;
+      border-top: 1px solid #EFECE4;
+      padding-bottom: env(safe-area-inset-bottom);
+    }
+    .pv-tab {
+      flex: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      gap: 3px;
+      font-size: 10px;
+      color: #9A9A9A;
+      cursor: pointer;
+      user-select: none;
+    }
+    .pv-tab img { width: 23px; height: 23px; display: block; }
+    .pv-tab.on { color: #2F8F5B; font-weight: 600; }
+
+    @media (max-width: 430px) {
+      .stage { padding: 0; }
+      .pv-toolbar { margin: 8px 0; }
+      .device { border: none; border-radius: 0; height: calc(100vh - 54px); box-shadow: none; }
+    }
+  </style>
+</head>
+<body>
+  <div class="stage">
+    <div class="pv-toolbar">
+      <span class="pv-logo">旅行社小程序 · 交互预览</span>
+      <button id="btn-refresh">刷新当前页</button>
+      <button id="btn-reset">重置数据</button>
+      <span class="pv-hint">Tab、卡片、筛选、表单均可真实点击</span>
+    </div>
+
+    <div class="device">
+      <div class="statusbar">
+        <span>9:41</span>
+        <span class="sb-right">●●●●● ▾</span>
+      </div>
+      <div class="navbar">
+        <div class="nav-back" id="nav-back">‹</div>
+        <div class="nav-title" id="nav-title"></div>
+      </div>
+      <div class="screen-frame">
+        <div class="screen" id="screen"></div>
+      </div>
+      <div class="tabbar" id="tabbar"></div>
+    </div>
+  </div>
+
+  <script src="tools/preview-data.js"></script>
+  <script src="tools/preview-runtime.js"></script>
+</body>
+</html>

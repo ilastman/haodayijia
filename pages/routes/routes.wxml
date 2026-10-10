@@ -1,0 +1,89 @@
+<view class="page">
+
+  <!-- 1. 页头：标题 + slogan -->
+  <view class="header">
+    <view class="header-title">{{copy.headerTitle}}</view>
+    <view class="header-slogan">{{copy.slogan}}</view>
+  </view>
+
+  <!-- 2. 横向分类标签（无底色） -->
+  <view class="cat-zone">
+    <scroll-view class="cat-scroll" scroll-x enhanced="{{true}}" show-scrollbar="{{false}}">
+      <view class="cat-row">
+        <view wx:for="{{cats}}" wx:key="*this"
+          class="cat {{activeCat === item ? 'on' : ''}}"
+          bindtap="onCategory" data-cat="{{item}}">{{item}}</view>
+      </view>
+    </scroll-view>
+
+    <!-- 更多筛选（默认收起） -->
+    <view class="more-toggle {{moreOpen ? 'on' : ''}}" bindtap="onMoreToggle">
+      <text>{{moreOpen ? copy.moreFold : copy.moreLabel}}</text>
+      <text class="more-arrow">{{moreOpen ? '△' : '▽'}}</text>
+    </view>
+  </view>
+
+  <!-- 更多筛选面板 -->
+  <view class="more-panel" wx:if="{{moreOpen}}">
+    <view class="more-group">
+      <view class="mg-title">{{copy.moreGroups.days}}</view>
+      <view class="mg-chips">
+        <text wx:for="{{daysOptions}}" wx:key="*this"
+          class="mg-chip {{more.days === item ? 'on' : ''}}"
+          bindtap="onMoreKey" data-k="days" data-v="{{item}}">{{item}}</text>
+      </view>
+    </view>
+    <view class="more-group">
+      <view class="mg-title">{{copy.moreGroups.dest}}</view>
+      <view class="mg-chips">
+        <text wx:for="{{destOptions}}" wx:key="*this"
+          class="mg-chip {{more.dest === item ? 'on' : ''}}"
+          bindtap="onMoreKey" data-k="dest" data-v="{{item}}">{{item}}</text>
+      </view>
+    </view>
+    <view class="more-group">
+      <view class="mg-title">{{copy.moreGroups.type}}</view>
+      <view class="mg-chips">
+        <text wx:for="{{typeOptions}}" wx:key="*this"
+          class="mg-chip {{more.type === item ? 'on' : ''}}"
+          bindtap="onMoreKey" data-k="type" data-v="{{item}}">{{item}}</text>
+      </view>
+    </view>
+  </view>
+
+  <!-- 3. 大封面纵向卡片列表 -->
+  <view class="list" wx:if="{{!showEmpty}}">
+    <view class="route-card" wx:for="{{list}}" wx:key="id" bindtap="onCard" data-id="{{item.id}}">
+      <image class="rc-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="rc-body">
+        <view class="rc-days">{{item.daysText}}</view>
+        <view class="rc-name ellipsis">{{item.name}}</view>
+        <view class="rc-brief ellipsis">{{item.brief}}</view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{showEmpty}}">
+    <view class="empty-icon">◇</view>
+    <text>{{copy.emptyCategory}}</text>
+  </view>
+
+  <!-- 4. 底部引导：定制 -->
+  <view class="foot-guide">
+    <view class="hairline"></view>
+    <view class="fg-title">{{copy.customTitle}}</view>
+    <view class="fg-desc">{{copy.customDesc}}</view>
+    <view class="outline-btn" bindtap="goCustom">{{copy.customBtn}}</view>
+  </view>
+
+  <!-- 5. 底部引导：灵感广场 -->
+  <view class="foot-guide journal">
+    <view class="hairline"></view>
+    <view class="journal-link" bindtap="goSquare">
+      <text>{{copy.journalLink}}</text>
+      <text class="journal-arrow">›</text>
+    </view>
+  </view>
+
+</view>

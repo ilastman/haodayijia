@@ -1,0 +1,40 @@
+<view class="page">
+
+  <!-- 搜索框 -->
+  <view class="search-bar">
+    <view class="search-box">
+      <image class="search-icon" src="{{searchIcon}}" mode="aspectFit" />
+      <input class="search-input" placeholder="{{searchPh}}" placeholder-class="search-ph" value="{{search}}"
+        bindinput="onSearch" confirm-type="search" />
+    </view>
+  </view>
+
+  <!-- 分类标签 -->
+  <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="cat-scroll">
+    <view class="cat {{activeCat === item ? 'on' : ''}}" wx:for="{{cats}}" wx:key="*this" bindtap="onCat"
+      data-cat="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 文章列表 -->
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="article" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="article-cover" src="{{item.cover}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="article-info">
+        <view class="article-title ellipsis-2">{{item.title}}</view>
+        <view class="article-summary ellipsis-2">{{item.summary}}</view>
+        <view class="article-meta">
+          <text class="cat-tag">{{item.category}}</text>
+          <text class="date">{{item.date}}</text>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- 空状态 -->
+  <view class="empty" wx:if="{{list.length === 0}}">
+    <view class="empty-icon">◇</view>
+    <text>{{emptyText}}</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

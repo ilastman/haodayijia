@@ -1,0 +1,105 @@
+.page {
+  padding-bottom: 20rpx;
+}
+
+/* 头部 */
+.head {
+  padding: 30rpx 24rpx 4rpx;
+}
+
+.head-title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #3D362A;
+}
+
+.head-sub {
+  margin-top: 8rpx;
+  font-size: 24rpx;
+  color: #9E9886;
+}
+
+/* 分类标签 */
+.cat-scroll {
+  white-space: nowrap;
+  padding: 20rpx 24rpx 4rpx;
+}
+
+.cat {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #817A6A;
+  background: #FCF9F1;
+  border-radius: 30rpx;
+  padding: 12rpx 30rpx;
+  margin-right: 16rpx;
+}
+
+.cat.on {
+  background: #8A7152;
+  color: #FCF9F1;
+  font-weight: 500;
+}
+
+/* 景区卡片 */
+.list {
+  padding: 12rpx 24rpx;
+}
+
+.scenic {
+  display: flex;
+  background: #FCF9F1;
+  border-radius: 20rpx;
+  padding: 20rpx;
+  margin-top: 20rpx;
+  box-shadow: 0 4rpx 16rpx rgba(90, 82, 66, 0.03);
+}
+
+.scenic-img {
+  width: 220rpx;
+  height: 160rpx;
+  border-radius: 14rpx;
+  flex-shrink: 0;
+}
+
+.scenic-info {
+  flex: 1;
+  margin-left: 20rpx;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.scenic-name {
+  font-size: 30rpx;
+  font-weight: 500;
+  color: #3D362A;
+}
+
+.scenic-intro {
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  color: #968F80;
+  line-height: 1.5;
+}
+
+.scenic-foot {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 12rpx;
+}
+
+.scenic-dest {
+  font-size: 22rpx;
+  color: #8A7152;
+  background: #EDE4D2;
+  border-radius: 8rpx;
+  padding: 4rpx 14rpx;
+}
+
+.visit {
+  font-size: 24rpx;
+  color: #ACA48F;
+}

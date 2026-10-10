@@ -1,0 +1,64 @@
+<view class="page">
+
+  <!-- 顶部标题栏 -->
+  <view class="head">
+    <view class="sq-title">{{c.title}}</view>
+    <view class="publish-circle" bindtap="goPublish">{{c.publishBtn}}</view>
+  </view>
+
+  <!-- 分类标签（极简无底色） -->
+  <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="cat-scroll">
+    <view class="cat {{activeCat === item ? 'on' : ''}}" wx:for="{{cats}}" wx:key="*this"
+      bindtap="onCat" data-cat="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 双列瀑布流 -->
+  <view class="feed" wx:if="{{colL.length + colR.length > 0}}">
+    <view class="col">
+      <view class="card" wx:for="{{colL}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="card-cover">
+          <image class="card-img" src="{{item.coverV}}" mode="widthFix" lazy-load="{{true}}" />
+          <text class="card-type {{item.kind === 'note' ? 'note' : ''}}">{{item.kind === 'note' ? c.typeNote : c.typePlan}}</text>
+        </view>
+        <view class="card-body">
+          <view class="card-title ellipsis-2">{{item.title}}</view>
+          <view class="card-foot">
+            <image class="card-avatar" src="{{item.author.avatar}}" mode="aspectFill" />
+            <text class="card-name ellipsis">{{item.author.name}}</text>
+            <view class="card-like" catchtap="onLike" data-id="{{item.id}}">
+              <text class="card-heart {{item.liked ? 'on' : ''}}">{{item.liked ? '♥' : '♡'}}</text>
+              <text class="card-num">{{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="col">
+      <view class="card" wx:for="{{colR}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+        <view class="card-cover">
+          <image class="card-img" src="{{item.coverV}}" mode="widthFix" lazy-load="{{true}}" />
+          <text class="card-type {{item.kind === 'note' ? 'note' : ''}}">{{item.kind === 'note' ? c.typeNote : c.typePlan}}</text>
+        </view>
+        <view class="card-body">
+          <view class="card-title ellipsis-2">{{item.title}}</view>
+          <view class="card-foot">
+            <image class="card-avatar" src="{{item.author.avatar}}" mode="aspectFill" />
+            <text class="card-name ellipsis">{{item.author.name}}</text>
+            <view class="card-like" catchtap="onLike" data-id="{{item.id}}">
+              <text class="card-heart {{item.liked ? 'on' : ''}}">{{item.liked ? '♥' : '♡'}}</text>
+              <text class="card-num">{{item.likes}}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">◇</view>
+    <text>{{c.empty}}</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+</view>

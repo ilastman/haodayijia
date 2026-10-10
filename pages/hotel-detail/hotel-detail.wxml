@@ -1,0 +1,60 @@
+<view class="page" wx:if="{{hotel}}">
+
+  <!-- 顶部图片轮播 -->
+  <swiper class="gallery" indicator-dots="{{true}}" indicator-active-color="#FFFFFF" indicator-color="rgba(255,255,255,.5)"
+    circular="{{true}}" autoplay="{{true}}" interval="4000">
+    <swiper-item wx:for="{{hotel.images}}" wx:key="*this" bindtap="previewImage" data-src="{{item}}">
+      <image class="gallery-img" src="{{item}}" mode="aspectFill" />
+    </swiper-item>
+  </swiper>
+
+  <!-- 基础信息 -->
+  <view class="base">
+    <view class="base-title">{{hotel.name}}</view>
+    <view class="tags">
+      <text class="tag">{{hotel.area}}</text>
+      <text class="tag" wx:for="{{hotel.tags}}" wx:key="*this">{{item}}</text>
+    </view>
+    <view class="intro">{{hotel.intro}}</view>
+  </view>
+
+  <!-- 酒店环境 -->
+  <view class="block">
+    <view class="block-title">{{d.envTitle}}</view>
+    <image class="pic" src="{{hotel.envImg}}" mode="aspectFill" />
+    <view class="desc">{{hotel.description}}</view>
+  </view>
+
+  <!-- 房型特色 -->
+  <view class="block">
+    <view class="block-title">{{d.roomTitle}}</view>
+    <image class="pic" src="{{hotel.roomImg}}" mode="aspectFill" />
+    <view class="room" wx:for="{{hotel.rooms}}" wx:key="*this">
+      <text class="room-mark">✓</text>
+      <text class="room-text">{{item}}</text>
+    </view>
+  </view>
+
+  <!-- 周边位置 -->
+  <view class="block">
+    <view class="block-title">{{d.locTitle}}</view>
+    <view class="desc">{{hotel.location}}</view>
+  </view>
+
+  <!-- 配套设施 -->
+  <view class="block">
+    <view class="block-title">{{d.facTitle}}</view>
+    <view class="fac-chips">
+      <text class="chip" wx:for="{{hotel.facilities}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
+  <view class="bottom-holder"></view>
+
+  <!-- 底部咨询定制 -->
+  <view class="bottom-bar">
+    <button class="btn-primary consult-btn" bindtap="openConsult">{{d.consult}}</button>
+  </view>
+
+  <consult-modal visible="{{consultVisible}}" route-title="{{'酒店：' + hotel.name}}" bind:close="onConsultClose" />
+</view>

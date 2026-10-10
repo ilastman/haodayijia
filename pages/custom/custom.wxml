@@ -1,0 +1,193 @@
+<view class="page">
+
+  <!-- 头部 -->
+  <view class="head">
+    <view class="head-title">{{c.title}}</view>
+    <view class="head-sub">{{c.subtitle}}</view>
+  </view>
+
+  <!-- ① 基础信息 -->
+  <view class="card">
+    <view class="card-title">{{c.base}}</view>
+
+    <!-- 天数 -->
+    <view class="row">
+      <view class="row-label">{{c.daysLabel}}</view>
+      <view class="chips">
+        <view class="chip {{days === 3 && !customActive ? 'on' : ''}}" data-n="3" bindtap="onDays">{{c.days[0]}}</view>
+        <view class="chip {{days === 5 && !customActive ? 'on' : ''}}" data-n="5" bindtap="onDays">{{c.days[1]}}</view>
+        <view class="chip {{days === 7 && !customActive ? 'on' : ''}}" data-n="7" bindtap="onDays">{{c.days[2]}}</view>
+        <view class="chip {{customActive ? 'on' : ''}}" data-n="custom" bindtap="onDays">{{c.days[3]}}</view>
+      </view>
+    </view>
+    <view class="row" wx:if="{{customActive}}">
+      <view class="row-label"></view>
+      <view class="custom-days">
+        <input class="days-input" type="number" maxlength="2" placeholder="{{c.customDaysPlaceholder}}" placeholder-class="ph" value="{{customDays}}" bindinput="onCustomInput" />
+        <text class="days-unit">{{c.daysUnit}}</text>
+      </view>
+    </view>
+
+    <!-- 日期 -->
+    <view class="row">
+      <view class="row-label">{{c.dateLabel}}</view>
+      <picker mode="date" value="{{date}}" start="{{minDate}}" bindchange="onDateChange">
+        <view class="field-input {{date ? '' : 'ph'}}">{{date || c.datePlaceholder}}</view>
+      </picker>
+    </view>
+
+    <!-- 人数 -->
+    <view class="row">
+      <view class="row-label">{{c.peopleLabel}}</view>
+      <view class="steppers">
+        <view class="stepper">
+          <text class="stepper-label">{{c.adult}}</text>
+          <view class="stepper-btn" bindtap="onAdult" data-d="-">−</view>
+          <text class="stepper-num">{{adults}}</text>
+          <view class="stepper-btn" bindtap="onAdult" data-d="+">+</view>
+        </view>
+        <view class="stepper stepper-sub">
+          <text class="stepper-label">{{c.child}}</text>
+          <view class="stepper-btn" bindtap="onChild" data-d="-">−</view>
+          <text class="stepper-num">{{children}}</text>
+          <view class="stepper-btn" bindtap="onChild" data-d="+">+</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <!-- ② 每日行程标签 -->
+  <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="day-scroll">
+    <view class="day-chip {{activeDay === index ? 'on' : ''}}" wx:for="{{dayTabs}}" wx:key="index"
+      bindtap="onDay" data-index="{{index}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- ③ 当日行程编辑 -->
+  <view class="card">
+    <view class="card-title">{{c.scenicTitle}}</view>
+    <view class="add-btn" bindtap="openScenic">+ {{c.addScenic}}</view>
+
+    <view class="sel-list" wx:if="{{curScenics.length > 0}}">
+      <view class="sel-item {{dragging === index ? 'dragging' : ''}}" wx:for="{{curScenics}}" wx:key="id"
+        data-index="{{index}}"
+        bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
+        <text class="sel-order">{{index + 1}}</text>
+        <view class="sel-body">
+          <view class="sel-name">{{item.name}}</view>
+          <view class="sel-sub">{{item.dest}}</view>
+        </view>
+        <view class="sel-ops">
+          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="-1">{{c.up}}</view>
+          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="1">{{c.down}}</view>
+          <view class="op-btn del" bindtap="removeScenic" data-index="{{index}}">{{c.remove}}</view>
+        </view>
+      </view>
+    </view>
+    <view class="sel-empty" wx:else>{{c.scenicEmpty}}</view>
+    <view class="tip-line">{{c.tips}}</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">{{c.hotelTitle}}</view>
+    <view class="add-btn" bindtap="openHotel">+ {{c.addHotel}}</view>
+    <view class="hotel-sel" wx:if="{{curHotel}}">
+      <view class="sel-body">
+        <view class="sel-name">{{curHotel.name}}</view>
+        <view class="sel-sub">{{curHotel.stars}} · {{curHotel.area}}</view>
+      </view>
+      <view class="op-btn del" bindtap="clearHotel">{{c.remove}}</view>
+    </view>
+    <view class="sel-empty" wx:else>{{c.hotelEmpty}}</view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">{{c.noteTitle}}</view>
+    <textarea class="note" placeholder="{{c.notePlaceholder}}" placeholder-class="ph" value="{{curNote}}"
+      bindinput="onNote" maxlength="200" auto-height />
+  </view>
+
+  <view class="safe-bottom"></view>
+
+  <!-- ④ 底部固定提交栏 -->
+  <view class="bottom-bar">
+    <view class="summary">
+      <text class="sum-item">{{c.summaryScenic}} {{totalScenic}}</text>
+      <text class="sum-item">{{c.summaryHotel}} {{totalHotel}}</text>
+    </view>
+    <view class="publish-btn" bindtap="goPublish">{{c.publishInspire}}</view>
+    <view class="submit-btn" bindtap="goGenerate">{{c.generateBtn}}</view>
+  </view>
+
+  <!-- 景区选择面板 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'scenic'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetScenicTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetScenics}}" wx:key="id" bindtap="toggleScenic" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.dest}} · {{item.intro}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 酒店选择面板 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'hotel'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetHotelTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" bindtap="toggleHotel" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 提交表单弹窗 -->
+  <view class="sheet-mask" wx:if="{{submitShow}}" bindtap="closeSubmit">
+    <view class="sheet form-sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.formTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSubmit">{{c.sheetCancel}}</view>
+      </view>
+      <view class="field">
+        <view class="label">{{c.name}}<text class="req">*</text></view>
+        <input class="input" placeholder="{{c.namePlaceholder}}" placeholder-class="ph" value="{{form.name}}"
+          data-k="name" bindinput="onFormInput" maxlength="20" />
+      </view>
+      <view class="field">
+        <view class="label">{{c.phone}}<text class="req">*</text></view>
+        <input class="input" type="number" placeholder="{{c.phonePlaceholder}}" placeholder-class="ph" value="{{form.phone}}"
+          data-k="phone" bindinput="onFormInput" maxlength="11" />
+      </view>
+      <view class="field">
+        <view class="label">{{c.wechat}}</view>
+        <input class="input" placeholder="{{c.wechatPlaceholder}}" placeholder-class="ph" value="{{form.wechat}}"
+          data-k="wechat" bindinput="onFormInput" maxlength="30" />
+      </view>
+      <view class="error" wx:if="{{formError}}">{{formError}}</view>
+      <view class="submit-btn full" bindtap="doSubmit">{{c.submitBtn}}</view>
+    </view>
+  </view>
+
+  <!-- 提交成功 -->
+  <view class="sheet-mask" wx:if="{{successShow}}" bindtap="closeSuccess">
+    <view class="success-panel">
+      <view class="success-icon">✓</view>
+      <view class="success-text">{{c.success}}</view>
+    </view>
+  </view>
+</view>

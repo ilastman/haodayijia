@@ -1,0 +1,46 @@
+<view class="page">
+
+  <!-- 头部 -->
+  <view class="head">
+    <view class="head-title">{{title}}</view>
+    <view class="head-sub">{{subtitle}}</view>
+    <view class="head-search">
+      <image class="pin" src="{{pinIcon}}" mode="aspectFit" />
+      <text>呼伦贝尔 · 阿尔山 · 满洲里 沿线酒店</text>
+    </view>
+  </view>
+
+  <!-- 酒店列表 -->
+  <view class="list" wx:if="{{list.length > 0}}">
+    <view class="hotel" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">
+      <image class="hotel-img" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="hotel-info">
+        <view class="hotel-name-row">
+          <text class="hotel-name ellipsis">{{item.name}}</text>
+          <text class="hotel-score">{{item.score}}{{scoreLabel}}</text>
+        </view>
+        <view class="hotel-meta">{{item.stars}} · {{item.area}}</view>
+        <view class="tags">
+          <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+        </view>
+        <view class="hotel-price-row">
+          <view class="price">
+            <text class="price-symbol">¥</text>
+            <text class="price-num">{{item.price}}</text>
+            <text class="per">{{perNight}}</text>
+          </view>
+          <view class="book-btn" catchtap="book" data-name="{{item.name}}">{{bookLabel}}</view>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="empty" wx:else>
+    <view class="empty-icon">◇</view>
+    <text>{{emptyText}}</text>
+  </view>
+
+  <view class="safe-bottom"></view>
+
+  <consult-modal visible="{{consultVisible}}" route-title="{{currentName}}" bind:close="onConsultClose" />
+</view>

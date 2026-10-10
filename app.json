@@ -1,0 +1,68 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/routes/routes",
+    "pages/strategy/strategy",
+    "pages/mine/mine",
+    "pages/route-detail/route-detail",
+    "pages/strategy-detail/strategy-detail",
+    "pages/hotels/hotels",
+    "pages/hotel-detail/hotel-detail",
+    "pages/cars/cars",
+    "pages/orders/orders",
+    "pages/favorites/favorites",
+    "pages/consult-history/consult-history",
+    "pages/about/about",
+    "pages/scenic/scenic",
+    "pages/scenic-detail/scenic-detail",
+    "pages/custom/custom",
+    "pages/custom-preview/custom-preview",
+    "pages/my-trips/my-trips",
+    "pages/square/square",
+    "pages/share-detail/share-detail",
+    "pages/note-detail/note-detail",
+    "pages/share-publish/share-publish"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FCF9F1",
+    "navigationBarTitleText": "你的旅行社名称",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF7F0",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#9A9285",
+    "selectedColor": "#8A7152",
+    "backgroundColor": "#FCF9F1",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab/home-gray.png",
+        "selectedIconPath": "images/tab/home-green.png"
+      },
+      {
+        "pagePath": "pages/routes/routes",
+        "text": "线路",
+        "iconPath": "images/tab/route-gray.png",
+        "selectedIconPath": "images/tab/route-green.png"
+      },
+      {
+        "pagePath": "pages/square/square",
+        "text": "灵感广场",
+        "iconPath": "images/tab/inspiration-gray.png",
+        "selectedIconPath": "images/tab/inspiration-green.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/tab/mine-gray.png",
+        "selectedIconPath": "images/tab/mine-green.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

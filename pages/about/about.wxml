@@ -1,0 +1,48 @@
+<view class="page">
+
+  <!-- 品牌头 -->
+  <view class="brand-head">
+    <view class="brand-logo">{{brand[0]}}</view>
+    <view class="brand-name">{{brand}}</view>
+    <view class="brand-slogan">{{slogan}}</view>
+  </view>
+
+  <!-- 关于 -->
+  <view class="block">
+    <view class="block-title">{{labels.title}}</view>
+    <view class="para" wx:for="{{paragraphs}}" wx:key="*this">{{item}}</view>
+    <view class="para intro">{{companyIntro}}</view>
+  </view>
+
+  <!-- 联系我们 -->
+  <view class="block">
+    <view class="block-title">{{labels.contactTitle}}</view>
+
+    <view class="contact" bindtap="callService">
+      <image class="c-icon" src="{{phoneIcon}}" mode="aspectFit" />
+      <view class="c-info">
+        <view class="c-label">{{labels.phoneLabel}}</view>
+        <view class="c-value">{{servicePhone}}</view>
+        <view class="c-sub">{{serviceHours}}</view>
+      </view>
+      <view class="c-action">{{labels.callBtn}}</view>
+    </view>
+
+    <view class="c-line" bindtap="copyWechat">
+      <view class="c-label">{{labels.wechatLabel}}</view>
+      <view class="c-line-right">
+        <text class="c-value-sm">{{wechatId}}</text>
+        <text class="c-copy">{{labels.copyWechat}}</text>
+      </view>
+    </view>
+
+    <view class="c-line">
+      <view class="c-label">{{labels.addressLabel}}</view>
+      <view class="c-value-sm c-addr">{{address}}</view>
+    </view>
+  </view>
+
+  <view class="copyright">© {{brand}}</view>
+
+  <view class="safe-bottom"></view>
+</view>
