@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 const { ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -166,42 +167,6 @@ Page({
     wx.navigateTo({ url: '/pages/hotel-detail/hotel-detail?id=' + e.currentTarget.dataset.id });
   },
 
-  goPublish() {
-    const days = this.data.days;
-    const title = '我的专属呼伦贝尔' + days + '日行程';
-    const u = wx.getStorageSync('userInfo');
-    let cover = this.data.heroTiles[0].img;
-    if (!cover) cover = ph('我的专属呼伦贝尔 ' + days + '日行程', 640, 420);
-    const share = {
-      id: 'my' + Date.now(),
-      kind: 'plan',
-      category: '自由行',
-      title,
-      days,
-      season: '夏季草原',
-      cover,
-      coverV: ph('我的行程 ' + title, 480, 640),
-      intro: '这是为我量身安排的' + days + '天呼伦贝尔专属旅途，愿走到哪一片草地，哪里都是花园。',
-      highlights: [title, this.data.heroTitle + '，' + copy.customPreview.slogan],
-      timeline: this._plans.map(p => ({
-        scenicIds: (p.scenicIds || []).slice(),
-        hotelId: p.hotelId || '',
-        note: p.note || ''
-      })),
-      author: { name: (u && u.nickname) || '呼伦贝尔旅行官', avatar: (u && u.avatar) || '' },
-      time: TIME_STAMP,
-      likes: 0,
-      comments: [],
-      liked: false,
-      mine: true
-    };
-    const mine = wx.getStorageSync('myShares') || [];
-    mine.unshift(share);
-    wx.setStorageSync('myShares', mine);
-    wx.setStorageSync('pendingToast', copy.customPreview.publishSuccess);
-    wx.switchTab({ url: '/pages/square/square' });
-  },
-
   saveToMine() {
     const days = this.data.days;
     const title = '我的专属呼伦贝尔' + days + '日行程';
@@ -229,11 +194,13 @@ Page({
     if (idx > -1) {
       trips[idx] = trip;
       wx.setStorageSync('myTrips', trips);
+      api.saveTrip(trip);
       wx.showToast({ title: copy.customPreview.saveUpdated, icon: 'none' });
       return;
     }
     trips.unshift(trip);
     wx.setStorageSync('myTrips', trips);
+    api.saveTrip(trip);
     wx.showToast({ title: copy.customPreview.saveSuccess, icon: 'none' });
   }
 });

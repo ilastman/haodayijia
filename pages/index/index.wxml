@@ -3,7 +3,7 @@
   <!-- 1. 顶部轮播 banner -->
   <swiper class="banner" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,.5)" indicator-active-color="#FFFFFF"
     autoplay="{{true}}" circular="{{true}}" interval="4000" duration="400">
-    <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="onBanner" data-id="{{item.routeId}}">
+    <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="onBanner" data-id="{{item.routeId}}" data-jump="{{item.jumpRoute}}">
       <image class="banner-img" src="{{item.image}}" mode="aspectFill" />
     </swiper-item>
   </swiper>

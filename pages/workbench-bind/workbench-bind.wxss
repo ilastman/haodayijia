@@ -1,0 +1,10 @@
+.bd-wrap { padding: 140rpx 60rpx 0; text-align: center; }
+.bd-icon { font-size: 90rpx; margin-bottom: 24rpx; }
+.bd-title { font-size: 40rpx; font-weight: 600; color: #443A2C; }
+.bd-desc { font-size: 26rpx; color: #948D7D; margin: 20rpx 0 60rpx; line-height: 1.7; }
+.bd-input {
+  background: #FCF9F1; border-radius: 16rpx; height: 96rpx; padding: 0 30rpx;
+  font-size: 32rpx; letter-spacing: 4rpx; text-align: center; color: #3D362A;
+}
+.bd-btn { margin-top: 50rpx; }
+.bd-btn.disabled { opacity: .6; }

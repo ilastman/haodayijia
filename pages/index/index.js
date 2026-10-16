@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 const { ICONS } = require('../../utils/util');
 
 Page({
@@ -16,16 +17,73 @@ Page({
     offers: data.pickRoutes(data.offerIds),
     consultVisible: false
   },
+  onShareAppMessage() {
+    return {
+      title: '呼伦贝尔轻奢定制旅行',
+      path: '/pages/index/index'
+    }
+  },
+  onShareTimeline() {
+    return {
+      title: '呼伦贝尔轻奢定制旅行'
+    }
+  },
+  
 
-  onBanner(e) {
-    const id = e.currentTarget.dataset.id;
-    if (id) {
-      wx.navigateTo({ url: '/pages/route-detail/route-detail?id=' + id });
+  onLoad() {
+    wx.showShareMenu({
+      menus: ['shareAppMessage', 'shareTimeline']
+    })
+    this.loadCloud();
+  },
+  
+
+  // 从云开发读取 banner、首页板块与首页内容，失败则保留本地静态数据
+  async loadCloud() {
+    try {
+      const [banners, navIcons, home] = await Promise.all([api.banners(), api.homeModules(), api.homeContent()]);
+      const patch = {};
+      if (banners && banners.length) patch.banners = banners;
+      if (navIcons && navIcons.length) patch.navIcons = navIcons;
+      if (home) {
+        if (home.hot && home.hot.length) patch.hotRoutes = home.hot;
+        if (home.offers && home.offers.length) patch.offers = home.offers;
+        if (home.destinations && home.destinations.length) patch.destinations = home.destinations;
+        const hc = home.homeCopy || {};
+        const cur = this.data.home;
+        patch.home = Object.assign({}, cur, {
+          hotTitle: hc.hotTitle || cur.hotTitle,
+          destTitle: hc.destTitle || cur.destTitle,
+          offerTitle: hc.offerTitle || cur.offerTitle,
+          introTitle: hc.introTitle || cur.introTitle,
+          more: hc.more || cur.more,
+          consult: hc.consult || cur.consult
+        });
+        if (home.about) {
+          if (home.about.content) patch.companyIntro = home.about.content;
+          if (home.about.phone) patch.servicePhone = home.about.phone;
+        }
+      }
+      if (Object.keys(patch).length) this.setData(patch);
+    } catch (e) {
+      // 静默失败，继续使用本地数据
     }
   },
 
+  onBanner(e) {
+    const ds = e.currentTarget.dataset;
+    if (ds.id) {
+      wx.navigateTo({ url: '/pages/route-detail/route-detail?id=' + ds.id });
+      return;
+    }
+    this.openUrl(ds.jump);
+  },
+
   onNav(e) {
-    const url = e.currentTarget.dataset.url;
+    this.openUrl(e.currentTarget.dataset.url);
+  },
+
+  openUrl(url) {
     if (!url) return;
     if (url.indexOf('tab:') === 0) {
       const rest = url.slice(4);

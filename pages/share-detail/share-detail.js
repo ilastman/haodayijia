@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 
 Page({
   data: {
@@ -7,14 +8,24 @@ Page({
     share: null,
     days: [],
     liked: false,
-    faved: false,
-    commentDraft: '',
-    comments: []
+    faved: false
+  },
+  onShareAppMessage() {
+    return {
+      title: '呼伦贝尔轻奢定制旅行',
+      path: '/pages/share-details/share-details'
+    }
   },
 
-  onLoad(query) {
+  async onLoad(query) {
     const id = query ? query.id : '';
-    const share = id ? data.getShare(id) : null;
+    let share = null;
+    try {
+      share = await api.getShare(id);
+    } catch (e) {
+      share = null;
+    }
+    if (!share) share = id ? data.getShare(id) : null;
     if (!share) {
       wx.showToast({ title: '分享不存在', icon: 'none' });
       setTimeout(() => wx.navigateBack(), 1200);
@@ -23,8 +34,7 @@ Page({
     wx.setNavigationBarTitle({ title: '行程分享' });
     this.setData({
       share,
-      days: this.buildDays(share),
-      comments: (share.comments || []).slice()
+      days: this.buildDays(share)
     });
   },
 
@@ -48,23 +58,6 @@ Page({
     const faved = !this.data.faved;
     this.setData({ faved });
     wx.showToast({ title: faved ? c.faved : c.fav, icon: 'none' });
-  },
-
-  onCommentInput(e) {
-    this.setData({ commentDraft: e.detail.value });
-  },
-
-  onCommentSend() {
-    const text = (this.data.commentDraft || '').trim();
-    if (!text) return;
-    const u = wx.getStorageSync('userInfo');
-    const me = {
-      name: (u && u.nickname) || '我',
-      avatar: (u && u.avatar) || '',
-      text,
-      likes: 0
-    };
-    this.setData({ comments: [me].concat(this.data.comments), commentDraft: '' });
   },
 
   goCustom() {

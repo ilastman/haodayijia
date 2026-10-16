@@ -1,9 +1,39 @@
 {
   "description": "轻奢草原风旅行社微信小程序",
-  "appid": "touristappid",
+  "appid": "wx01bb5f6cfc904f92",
   "projectname": "travel-agency-miniapp",
   "compileType": "miniprogram",
+  "cloudfunctionRoot": "cloudfunctions/",
   "libVersion": "3.4.0",
+  "packOptions": {
+    "ignore": [
+      {
+        "value": "admin",
+        "type": "folder"
+      },
+      {
+        "value": "tools",
+        "type": "folder"
+      },
+      {
+        "value": "cms",
+        "type": "folder"
+      },
+      {
+        "value": "db",
+        "type": "folder"
+      },
+      {
+        "value": "preview.html",
+        "type": "file"
+      },
+      {
+        "value": ".md",
+        "type": "suffix"
+      }
+    ],
+    "include": []
+  },
   "setting": {
     "urlCheck": false,
     "es6": true,
@@ -11,7 +41,23 @@
     "postcss": true,
     "minified": true,
     "newFeature": true,
-    "nodeModules": false
+    "nodeModules": false,
+    "compileWorklet": false,
+    "uglifyFileName": false,
+    "uploadWithSourceMap": true,
+    "packNpmManually": false,
+    "packNpmRelationList": [],
+    "minifyWXSS": true,
+    "minifyWXML": true,
+    "localPlugins": false,
+    "disableUseStrict": false,
+    "useCompilerPlugins": false,
+    "condition": false,
+    "babelSetting": {
+      "ignore": [],
+      "disablePlugins": [],
+      "outputPath": ""
+    }
   },
   "compileOptions": {
     "postcss": true,
@@ -20,5 +66,6 @@
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
-  }
+  },
+  "simulatorPluginLibVersion": {}
 }

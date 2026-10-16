@@ -188,3 +188,13 @@
   border-radius: 30rpx;
   padding: 14rpx 26rpx;
 }
+
+.staff-chip {
+  margin: 24rpx 24rpx 0;
+  display: inline-block;
+  font-size: 22rpx;
+  color: #B08A3E;
+  background: #EFE5CF;
+  border-radius: 10rpx;
+  padding: 8rpx 18rpx;
+}

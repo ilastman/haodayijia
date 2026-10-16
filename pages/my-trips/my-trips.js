@@ -1,4 +1,5 @@
 const copy = require('../../utils/copy');
+const api = require('../../utils/api');
 const { ph } = require('../../utils/util');
 
 Page({
@@ -13,6 +14,26 @@ Page({
   onShow() {
     this.reload(wx.getStorageSync('myTrips') || []);
     this.setData({ delVisible: false, delId: '' });
+    if (!this._cloudLoaded) this.loadCloud();
+  },
+
+  // 云端行程：合并进本地列表（缺失的写入本地，保证详情可打开）
+  async loadCloud() {
+    try {
+      const cloudTrips = await api.myTrips();
+      this._cloudLoaded = true;
+      if (!cloudTrips || !cloudTrips.length) return;
+      const local = wx.getStorageSync('myTrips') || [];
+      const ids = local.map(t => t.id);
+      const missing = cloudTrips.filter(t => ids.indexOf(t.id) < 0);
+      if (missing.length) {
+        const merged = missing.concat(local);
+        wx.setStorageSync('myTrips', merged);
+        this.reload(merged);
+      }
+    } catch (e) {
+      // 静默失败，继续使用本地数据
+    }
   },
 
   reload(trips) {

@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 
 const CATS = copy.routes.cats;
 const ALL = CATS[0];
@@ -90,6 +91,27 @@ Page({
     if (options.type) more.type = decodeURIComponent(options.type);
     this.setData({ more });
     this.render();
+    if (!this._cloudLoaded) this.loadCloud();
+  },
+
+  // 云端私家团：加载成功后并入线路列表
+  async loadCloud() {
+    try {
+      const groups = await api.privateGroups();
+      this._cloudLoaded = true;
+      if (!groups || !groups.length) return;
+      this._cloudRoutes = groups;
+      this.render();
+      const dests = [];
+      groups.forEach(g => { if (g.dest && dests.indexOf(g.dest) < 0) dests.push(g.dest); });
+      if (dests.length) {
+        const opts = ['全部'].concat(data.destList);
+        dests.forEach(d => { if (opts.indexOf(d) < 0) opts.push(d); });
+        if (opts.length !== this.data.destOptions.length) this.setData({ destOptions: opts });
+      }
+    } catch (e) {
+      // 静默失败，继续使用本地数据
+    }
   },
 
   onShow() {
@@ -148,7 +170,8 @@ Page({
   },
 
   render(done) {
-    const matched = this.getMatched(buildList());
+    const base = (this._cloudRoutes && this._cloudRoutes.length) ? this._cloudRoutes : buildList();
+    const matched = this.getMatched(base);
     const list = matched.map(decorate);
     this.setData({
       list,

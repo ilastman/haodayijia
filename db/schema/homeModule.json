@@ -1,0 +1,23 @@
+﻿{
+  "collections": {
+    "homeModule": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID（与本地 admin SEED 对齐）" },
+        "title": { "type": "string", "required": true, "description": "板块标题文字" },
+        "sub": { "type": "string", "description": "副标题" },
+        "icon": { "type": "string", "description": "板块图标图片地址（可为 cloud:// fileID）" },
+        "desc": { "type": "string", "description": "板块简短描述" },
+        "url": { "type": "string", "description": "点击跳转小程序页面路径" },
+        "show": { "type": "boolean", "default": true, "description": "是否展示 true=展示 false=隐藏" },
+        "sort": { "type": "number", "default": 0, "description": "排序字段，从小到大渲染" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["show"] },
+        { "fields": ["sort"] }
+      ],
+      "remarks": "首页板块配置表（核心拖拽功能，字段与本地完全对齐）"
+    }
+  }
+}

@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 const daysMap = require('../../utils/days');
 const routeExtra = require('../../utils/route-extra');
 const { ph } = require('../../utils/util');
@@ -61,6 +62,31 @@ function fallbackDays(route) {
   });
 }
 
+// 云端私家团：由 dayList 生成简化每日数据
+function cloudDays(route) {
+  const list = route.dayList || [];
+  return list.map((raw, idx) => {
+    const dayNum = raw.dayNum || idx + 1;
+    const parts = [];
+    if (raw.dayTitle) parts.push({ v: raw.dayTitle });
+    if (raw.dayContent) parts.push({ v: raw.dayContent });
+    return {
+      d: dayNum,
+      scene: raw.dayTitle || ('第' + dayNum + '天'),
+      cover: route.cover || ph(route.title + ' · 第' + dayNum + '天', 750, 440),
+      tags: DAY_TAGS.slice(),
+      nodes: parts.length ? [{ time: '09:00', parts, thumb: route.cover || ph(route.title + ' · ' + dayNum, 260, 180) }] : [],
+      perks: [
+        { parts: [{ v: '独立用车，随走随停，游览时间与司机协商微调' }] },
+        { parts: [{ v: '司机兼向导全程讲解，行程内已含首道门票' }] }
+      ],
+      stay: null,
+      meals: '按行程标注用餐',
+      tips: ['具体安排以出行前确认单为准。']
+    };
+  });
+}
+
 Page({
   data: {
     d: copy.detail,
@@ -72,16 +98,54 @@ Page({
     swCls: '',
     faved: false,
     consultVisible: false
+    ,
+    onShareAppMessage() {
+      console.log('route详情页分享触发');
+      return {
+        title: '呼伦贝尔轻奢定制旅行',
+        path: '/pages/route-detail/route-detail'
+      }
+    },
+    onShareTimeline() {
+      return {
+        title: '呼伦贝尔轻奢定制旅行',
+        path: '/pages/route-detail/route-detail'
+      }
+    }
+  
   },
 
-  onLoad(options) {
-    const route = data.getRoute(options.id || '');
+  async onLoad(options) {
+      wx.showShareMenu({
+        withShareTicket: true,
+        menus: ["shareAppMessage","shareTimeline"],
+        success(res) {
+          console.log("分享菜单开启成功",res)
+        },
+        fail(err) {
+          console.log("分享菜单开启失败",err)
+        }
+      })
+      const id = options.id || '';
+      let route = null;
+    try {
+      route = await api.getPrivateGroup(id);
+    } catch (e) {
+      route = null;
+    }
+    if (!route) route = data.getRoute(id);
     if (!route) {
       wx.showToast({ title: '线路不存在或已下架', icon: 'none' });
       setTimeout(() => wx.navigateBack(), 1200);
       return;
     }
-    const days = (daysMap[route.id] || fallbackDays(route)).map(d => {
+    let days;
+    if (route._cloud) {
+      days = (route.itinerary && route.itinerary.length) ? fallbackDays(route) : cloudDays(route);
+    } else {
+      days = daysMap[route.id] || fallbackDays(route);
+    }
+    days = days.map(d => {
       const copyDay = Object.assign({}, d);
       if (copyDay.stay) {
         const ho = data.getHotel(copyDay.stay.hotelId);
@@ -96,16 +160,10 @@ Page({
       }
       return copyDay;
     });
-    const reviews = route.reviews.map(r => {
-      const full = '★★★★★';
-      return Object.assign({}, r, {
-        starStr: full.substring(0, r.stars) + full.substring(r.stars).replace(/./g, '☆')
-      });
-    });
     const extra = Object.assign({}, DEFAULT_EXTRA, routeExtra[route.id] || {});
     const perks = buildPerks(route, extra.imgScenics);
     this.setData({
-      route: Object.assign({}, route, { reviews }),
+      route,
       days,
       extra,
       perks,

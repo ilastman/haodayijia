@@ -19,9 +19,12 @@
     "pages/custom-preview/custom-preview",
     "pages/my-trips/my-trips",
     "pages/square/square",
-    "pages/share-detail/share-detail",
+    "pages/share-details/share-details",
     "pages/note-detail/note-detail",
-    "pages/share-publish/share-publish"
+    "pages/workbench/workbench",
+    "pages/workbench-detail/workbench-detail",
+    "pages/workbench-edit/workbench-edit",
+    "pages/workbench-bind/workbench-bind"
   ],
   "window": {
     "navigationBarBackgroundColor": "#FCF9F1",

@@ -1,0 +1,84 @@
+﻿{
+  "collections": {
+    "hotel": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "name": { "type": "string", "required": true, "description": "酒店名称" },
+        "cover": { "type": "string", "description": "封面图" },
+        "album": { "type": "array", "items": { "type": "string" }, "default": [], "description": "相册图片数组" },
+        "intro": { "type": "string", "description": "简短简介" },
+        "detailHtml": { "type": "string", "description": "富文本酒店介绍" },
+        "facilities": { "type": "array", "items": { "type": "string" }, "default": [], "description": "配套设施数组" },
+        "price": { "type": "number", "default": 0, "description": "参考价格" },
+        "stars": { "type": "number", "description": "钻级" },
+        "score": { "type": "number", "description": "评分" },
+        "area": { "type": "string", "description": "所在区域" },
+        "envImg": { "type": "string", "description": "环境图" },
+        "roomImg": { "type": "string", "description": "房型图" },
+        "rooms": { "type": "array", "default": [], "description": "房型数组" },
+        "location": { "type": "string", "description": "位置说明" },
+        "lon": { "type": "number", "description": "经度" },
+        "lat": { "type": "number", "description": "纬度" },
+        "sort": { "type": "number", "default": 0, "description": "排序字段" },
+        "online": { "type": "boolean", "default": true, "description": "是否上架" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["online"] }
+      ],
+      "remarks": "酒店表（字段与本地完全对齐）"
+    },
+    "privateGroup": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "title": { "type": "string", "required": true, "description": "线路名称" },
+        "cover": { "type": "string", "description": "封面图" },
+        "images": { "type": "array", "items": { "type": "string" }, "default": [], "description": "图片数组" },
+        "price": { "type": "number", "default": 0, "description": "价格" },
+        "originalPrice": { "type": "number", "default": 0, "description": "原价" },
+        "days": { "type": "number", "default": 1, "description": "行程天数" },
+        "departure": { "type": "string", "default": "海拉尔集合", "description": "出发地" },
+        "dest": { "type": "string", "description": "目的地" },
+        "type": { "type": "string", "default": "私家团", "description": "产品类型" },
+        "tags": { "type": "array", "items": { "type": "string" }, "default": [], "description": "标签" },
+        "brief": { "type": "string", "description": "一句话简介" },
+        "highlights": { "type": "array", "items": { "type": "string" }, "default": [], "description": "亮点" },
+        "detailHtml": { "type": "string", "description": "富文本详情" },
+        "include": { "type": "array", "items": { "type": "string" }, "default": [], "description": "费用包含" },
+        "exclude": { "type": "array", "items": { "type": "string" }, "default": [], "description": "费用不含" },
+        "notices": { "type": "object", "default": { "tips": [], "gear": [], "refund": [] }, "description": "须知" },
+        "reviews": { "type": "array", "default": [], "description": "评价" },
+        "itinerary": { "type": "array", "default": [], "description": "富渲染行程骨架" },
+        "dayList": {
+          "type": "array",
+          "default": [],
+          "description": "多日行程数组。每项：id, dayNum, title, scenicId, hotelId, spots, meals, hotel, content, imgs",
+          "items": {
+            "type": "object",
+            "fields": {
+              "id": { "type": "string", "description": "当日ID" },
+              "dayNum": { "type": "number", "description": "当日天数" },
+              "title": { "type": "string", "description": "当日主题" },
+              "scenicId": { "type": "string", "description": "关联景区ID" },
+              "hotelId": { "type": "string", "description": "关联酒店ID" },
+              "spots": { "type": "array", "items": { "type": "string" }, "default": [], "description": "当日景点" },
+              "meals": { "type": "string", "description": "餐饮" },
+              "hotel": { "type": "string", "description": "住宿" },
+              "content": { "type": "string", "description": "当日行程详情" },
+              "imgs": { "type": "array", "items": { "type": "string" }, "default": [], "description": "当日图片" }
+            }
+          }
+        },
+        "sort": { "type": "number", "default": 0, "description": "排序字段" },
+        "online": { "type": "boolean", "default": true, "description": "是否上架" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["online"] }
+      ],
+      "remarks": "私家团线路表（字段与本地完全对齐）"
+    }
+  }
+}

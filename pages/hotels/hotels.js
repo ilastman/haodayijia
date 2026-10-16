@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 const { ICONS } = require('../../utils/util');
 
 Page({
@@ -14,6 +15,20 @@ Page({
     list: data.hotels,
     consultVisible: false,
     currentName: ''
+  },
+
+  onLoad() {
+    this.loadCloud();
+  },
+
+  // 云端酒店：加载成功后刷新列表，失败保留本地数据
+  async loadCloud() {
+    try {
+      const list = await api.hotels();
+      if (list && list.length) this.setData({ list });
+    } catch (e) {
+      // 静默失败，继续使用本地数据
+    }
   },
 
   book(e) {

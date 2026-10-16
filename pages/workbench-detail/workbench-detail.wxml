@@ -1,0 +1,246 @@
+<view class="page">
+  <block wx:if="{{vm}}">
+
+    <!-- 顶部概要 -->
+    <view class="dt-hero {{warn.level}}">
+      <view class="dt-hero-top">
+        <view class="dt-name">{{vm.customer.name || '未命名客户'}}</view>
+        <view class="wb-flag" wx:if="{{vm.urgency}}">急</view>
+      </view>
+      <view class="dt-hero-meta">
+        <text>{{vm.people}}人</text>
+        <text class="dt-dot">·</text>
+        <text>{{vm.dest || '目的地待定'}}</text>
+        <text class="dt-dot">·</text>
+        <text>{{vm.departDate || '团期待定'}}</text>
+      </view>
+      <view class="dt-hero-bottom">
+        <text class="wb-st {{vm.statusClass}}">{{vm.status}}</text>
+        <text class="dt-archived" wx:if="{{vm.archived}}">已归档</text>
+      </view>
+      <view class="wb-tags" wx:if="{{warn.tags.length}}">
+        <text class="wb-tag {{warn.level}}" wx:for="{{warn.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+      </view>
+    </view>
+
+    <!-- 基础信息 -->
+    <view class="dt-sec">
+      <view class="dt-sec-h" data-sec="base" bindtap="toggle">
+        <text>基础信息</text><text class="dt-arrow">{{openSec.base?'收起':'展开'}}</text>
+      </view>
+      <view class="dt-sec-b" wx:if="{{openSec.base}}">
+        <view class="dt-kv"><text class="dt-k">联系电话</text><text class="dt-v">{{vm.customer.phone || '—'}}</text></view>
+        <view class="dt-kv"><text class="dt-k">微信号</text><text class="dt-v">{{vm.customer.wechat || '—'}}</text></view>
+        <view class="dt-kv"><text class="dt-k">来源渠道</text><text class="dt-v">{{vm.customer.source || '—'}}</text></view>
+        <view class="dt-kv"><text class="dt-k">返程日期</text><text class="dt-v">{{vm.returnDate || '—'}}</text></view>
+        <view class="dt-kv"><text class="dt-k">备注</text><text class="dt-v">{{vm.customer.remark || '—'}}</text></view>
+        <view class="btn-outline dt-btn" bindtap="goEdit" wx:if="{{!vm.archived}}">编辑客户信息</view>
+      </view>
+    </view>
+
+    <!-- 跟进记录 -->
+    <view class="dt-sec">
+      <view class="dt-sec-h" data-sec="follow" bindtap="toggle">
+        <text>跟进记录（{{vm.followUps.length}}）</text><text class="dt-arrow">{{openSec.follow?'收起':'展开'}}</text>
+      </view>
+      <view class="dt-sec-b" wx:if="{{openSec.follow}}">
+        <view class="dt-follow" wx:for="{{vm.followUps}}" wx:key="id">
+          <view class="dt-follow-top"><text class="dt-follow-time">{{item.time}}</text><text class="dt-follow-op">{{item.operator}}</text></view>
+          <view class="dt-follow-c">{{item.content}}</view>
+          <view class="dt-follow-next" wx:if="{{item.nextTime}}">下次跟进：{{item.nextTime}}</view>
+        </view>
+        <view class="dt-empty" wx:if="{{!vm.followUps.length}}">暂无跟进记录</view>
+        <view class="btn-outline dt-btn" bindtap="openFollow" wx:if="{{!vm.archived}}">＋ 新增跟进</view>
+      </view>
+    </view>
+
+    <!-- 内部行程单 -->
+    <view class="dt-sec">
+      <view class="dt-sec-h" data-sec="itinerary" bindtap="toggle">
+        <text>内部行程单（{{vm.days.length}}天）</text><text class="dt-arrow">{{openSec.itinerary?'收起':'展开'}}</text>
+      </view>
+      <view class="dt-sec-b" wx:if="{{openSec.itinerary}}">
+        <block wx:if="{{!dayEditing}}">
+          <view class="dt-day" wx:for="{{vm.days}}" wx:key="dayNum">
+            <view class="dt-day-h">第{{item.dayNum}}天 · {{item.title}}</view>
+            <view class="dt-day-c">{{item.content || '（暂无安排）'}}</view>
+            <view class="dt-day-extra" wx:if="{{item.meals || item.hotel}}">
+              <text wx:if="{{item.meals}}">餐：{{item.meals}}</text>
+              <text wx:if="{{item.hotel}}">住：{{item.hotel}}</text>
+            </view>
+          </view>
+          <view class="dt-empty" wx:if="{{!vm.days.length}}">尚未生成行程单</view>
+
+          <view class="dt-include" wx:if="{{vm.include.length}}"><text class="dt-inc-t">包含</text><text wx:for="{{vm.include}}" wx:key="*this" class="dt-chip">{{item}}</text></view>
+          <view class="dt-include" wx:if="{{vm.exclude.length}}"><text class="dt-inc-t">不含</text><text wx:for="{{vm.exclude}}" wx:key="*this" class="dt-chip">{{item}}</text></view>
+
+          <view class="dt-row2" wx:if="{{!vm.archived}}">
+            <view class="btn-outline dt-btn2" bindtap="openTpl">复制线路模板</view>
+            <view class="btn-outline dt-btn2" bindtap="editDays">手动编辑</view>
+          </view>
+        </block>
+
+        <block wx:else>
+          <view class="dt-dayedit" wx:for="{{dayDraft}}" wx:key="dayNum">
+            <view class="dt-dayedit-h">
+              <text>第{{item.dayNum}}天</text>
+              <text class="dt-dayedit-del" data-i="{{index}}" bindtap="delDay">删除</text>
+            </view>
+            <input class="dt-input" placeholder="当天标题" value="{{item.title}}" data-i="{{index}}" data-k="title" bindinput="onDayInput" />
+            <textarea class="dt-textarea" placeholder="行程安排" value="{{item.content}}" data-i="{{index}}" data-k="content" bindinput="onDayInput" auto-height />
+            <input class="dt-input" placeholder="用餐" value="{{item.meals}}" data-i="{{index}}" data-k="meals" bindinput="onDayInput" />
+            <input class="dt-input" placeholder="住宿" value="{{item.hotel}}" data-i="{{index}}" data-k="hotel" bindinput="onDayInput" />
+          </view>
+          <view class="btn-outline dt-btn" bindtap="addDay">＋ 添加一天</view>
+          <view class="dt-row2">
+            <view class="btn-outline dt-btn2" bindtap="cancelDays">取消</view>
+            <view class="btn-primary dt-btn2" bindtap="saveDays">保存行程</view>
+          </view>
+        </block>
+      </view>
+    </view>
+
+    <!-- 收款台账 -->
+    <view class="dt-sec">
+      <view class="dt-sec-h" data-sec="payment" bindtap="toggle">
+        <text>收款台账（已收 ¥{{vm.paidTotal}}）</text><text class="dt-arrow">{{openSec.payment?'收起':'展开'}}</text>
+      </view>
+      <view class="dt-sec-b" wx:if="{{openSec.payment}}">
+        <view class="dt-pay" wx:for="{{vm.payments}}" wx:key="id">
+          <view class="dt-pay-l">
+            <view class="dt-pay-t">{{item.type}}</view>
+            <view class="dt-pay-d">{{item.time}}{{item.dueDate ? ' · 应付截止 ' + item.dueDate : ''}}</view>
+            <view class="dt-pay-r" wx:if="{{item.remark}}">{{item.remark}}</view>
+          </view>
+          <view class="dt-pay-rgt">
+            <view class="price"><text class="price-symbol">¥</text><text class="dt-pay-amt">{{item.amount}}</text></view>
+            <text class="dt-pay-del" data-id="{{item.id}}" bindtap="removePay" wx:if="{{!vm.archived}}">删除</text>
+          </view>
+        </view>
+        <view class="dt-empty" wx:if="{{!vm.payments.length}}">暂无收款记录</view>
+        <view class="btn-outline dt-btn" bindtap="openPay" wx:if="{{!vm.archived}}">＋ 新增收款</view>
+      </view>
+    </view>
+
+    <!-- 分项成本 -->
+    <view class="dt-sec">
+      <view class="dt-sec-h" data-sec="cost" bindtap="toggle">
+        <text>分项成本（合计 ¥{{vm.totalCost}}）</text><text class="dt-arrow">{{openSec.cost?'收起':'展开'}}</text>
+      </view>
+      <view class="dt-sec-b" wx:if="{{openSec.cost}}">
+        <view class="dt-kv" wx:for="{{vm.costList}}" wx:key="k"><text class="dt-k">{{item.label}}</text><text class="dt-v">¥{{item.v}}</text></view>
+        <view class="btn-outline dt-btn" bindtap="openCost" wx:if="{{!vm.archived}}">编辑成本</view>
+      </view>
+    </view>
+
+    <!-- 报价 / 毛利 -->
+    <view class="dt-sec">
+      <view class="dt-sec-h" data-sec="pricing" bindtap="toggle">
+        <text>报价 / 毛利</text><text class="dt-arrow">{{openSec.pricing?'收起':'展开'}}</text>
+      </view>
+      <view class="dt-sec-b" wx:if="{{openSec.pricing}}">
+        <view class="dt-kv"><text class="dt-k">客户成交价</text><text class="dt-v price">¥{{vm.pricing.quote}}</text></view>
+        <view class="dt-kv"><text class="dt-k">预估毛利</text><text class="dt-v">¥{{vm.pricing.estProfit}}</text></view>
+        <view class="dt-kv"><text class="dt-k">实际毛利</text><text class="dt-v {{vm.pricing.actualProfit < 0 ? 'neg' : ''}}">¥{{vm.pricing.actualProfit}}</text></view>
+        <view class="btn-outline dt-btn" bindtap="openPrice" wx:if="{{!vm.archived}}">编辑报价</view>
+      </view>
+    </view>
+
+    <!-- 底部操作 -->
+    <view class="dt-actions">
+      <view class="btn-outline dt-btn2" bindtap="exportPdf">导出 PDF 行程单</view>
+      <view class="btn-primary dt-btn2 {{archiving?'disabled':''}}" bindtap="archive" wx:if="{{!vm.archived}}">{{archiving?'归档中…':'归档订单'}}</view>
+      <view class="dt-archived-note" wx:else>该订单已归档，仅管理员可在后台删除</view>
+    </view>
+
+    <view class="safe-bottom"></view>
+
+    <!-- 收款弹层 -->
+    <view class="dt-mask" wx:if="{{payVisible}}" bindtap="closePay">
+      <view class="dt-sheet" catchtap="noop">
+        <view class="dt-sheet-t">新增收款</view>
+        <view class="dt-frow"><text class="dt-fl">款项类型</text>
+          <picker range="{{payTypes}}" value="0" bindchange="onPayType"><view class="dt-fv">{{payForm.type}}</view></picker>
+        </view>
+        <view class="dt-frow"><text class="dt-fl">金额</text><input class="dt-fv" type="digit" placeholder="0" value="{{payForm.amount}}" data-k="amount" bindinput="onPayInput" /></view>
+        <view class="dt-frow"><text class="dt-fl">收款日期</text>
+          <picker mode="date" value="{{payForm.time}}" data-k="time" bindchange="onPayDate"><view class="dt-fv">{{payForm.time || '请选择'}}</view></picker>
+        </view>
+        <view class="dt-frow"><text class="dt-fl">应付截止</text>
+          <picker mode="date" value="{{payForm.dueDate}}" data-k="dueDate" bindchange="onPayDate"><view class="dt-fv">{{payForm.dueDate || '选填'}}</view></picker>
+        </view>
+        <view class="dt-frow"><text class="dt-fl">凭证</text>
+          <view class="dt-voucher" bindtap="chooseVoucher">
+            <image wx:if="{{payForm.voucherUrl}}" src="{{payForm.voucherUrl}}" mode="aspectFill" class="dt-voucher-img" />
+            <text wx:else>＋ 上传</text>
+          </view>
+        </view>
+        <view class="dt-frow"><text class="dt-fl">备注</text><input class="dt-fv" placeholder="选填" value="{{payForm.remark}}" data-k="remark" bindinput="onPayInput" /></view>
+        <view class="dt-sheet-btns">
+          <view class="btn-outline dt-btn2" bindtap="closePay">取消</view>
+          <view class="btn-primary dt-btn2" bindtap="savePay">保存</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 跟进弹层 -->
+    <view class="dt-mask" wx:if="{{followVisible}}" bindtap="closeFollow">
+      <view class="dt-sheet" catchtap="noop">
+        <view class="dt-sheet-t">新增跟进</view>
+        <textarea class="dt-textarea" placeholder="本次沟通内容" value="{{followForm.content}}" data-k="content" bindinput="onFollowInput" auto-height />
+        <view class="dt-frow"><text class="dt-fl">下次跟进</text>
+          <picker mode="date" value="{{followForm.nextTime}}" data-k="nextTime" bindchange="onFollowInput"><view class="dt-fv">{{followForm.nextTime || '选填'}}</view></picker>
+        </view>
+        <view class="dt-sheet-btns">
+          <view class="btn-outline dt-btn2" bindtap="closeFollow">取消</view>
+          <view class="btn-primary dt-btn2" bindtap="saveFollow">保存</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 成本弹层 -->
+    <view class="dt-mask" wx:if="{{costVisible}}" bindtap="closeCost">
+      <view class="dt-sheet" catchtap="noop">
+        <view class="dt-sheet-t">编辑分项成本</view>
+        <view class="dt-frow"><text class="dt-fl">酒店</text><input class="dt-fv" type="digit" value="{{costForm.hotel}}" data-k="hotel" bindinput="onCostInput" /></view>
+        <view class="dt-frow"><text class="dt-fl">车辆</text><input class="dt-fv" type="digit" value="{{costForm.car}}" data-k="car" bindinput="onCostInput" /></view>
+        <view class="dt-frow"><text class="dt-fl">导游</text><input class="dt-fv" type="digit" value="{{costForm.guide}}" data-k="guide" bindinput="onCostInput" /></view>
+        <view class="dt-frow"><text class="dt-fl">门票</text><input class="dt-fv" type="digit" value="{{costForm.ticket}}" data-k="ticket" bindinput="onCostInput" /></view>
+        <view class="dt-frow"><text class="dt-fl">餐费</text><input class="dt-fv" type="digit" value="{{costForm.meal}}" data-k="meal" bindinput="onCostInput" /></view>
+        <view class="dt-frow"><text class="dt-fl">杂费</text><input class="dt-fv" type="digit" value="{{costForm.misc}}" data-k="misc" bindinput="onCostInput" /></view>
+        <view class="dt-sheet-btns">
+          <view class="btn-outline dt-btn2" bindtap="closeCost">取消</view>
+          <view class="btn-primary dt-btn2" bindtap="saveCost">保存</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 报价弹层 -->
+    <view class="dt-mask" wx:if="{{priceVisible}}" bindtap="closePrice">
+      <view class="dt-sheet" catchtap="noop">
+        <view class="dt-sheet-t">编辑报价 / 毛利</view>
+        <view class="dt-frow"><text class="dt-fl">客户成交价</text><input class="dt-fv" type="digit" value="{{priceForm.quote}}" data-k="quote" bindinput="onPriceInput" /></view>
+        <view class="dt-frow"><text class="dt-fl">预估毛利</text><input class="dt-fv" type="digit" placeholder="留空自动=成交价-成本" value="{{priceForm.estProfit}}" data-k="estProfit" bindinput="onPriceInput" /></view>
+        <view class="dt-sheet-btns">
+          <view class="btn-outline dt-btn2" bindtap="closePrice">取消</view>
+          <view class="btn-primary dt-btn2" bindtap="savePrice">保存</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 模板弹层 -->
+    <view class="dt-mask" wx:if="{{tplVisible}}" bindtap="closeTpl">
+      <view class="dt-sheet" catchtap="noop">
+        <view class="dt-sheet-t">选择线路模板</view>
+        <picker range="{{tplList}}" range-key="title" value="{{tplIndex}}" bindchange="onTplChange">
+          <view class="dt-fv dt-tpl-pick">{{tplList[tplIndex].title || '请选择'}}</view>
+        </picker>
+        <view class="dt-sheet-btns">
+          <view class="btn-outline dt-btn2" bindtap="closeTpl">取消</view>
+          <view class="btn-primary dt-btn2" bindtap="applyTpl">生成行程单</view>
+        </view>
+      </view>
+    </view>
+
+  </block>
+</view>

@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 
 Page({
   data: {
@@ -12,18 +13,27 @@ Page({
   },
 
   onShow() {
-    const pending = wx.getStorageSync('pendingToast');
-    if (pending) {
-      wx.showToast({ title: pending, icon: 'none' });
-      wx.setStorageSync('pendingToast', '');
-    }
     this.build();
+    if (!this._cloudLoaded) this.loadCloud();
+  },
+
+  // 云端灵感广场（仅审核通过），加载成功后与本地内容合并
+  async loadCloud() {
+    try {
+      const posts = await api.inspirationPosts();
+      this._cloudLoaded = true;
+      if (posts && posts.length) {
+        this._cloudPosts = posts;
+        this.build();
+      }
+    } catch (e) {
+      // 静默失败，继续展示本地内容
+    }
   },
 
   build() {
-    const mineNotes = wx.getStorageSync('myNotes') || [];
-    const mineShares = wx.getStorageSync('myShares') || [];
-    this.setData({ feeds: mineNotes.concat(mineShares, data.shares, data.notes) });
+    const tail = (this._cloudPosts && this._cloudPosts.length) ? [] : data.shares.concat(data.notes);
+    this.setData({ feeds: (this._cloudPosts || []).concat(tail) });
     this.apply();
   },
 
@@ -73,9 +83,5 @@ Page({
       return;
     }
     wx.navigateTo({ url: '/pages/share-detail/share-detail?id=' + e.currentTarget.dataset.id });
-  },
-
-  goPublish() {
-    wx.navigateTo({ url: '/pages/share-publish/share-publish' });
   }
 });

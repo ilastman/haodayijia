@@ -177,19 +177,6 @@
       <view class="sec-item" wx:for="{{route.notices.refund}}" wx:key="*this">{{item}}</view>
     </view>
 
-    <view class="sec">
-      <view class="sec-title">{{d.review}}（{{route.reviews.length}}）</view>
-      <view class="review" wx:for="{{route.reviews}}" wx:key="date">
-        <view class="review-head">
-          <view class="review-avatar">{{item.name[0]}}</view>
-          <view class="review-name">{{item.name}}</view>
-          <view class="review-stars">{{item.starStr}}</view>
-        </view>
-        <view class="review-date">{{item.date}}</view>
-        <view class="review-content">{{item.content}}</view>
-      </view>
-    </view>
-
     <button class="consult-line-btn" bindtap="openConsult">{{d.consultBook}}</button>
   </view>
 

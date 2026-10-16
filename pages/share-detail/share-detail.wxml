@@ -53,20 +53,6 @@
     </view>
   </view>
 
-  <!-- 评论区 -->
-  <view class="block">
-    <view class="block-title comments-title">{{c.comments}}</view>
-    <view class="comment" wx:for="{{comments}}" wx:for-item="cm" wx:key="index">
-      <image class="c-avatar" src="{{cm.avatar}}" mode="aspectFill" />
-      <view class="c-body">
-        <text class="c-name">{{cm.name}}</text>
-        <text class="c-text">{{cm.text}}</text>
-        <text class="c-likes" wx:if="{{cm.likes > 0}}">{{cm.likes}} {{c.like}}</text>
-      </view>
-    </view>
-    <view class="no-comment" wx:if="{{comments.length === 0}}">{{c.noComment}}</view>
-  </view>
-
   <view class="safe-bottom"></view>
 
   <!-- 底部悬浮：照此方案定制 -->
@@ -74,9 +60,6 @@
 
   <!-- 底部互动栏 -->
   <view class="bar">
-    <input class="bar-input" placeholder="{{c.commentPlaceholder}}" placeholder-class="ph"
-      value="{{commentDraft}}" confirm-type="send" maxlength="60"
-      bindinput="onCommentInput" bindconfirm="onCommentSend" />
     <view class="act {{liked ? 'on' : ''}}" bindtap="onLike">
       <text class="act-ico">{{liked ? '♥' : '♡'}}</text>
       <text class="act-label">{{liked ? c.liked : c.like}}</text>

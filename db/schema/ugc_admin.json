@@ -1,0 +1,110 @@
+﻿{
+  "collections": {
+    "userTrip": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID（与本地 trip.id 对齐）" },
+        "openid": { "type": "string", "description": "小程序用户openid" },
+        "nickname": { "type": "string", "description": "昵称" },
+        "avatar": { "type": "string", "description": "头像" },
+        "title": { "type": "string", "description": "行程名称" },
+        "days": { "type": "number", "default": 0, "description": "天数" },
+        "cover": { "type": "string", "description": "封面图" },
+        "plan": { "type": "string", "description": "行程概要文本" },
+        "plans": { "type": "array", "default": [], "description": "每日计划数组 [{scenicIds, hotelId, note}]" },
+        "date": { "type": "string", "description": "出行日期" },
+        "status": { "type": "string", "description": "状态" },
+        "createTime": { "type": "number", "description": "创建时间戳" },
+        "updatedAt": { "type": "number", "description": "更新时间戳" }
+      },
+      "indexes": [
+        { "fields": ["openid"] },
+        { "fields": ["id"] },
+        { "fields": ["createTime"] }
+      ],
+      "remarks": "用户私人定制行程表（字段与本地完全对齐）"
+    },
+    "inspirationPost": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "openid": { "type": "string", "description": "发布用户openid（CMS创建内容可空）" },
+        "nickname": { "type": "string", "description": "昵称" },
+        "avatar": { "type": "string", "description": "头像" },
+        "type": { "type": "string", "enum": ["note", "plan"], "description": "类型：note旅行笔记 / plan行程分享" },
+        "title": { "type": "string", "description": "标题" },
+        "tags": { "type": "array", "items": { "type": "string" }, "default": [], "description": "标签" },
+        "cover": { "type": "string", "description": "封面图" },
+        "imgs": { "type": "array", "items": { "type": "string" }, "default": [], "description": "图片数组" },
+        "content": { "type": "string", "description": "正文（换行分隔）" },
+        "tripRef": { "type": "array", "default": [], "description": "关联行程时间线" },
+        "category": { "type": "string", "description": "分类" },
+        "days": { "type": "number", "default": 0, "description": "天数（行程分享）" },
+        "season": { "type": "string", "description": "季节" },
+        "highlights": { "type": "array", "items": { "type": "string" }, "default": [], "description": "亮点" },
+        "timeline": { "type": "array", "default": [], "description": "行程时间线" },
+        "intro": { "type": "string", "description": "简介" },
+        "like": { "type": "number", "default": 0, "description": "点赞数" },
+        "commentCount": { "type": "number", "default": 0, "description": "评论数" },
+        "comments": { "type": "array", "default": [], "description": "评论数组 [{nickname, avatar, text, likes}]" },
+        "status": { "type": "number", "default": 0, "enum": [0, 1, 2], "description": "审核状态 0待审核 1通过 2驳回" },
+        "createTime": { "type": "number", "description": "发布时间戳" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["status"] },
+        { "fields": ["type"] },
+        { "fields": ["createTime"] }
+      ],
+      "remarks": "灵感广场笔记/行程UGC表（字段与本地完全对齐）"
+    },
+    "adminUser": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "description": "业务ID" },
+        "username": { "type": "string", "required": true, "description": "管理员账号" },
+        "password": { "type": "string", "required": true, "description": "加密密码 sha256(salt:password)" },
+        "nickname": { "type": "string", "description": "昵称" },
+        "avatar": { "type": "string", "description": "头像" },
+        "role": { "type": "string", "default": "super", "description": "角色" },
+        "lastLogin": { "type": "string", "description": "最近登录时间" },
+        "createTime": { "type": "number", "description": "创建时间戳" },
+        "extend": { "type": "object", "default": {}, "description": "扩展（含 token / tokenExpire）" }
+      },
+      "indexes": [
+        { "fields": ["username"] },
+        { "fields": ["extend.token"] }
+      ],
+      "remarks": "后台管理员账号表（字段与本地完全对齐）"
+    },
+    "globalConfig": {
+      "fields": {
+        "_id": { "type": "string", "description": "固定为 global 的单文档" },
+        "notice": { "type": "string", "description": "公告" },
+        "slogan": { "type": "string", "description": "品牌标语" },
+        "companyIntro": { "type": "string", "description": "公司介绍" },
+        "contact": { "type": "object", "default": {}, "description": "联系方式 {phone...}" },
+        "homeCopy": { "type": "object", "default": {}, "description": "首页文案 {hotTitle,destTitle,offerTitle,introTitle,more,consult}" },
+        "homeSections": { "type": "object", "default": { "hot": { "routeIds": [] }, "dest": { "items": [] }, "offer": { "routeIds": [] } }, "description": "首页板块选择" },
+        "routesPage": { "type": "object", "description": "线路列表页板块配置 {headerTitle,slogan,cats[],moreGroups{days,dest,type},customTitle,customDesc,customBtn,journalLink,emptyCategory,sections:[{key,label,icon,show,text,sub}]}。仅后台配置，前端暂未接入读取。" },
+        "tabs": { "type": "array", "default": [], "description": "底部 tab 配置" }
+      },
+      "indexes": [],
+      "remarks": "全局首页配置（单文档 _id=global）"
+    },
+    "asset": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "url": { "type": "string", "description": "图片地址（cloud:// fileID 或 data/URL）" },
+        "name": { "type": "string", "description": "文件名" },
+        "size": { "type": "number", "description": "大小（字节）" },
+        "time": { "type": "string", "description": "上传时间" }
+      },
+      "indexes": [
+        { "fields": ["id"] }
+      ],
+      "remarks": "图片素材库（字段与本地完全对齐）"
+    }
+  }
+}

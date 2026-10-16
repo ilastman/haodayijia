@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 
 Page({
   data: {
@@ -8,8 +9,15 @@ Page({
     consultVisible: false
   },
 
-  onLoad(options) {
-    const h = data.getHotel(options.id || '');
+  async onLoad(options) {
+    const id = options.id || '';
+    let h = null;
+    try {
+      h = await api.getHotel(id);
+    } catch (e) {
+      h = null;
+    }
+    if (!h) h = data.getHotel(id);
     if (!h) {
       wx.showToast({ title: '酒店不存在', icon: 'none' });
       setTimeout(() => wx.navigateBack(), 1200);

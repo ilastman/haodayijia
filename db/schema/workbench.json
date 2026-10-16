@@ -1,0 +1,105 @@
+{
+  "collections": {
+    "staff": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "name": { "type": "string", "required": true, "description": "员工姓名" },
+        "phone": { "type": "string", "description": "联系电话" },
+        "openid": { "type": "string", "description": "员工微信openid（由绑定码绑定，服务端从WX上下文写入）" },
+        "status": { "type": "string", "enum": ["enabled", "disabled"], "default": "enabled", "description": "启用/停用（离职即停用，不删除）" },
+        "role": { "type": "string", "default": "sales", "description": "角色，统一为综合销售 sales" },
+        "bindCode": { "type": "string", "description": "员工绑定码，后台生成，员工在小程序输入一次即绑定openid" },
+        "remark": { "type": "string", "description": "备注" },
+        "createTime": { "type": "number", "description": "创建时间戳" },
+        "updatedAt": { "type": "number", "description": "更新时间戳" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["openid"] },
+        { "fields": ["bindCode"] },
+        { "fields": ["status"] }
+      ],
+      "remarks": "员工账号表（销售工作台）。仅经 staffCRUD 云函数读写：员工端按openid，管理端按token。"
+    },
+    "order": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "staffId": { "type": "string", "required": true, "description": "归属员工ID（数据隔离关键字段，服务端写入，客户端不可伪造）" },
+        "staffName": { "type": "string", "description": "归属员工姓名快照" },
+        "customer": {
+          "type": "object",
+          "default": { "name": "", "phone": "", "wechat": "", "source": "", "remark": "" },
+          "description": "客户信息 {name,phone,wechat,source,remark}"
+        },
+        "people": { "type": "number", "default": 0, "description": "出行人数" },
+        "dest": { "type": "string", "description": "目的地" },
+        "departDate": { "type": "string", "description": "出行日期 YYYY-MM-DD" },
+        "returnDate": { "type": "string", "description": "返程日期 YYYY-MM-DD" },
+        "status": { "type": "string", "enum": ["意向客户", "待确认行程", "待定金", "待尾款", "待出团", "已完结", "客户流失"], "default": "意向客户", "description": "订单状态" },
+        "urgency": { "type": "boolean", "default": false, "description": "紧急置顶" },
+        "archived": { "type": "boolean", "default": false, "description": "是否归档（归档后员工不可编辑，仅可查看）" },
+        "archivedAt": { "type": "number", "description": "归档时间戳" },
+        "followUps": {
+          "type": "array",
+          "default": [],
+          "description": "跟进记录（只增不改）[{id,time,content,nextTime,operator,staffId,createTime}]"
+        },
+        "itinerary": {
+          "type": "object",
+          "default": { "source": "blank", "templateId": "", "days": [], "include": [], "exclude": [], "notices": { "tips": [], "gear": [], "refund": [] }, "versions": [] },
+          "description": "内部行程单 {source:'template'|'blank',templateId,days[],include[],exclude[],notices,versions[{id,time,operator,snapshot}]}"
+        },
+        "payments": {
+          "type": "array",
+          "default": [],
+          "description": "收款台账 [{id,type:'定金'|'尾款'|'补款',amount,time,dueDate,voucher,remark,createTime}]"
+        },
+        "costs": {
+          "type": "object",
+          "default": { "hotel": 0, "car": 0, "guide": 0, "ticket": 0, "meal": 0, "misc": 0 },
+          "description": "分项成本 {hotel,car,guide,ticket,meal,misc}"
+        },
+        "totalCost": { "type": "number", "default": 0, "description": "总成本（服务端自动合计）" },
+        "pricing": {
+          "type": "object",
+          "default": { "quote": 0, "estProfit": 0, "actualProfit": 0 },
+          "description": "毛利 {quote成交价, estProfit预估毛利, actualProfit实际毛利}，服务端计算"
+        },
+        "createTime": { "type": "number", "description": "创建时间戳" },
+        "updatedAt": { "type": "number", "description": "更新时间戳" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["staffId"] },
+        { "fields": ["status"] },
+        { "fields": ["archived"] },
+        { "fields": ["departDate"] }
+      ],
+      "remarks": "员工销售工作台客户/订单表（一客户一订单）。员工仅可读写本人staffId的记录；管理员token可全局读写与硬删除。内部价格/成本/利润严禁出现在任何公开接口。"
+    },
+    "opLog": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "staffId": { "type": "string", "description": "操作员工ID" },
+        "staffName": { "type": "string", "description": "操作员工姓名" },
+        "action": { "type": "string", "description": "动作：add/update/archive/addFollow/addPayment/addCost/saveItinerary/delete/transfer/disable/enable/bind" },
+        "targetType": { "type": "string", "description": "目标类型：order/staff" },
+        "targetId": { "type": "string", "description": "目标业务ID" },
+        "summary": { "type": "string", "description": "操作摘要" },
+        "before": { "type": "object", "default": null, "description": "变更前快照（可选）" },
+        "after": { "type": "object", "default": null, "description": "变更后快照（可选）" },
+        "time": { "type": "number", "description": "操作时间戳" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["staffId"] },
+        { "fields": ["targetId"] },
+        { "fields": ["time"] }
+      ],
+      "remarks": "全局操作日志（只增）。由各业务云函数内部直接写入；仅 opLogCRUD（管理员token）可读取。"
+    }
+  }
+}

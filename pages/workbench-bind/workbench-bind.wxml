@@ -1,0 +1,9 @@
+<view class="page">
+  <view class="bd-wrap">
+    <view class="bd-icon">🔑</view>
+    <view class="bd-title">员工绑定</view>
+    <view class="bd-desc">请输入管理员分配的员工绑定码，绑定后即可进入员工工作台。同一微信号仅需绑定一次。</view>
+    <input class="bd-input" placeholder="请输入绑定码" value="{{code}}" bindinput="onInput" confirm-type="done" bindconfirm="submit" />
+    <view class="btn-primary bd-btn {{loading?'disabled':''}}" bindtap="submit">{{loading ? '绑定中…' : '确认绑定'}}</view>
+  </view>
+</view>

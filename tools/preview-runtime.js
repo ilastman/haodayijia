@@ -202,6 +202,24 @@
     setStorageSync: sset,
     removeStorageSync: function (k) { delete store[k]; try { localStorage.removeItem('mppreview_' + k); } catch (e) {} },
     setStorage: function (o) { sset(o.key, o.data); },
+    request: function (o) {
+      o = o || {};
+      var method = String(o.method || 'GET').toUpperCase();
+      var opt = { method: method, headers: { 'content-type': 'application/json' } };
+      if (o.data && method !== 'GET') opt.body = JSON.stringify(o.data);
+      try {
+        fetch(o.url, opt)
+          .catch(function () { return null; })
+          .then(function (res) {
+            if (!res) { o.fail && o.fail({ errMsg: 'request:fail connect' }); return; }
+            var ct = res.headers.get('content-type') || '';
+            var parse = ct.indexOf('json') > -1 ? res.json() : res.text();
+            parse.catch(function () { return null; }).then(function (body) {
+              o.success && o.success({ statusCode: res.status, data: body, header: {}, cookies: [] });
+            });
+          });
+      } catch (e) { o.fail && o.fail({ errMsg: 'request:fail' }); }
+    },
     showToast: showToast,
     hideToast: function () { var t = document.querySelector('.pv-toast'); if (t) t.remove(); },
     navigateTo: function (o) { pushPage(o.url); },
@@ -930,10 +948,7 @@
     backEl.addEventListener('click', goBack);
 
     document.getElementById('btn-refresh').addEventListener('click', function () {
-      var e = topEntry();
-      if (e && e.cfg.onPullDownRefresh) e.cfg.onPullDownRefresh.call(e.inst, function () {});
-      else render();
-      showToast({ title: '已刷新', duration: 800 });
+      location.reload();
     });
     document.getElementById('btn-reset').addEventListener('click', function () {
       try {

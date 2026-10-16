@@ -101,7 +101,6 @@
 
   <!-- 底部按钮 -->
   <view class="cp-bottom">
-    <view class="cp-btn cp-btn-outline" bindtap="goPublish">{{c.publishBtn}}</view>
     <view class="cp-btn cp-btn-outline" bindtap="onRight">{{fromList ? c.editBtn : c.saveBtn}}</view>
   </view>
   <view class="cp-safe"></view>

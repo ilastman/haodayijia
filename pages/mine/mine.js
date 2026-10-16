@@ -1,5 +1,14 @@
 const copy = require('../../utils/copy');
 const { ICONS } = require('../../utils/util');
+const wb = require('../../utils/workbench');
+
+const BASE_MENU = [
+  { key: 'trips', label: copy.mine.menu.myTrips, url: '/pages/my-trips/my-trips' },
+  { key: 'consults', label: copy.mine.menu.consults, url: '/pages/consult-history/consult-history' },
+  { key: 'orders', label: copy.mine.menu.orders, url: '/pages/orders/orders' },
+  { key: 'contact', label: copy.mine.menu.contact, url: 'contact' },
+  { key: 'about', label: copy.mine.menu.about, url: '/pages/about/about' }
+];
 
 Page({
   data: {
@@ -12,13 +21,9 @@ Page({
     userInfo: null,
     editAvatar: '',
     editNick: '',
-    menu: [
-      { key: 'trips', label: copy.mine.menu.myTrips, url: '/pages/my-trips/my-trips' },
-      { key: 'consults', label: copy.mine.menu.consults, url: '/pages/consult-history/consult-history' },
-      { key: 'orders', label: copy.mine.menu.orders, url: '/pages/orders/orders' },
-      { key: 'contact', label: copy.mine.menu.contact, url: 'contact' },
-      { key: 'about', label: copy.mine.menu.about, url: '/pages/about/about' }
-    ]
+    isStaff: false,
+    staffName: '',
+    menu: BASE_MENU
   },
 
   onShow() {
@@ -28,6 +33,19 @@ Page({
       editAvatar: userInfo ? userInfo.avatar : '',
       editNick: userInfo ? userInfo.nickname : ''
     });
+    this.loadIdentity();
+  },
+
+  async loadIdentity() {
+    const id = await wb.identity();
+    const isStaff = !!(id && id.isStaff);
+    const menu = BASE_MENU.slice();
+    if (isStaff) {
+      menu.unshift({ key: 'workbench', label: copy.mine.menu.workbench, url: '/pages/workbench/workbench' });
+    } else {
+      menu.push({ key: 'staffBind', label: copy.mine.menu.staffBind, url: '/pages/workbench-bind/workbench-bind' });
+    }
+    this.setData({ isStaff, staffName: (id && id.staff && id.staff.name) || '', menu });
   },
 
   onChooseAvatar(e) {

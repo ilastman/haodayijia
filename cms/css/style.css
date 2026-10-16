@@ -1,0 +1,9 @@
+﻿/* CMS 极简样式 */
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'PingFang SC','Microsoft YaHei',sans-serif;background:#FAF7F0;color:#3D362A}
+.header{height:60px;background:#FCF9F1;border-bottom:1px solid #F0EADC;display:flex;align-items:center;justify-content:space-between;padding:0 24px}
+.logo{font-weight:600;letter-spacing:2px}
+.container{padding:20px}
+.card{background:#FCF9F1;border:1px solid #F0EADC;border-radius:12px;padding:16px;margin-bottom:16px}
+.flex{display:flex;gap:12px;flex-wrap:wrap}
+.mt12{margin-top:12px}

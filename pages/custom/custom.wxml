@@ -114,7 +114,6 @@
       <text class="sum-item">{{c.summaryScenic}} {{totalScenic}}</text>
       <text class="sum-item">{{c.summaryHotel}} {{totalHotel}}</text>
     </view>
-    <view class="publish-btn" bindtap="goPublish">{{c.publishInspire}}</view>
     <view class="submit-btn" bindtap="goGenerate">{{c.generateBtn}}</view>
   </view>
 

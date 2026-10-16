@@ -1,0 +1,40 @@
+﻿{
+  "_note": "微信云开发数据库安全规则。在『云开发控制台 → 数据库 → 集合 → 权限设置 → 自定义安全规则』中，将对应集合 objects.rules.<集合名> 的内容原样粘贴即可（控制台只需 read/write 两个字段）。本项目所有读写统一走云函数（服务器端以管理员身份运行，默认绕过安全规则），因此客户端直连一律关闭，最安全。",
+  "_variables": {
+    "auth.openid": "当前小程序用户的 openid",
+    "doc": "被访问的文档对象",
+    "true/false": "布尔值，true=允许，false=拒绝"
+  },
+  "objects": {
+    "rules": {
+      "homeModule": { "read": false, "write": false },
+      "banner": { "read": false, "write": false },
+      "scenic": { "read": false, "write": false },
+      "hotel": { "read": false, "write": false },
+      "privateGroup": { "read": false, "write": false },
+      "userTrip": { "read": false, "write": false },
+      "inspirationPost": { "read": false, "write": false },
+      "adminUser": { "read": false, "write": false },
+      "globalConfig": { "read": false, "write": false },
+      "asset": { "read": false, "write": false },
+      "staff": { "read": false, "write": false },
+      "order": { "read": false, "write": false },
+      "opLog": { "read": false, "write": false }
+    },
+    "remarks": {
+      "homeModule": "首页板块：读写由 homeModuleCRUD 云函数完成",
+      "banner": "轮播：读写由 bannerCRUD 云函数完成",
+      "scenic": "景区：读写由 scenicCRUD 云函数完成",
+      "hotel": "酒店：读写由 hotelCRUD 云函数完成",
+      "privateGroup": "私家团：读写由 privateGroupCRUD 云函数完成",
+      "userTrip": "用户行程：小程序经 userTripCRUD 云函数（openid 取 WX 上下文）读写；管理员经同一云函数 token 校验",
+      "inspirationPost": "灵感广场：小程序经 inspirationPostCRUD 云函数读取（status=1）与发布（status=0）；审核/删除经管理员 token 校验",
+      "adminUser": "管理员账号表：仅 login/adminInit 云函数读写",
+      "globalConfig": "全局配置：读取经 homeConfigCRUD；保存需管理员 token",
+      "asset": "素材库：读取经 assetCRUD；新增/删除需管理员 token",
+      "staff": "员工账号表：员工端 bind/me 按 openid；管理端增改/启停/转移/绑定码按管理员 token，均经 staffCRUD",
+      "order": "员工销售工作台订单表：员工仅可读写本人 staffId 记录，管理员可全局读写与硬删除，均经 orderCRUD（服务端按 openid 从 staff 表解析归属，客户端不可传 staffId）",
+      "opLog": "全局操作日志：只增，由各业务云函数内部写入；仅 opLogCRUD 管理员 token 可读取"
+    }
+  }
+}

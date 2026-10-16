@@ -83,7 +83,6 @@ const copy = {
     consultBook: '预约定制咨询',
     baseInfo: ['总天数', '适宜人群', '行程节奏', '出行季节'],
     noticeItems: ['注意事项', '装备建议', '退改规则'],
-    review: '游客评价',
     favorite: '收藏',
     favorited: '已收藏',
     consult: '立即咨询',
@@ -117,11 +116,13 @@ const copy = {
     confirmSave: '保存资料',
     saved: '资料已保存',
     menu: {
+      workbench: '员工工作台',
       myTrips: '我的行程',
       consults: '我的咨询记录',
       orders: '我的订单',
       contact: '联系我们',
-      about: '关于旅行社'
+      about: '关于旅行社',
+      staffBind: '员工绑定'
     },
     phoneLabel: '客服电话',
     callNow: '点击拨打'
@@ -262,7 +263,6 @@ const copy = {
     phoneError: '请输入正确的手机号码',
     success: '提交成功！定制顾问将在1小时内联系您',
     close: '关闭',
-    publishInspire: '发布灵感',
     generateBtn: '生成我的专属行程'
   },
 
@@ -275,10 +275,8 @@ const copy = {
     hotelLabel: '当日住宿',
     noteLabel: '行程备注',
     noScenic: '自由安排',
-    publishBtn: '发布到灵感广场',
     saveBtn: '保存到我的行程',
     editBtn: '修改行程',
-    publishSuccess: '已发布到灵感广场',
     saveSuccess: '行程已保存至【我的行程】',
     saveUpdated: '行程已更新',
     tipsTitle: '温馨提示',
@@ -327,7 +325,6 @@ const copy = {
   // 灵感广场
   square: {
     title: '灵感广场',
-    publishBtn: '+发布',
     daysUnit: '天',
     cats: ['全部', '行程方案', '旅行笔记', '私家团', '亲子游', '秋季线', '冬季线'],
     all: '全部',
@@ -347,14 +344,11 @@ const copy = {
     scenicLabel: '当日景区',
     hotelLabel: '当日酒店',
     noteLabel: '当日备注',
-    commentPlaceholder: '说点什么...',
     like: '点赞',
     liked: '已赞',
     fav: '收藏',
     faved: '已收藏',
-    customCta: '照此方案定制',
-    comments: '评论',
-    noComment: '还没有评论，来聊聊你的看法吧'
+    customCta: '照此方案定制'
   },
 
   // 发布行程分享
@@ -403,13 +397,10 @@ const copy = {
     day: '发布于',
     contentTitle: '游记',
     photosTitle: '旅途随拍',
-    commentPlaceholder: '说点什么...',
     like: '点赞',
     liked: '已赞',
     fav: '收藏',
-    faved: '已收藏',
-    comments: '评论',
-    noComment: '还没有评论，来聊聊你的看法吧'
+    faved: '已收藏'
   },
 
   // 关于页

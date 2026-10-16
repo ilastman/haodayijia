@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 
 Page({
   data: {
@@ -7,8 +8,15 @@ Page({
     scenic: null
   },
 
-  onLoad(options) {
-    const s = data.getScenic(options.id || '');
+  async onLoad(options) {
+    const id = options.id || '';
+    let s = null;
+    try {
+      s = await api.getScenic(id);
+    } catch (e) {
+      s = null;
+    }
+    if (!s) s = data.getScenic(id);
     if (!s) {
       wx.showToast({ title: '景区不存在', icon: 'none' });
       setTimeout(() => wx.navigateBack(), 1200);

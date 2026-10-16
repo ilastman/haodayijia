@@ -108,11 +108,6 @@ Page({
     });
   },
 
-  goPublish() {
-    this.savePlan();
-    wx.navigateTo({ url: '/pages/share-publish/share-publish?from=custom' });
-  },
-
   goGenerate() {
     this.savePlan();
     const q = [

@@ -1,0 +1,45 @@
+﻿{
+  "collections": {
+    "banner": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID（内部使用，不外露）" },
+        "id": { "type": "string", "required": true, "description": "业务ID（与本地 admin SEED 对齐）" },
+        "img": { "type": "string", "description": "图片地址（可为 cloud:// fileID）" },
+        "title": { "type": "string", "description": "标题" },
+        "jump": { "type": "string", "description": "跳转小程序页面路径，如 /pages/route-detail/route-detail?id=p1" },
+        "enable": { "type": "boolean", "default": true, "description": "是否启用" },
+        "sort": { "type": "number", "default": 0, "description": "排序字段" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["enable"] }
+      ],
+      "remarks": "首页轮播 Banner（字段与本地完全对齐）"
+    },
+    "scenic": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "name": { "type": "string", "required": true, "description": "景区名称" },
+        "cover": { "type": "string", "description": "封面图" },
+        "album": { "type": "array", "items": { "type": "string" }, "default": [], "description": "相册图片数组" },
+        "intro": { "type": "string", "description": "简短简介" },
+        "detailHtml": { "type": "string", "description": "富文本详细介绍" },
+        "tags": { "type": "array", "items": { "type": "string" }, "default": [], "description": "标签数组" },
+        "dest": { "type": "string", "description": "所属目的地" },
+        "duration": { "type": "string", "description": "建议游玩时长" },
+        "bestSeason": { "type": "string", "description": "最佳季节" },
+        "lon": { "type": "number", "description": "经度" },
+        "lat": { "type": "number", "description": "纬度" },
+        "weight": { "type": "number", "default": 0, "description": "权重（越大越靠前）" },
+        "ticketLeadDays": { "type": "number", "default": 0, "description": "内部：该景区固定提前购票预警天数（员工工作台页面标红/订阅消息提醒用，游客不可见）" },
+        "online": { "type": "boolean", "default": true, "description": "是否上架" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["online"] }
+      ],
+      "remarks": "景区表（字段与本地完全对齐）"
+    }
+  }
+}

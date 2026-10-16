@@ -1,0 +1,3736 @@
+/* ============================================================
+ * 本地模拟数据中心（admin）
+ * 该文件由 tools/seed-from-mini.js 从 utils/data.js 自动生成（呼伦贝尔内容）。
+ * 如需重新生成：node tools/seed-from-mini.js
+ * ============================================================ */
+window.SEED = {
+  "admin": [
+    {
+      "id": "admin1",
+      "username": "admin",
+      "password": "admin123",
+      "nickname": "管理员",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%A4%A7%E8%8D%89%E5%8E%9F%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "role": "super",
+      "lastLogin": "2026-10-11 06:45:43"
+    }
+  ],
+  "homeModule": [
+    {
+      "id": "m1",
+      "title": "私家团",
+      "sub": "",
+      "icon": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232F8F5B%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%229%22%20cy%3D%228%22%20r%3D%223.2%22%2F%3E%3Ccircle%20cx%3D%2216.8%22%20cy%3D%229.6%22%20r%3D%222.6%22%2F%3E%3Cpath%20d%3D%22M3.4%2019.4c0-3.1%202.5-5.4%205.6-5.4s5.6%202.3%205.6%205.4%22%2F%3E%3Cpath%20d%3D%22M15.4%2014.6c2.7.3%204.8%202.3%204.8%204.8%22%2F%3E%3C%2Fsvg%3E",
+      "desc": "",
+      "url": "/pages/routes/routes?type=私家团",
+      "show": true,
+      "sort": 1
+    },
+    {
+      "id": "m2",
+      "title": "拼团",
+      "sub": "",
+      "icon": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232F8F5B%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3.2%2012.2V4.4a1.2%201.2%200%20011.2-1.2h7.8l8%208-8%208z%22%2F%3E%3Ccircle%20cx%3D%227.6%22%20cy%3D%227.6%22%20r%3D%221.5%22%2F%3E%3C%2Fsvg%3E",
+      "desc": "",
+      "url": "/pages/routes/routes?type=拼团",
+      "show": true,
+      "sort": 2
+    },
+    {
+      "id": "m3",
+      "title": "景区",
+      "sub": "",
+      "icon": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232F8F5B%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3.2%2018.8l5.6-8.4%203.2%204.6%202.6-3.7%206.2%207.5z%22%2F%3E%3Ccircle%20cx%3D%228.2%22%20cy%3D%227%22%20r%3D%222.1%22%2F%3E%3Cpath%20d%3D%22M16.8%204.6v2.4%22%2F%3E%3Cpath%20d%3D%22M15.6%205.8h2.4%22%2F%3E%3C%2Fsvg%3E",
+      "desc": "",
+      "url": "/pages/scenic/scenic",
+      "show": true,
+      "sort": 3
+    },
+    {
+      "id": "m4",
+      "title": "酒店",
+      "sub": "",
+      "icon": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232F8F5B%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M3.2%2018.6v-7.2%22%2F%3E%3Cpath%20d%3D%22M3.2%2017.4h17.6v1.2%22%2F%3E%3Cpath%20d%3D%22M6.4%2011.4h8.4a5%205%200%20015%205v1%22%2F%3E%3Ccircle%20cx%3D%227.4%22%20cy%3D%228.8%22%20r%3D%221.9%22%2F%3E%3Cpath%20d%3D%22M3.2%2014.6h3.2%22%2F%3E%3C%2Fsvg%3E",
+      "desc": "",
+      "url": "/pages/hotels/hotels",
+      "show": true,
+      "sort": 4
+    },
+    {
+      "id": "m5",
+      "title": "旅行攻略",
+      "sub": "",
+      "icon": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232F8F5B%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M4%205.6A2.4%202.4%200%20016.4%203.2H12v16.4H6.4A2.4%202.4%200%20004%2021.6z%22%2F%3E%3Cpath%20d%3D%22M20%205.6a2.4%202.4%200%2000-2.4-2.4H12v16.4h5.6A2.4%202.4%200%200120%2021.6z%22%2F%3E%3C%2Fsvg%3E",
+      "desc": "",
+      "url": "/pages/strategy/strategy",
+      "show": true,
+      "sort": 5
+    },
+    {
+      "id": "m6",
+      "title": "私人定制",
+      "sub": "",
+      "icon": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22%232F8F5B%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M12.4%204.6l7%207a1.4%201.4%200%20010%202l-8.4%208.4H6.6V12.8l8.4-8.4a1.4%201.4%200%20012%200z%22%2F%3E%3Cpath%20d%3D%22M4.6%2020.4l1.6-3.4%22%2F%3E%3C%2Fsvg%3E",
+      "desc": "",
+      "url": "/pages/custom/custom",
+      "show": true,
+      "sort": 6
+    }
+  ],
+  "banner": [
+    {
+      "id": "b1",
+      "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Ebanner%201%20%C2%B7%20%E8%8D%89%E5%8E%9F%E5%85%A8%E6%99%AF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "title": "呼伦贝尔草原深度6日私家团",
+      "jump": "/pages/route-detail/route-detail?id=r001",
+      "enable": true,
+      "sort": 1
+    },
+    {
+      "id": "b2",
+      "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Ebanner%202%20%C2%B7%20%E9%98%BF%E5%B0%94%E5%B1%B1%E7%A7%8B%E8%89%B2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "title": "阿尔山+呼伦贝尔7日私家团",
+      "jump": "/pages/route-detail/route-detail?id=r002",
+      "enable": true,
+      "sort": 2
+    },
+    {
+      "id": "b3",
+      "img": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Ebanner%203%20%C2%B7%20%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%A4%9C%E8%89%B2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "title": "满洲里+额尔古纳5日精华拼团",
+      "jump": "/pages/route-detail/route-detail?id=r003",
+      "enable": true,
+      "sort": 3
+    }
+  ],
+  "scenic": [
+    {
+      "id": "s1",
+      "name": "呼伦贝尔大草原",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%A4%A7%E8%8D%89%E5%8E%9F%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%A4%A7%E8%8D%89%E5%8E%9F%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%A4%A7%E8%8D%89%E5%8E%9F%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%A4%A7%E8%8D%89%E5%8E%9F%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "世界著名草原，天苍苍野茫茫，风吹草低见牛羊。",
+      "detailHtml": "<p>呼伦贝尔大草原东起大兴安岭西麓，西至中蒙边境，地势辽阔，水草丰美，是我国保存最完好、面积最大的天然草原之一。夏秋两季绿草如茵，蓝天白云与羊群骏马相映成趣，是内蒙古最具代表性的草原风光。</p>",
+      "tags": [
+        "草原风大紫外线强，注意防晒防风",
+        "进入草原请沿公路行驶，勿碾压草场",
+        "蒙古包营地体验建议提前预约"
+      ],
+      "dest": "海拉尔",
+      "duration": "建议 2-3 小时",
+      "bestSeason": "6月-9月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 100,
+      "online": true
+    },
+    {
+      "id": "s2",
+      "name": "莫日格勒河",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E6%97%A5%E6%A0%BC%E5%8B%92%E6%B2%B3%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E6%97%A5%E6%A0%BC%E5%8B%92%E6%B2%B3%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E6%97%A5%E6%A0%BC%E5%8B%92%E6%B2%B3%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E6%97%A5%E6%A0%BC%E5%8B%92%E6%B2%B3%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "\"天下第一曲水\"，九曲十八弯蜿蜒流淌在草原腹地。",
+      "detailHtml": "<p>莫日格勒河发源于大兴安岭西麓，全长290多公里，河道极其弯曲，从空中俯瞰如银蛇舞动，被老舍先生誉为\"天下第一曲水\"。在制高点可俯瞰九曲十八弯的壮美，是草原摄影与自驾的必到之地。</p>",
+      "tags": [
+        "观景多在山坡制高点，注意风力",
+        "夏秋季节草原蚊虫较多，备好驱蚊水",
+        "雨后道路泥泞，建议底盘较高的车子前往"
+      ],
+      "dest": "海拉尔",
+      "duration": "建议 2-3 小时",
+      "bestSeason": "6月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 99,
+      "online": true
+    },
+    {
+      "id": "s3",
+      "name": "额尔古纳湿地",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "亚洲第一湿地，根河蜿蜒，白桦、灌木与远山交相辉映。",
+      "detailHtml": "<p>额尔古纳湿地是亚洲保存最完好的木本沼泽湿地，根河在此静静流淌，曲水环抱草甸、灌木与白桦林，四季景致各异。登上观景平台可俯瞰全貌，远处的额尔古纳市与根河河谷尽收眼底。</p>",
+      "tags": [
+        "景区栈道较长，穿舒适鞋子",
+        "观景台风力大，注意添衣",
+        "春秋候鸟迁徙季可观赏水鸟"
+      ],
+      "dest": "额尔古纳",
+      "duration": "建议 1.5-2 小时",
+      "bestSeason": "5月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 98,
+      "online": true
+    },
+    {
+      "id": "s4",
+      "name": "白桦林景区",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%99%BD%E6%A1%A6%E6%9E%97%E6%99%AF%E5%8C%BA%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%99%BD%E6%A1%A6%E6%9E%97%E6%99%AF%E5%8C%BA%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%99%BD%E6%A1%A6%E6%9E%97%E6%99%AF%E5%8C%BA%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%99%BD%E6%A1%A6%E6%9E%97%E6%99%AF%E5%8C%BA%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "纯白树干与光影交织的森林童话，秋日金黄醉人。",
+      "detailHtml": "<p>白桦林景区位于额尔古纳市北，成片白桦婷婷玉立，树干洁白笔直，行走其间如在油画中穿行。秋季白桦叶金黄，搭配蓝天白云，随手一拍都是大片，是摄影爱好者的最爱。</p>",
+      "tags": [
+        "林间蚊虫较多，建议穿长袖",
+        "秋色最佳时间为9月中下旬",
+        "请勿折枝或刻画树干"
+      ],
+      "dest": "额尔古纳",
+      "duration": "建议 1-1.5 小时",
+      "bestSeason": "9月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 97,
+      "online": true
+    },
+    {
+      "id": "s5",
+      "name": "满洲里国门",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%9B%BD%E9%97%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%9B%BD%E9%97%A8%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%9B%BD%E9%97%A8%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%9B%BD%E9%97%A8%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "中国最大陆路口岸，庄严国门前眺望俄罗斯后贝加尔斯克。",
+      "detailHtml": "<p>满洲里国门景区是中俄边境的标志性景点，41号界碑庄严肃穆，登国门可远眺俄罗斯边境小镇后贝加尔斯克，一览口岸火车进出与边境风光。是感受边城风貌、拍照留念的热门去处。</p>",
+      "tags": [
+        "进入景区需安检，请携带身份证",
+        "国门与界碑区域严禁越界拍照",
+        "可顺路打卡套娃广场"
+      ],
+      "dest": "满洲里",
+      "duration": "建议 1-1.5 小时",
+      "bestSeason": "5月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 96,
+      "online": true
+    },
+    {
+      "id": "s6",
+      "name": "黑山头口岸",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E5%8F%A3%E5%B2%B8%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E5%8F%A3%E5%B2%B8%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E5%8F%A3%E5%B2%B8%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E5%8F%A3%E5%B2%B8%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "中俄边境生态口岸，额尔古纳河对岸即是俄罗斯小镇。",
+      "detailHtml": "<p>黑山头口岸位于额尔古纳市黑山头镇，与俄罗斯旧粗鲁海图口岸隔河相望。界河额尔古纳河在此静静流淌，两岸草原湿地风光旖旎，自驾边境公路顺访点之一，附近草原营地与落日景色尤为出名。</p>",
+      "tags": [
+        "边防区域注意证件携带与拍照限制",
+        "紧邻黑山头草原，日落前后观景最佳",
+        "夏季水草丰美，注意防蚊"
+      ],
+      "dest": "黑山头",
+      "duration": "建议 1 小时",
+      "bestSeason": "6月-9月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 95,
+      "online": true
+    },
+    {
+      "id": "s7",
+      "name": "室韦俄罗斯民族乡",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%AE%A4%E9%9F%A6%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%AE%A4%E9%9F%A6%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%AE%A4%E9%9F%A6%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%AE%A4%E9%9F%A6%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "额尔古纳河畔的边境小镇，木刻楞与俄式风情扑面而来。",
+      "detailHtml": "<p>室韦俄罗斯民族乡依偎在额尔古纳河畔，与俄罗斯仅一河之隔。小镇里木刻楞房屋错落有致，列巴、格瓦斯等俄式美食飘香，夜晚星空低垂。晨雾中的界河与对岸俄式村舍构成一幅静谧画卷。</p>",
+      "tags": [
+        "住宿木刻楞民宿体验感最佳",
+        "早晚温差大，备好外套",
+        "小镇不大，适合放慢脚步闲逛"
+      ],
+      "dest": "室韦",
+      "duration": "建议 2-3 小时",
+      "bestSeason": "6月-9月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 94,
+      "online": true
+    },
+    {
+      "id": "s8",
+      "name": "阿尔山国家森林公园",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "火山地貌与原始森林交织，天池、石塘林、驼峰岭美不胜收。",
+      "detailHtml": "<p>阿尔山国家森林公园以火山地貌和原始森林闻名，驼峰岭天池、杜鹃湖、石塘林等景点分布其中。秋季层林尽染，冬季雪原辽阔，四季皆有不同景致。公园面积大，建议安排一整天游览。</p>",
+      "tags": [
+        "公园面积大，建议早出发并备干粮",
+        "山区气温偏低，注意保暖",
+        "景区区间车有限，节假日请提前规划"
+      ],
+      "dest": "阿尔山",
+      "duration": "建议 1 天",
+      "bestSeason": "6月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 93,
+      "online": true
+    },
+    {
+      "id": "s9",
+      "name": "呼伦贝尔古城",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%8F%A4%E5%9F%8E%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%8F%A4%E5%9F%8E%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%8F%A4%E5%9F%8E%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%8F%A4%E5%9F%8E%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "海拉尔城区的历史脉络，仿古街区里藏着草原老味道。",
+      "detailHtml": "<p>呼伦贝尔古城依海拉尔河而建，以仿清代建筑与街巷肌理还原边陲重镇的旧时光。街区不大，夜间灯火初上最有味道，手把肉、奶制品与本地特产小店错落其间，适合抵达海拉尔后的晚间慢逛。</p>",
+      "tags": [
+        "建议傍晚前往，夜景比白天更有味道",
+        "街区小吃多，正餐前可先垫垫肚子",
+        "离成吉思汗广场很近，可顺路游览"
+      ],
+      "dest": "海拉尔",
+      "duration": "建议 1-2 小时",
+      "bestSeason": "全年",
+      "lon": 0,
+      "lat": 0,
+      "weight": 92,
+      "online": true
+    },
+    {
+      "id": "s10",
+      "name": "成吉思汗广场",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%90%E5%90%89%E6%80%9D%E6%B1%97%E5%B9%BF%E5%9C%BA%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%90%E5%90%89%E6%80%9D%E6%B1%97%E5%B9%BF%E5%9C%BA%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%90%E5%90%89%E6%80%9D%E6%B1%97%E5%B9%BF%E5%9C%BA%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%90%E5%90%89%E6%80%9D%E6%B1%97%E5%B9%BF%E5%9C%BA%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "海拉尔市中心广场，纪念一代天骄的城市客厅。",
+      "detailHtml": "<p>成吉思汗广场位于海拉尔城市中心，以成吉思汗雕像与浮雕柱廊再现草原英雄史诗。广场开阔通透，晨昏时本地人散步遛弯，周边美食购物一应俱全，是抵达或离开呼伦贝尔时的理想中转点。</p>",
+      "tags": [
+        "开阔无遮挡，适合拍城市天际线",
+        "旁边商场可补给路餐与日用品",
+        "夜间广场亮灯，氛围感更足"
+      ],
+      "dest": "海拉尔",
+      "duration": "建议 30-60 分钟",
+      "bestSeason": "全年",
+      "lon": 0,
+      "lat": 0,
+      "weight": 91,
+      "online": true
+    },
+    {
+      "id": "s11",
+      "name": "恩和俄罗斯民族乡",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E4%BF%84%E7%BD%97%E6%96%AF%E6%B0%91%E6%97%8F%E4%B9%A1%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "大兴安岭西麓的俄罗斯族村落，木刻楞与列巴香气交织。",
+      "detailHtml": "<p>恩和俄罗斯民族乡是呼伦贝尔最具代表性的俄罗斯族聚居地，全村原木搭建的木刻楞屋舍错落山谷之间，院中种着列巴花与向日葵。清晨现烤列巴的香气、傍晚河边的霞光，让这里成为告别城市的温柔一站。</p>",
+      "tags": [
+        "木刻楞民宿是本地特色，值得住一晚",
+        "列巴作坊现烤列巴限定时段，别错过",
+        "乡里道路窄，车停村口步行游览更佳"
+      ],
+      "dest": "恩和",
+      "duration": "建议 2-3 小时",
+      "bestSeason": "6月-9月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 90,
+      "online": true
+    },
+    {
+      "id": "s12",
+      "name": "日落山",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%97%A5%E8%90%BD%E5%B1%B1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%97%A5%E8%90%BD%E5%B1%B1%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%97%A5%E8%90%BD%E5%B1%B1%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%97%A5%E8%90%BD%E5%B1%B1%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "黑山头镇外的高岗草坡，呼伦贝尔最治愈的落日机位。",
+      "detailHtml": "<p>日落山是黑山头镇西侧一处天然高岗，站在坡顶可将丘陵、草原与额尔古纳河支流尽收眼底。黄昏时分太阳西沉、光线染红草坡，是本地人私藏的落日与星空拍摄地，私家团常在此预留专属观景位。</p>",
+      "tags": [
+        "日落前 1 小时到位占机位，光线最柔和",
+        "坡顶风大，注意防风保暖",
+        "日落后光线暗，建议带头灯或手机补光"
+      ],
+      "dest": "黑山头",
+      "duration": "建议 1-1.5 小时",
+      "bestSeason": "5月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 89,
+      "online": true
+    },
+    {
+      "id": "s13",
+      "name": "186彩带河",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E186%E5%BD%A9%E5%B8%A6%E6%B2%B3%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E186%E5%BD%A9%E5%B8%A6%E6%B2%B3%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E186%E5%BD%A9%E5%B8%A6%E6%B2%B3%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E186%E5%BD%A9%E5%B8%A6%E6%B2%B3%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "中俄边境线上的九曲河水，如彩带缠绕草原。",
+      "detailHtml": "<p>186彩带河因地处边防公路 186 公里里程碑而得名，河水在丘陵草原间反复回折，空中俯瞰银带缠绕绿毯。观景台视野开阔，与俄罗斯隔河相望，是黑山头通往满洲里途中最上镜的中转点。</p>",
+      "tags": [
+        "观景台以俯瞰为主，适合航拍与长焦",
+        "河岸湿地蚊虫较多，带好驱蚊水",
+        "边防路段勿越界拍摄俄方设施"
+      ],
+      "dest": "满洲里",
+      "duration": "建议 1 小时",
+      "bestSeason": "6月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 88,
+      "online": true
+    },
+    {
+      "id": "s14",
+      "name": "套娃广场",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "中俄蒙交界处的童话地标，巨型套娃灯光璀璨。",
+      "detailHtml": "<p>满洲里套娃广场以世界最大的套娃主题建筑为核心，广场内俄式穹顶、壁画与童话元素遍地，夜晚灯光亮起尤其梦幻。毗邻的套娃主题酒店与乐园让亲子家庭流连忘返，是满眼异域风情的打卡地标。</p>",
+      "tags": [
+        "夜景灯光 20 点左右全亮，建议晚上来",
+        "含门票的套娃乐园可提前线上购票",
+        "广场周围商圈可买到俄式伴手礼"
+      ],
+      "dest": "满洲里",
+      "duration": "建议 1.5-2 小时",
+      "bestSeason": "全年",
+      "lon": 0,
+      "lat": 0,
+      "weight": 87,
+      "online": true
+    },
+    {
+      "id": "s15",
+      "name": "扎赉诺尔博物馆",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%89%8E%E8%B5%89%E8%AF%BA%E5%B0%94%E5%8D%9A%E7%89%A9%E9%A6%86%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%89%8E%E8%B5%89%E8%AF%BA%E5%B0%94%E5%8D%9A%E7%89%A9%E9%A6%86%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%89%8E%E8%B5%89%E8%AF%BA%E5%B0%94%E5%8D%9A%E7%89%A9%E9%A6%86%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%89%8E%E8%B5%89%E8%AF%BA%E5%B0%94%E5%8D%9A%E7%89%A9%E9%A6%86%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "猛犸象化石与呼伦贝尔石器的时光展厅。",
+      "detailHtml": "<p>扎赉诺尔博物馆坐落于呼伦湖东岸的矿区小镇，馆藏以猛犸象骨架化石与早期人类石器为特色，展厅以光影还原远古草原。展品体量不大但结构精巧，适合作为呼伦湖之行的顺访点。</p>",
+      "tags": [
+        "周一闭馆，出行前确认开放时间",
+        "馆内可寄存行李，轻装参观",
+        "与呼伦湖相距约半小时车程，建议同天安排"
+      ],
+      "dest": "满洲里",
+      "duration": "建议 1 小时",
+      "bestSeason": "全年",
+      "lon": 0,
+      "lat": 0,
+      "weight": 86,
+      "online": true
+    },
+    {
+      "id": "s16",
+      "name": "呼伦湖",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E6%B9%96%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E6%B9%96%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E6%B9%96%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E6%B9%96%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "中国北方第一大湖，草原深处的蓝色「海」。",
+      "detailHtml": "<p>呼伦湖又名达赉湖，湖面浩瀚如海，芦苇荡与湿地鸟群环绕四周。湖岸滩涂在晴天下透着蓝调，据说能看到「海天一色」，是草原行最开阔舒展的一段。湖畔风大，适合放空漫步。</p>",
+      "tags": [
+        "湖岸风大，帽子与外套必备",
+        "湖边滩涂松软，勿驱车驶入",
+        "可顺路去扎赉诺尔博物馆"
+      ],
+      "dest": "满洲里",
+      "duration": "建议 1-1.5 小时",
+      "bestSeason": "6月-10月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 85,
+      "online": true
+    },
+    {
+      "id": "s17",
+      "name": "五里泉",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E4%BA%94%E9%87%8C%E6%B3%89%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E4%BA%94%E9%87%8C%E6%B3%89%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E4%BA%94%E9%87%8C%E6%B3%89%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E4%BA%94%E9%87%8C%E6%B3%89%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "阿尔山市区的天然矿泉水泉眼，清冽甘甜。",
+      "detailHtml": "<p>五里泉位于阿尔山市西郊，因距城区五华里而得名，泉水自地下深处涌出、常年恒温，清冽中带一丝甜意，本地人常携壶取水。泉边栈道与白桦相映，是抵达阿尔山后轻松的一站。</p>",
+      "tags": [
+        "可直接取水品尝，肠胃敏感者建议烧开再喝",
+        "清晨取水人多，可稍晚些到",
+        "顺路可去阿尔山火车站"
+      ],
+      "dest": "阿尔山",
+      "duration": "建议 30 分钟",
+      "bestSeason": "全年",
+      "lon": 0,
+      "lat": 0,
+      "weight": 84,
+      "online": true
+    },
+    {
+      "id": "s18",
+      "name": "阿尔山火车站",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E7%81%AB%E8%BD%A6%E7%AB%99%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E7%81%AB%E8%BD%A6%E7%AB%99%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E7%81%AB%E8%BD%A6%E7%AB%99%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E7%81%AB%E8%BD%A6%E7%AB%99%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "东洋风格的老火车站，中国最小的火车站之一。",
+      "detailHtml": "<p>阿尔山火车站建于日伪时期，尖顶、圆窗与黄墙的东洋建筑风格保存完好，是中东铁路沿线少有的完整老站。月台外就是白桦林与小城街景，自带胶片感，拍照非常出片。</p>",
+      "tags": [
+        "车站仍在运营，拍照勿影响旅客通行",
+        "清晨人少光线好，出片率更高",
+        "与五里泉同在市区，可步行串联"
+      ],
+      "dest": "阿尔山",
+      "duration": "建议 30-60 分钟",
+      "bestSeason": "全年",
+      "lon": 0,
+      "lat": 0,
+      "weight": 83,
+      "online": true
+    },
+    {
+      "id": "s19",
+      "name": "根河湿地",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%A0%B9%E6%B2%B3%E6%B9%BF%E5%9C%B0%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%A0%B9%E6%B2%B3%E6%B9%BF%E5%9C%B0%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%A0%B9%E6%B2%B3%E6%B9%BF%E5%9C%B0%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%A0%B9%E6%B2%B3%E6%B9%BF%E5%9C%B0%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "大兴安岭西麓的湿地，林与水的清凉秘境。",
+      "detailHtml": "<p>根河湿地沿根河河谷铺展，森林、灌丛与水泽相接，是候鸟栖息的天然家园。清晨雾霭贴着河面流动，木栈道穿行其间，凉爽安静，是东北林海深处难得的清凉停靠点。</p>",
+      "tags": [
+        "木栈道湿滑，建议穿防滑鞋",
+        "清晨雾气最浓，适合出片",
+        "蚊虫活跃，务必携带驱蚊用品"
+      ],
+      "dest": "根河",
+      "duration": "建议 1-1.5 小时",
+      "bestSeason": "6月-9月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 82,
+      "online": true
+    },
+    {
+      "id": "s20",
+      "name": "莫尔道嘎国家森林公园",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E5%B0%94%E9%81%93%E5%98%8E%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E5%B0%94%E9%81%93%E5%98%8E%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E5%B0%94%E9%81%93%E5%98%8E%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E5%B0%94%E9%81%93%E5%98%8E%E5%9B%BD%E5%AE%B6%E6%A3%AE%E6%9E%97%E5%85%AC%E5%9B%AD%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "大兴安岭腹地的原始林海，森林小火车悠长穿行。",
+      "detailHtml": "<p>莫尔道嘎国家森林公园地处大兴安岭北部，白桦与落叶松层层铺向天际，龙岩山登顶可俯瞰整片林海。园内复古森林小火车慢速穿行，叮当声里满眼绿意，是森林探秘的招牌体验。</p>",
+      "tags": [
+        "林区禁火，全程严禁携带火种",
+        "小火车班次固定，提前问清发车时间",
+        "林间蚊虫多，长袖长裤加驱蚊水"
+      ],
+      "dest": "莫尔道嘎",
+      "duration": "建议 3-4 小时",
+      "bestSeason": "6月-9月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 81,
+      "online": true
+    },
+    {
+      "id": "s21",
+      "name": "敖鲁古雅使鹿部落",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%95%96%E9%B2%81%E5%8F%A4%E9%9B%85%E4%BD%BF%E9%B9%BF%E9%83%A8%E8%90%BD%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%95%96%E9%B2%81%E5%8F%A4%E9%9B%85%E4%BD%BF%E9%B9%BF%E9%83%A8%E8%90%BD%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%95%96%E9%B2%81%E5%8F%A4%E9%9B%85%E4%BD%BF%E9%B9%BF%E9%83%A8%E8%90%BD%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%95%96%E9%B2%81%E5%8F%A4%E9%9B%85%E4%BD%BF%E9%B9%BF%E9%83%A8%E8%90%BD%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "鄂温克族驯鹿部落，森林里的「驯鹿人家」。",
+      "detailHtml": "<p>敖鲁古雅使鹿部落生活在大兴安岭密林中，世代以驯鹿与狩猎为生。如今游客可走进撮罗子营帐，喂一喂温驯的驯鹿，听鄂温克老人讲森林里的故事，是深度感受东北林区人文的一站。</p>",
+      "tags": [
+        "驯鹿温顺但勿突然追跑，请听从讲解",
+        "冬季雪深，需穿防滑加厚鞋具",
+        "营区内请勿大声喧哗，尊重部落习俗"
+      ],
+      "dest": "根河",
+      "duration": "建议 1.5-2 小时",
+      "bestSeason": "6月-9月",
+      "lon": 0,
+      "lat": 0,
+      "weight": 80,
+      "online": true
+    }
+  ],
+  "hotel": [
+    {
+      "id": "h1",
+      "name": "海拉尔草原天际酒店",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B5%B7%E6%8B%89%E5%B0%94%E8%8D%89%E5%8E%9F%E5%A4%A9%E9%99%85%E9%85%92%E5%BA%97%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B5%B7%E6%8B%89%E5%B0%94%E8%8D%89%E5%8E%9F%E5%A4%A9%E9%99%85%E9%85%92%E5%BA%97%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B5%B7%E6%8B%89%E5%B0%94%E8%8D%89%E5%8E%9F%E5%A4%A9%E9%99%85%E9%85%92%E5%BA%97%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "坐落在海拉尔城区北侧的高地之上，推窗即是远山与草原的交界线。",
+      "detailHtml": "<p>酒店位于海拉尔市区北端高地，视野开阔，清晨可见草原晨雾与城市灯火同框。大堂采用原木与暖沙色调，公共区域安静通透，落地窗外就是呼伦贝尔特有的天际线，是抵达草原后休整一晚的理想起点。</p>",
+      "facilities": [
+        "接送机",
+        "全天餐厅",
+        "健身房",
+        "自助洗衣房"
+      ],
+      "price": 688,
+      "stars": 4,
+      "score": 4.8,
+      "area": "海拉尔",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%E7%8E%AF%E5%A2%83%20%E5%A4%A9%E9%99%85%E8%90%BD%E5%9C%B0%E7%AA%97%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%BF%E5%9E%8B%20%E5%9F%8E%E6%99%AF%E5%A4%A7%E5%BA%8A%E6%88%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "天际景观大床房：大面积落地窗朝向北侧草原",
+        "家庭双卧套房：两卧一厅，适合带娃家庭",
+        "全屋地暖，冬季温暖顺滑"
+      ],
+      "location": "距海拉尔机场约 15 分钟车程，临靠城区商业与美食街区，出行便利。早晨出发前往莫日格勒河、呼伦贝尔大草原均在 1 小时车程内。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 1,
+      "online": true
+    },
+    {
+      "id": "h2",
+      "name": "额尔古纳湿地景观酒店",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%E6%99%AF%E8%A7%82%E9%85%92%E5%BA%97%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%E6%99%AF%E8%A7%82%E9%85%92%E5%BA%97%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%E6%99%AF%E8%A7%82%E9%85%92%E5%BA%97%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "紧邻亚洲第一湿地，窗外就是根河河谷与白桦林编织的画卷。",
+      "detailHtml": "<p>酒店位于额尔古纳河支流畔，与湿地观景平台隔路相望。房间内木质窗框宛如取景框，把根河湿地、白桦林与远山收纳进日常。屋顶观景露台是看日落与晨雾的热门机位，安静温和。</p>",
+      "facilities": [
+        "湿地观景露台",
+        "免费停车",
+        "餐厅",
+        "行李寄存"
+      ],
+      "price": 458,
+      "stars": 4,
+      "score": 4.7,
+      "area": "额尔古纳",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%E7%8E%AF%E5%A2%83%20%E6%B9%BF%E5%9C%B0%E6%99%A8%E6%99%AF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%BF%E5%9E%8B%20%E6%B9%BF%E5%9C%B0%E6%99%AF%E8%A7%82%E6%88%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "湿地景观房：朝西房间直赏根河日落",
+        "精品双床房：空间紧凑但采光极佳",
+        "部分房型带观景阳台"
+      ],
+      "location": "步行 3 分钟即达额尔古纳湿地景区入口；距白桦林景区约 20 分钟车程，去往恩和、黑山头均在 1.5 小时以内。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 2,
+      "online": true
+    },
+    {
+      "id": "h3",
+      "name": "恩和木刻楞民宿",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h3%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E6%9C%A8%E5%88%BB%E6%A5%9E%E6%B0%91%E5%AE%BF%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E6%9C%A8%E5%88%BB%E6%A5%9E%E6%B0%91%E5%AE%BF%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E6%9C%A8%E5%88%BB%E6%A5%9E%E6%B0%91%E5%AE%BF%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "尖顶木刻楞民居，保留俄罗斯族村落最地道的烟火气。",
+      "detailHtml": "<p>民宿由百年木刻楞老屋改造，保留尖顶、圆木墙与蓝色窗棂。院中种着列巴花与向日葵，清晨有现烤列巴的香气。掌柜一家会讲俄语与东北话，晚饭后的炉火旁，是听故事最好的时光。</p>",
+      "facilities": [
+        "俄式早餐",
+        "院内篝火",
+        "免费停车",
+        "行李寄存"
+      ],
+      "price": 368,
+      "stars": 4,
+      "score": 4.9,
+      "area": "恩和",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B0%91%E5%AE%BF%E7%8E%AF%E5%A2%83%20%E5%B0%8F%E9%99%A2%E4%B8%8E%E6%9C%A8%E5%B1%8B%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B0%91%E5%AE%BF%E6%88%BF%E5%9E%8B%20%E6%9C%A8%E5%88%BB%E6%A5%9E%E6%9A%96%E6%88%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "木刻楞暖房：原木墙面配壁炉温暖",
+        "家庭套间：带小客厅，适合亲子入住",
+        "庭院双人间：推门即是小院花园"
+      ],
+      "location": "地处恩和俄罗斯民族乡核心，步行可达列巴作坊与村中教堂；距室韦界河与临江屯约 40 分钟车程。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 3,
+      "online": true
+    },
+    {
+      "id": "h4",
+      "name": "黑山头草原蒙古包营地",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h4%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E8%92%99%E5%8F%A4%E5%8C%85%E8%90%A5%E5%9C%B0%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E8%92%99%E5%8F%A4%E5%8C%85%E8%90%A5%E5%9C%B0%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E8%92%99%E5%8F%A4%E5%8C%85%E8%90%A5%E5%9C%B0%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "枕着草原入眠，头顶是远离光污染的完整银河。",
+      "detailHtml": "<p>营地建在黑山头镇外的高岗草场上，蒙古包内部为现代卫浴与床品，外观却保留着最传统的毡房样式。入夜后全营地熄灯，银河清晰可见；清晨马蹄声混着奶茶香，是草原生活的完整打开方式。</p>",
+      "facilities": [
+        "篝火晚会",
+        "骑马预约",
+        "观星台",
+        "蒙古式晚餐"
+      ],
+      "price": 528,
+      "stars": 4,
+      "score": 4.6,
+      "area": "黑山头",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%90%A5%E5%9C%B0%E7%8E%AF%E5%A2%83%20%E8%8D%89%E5%8E%9F%E8%90%BD%E6%97%A5%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%90%A5%E5%9C%B0%E6%88%BF%E5%9E%8B%20%E6%98%9F%E7%A9%BA%E8%92%99%E5%8F%A4%E5%8C%85%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "星空蒙古包：顶部开窗可观星",
+        "标准蒙古包：双床配置，独立卫浴",
+        "亲子蒙古包：内设小帐与玩偶区"
+      ],
+      "location": "位于黑山头镇西侧草原高处，距黑山头口岸观景台约 10 分钟车程，周边马场与日落山都在步行范围。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 4,
+      "online": true
+    },
+    {
+      "id": "h5",
+      "name": "满洲里套娃主题酒店",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h5%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%A5%97%E5%A8%83%E4%B8%BB%E9%A2%98%E9%85%92%E5%BA%97%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%A5%97%E5%A8%83%E4%B8%BB%E9%A2%98%E9%85%92%E5%BA%97%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%E5%A5%97%E5%A8%83%E4%B8%BB%E9%A2%98%E9%85%92%E5%BA%97%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "住进套娃广场里的童话城堡，窗外就是异域十足的边城夜景。",
+      "detailHtml": "<p>酒店与套娃主题乐园同处一区，巨大的套娃建筑成为满洲里的地标。客房以俄式童话元素装点，色彩活泼又不失质感。夜晚华灯亮起，彩色穹顶与套娃灯光交织，是亲子家庭最爱的住宿选择。</p>",
+      "facilities": [
+        "主题乐园通道",
+        "中西餐厅",
+        "亲子乐园",
+        "伴手礼店"
+      ],
+      "price": 758,
+      "stars": 4,
+      "score": 4.8,
+      "area": "满洲里",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%E7%8E%AF%E5%A2%83%20%E5%A5%97%E5%A8%83%E7%A9%B9%E9%A1%B6%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%BF%E5%9E%8B%20%E4%BF%84%E5%BC%8F%E7%AB%A5%E8%AF%9D%E4%BA%B2%E5%AD%90%E6%88%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "俄式童话亲子房：套娃主题布草",
+        "景观大床房：正对套娃广场夜景",
+        "家庭三人间：满足二大一小组合"
+      ],
+      "location": "地处中俄互贸区，步行可逛套娃广场与北湖公园；距国门景区约 10 分钟车程，夜宵可选俄式西餐与东北烧烤。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 5,
+      "online": true
+    },
+    {
+      "id": "h6",
+      "name": "阿尔山温泉度假酒店",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h6%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E6%B8%A9%E6%B3%89%E5%BA%A6%E5%81%87%E9%85%92%E5%BA%97%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E6%B8%A9%E6%B3%89%E5%BA%A6%E5%81%87%E9%85%92%E5%BA%97%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E6%B8%A9%E6%B3%89%E5%BA%A6%E5%81%87%E9%85%92%E5%BA%97%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "火山温泉直引入房，秋冬季节里最治愈的一站。",
+      "detailHtml": "<p>酒店坐落于阿尔山国家森林公园入口处的温泉带上，取自 3000 米地下火山热泉，入户温泉成为招牌体验。建筑以暖灰与木色包裹，安静掩映在白桦林中，是结束一天徒步后最好的放松去处。</p>",
+      "facilities": [
+        "入户温泉",
+        "室内泳池",
+        "含双早",
+        "雪地接驳"
+      ],
+      "price": 899,
+      "stars": 4,
+      "score": 4.9,
+      "area": "阿尔山",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%E7%8E%AF%E5%A2%83%20%E7%99%BD%E6%A1%A6%E6%8E%A9%E6%98%A0%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%BF%E5%9E%8B%20%E6%B8%A9%E6%B3%89%E7%A7%81%E6%B1%A4%E6%88%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "温泉私汤房：阳台独立泡池",
+        "山景双床房：面朝白桦林",
+        "家庭套房：含客厅与双卫"
+      ],
+      "location": "距阿尔山天池景区车程约 25 分钟，位于温泉街主路，步行可达博物馆与温泉博物馆；秋冬前往不冻河拍摄也极为顺路。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 6,
+      "online": true
+    },
+    {
+      "id": "h7",
+      "name": "根河林间木屋酒店",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h7%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%A0%B9%E6%B2%B3%E6%9E%97%E9%97%B4%E6%9C%A8%E5%B1%8B%E9%85%92%E5%BA%97%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%A0%B9%E6%B2%B3%E6%9E%97%E9%97%B4%E6%9C%A8%E5%B1%8B%E9%85%92%E5%BA%97%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%A0%B9%E6%B2%B3%E6%9E%97%E9%97%B4%E6%9C%A8%E5%B1%8B%E9%85%92%E5%BA%97%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "掩在白桦与落叶松间的森林木屋，晨起就是满窗绿意。",
+      "detailHtml": "<p>酒店建在根河市区边缘的林间缓坡上，原木外观与四周白桦林融为一体。房间铺设木地板与地暖，冬日推门就是雪原，夏日清晨鸟鸣如洗，是深入大兴安岭森林前的理想落脚点。</p>",
+      "facilities": [
+        "地暖",
+        "免费停车",
+        "餐厅",
+        "行李寄存"
+      ],
+      "price": 498,
+      "stars": 4,
+      "score": 4.8,
+      "area": "根河",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%E7%8E%AF%E5%A2%83%20%E6%9E%97%E9%97%B4%E6%99%A8%E9%9B%BE%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%BF%E5%9E%8B%20%E6%9E%97%E6%99%AF%E6%9A%96%E6%88%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "林景暖房：朝林窗景配地暖",
+        "家庭小木屋：独栋带小阳台",
+        "部分房型配投影与茶席"
+      ],
+      "location": "位于根河市区北缘，距根河湿地约 15 分钟车程，去往莫尔道嘎森林公园约 1.5 小时，周边有本地餐馆与超市。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 7,
+      "online": true
+    },
+    {
+      "id": "h8",
+      "name": "室韦界河假日酒店",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h8%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "album": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%AE%A4%E9%9F%A6%E7%95%8C%E6%B2%B3%E5%81%87%E6%97%A5%E9%85%92%E5%BA%97%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%AE%A4%E9%9F%A6%E7%95%8C%E6%B2%B3%E5%81%87%E6%97%A5%E9%85%92%E5%BA%97%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%AE%A4%E9%9F%A6%E7%95%8C%E6%B2%B3%E5%81%87%E6%97%A5%E9%85%92%E5%BA%97%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "intro": "推窗即见额尔古纳河与对岸俄罗斯村庄的木屋酒店。",
+      "detailHtml": "<p>酒店矗立在室韦俄罗斯民族乡界河畔的高台上，房间朝西可望额尔古纳河平缓拐弯与对岸俄式村舍。傍晚露台是看界河日落的好地方，早晨有俄式列巴与格瓦斯早餐。</p>",
+      "facilities": [
+        "界河观景露台",
+        "俄式早餐",
+        "免费停车",
+        "行李寄存"
+      ],
+      "price": 548,
+      "stars": 4,
+      "score": 4.7,
+      "area": "室韦",
+      "envImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%E7%8E%AF%E5%A2%83%20%E7%95%8C%E6%B2%B3%E8%90%BD%E6%97%A5%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "roomImg": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%88%BF%E5%9E%8B%20%E7%95%8C%E6%B2%B3%E8%A7%82%E6%99%AF%E6%88%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "rooms": [
+        "界河观景房：朝西看日落",
+        "家庭套间：带临露台小客厅",
+        "全屋木饰面，冬季地暖"
+      ],
+      "location": "地处室韦乡界河边，步行可达界河观景栈道；距恩和约 40 分钟车程，去黑山头边境风景道 1 小时内。",
+      "lon": 0,
+      "lat": 0,
+      "sort": 8,
+      "online": true
+    }
+  ],
+  "privateGroup": [
+    {
+      "id": "r001",
+      "title": "呼伦贝尔草原深度6日私家团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er001%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er001%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er001%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er001%20%E5%9B%BE3%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 4580,
+      "originalPrice": 5280,
+      "days": 6,
+      "departure": "海拉尔集合",
+      "dest": "呼伦贝尔",
+      "type": "私家团",
+      "tags": [
+        "一价全含",
+        "独立用车"
+      ],
+      "brief": "6天5晚贯穿呼伦贝尔经典草原腹地，独立用车、专属司机，深入莫日格勒河夏营地，感受真正的大草原。",
+      "highlights": [
+        "专属司机独立用车，随走随停",
+        "莫日格勒河制高点俯瞰九曲十八弯",
+        "恩和俄罗斯民族乡木刻楞住宿",
+        "黑山头草原落日与篝火体验"
+      ],
+      "detailHtml": "<p>6天5晚贯穿呼伦贝尔经典草原腹地，独立用车、专属司机，深入莫日格勒河夏营地，感受真正的大草原。</p>",
+      "include": [
+        "全程SUV/商务车独立用车及油费过路费",
+        "5晚精选住宿（含1晚蒙古包）",
+        "行程内标注的用餐",
+        "持证中文司机兼向导服务",
+        "景区首道门票",
+        "旅行意外险"
+      ],
+      "exclude": [
+        "全国各地往返海拉尔大交通",
+        "行程未标注的用餐",
+        "个人消费及自费项目",
+        "单房差 800元/人"
+      ],
+      "notices": {
+        "tips": [
+          "草原昼夜温差大，即使夏季也需备外套；呼伦贝尔多阵雨，建议随身携带雨具。",
+          "行程为半自由行性质，游览时间可与司机协商微调。",
+          "请携带身份证原件，儿童携带户口本。"
+        ],
+        "gear": [
+          "防晒霜、墨镜、遮阳帽",
+          "薄羽绒或冲锋衣（早晚穿着）",
+          "舒适防滑运动鞋",
+          "驱蚊水、充电宝"
+        ],
+        "refund": [
+          "出行前15天以上取消，全额退款。",
+          "出行前7-14天取消，收取20%损失费。",
+          "出行前7天内取消，收取50%损失费；出行当日取消不退款。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "林女士",
+          "date": "2026-07-12",
+          "stars": 5,
+          "content": "司机师傅很专业，一路随走随停，莫日格勒河的落日太震撼了，蒙古包也很干净。"
+        },
+        {
+          "name": "周先生",
+          "date": "2026-06-28",
+          "stars": 5,
+          "content": "一家人私家团非常省心，孩子玩得很开心，行程不赶，住宿都超出预期。"
+        },
+        {
+          "name": "阿雅",
+          "date": "2026-06-15",
+          "stars": 4,
+          "content": "整体很满意，顾问回复很及时，唯一遗憾是恩和那晚下雨没看到星空。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "全国各地 - 海拉尔集合",
+          "spots": [
+            "呼伦贝尔古城",
+            "成吉思汗广场"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔商务酒店"
+        },
+        {
+          "d": 2,
+          "scene": "海拉尔 - 莫日格勒河 - 额尔古纳",
+          "spots": [
+            "莫日格勒河制高点",
+            "断崖草场",
+            "额尔古纳湿地"
+          ],
+          "meals": "含早午餐",
+          "hotel": "额尔古纳酒店"
+        },
+        {
+          "d": 3,
+          "scene": "额尔古纳 - 白桦林 - 恩和",
+          "spots": [
+            "白桦林景区",
+            "恩和俄罗斯民族乡"
+          ],
+          "meals": "含早晚餐",
+          "hotel": "恩和木刻楞民宿"
+        },
+        {
+          "d": 4,
+          "scene": "恩和 - 七卡 - 黑山头",
+          "spots": [
+            "边境七卡线",
+            "黑山头草原",
+            "日落山"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包"
+        },
+        {
+          "d": 5,
+          "scene": "黑山头 - 186彩带河 - 满洲里",
+          "spots": [
+            "186彩带河",
+            "套娃广场",
+            "国门景区"
+          ],
+          "meals": "含早午餐",
+          "hotel": "满洲里四星酒店"
+        },
+        {
+          "d": 6,
+          "scene": "满洲里 - 海拉尔 - 返程",
+          "spots": [
+            "扎赉诺尔博物馆",
+            "呼伦湖"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r001-d1",
+          "dayNum": 1,
+          "title": "全国各地 - 海拉尔集合",
+          "content": "呼伦贝尔古城、成吉思汗广场；用餐：不含餐；住宿：海拉尔商务酒店",
+          "scenicId": "s9",
+          "hotelId": "h1",
+          "spots": [
+            "呼伦贝尔古城",
+            "成吉思汗广场"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔商务酒店",
+          "imgs": []
+        },
+        {
+          "id": "r001-d2",
+          "dayNum": 2,
+          "title": "海拉尔 - 莫日格勒河 - 额尔古纳",
+          "content": "莫日格勒河制高点、断崖草场、额尔古纳湿地；用餐：含早午餐；住宿：额尔古纳酒店",
+          "scenicId": "s2",
+          "hotelId": "h2",
+          "spots": [
+            "莫日格勒河制高点",
+            "断崖草场",
+            "额尔古纳湿地"
+          ],
+          "meals": "含早午餐",
+          "hotel": "额尔古纳酒店",
+          "imgs": []
+        },
+        {
+          "id": "r001-d3",
+          "dayNum": 3,
+          "title": "额尔古纳 - 白桦林 - 恩和",
+          "content": "白桦林景区、恩和俄罗斯民族乡；用餐：含早晚餐；住宿：恩和木刻楞民宿",
+          "scenicId": "s4",
+          "hotelId": "h3",
+          "spots": [
+            "白桦林景区",
+            "恩和俄罗斯民族乡"
+          ],
+          "meals": "含早晚餐",
+          "hotel": "恩和木刻楞民宿",
+          "imgs": []
+        },
+        {
+          "id": "r001-d4",
+          "dayNum": 4,
+          "title": "恩和 - 七卡 - 黑山头",
+          "content": "边境七卡线、黑山头草原、日落山；用餐：含三餐；住宿：黑山头蒙古包",
+          "scenicId": "s6",
+          "hotelId": "h4",
+          "spots": [
+            "边境七卡线",
+            "黑山头草原",
+            "日落山"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包",
+          "imgs": []
+        },
+        {
+          "id": "r001-d5",
+          "dayNum": 5,
+          "title": "黑山头 - 186彩带河 - 满洲里",
+          "content": "186彩带河、套娃广场、国门景区；用餐：含早午餐；住宿：满洲里四星酒店",
+          "scenicId": "s13",
+          "hotelId": "h5",
+          "spots": [
+            "186彩带河",
+            "套娃广场",
+            "国门景区"
+          ],
+          "meals": "含早午餐",
+          "hotel": "满洲里四星酒店",
+          "imgs": []
+        },
+        {
+          "id": "r001-d6",
+          "dayNum": 6,
+          "title": "满洲里 - 海拉尔 - 返程",
+          "content": "扎赉诺尔博物馆、呼伦湖；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "s15",
+          "hotelId": "",
+          "spots": [
+            "扎赉诺尔博物馆",
+            "呼伦湖"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 1,
+      "online": true
+    },
+    {
+      "id": "r002",
+      "title": "阿尔山+呼伦贝尔7日私家团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er002%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er002%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er002%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er002%20%E5%9B%BE3%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 5980,
+      "originalPrice": 6680,
+      "days": 7,
+      "departure": "海拉尔集合",
+      "dest": "阿尔山",
+      "type": "私家团",
+      "tags": [
+        "小包团",
+        "精品住宿"
+      ],
+      "brief": "7天串联呼伦贝尔草原与阿尔山森林公园，火山天池、杜鹃湖、不冻河一次走遍，适合摄影与家庭出游。",
+      "highlights": [
+        "阿尔山国家森林公园一票通行",
+        "天池、杜鹃湖、三潭峡深度游览",
+        "全程精品酒店升级",
+        "草原与森林双地貌体验"
+      ],
+      "detailHtml": "<p>7天串联呼伦贝尔草原与阿尔山森林公园，火山天池、杜鹃湖、不冻河一次走遍，适合摄影与家庭出游。</p>",
+      "include": [
+        "全程独立用车及司机服务",
+        "6晚精品酒店（含1晚温泉酒店）",
+        "行程内标注用餐",
+        "阿尔山森林公园门票",
+        "旅游意外险"
+      ],
+      "exclude": [
+        "往返大交通",
+        "景区内电瓶车及其他自费项目",
+        "个人消费",
+        "单房差 1000元/人"
+      ],
+      "notices": {
+        "tips": [
+          "阿尔山景区内信号较弱，请提前下载离线地图。",
+          "7-8月为旺季，酒店价格浮动，以实际确认为准。"
+        ],
+        "gear": [
+          "防风外套、登山鞋",
+          "相机与备用电池",
+          "防晒及防蚊用品"
+        ],
+        "refund": [
+          "出行前15天以上全额退款；7-14天收取20%；7天内收取50%。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "陈先生",
+          "date": "2026-08-02",
+          "stars": 5,
+          "content": "阿尔山的秋天太美了，行程安排张弛有度，酒店升级得很值。"
+        },
+        {
+          "name": "苏苏",
+          "date": "2026-07-20",
+          "stars": 5,
+          "content": "司机兼导游讲解很到位，天池爬上去虽然累但风景绝了。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "海拉尔集合",
+          "spots": [
+            "成吉思汗广场"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔四星酒店"
+        },
+        {
+          "d": 2,
+          "scene": "海拉尔 - 阿尔山市",
+          "spots": [
+            "五里泉",
+            "阿尔山火车站"
+          ],
+          "meals": "含早晚餐",
+          "hotel": "阿尔山温泉酒店"
+        },
+        {
+          "d": 3,
+          "scene": "阿尔山国家森林公园全天",
+          "spots": [
+            "天池",
+            "三潭峡",
+            "地池"
+          ],
+          "meals": "含早餐",
+          "hotel": "景区内度假酒店"
+        },
+        {
+          "d": 4,
+          "scene": "阿尔山国家森林公园全天",
+          "spots": [
+            "杜鹃湖",
+            "驼峰岭天池",
+            "大峡谷"
+          ],
+          "meals": "含早餐",
+          "hotel": "景区内度假酒店"
+        },
+        {
+          "d": 5,
+          "scene": "阿尔山 - 新巴尔虎左旗 - 海拉尔",
+          "spots": [
+            "玫瑰峰",
+            "诺干湖"
+          ],
+          "meals": "含早午餐",
+          "hotel": "海拉尔四星酒店"
+        },
+        {
+          "d": 6,
+          "scene": "海拉尔 - 莫日格勒河 - 额尔古纳",
+          "spots": [
+            "莫日格勒河",
+            "额尔古纳湿地"
+          ],
+          "meals": "含三餐",
+          "hotel": "额尔古纳酒店"
+        },
+        {
+          "d": 7,
+          "scene": "额尔古纳 - 海拉尔 - 返程",
+          "spots": [
+            "白桦林景区"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r002-d1",
+          "dayNum": 1,
+          "title": "海拉尔集合",
+          "content": "成吉思汗广场；用餐：不含餐；住宿：海拉尔四星酒店",
+          "scenicId": "s10",
+          "hotelId": "h1",
+          "spots": [
+            "成吉思汗广场"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔四星酒店",
+          "imgs": []
+        },
+        {
+          "id": "r002-d2",
+          "dayNum": 2,
+          "title": "海拉尔 - 阿尔山市",
+          "content": "五里泉、阿尔山火车站；用餐：含早晚餐；住宿：阿尔山温泉酒店",
+          "scenicId": "s17",
+          "hotelId": "h6",
+          "spots": [
+            "五里泉",
+            "阿尔山火车站"
+          ],
+          "meals": "含早晚餐",
+          "hotel": "阿尔山温泉酒店",
+          "imgs": []
+        },
+        {
+          "id": "r002-d3",
+          "dayNum": 3,
+          "title": "阿尔山国家森林公园全天",
+          "content": "天池、三潭峡、地池；用餐：含早餐；住宿：景区内度假酒店",
+          "scenicId": "",
+          "hotelId": "",
+          "spots": [
+            "天池",
+            "三潭峡",
+            "地池"
+          ],
+          "meals": "含早餐",
+          "hotel": "景区内度假酒店",
+          "imgs": []
+        },
+        {
+          "id": "r002-d4",
+          "dayNum": 4,
+          "title": "阿尔山国家森林公园全天",
+          "content": "杜鹃湖、驼峰岭天池、大峡谷；用餐：含早餐；住宿：景区内度假酒店",
+          "scenicId": "",
+          "hotelId": "",
+          "spots": [
+            "杜鹃湖",
+            "驼峰岭天池",
+            "大峡谷"
+          ],
+          "meals": "含早餐",
+          "hotel": "景区内度假酒店",
+          "imgs": []
+        },
+        {
+          "id": "r002-d5",
+          "dayNum": 5,
+          "title": "阿尔山 - 新巴尔虎左旗 - 海拉尔",
+          "content": "玫瑰峰、诺干湖；用餐：含早午餐；住宿：海拉尔四星酒店",
+          "scenicId": "",
+          "hotelId": "h1",
+          "spots": [
+            "玫瑰峰",
+            "诺干湖"
+          ],
+          "meals": "含早午餐",
+          "hotel": "海拉尔四星酒店",
+          "imgs": []
+        },
+        {
+          "id": "r002-d6",
+          "dayNum": 6,
+          "title": "海拉尔 - 莫日格勒河 - 额尔古纳",
+          "content": "莫日格勒河、额尔古纳湿地；用餐：含三餐；住宿：额尔古纳酒店",
+          "scenicId": "s2",
+          "hotelId": "h2",
+          "spots": [
+            "莫日格勒河",
+            "额尔古纳湿地"
+          ],
+          "meals": "含三餐",
+          "hotel": "额尔古纳酒店",
+          "imgs": []
+        },
+        {
+          "id": "r002-d7",
+          "dayNum": 7,
+          "title": "额尔古纳 - 海拉尔 - 返程",
+          "content": "白桦林景区；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "s4",
+          "hotelId": "",
+          "spots": [
+            "白桦林景区"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 2,
+      "online": true
+    },
+    {
+      "id": "r003",
+      "title": "满洲里+额尔古纳5日精华拼团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er003%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er003%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er003%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 3280,
+      "originalPrice": 3780,
+      "days": 5,
+      "departure": "海拉尔集合",
+      "dest": "满洲里",
+      "type": "拼团",
+      "tags": [
+        "性价比",
+        "结伴出行"
+      ],
+      "brief": "5天打卡满洲里异域风情与额尔古纳湿地，16人小团，专业导游带队，性价比之选。",
+      "highlights": [
+        "16人精品小团",
+        "满洲里夜景与套娃主题乐园",
+        "额尔古纳湿地亚洲第一湿地",
+        "含4早7正餐，吃得放心"
+      ],
+      "detailHtml": "<p>5天打卡满洲里异域风情与额尔古纳湿地，16人小团，专业导游带队，性价比之选。</p>",
+      "include": [
+        "全程空调旅游巴士",
+        "4晚酒店住宿",
+        "行程内标注用餐",
+        "持证导游服务",
+        "景区首道门票",
+        "旅行社责任险"
+      ],
+      "exclude": [
+        "往返大交通",
+        "景区电瓶车/马骑等自费",
+        "单房差 600元/人"
+      ],
+      "notices": {
+        "tips": [
+          "拼团为固定发班日期，报名请以顾问确认为准。",
+          "团队行程请准时集合，迟到视为自愿放弃。"
+        ],
+        "gear": [
+          "薄外套、舒适运动鞋",
+          "防晒用品",
+          "常用药品"
+        ],
+        "refund": [
+          "出行前10天以上全额退款；4-9天收取30%；4天内收取50%。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "小胖",
+          "date": "2026-07-05",
+          "stars": 4,
+          "content": "性价比很高，导游很热情，满洲里夜景一定要看。"
+        },
+        {
+          "name": "徐女士",
+          "date": "2026-06-19",
+          "stars": 5,
+          "content": "拼团认识了一群小伙伴，行程不累，老人孩子都能跟上。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "海拉尔集合 - 晚间自由活动",
+          "spots": [
+            "呼伦贝尔古城"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔商务酒店"
+        },
+        {
+          "d": 2,
+          "scene": "海拉尔 - 额尔古纳",
+          "spots": [
+            "额尔古纳湿地",
+            "白桦林"
+          ],
+          "meals": "含早午餐",
+          "hotel": "额尔古纳酒店"
+        },
+        {
+          "d": 3,
+          "scene": "额尔古纳 - 恩和 - 黑山头",
+          "spots": [
+            "恩和乡",
+            "黑山头马场"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包"
+        },
+        {
+          "d": 4,
+          "scene": "黑山头 - 186彩带河 - 满洲里",
+          "spots": [
+            "186彩带河",
+            "套娃广场",
+            "国门"
+          ],
+          "meals": "含早晚餐",
+          "hotel": "满洲里商务酒店"
+        },
+        {
+          "d": 5,
+          "scene": "满洲里 - 呼伦湖 - 海拉尔返程",
+          "spots": [
+            "呼伦湖",
+            "扎赉诺尔博物馆"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r003-d1",
+          "dayNum": 1,
+          "title": "海拉尔集合 - 晚间自由活动",
+          "content": "呼伦贝尔古城；用餐：不含餐；住宿：海拉尔商务酒店",
+          "scenicId": "s9",
+          "hotelId": "h1",
+          "spots": [
+            "呼伦贝尔古城"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔商务酒店",
+          "imgs": []
+        },
+        {
+          "id": "r003-d2",
+          "dayNum": 2,
+          "title": "海拉尔 - 额尔古纳",
+          "content": "额尔古纳湿地、白桦林；用餐：含早午餐；住宿：额尔古纳酒店",
+          "scenicId": "s3",
+          "hotelId": "h2",
+          "spots": [
+            "额尔古纳湿地",
+            "白桦林"
+          ],
+          "meals": "含早午餐",
+          "hotel": "额尔古纳酒店",
+          "imgs": []
+        },
+        {
+          "id": "r003-d3",
+          "dayNum": 3,
+          "title": "额尔古纳 - 恩和 - 黑山头",
+          "content": "恩和乡、黑山头马场；用餐：含三餐；住宿：黑山头蒙古包",
+          "scenicId": "s11",
+          "hotelId": "h4",
+          "spots": [
+            "恩和乡",
+            "黑山头马场"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包",
+          "imgs": []
+        },
+        {
+          "id": "r003-d4",
+          "dayNum": 4,
+          "title": "黑山头 - 186彩带河 - 满洲里",
+          "content": "186彩带河、套娃广场、国门；用餐：含早晚餐；住宿：满洲里商务酒店",
+          "scenicId": "s13",
+          "hotelId": "h5",
+          "spots": [
+            "186彩带河",
+            "套娃广场",
+            "国门"
+          ],
+          "meals": "含早晚餐",
+          "hotel": "满洲里商务酒店",
+          "imgs": []
+        },
+        {
+          "id": "r003-d5",
+          "dayNum": 5,
+          "title": "满洲里 - 呼伦湖 - 海拉尔返程",
+          "content": "呼伦湖、扎赉诺尔博物馆；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "s16",
+          "hotelId": "",
+          "spots": [
+            "呼伦湖",
+            "扎赉诺尔博物馆"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 3,
+      "online": true
+    },
+    {
+      "id": "r004",
+      "title": "莫尔道嘎森林探秘4日私家团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er004%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er004%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er004%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 3680,
+      "originalPrice": 3980,
+      "days": 4,
+      "departure": "海拉尔集合",
+      "dest": "莫尔道嘎",
+      "type": "私家团",
+      "tags": [
+        "独立用车",
+        "管家服务"
+      ],
+      "brief": "走进大兴安岭莫尔道嘎国家森林公园，乘森林小火车穿越白桦与落叶松，轻徒步、观鸟、寻鹿。",
+      "highlights": [
+        "森林小火车穿越原始林海",
+        "龙岩山登顶俯瞰林海",
+        "鄂温克驯鹿部落探访",
+        "全程独立用车管家式服务"
+      ],
+      "detailHtml": "<p>走进大兴安岭莫尔道嘎国家森林公园，乘森林小火车穿越白桦与落叶松，轻徒步、观鸟、寻鹿。</p>",
+      "include": [
+        "独立用车及司机服务",
+        "3晚住宿（含1晚林区木屋）",
+        "行程内标注用餐",
+        "景区门票及小火车票",
+        "旅游意外险"
+      ],
+      "exclude": [
+        "往返大交通",
+        "骑马、摄影等自费项目",
+        "单房差 700元/人"
+      ],
+      "notices": {
+        "tips": [
+          "林区蚊虫较多，务必携带驱蚊水。",
+          "森林内禁止明火，请遵守景区规定。"
+        ],
+        "gear": [
+          "长袖长裤防蚊",
+          "防滑徒步鞋",
+          "雨衣"
+        ],
+        "refund": [
+          "出行前15天以上全额退款；7-14天收取20%；7天内收取50%。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "木子",
+          "date": "2026-08-10",
+          "stars": 5,
+          "content": "小火车太治愈了，木屋住宿很有感觉，管家服务贴心。"
+        },
+        {
+          "name": "老陈",
+          "date": "2026-07-26",
+          "stars": 5,
+          "content": "摄影爱好者必来，清晨的林海雾气绝美。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "海拉尔 - 根河",
+          "spots": [
+            "根河湿地",
+            "敖鲁古雅使鹿部落"
+          ],
+          "meals": "含晚餐",
+          "hotel": "根河商务酒店"
+        },
+        {
+          "d": 2,
+          "scene": "根河 - 莫尔道嘎",
+          "spots": [
+            "莫尔道嘎国家森林公园",
+            "森林小火车"
+          ],
+          "meals": "含三餐",
+          "hotel": "森林公园木屋"
+        },
+        {
+          "d": 3,
+          "scene": "莫尔道嘎全天",
+          "spots": [
+            "龙岩山",
+            "一目九岭",
+            "翠谷溪源"
+          ],
+          "meals": "含三餐",
+          "hotel": "森林公园木屋"
+        },
+        {
+          "d": 4,
+          "scene": "莫尔道嘎 - 海拉尔返程",
+          "spots": [
+            "得耳布尔边防公路"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r004-d1",
+          "dayNum": 1,
+          "title": "海拉尔 - 根河",
+          "content": "根河湿地、敖鲁古雅使鹿部落；用餐：含晚餐；住宿：根河商务酒店",
+          "scenicId": "s19",
+          "hotelId": "h7",
+          "spots": [
+            "根河湿地",
+            "敖鲁古雅使鹿部落"
+          ],
+          "meals": "含晚餐",
+          "hotel": "根河商务酒店",
+          "imgs": []
+        },
+        {
+          "id": "r004-d2",
+          "dayNum": 2,
+          "title": "根河 - 莫尔道嘎",
+          "content": "莫尔道嘎国家森林公园、森林小火车；用餐：含三餐；住宿：森林公园木屋",
+          "scenicId": "s20",
+          "hotelId": "",
+          "spots": [
+            "莫尔道嘎国家森林公园",
+            "森林小火车"
+          ],
+          "meals": "含三餐",
+          "hotel": "森林公园木屋",
+          "imgs": []
+        },
+        {
+          "id": "r004-d3",
+          "dayNum": 3,
+          "title": "莫尔道嘎全天",
+          "content": "龙岩山、一目九岭、翠谷溪源；用餐：含三餐；住宿：森林公园木屋",
+          "scenicId": "",
+          "hotelId": "",
+          "spots": [
+            "龙岩山",
+            "一目九岭",
+            "翠谷溪源"
+          ],
+          "meals": "含三餐",
+          "hotel": "森林公园木屋",
+          "imgs": []
+        },
+        {
+          "id": "r004-d4",
+          "dayNum": 4,
+          "title": "莫尔道嘎 - 海拉尔返程",
+          "content": "得耳布尔边防公路；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "",
+          "hotelId": "",
+          "spots": [
+            "得耳布尔边防公路"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 4,
+      "online": true
+    },
+    {
+      "id": "r005",
+      "title": "黑山头草原牧场3日拼团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er005%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er005%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er005%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 1980,
+      "originalPrice": 2380,
+      "days": 3,
+      "departure": "海拉尔集合",
+      "dest": "黑山头",
+      "type": "拼团",
+      "tags": [
+        "草原体验",
+        "限时特惠"
+      ],
+      "brief": "3天2晚草原轻体验，骑马、射箭、挤牛奶、看日落，适合时间紧凑又想玩尽兴的你。",
+      "highlights": [
+        "黑山头马场专业骑马体验",
+        "蒙古包住宿+篝火晚会",
+        "牧民家庭做客",
+        "20人以内小团"
+      ],
+      "detailHtml": "<p>3天2晚草原轻体验，骑马、射箭、挤牛奶、看日落，适合时间紧凑又想玩尽兴的你。</p>",
+      "include": [
+        "往返旅游巴士",
+        "2晚蒙古包住宿",
+        "行程内标注用餐",
+        "骑马体验（含护具）",
+        "篝火晚会",
+        "旅行社责任险"
+      ],
+      "exclude": [
+        "往返大交通",
+        "个人骑马加练等自费",
+        "单房差 400元/人"
+      ],
+      "notices": {
+        "tips": [
+          "骑马请听从教练指挥，12岁以下儿童需成人陪同。",
+          "草原夜间温度低，务必备厚外套。"
+        ],
+        "gear": [
+          "厚外套",
+          "手套、帽子",
+          "防晒霜"
+        ],
+        "refund": [
+          "出行前7天以上全额退款；3-6天收取30%；3天内收取50%。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "Nina",
+          "date": "2026-07-15",
+          "stars": 5,
+          "content": "第一次骑马超兴奋，教练很耐心，篝火晚会氛围拉满。"
+        },
+        {
+          "name": "阿凯",
+          "date": "2026-06-30",
+          "stars": 4,
+          "content": "三天玩得很满，性价比不错，蒙古包干净。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "海拉尔 - 黑山头",
+          "spots": [
+            "莫日格勒河",
+            "日落山"
+          ],
+          "meals": "含晚餐",
+          "hotel": "黑山头蒙古包"
+        },
+        {
+          "d": 2,
+          "scene": "黑山头牧场全天",
+          "spots": [
+            "马场骑马",
+            "射箭",
+            "挤牛奶",
+            "篝火晚会"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包"
+        },
+        {
+          "d": 3,
+          "scene": "黑山头 - 186彩带河 - 海拉尔",
+          "spots": [
+            "186彩带河",
+            "扎赉诺尔博物馆"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r005-d1",
+          "dayNum": 1,
+          "title": "海拉尔 - 黑山头",
+          "content": "莫日格勒河、日落山；用餐：含晚餐；住宿：黑山头蒙古包",
+          "scenicId": "s2",
+          "hotelId": "h4",
+          "spots": [
+            "莫日格勒河",
+            "日落山"
+          ],
+          "meals": "含晚餐",
+          "hotel": "黑山头蒙古包",
+          "imgs": []
+        },
+        {
+          "id": "r005-d2",
+          "dayNum": 2,
+          "title": "黑山头牧场全天",
+          "content": "马场骑马、射箭、挤牛奶、篝火晚会；用餐：含三餐；住宿：黑山头蒙古包",
+          "scenicId": "",
+          "hotelId": "h4",
+          "spots": [
+            "马场骑马",
+            "射箭",
+            "挤牛奶",
+            "篝火晚会"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包",
+          "imgs": []
+        },
+        {
+          "id": "r005-d3",
+          "dayNum": 3,
+          "title": "黑山头 - 186彩带河 - 海拉尔",
+          "content": "186彩带河、扎赉诺尔博物馆；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "s13",
+          "hotelId": "",
+          "spots": [
+            "186彩带河",
+            "扎赉诺尔博物馆"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 5,
+      "online": true
+    },
+    {
+      "id": "r006",
+      "title": "呼伦贝尔全景8日轻奢私家团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er006%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er006%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er006%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er006%20%E5%9B%BE3%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 7980,
+      "originalPrice": 8980,
+      "days": 8,
+      "departure": "海拉尔集合",
+      "dest": "呼伦贝尔",
+      "type": "私家团",
+      "tags": [
+        "轻奢",
+        "一价全含"
+      ],
+      "brief": "8天一价全含的轻奢之选：草原、森林、边境、湿地全线覆盖，四星升级五星，越野车独立出行。",
+      "highlights": [
+        "一价全含零自费",
+        "全程五星/豪华酒店",
+        "专属越野车队+随队摄影师（自选）",
+        "那达慕实景演出"
+      ],
+      "detailHtml": "<p>8天一价全含的轻奢之选：草原、森林、边境、湿地全线覆盖，四星升级五星，越野车独立出行。</p>",
+      "include": [
+        "全程越野车独立用车",
+        "7晚五星/豪华住宿",
+        "行程内全部用餐及特色餐",
+        "那达慕演出门票",
+        "景区首道门票",
+        "专属旅行管家",
+        "高额旅行意外险"
+      ],
+      "exclude": [
+        "往返大交通",
+        "个人消费",
+        "自选摄影服务 680元/组"
+      ],
+      "notices": {
+        "tips": [
+          "轻奢团型默认2人成行，1人需补房差。",
+          "行程中如有特殊饮食需求请提前告知顾问。"
+        ],
+        "gear": [
+          "正装一套（那达慕演出场合）",
+          "防晒及保暖衣物",
+          "常备药品"
+        ],
+        "refund": [
+          "出行前20天以上全额退款；10-19天收取20%；10天内收取50%。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "Lily",
+          "date": "2026-08-05",
+          "stars": 5,
+          "content": "预算充足直接冲这个，住宿和用车都没得挑，管家全程在线。"
+        },
+        {
+          "name": "韩先生",
+          "date": "2026-07-18",
+          "stars": 5,
+          "content": "八天下来非常充实，那达慕演出值回票价，孩子印象深刻。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "海拉尔接机 - 入住酒店",
+          "spots": [
+            "成吉思汗广场"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔五星酒店"
+        },
+        {
+          "d": 2,
+          "scene": "海拉尔 - 莫日格勒河 - 额尔古纳",
+          "spots": [
+            "莫日格勒河",
+            "额尔古纳湿地"
+          ],
+          "meals": "含三餐",
+          "hotel": "额尔古纳豪华酒店"
+        },
+        {
+          "d": 3,
+          "scene": "额尔古纳 - 恩和 - 室韦",
+          "spots": [
+            "白桦林",
+            "室韦口岸",
+            "界河游"
+          ],
+          "meals": "含三餐",
+          "hotel": "室韦俄式酒店"
+        },
+        {
+          "d": 4,
+          "scene": "室韦 - 七卡 - 黑山头",
+          "spots": [
+            "边境公路",
+            "黑山头草原",
+            "日落山"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头豪华蒙古包"
+        },
+        {
+          "d": 5,
+          "scene": "黑山头全天",
+          "spots": [
+            "马场骑行",
+            "牧户家庭",
+            "那达慕演出"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头豪华蒙古包"
+        },
+        {
+          "d": 6,
+          "scene": "黑山头 - 满洲里",
+          "spots": [
+            "186彩带河",
+            "国门",
+            "套娃广场"
+          ],
+          "meals": "含三餐",
+          "hotel": "满洲里五星酒店"
+        },
+        {
+          "d": 7,
+          "scene": "满洲里 - 呼伦湖 - 海拉尔",
+          "spots": [
+            "呼伦湖",
+            "扎赉诺尔博物馆"
+          ],
+          "meals": "含三餐",
+          "hotel": "海拉尔五星酒店"
+        },
+        {
+          "d": 8,
+          "scene": "海拉尔 - 返程",
+          "spots": [
+            "呼伦贝尔古城"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r006-d1",
+          "dayNum": 1,
+          "title": "海拉尔接机 - 入住酒店",
+          "content": "成吉思汗广场；用餐：不含餐；住宿：海拉尔五星酒店",
+          "scenicId": "s10",
+          "hotelId": "h1",
+          "spots": [
+            "成吉思汗广场"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔五星酒店",
+          "imgs": []
+        },
+        {
+          "id": "r006-d2",
+          "dayNum": 2,
+          "title": "海拉尔 - 莫日格勒河 - 额尔古纳",
+          "content": "莫日格勒河、额尔古纳湿地；用餐：含三餐；住宿：额尔古纳豪华酒店",
+          "scenicId": "s2",
+          "hotelId": "h2",
+          "spots": [
+            "莫日格勒河",
+            "额尔古纳湿地"
+          ],
+          "meals": "含三餐",
+          "hotel": "额尔古纳豪华酒店",
+          "imgs": []
+        },
+        {
+          "id": "r006-d3",
+          "dayNum": 3,
+          "title": "额尔古纳 - 恩和 - 室韦",
+          "content": "白桦林、室韦口岸、界河游；用餐：含三餐；住宿：室韦俄式酒店",
+          "scenicId": "s4",
+          "hotelId": "h8",
+          "spots": [
+            "白桦林",
+            "室韦口岸",
+            "界河游"
+          ],
+          "meals": "含三餐",
+          "hotel": "室韦俄式酒店",
+          "imgs": []
+        },
+        {
+          "id": "r006-d4",
+          "dayNum": 4,
+          "title": "室韦 - 七卡 - 黑山头",
+          "content": "边境公路、黑山头草原、日落山；用餐：含三餐；住宿：黑山头豪华蒙古包",
+          "scenicId": "s6",
+          "hotelId": "h4",
+          "spots": [
+            "边境公路",
+            "黑山头草原",
+            "日落山"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头豪华蒙古包",
+          "imgs": []
+        },
+        {
+          "id": "r006-d5",
+          "dayNum": 5,
+          "title": "黑山头全天",
+          "content": "马场骑行、牧户家庭、那达慕演出；用餐：含三餐；住宿：黑山头豪华蒙古包",
+          "scenicId": "",
+          "hotelId": "h4",
+          "spots": [
+            "马场骑行",
+            "牧户家庭",
+            "那达慕演出"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头豪华蒙古包",
+          "imgs": []
+        },
+        {
+          "id": "r006-d6",
+          "dayNum": 6,
+          "title": "黑山头 - 满洲里",
+          "content": "186彩带河、国门、套娃广场；用餐：含三餐；住宿：满洲里五星酒店",
+          "scenicId": "s13",
+          "hotelId": "h5",
+          "spots": [
+            "186彩带河",
+            "国门",
+            "套娃广场"
+          ],
+          "meals": "含三餐",
+          "hotel": "满洲里五星酒店",
+          "imgs": []
+        },
+        {
+          "id": "r006-d7",
+          "dayNum": 7,
+          "title": "满洲里 - 呼伦湖 - 海拉尔",
+          "content": "呼伦湖、扎赉诺尔博物馆；用餐：含三餐；住宿：海拉尔五星酒店",
+          "scenicId": "s16",
+          "hotelId": "h1",
+          "spots": [
+            "呼伦湖",
+            "扎赉诺尔博物馆"
+          ],
+          "meals": "含三餐",
+          "hotel": "海拉尔五星酒店",
+          "imgs": []
+        },
+        {
+          "id": "r006-d8",
+          "dayNum": 8,
+          "title": "海拉尔 - 返程",
+          "content": "呼伦贝尔古城；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "s9",
+          "hotelId": "",
+          "spots": [
+            "呼伦贝尔古城"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 6,
+      "online": true
+    },
+    {
+      "id": "r007",
+      "title": "额尔古纳湿地5日私家团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er007%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er007%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er007%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 4280,
+      "originalPrice": 4680,
+      "days": 5,
+      "departure": "海拉尔集合",
+      "dest": "额尔古纳",
+      "type": "私家团",
+      "tags": [
+        "一价全含",
+        "摄影首选"
+      ],
+      "brief": "围绕亚洲第一湿地设计的5日摄影向行程，日出日落机位、白桦林光影、湿地栈道一网打尽。",
+      "highlights": [
+        "湿地日出专属机位",
+        "摄影领队随队指导",
+        "白桦林光影创作",
+        "独立用车随停随拍"
+      ],
+      "detailHtml": "<p>围绕亚洲第一湿地设计的5日摄影向行程，日出日落机位、白桦林光影、湿地栈道一网打尽。</p>",
+      "include": [
+        "独立用车及司机",
+        "4晚精选住宿",
+        "行程内标注用餐",
+        "摄影领队指导",
+        "景区首道门票",
+        "旅游意外险"
+      ],
+      "exclude": [
+        "往返大交通",
+        "个人消费",
+        "单房差 750元/人"
+      ],
+      "notices": {
+        "tips": [
+          "日出拍摄出发较早（约04:30），请保证休息。",
+          "器材建议携带三脚架与偏振镜。"
+        ],
+        "gear": [
+          "三脚架",
+          "备用电池与存储卡",
+          "防露水鞋套"
+        ],
+        "refund": [
+          "出行前15天以上全额退款；7-14天收取20%；7天内收取50%。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "光影老王",
+          "date": "2026-07-08",
+          "stars": 5,
+          "content": "领队懂光，机位安排到位，出片率极高，强烈推荐。"
+        },
+        {
+          "name": "Tina",
+          "date": "2026-06-22",
+          "stars": 5,
+          "content": "湿地的日出此生难忘，行程节奏也很舒服。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "海拉尔集合",
+          "spots": [
+            "呼伦贝尔古城"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔商务酒店"
+        },
+        {
+          "d": 2,
+          "scene": "海拉尔 - 额尔古纳湿地日出",
+          "spots": [
+            "额尔古纳湿地",
+            "根河桥"
+          ],
+          "meals": "含早午餐",
+          "hotel": "额尔古纳酒店"
+        },
+        {
+          "d": 3,
+          "scene": "额尔古纳 - 白桦林 - 恩和",
+          "spots": [
+            "白桦林",
+            "恩和乡"
+          ],
+          "meals": "含三餐",
+          "hotel": "恩和木刻楞"
+        },
+        {
+          "d": 4,
+          "scene": "恩和 - 黑山头",
+          "spots": [
+            "边境七卡线",
+            "黑山头日落"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包"
+        },
+        {
+          "d": 5,
+          "scene": "黑山头 - 海拉尔返程",
+          "spots": [
+            "莫日格勒河"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r007-d1",
+          "dayNum": 1,
+          "title": "海拉尔集合",
+          "content": "呼伦贝尔古城；用餐：不含餐；住宿：海拉尔商务酒店",
+          "scenicId": "s9",
+          "hotelId": "h1",
+          "spots": [
+            "呼伦贝尔古城"
+          ],
+          "meals": "不含餐",
+          "hotel": "海拉尔商务酒店",
+          "imgs": []
+        },
+        {
+          "id": "r007-d2",
+          "dayNum": 2,
+          "title": "海拉尔 - 额尔古纳湿地日出",
+          "content": "额尔古纳湿地、根河桥；用餐：含早午餐；住宿：额尔古纳酒店",
+          "scenicId": "s3",
+          "hotelId": "h2",
+          "spots": [
+            "额尔古纳湿地",
+            "根河桥"
+          ],
+          "meals": "含早午餐",
+          "hotel": "额尔古纳酒店",
+          "imgs": []
+        },
+        {
+          "id": "r007-d3",
+          "dayNum": 3,
+          "title": "额尔古纳 - 白桦林 - 恩和",
+          "content": "白桦林、恩和乡；用餐：含三餐；住宿：恩和木刻楞",
+          "scenicId": "s4",
+          "hotelId": "h3",
+          "spots": [
+            "白桦林",
+            "恩和乡"
+          ],
+          "meals": "含三餐",
+          "hotel": "恩和木刻楞",
+          "imgs": []
+        },
+        {
+          "id": "r007-d4",
+          "dayNum": 4,
+          "title": "恩和 - 黑山头",
+          "content": "边境七卡线、黑山头日落；用餐：含三餐；住宿：黑山头蒙古包",
+          "scenicId": "s6",
+          "hotelId": "h4",
+          "spots": [
+            "边境七卡线",
+            "黑山头日落"
+          ],
+          "meals": "含三餐",
+          "hotel": "黑山头蒙古包",
+          "imgs": []
+        },
+        {
+          "id": "r007-d5",
+          "dayNum": 5,
+          "title": "黑山头 - 海拉尔返程",
+          "content": "莫日格勒河；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "s2",
+          "hotelId": "",
+          "spots": [
+            "莫日格勒河"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 7,
+      "online": true
+    },
+    {
+      "id": "r008",
+      "title": "阿尔山温泉疗愈3日拼团",
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er008%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "images": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er008%20%E5%9B%BE1%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er008%20%E5%9B%BE2%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "price": 2380,
+      "originalPrice": 2680,
+      "days": 3,
+      "departure": "乌兰浩特集合",
+      "dest": "阿尔山",
+      "type": "拼团",
+      "tags": [
+        "限时特惠",
+        "温泉度假"
+      ],
+      "brief": "3天2晚阿尔山温泉度假，含两晚温泉酒店与景区门票，慢节奏放松之旅。",
+      "highlights": [
+        "两晚温泉酒店连住",
+        "阿尔山森林公园半日游",
+        "五里泉天然矿泉",
+        "18人小团慢节奏"
+      ],
+      "detailHtml": "<p>3天2晚阿尔山温泉度假，含两晚温泉酒店与景区门票，慢节奏放松之旅。</p>",
+      "include": [
+        "往返旅游巴士",
+        "2晚温泉酒店",
+        "行程内标注用餐",
+        "森林公园门票",
+        "温泉票2次",
+        "旅行社责任险"
+      ],
+      "exclude": [
+        "往返大交通",
+        "酒店内其他消费",
+        "单房差 500元/人"
+      ],
+      "notices": {
+        "tips": [
+          "温泉每次浸泡不超过20分钟，空腹与酒后不宜泡温泉。",
+          "拼团固定发班，以顾问确认为准。"
+        ],
+        "gear": [
+          "泳衣泳帽",
+          "轻便外套",
+          "个人洗漱用品"
+        ],
+        "refund": [
+          "出行前7天以上全额退款；3-6天收取30%；3天内收取50%。"
+        ]
+      },
+      "reviews": [
+        {
+          "name": "安然",
+          "date": "2026-08-12",
+          "stars": 4,
+          "content": "节奏很慢很放松，温泉酒店条件不错，适合带爸妈。"
+        },
+        {
+          "name": "大熊",
+          "date": "2026-07-30",
+          "stars": 5,
+          "content": "阿尔山的空气太好了，三天刚刚好。"
+        }
+      ],
+      "itinerary": [
+        {
+          "d": 1,
+          "scene": "乌兰浩特 - 阿尔山",
+          "spots": [
+            "五里泉",
+            "阿尔山火车站"
+          ],
+          "meals": "含晚餐",
+          "hotel": "阿尔山温泉酒店"
+        },
+        {
+          "d": 2,
+          "scene": "阿尔山国家森林公园半日",
+          "spots": [
+            "天池",
+            "三潭峡"
+          ],
+          "meals": "含早餐",
+          "hotel": "阿尔山温泉酒店"
+        },
+        {
+          "d": 3,
+          "scene": "阿尔山 - 乌兰浩特返程",
+          "spots": [
+            "温泉度假区自由活动"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿"
+        }
+      ],
+      "dayList": [
+        {
+          "id": "r008-d1",
+          "dayNum": 1,
+          "title": "乌兰浩特 - 阿尔山",
+          "content": "五里泉、阿尔山火车站；用餐：含晚餐；住宿：阿尔山温泉酒店",
+          "scenicId": "s17",
+          "hotelId": "h6",
+          "spots": [
+            "五里泉",
+            "阿尔山火车站"
+          ],
+          "meals": "含晚餐",
+          "hotel": "阿尔山温泉酒店",
+          "imgs": []
+        },
+        {
+          "id": "r008-d2",
+          "dayNum": 2,
+          "title": "阿尔山国家森林公园半日",
+          "content": "天池、三潭峡；用餐：含早餐；住宿：阿尔山温泉酒店",
+          "scenicId": "",
+          "hotelId": "h6",
+          "spots": [
+            "天池",
+            "三潭峡"
+          ],
+          "meals": "含早餐",
+          "hotel": "阿尔山温泉酒店",
+          "imgs": []
+        },
+        {
+          "id": "r008-d3",
+          "dayNum": 3,
+          "title": "阿尔山 - 乌兰浩特返程",
+          "content": "温泉度假区自由活动；用餐：含早餐；住宿：返程不含宿",
+          "scenicId": "",
+          "hotelId": "",
+          "spots": [
+            "温泉度假区自由活动"
+          ],
+          "meals": "含早餐",
+          "hotel": "返程不含宿",
+          "imgs": []
+        }
+      ],
+      "sort": 8,
+      "online": true
+    }
+  ],
+  "userTrip": [
+    {
+      "id": "u1",
+      "nickname": "远方的田野",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er001%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "title": "我的草原环线行程",
+      "days": 6,
+      "plan": "Day1 海拉尔集合 → Day2 莫日格勒河 → Day3 恩和 → Day4 黑山头 → Day5 满洲里 → Day6 返程",
+      "status": "active",
+      "createTime": "2026-10-08 06:45:43",
+      "updatedAt": "2026-10-10 06:45:43"
+    },
+    {
+      "id": "u2",
+      "nickname": "岚山旅人",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "title": "亲子草原慢游",
+      "days": 3,
+      "plan": "黑山头牧场 + 蒙古包住宿 + 骑马",
+      "status": "active",
+      "createTime": "2026-09-29 06:45:43",
+      "updatedAt": "2026-10-02 06:45:43"
+    }
+  ],
+  "inspirationPost": [
+    {
+      "id": "n01",
+      "nickname": "晴天小猪",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%99%B4%E5%A4%A9%E5%B0%8F%E7%8C%AA%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "note",
+      "title": "草原腹地的一场日落",
+      "tags": [
+        "呼伦贝尔草原",
+        "自驾随拍"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22640%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22632%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2271%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8D%89%E5%8E%9F%E6%97%A5%E8%90%BD%E9%9A%8F%E6%8B%8D%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8D%89%E5%8E%9F%E6%97%A5%E8%90%BD%E9%9A%8F%E6%8B%8D%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8D%89%E5%8E%9F%E6%97%A5%E8%90%BD%E9%9A%8F%E6%8B%8D%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8D%89%E5%8E%9F%E6%97%A5%E8%90%BD%E9%9A%8F%E6%8B%8D%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "傍晚把车停在草场边的土路上，牛羊散在金色的草坡上，风把云吹成一条条长丝带。\n我们什么都没做，就坐在后备箱边看颜色一点一点沉下去，近处的蒙古包亮起第一盏灯。\n日落比想象中收得快，但草原会把热乎乎的余晖再多留十分钟，够拍完最后一组照片。",
+      "tripRef": "",
+      "like": 267,
+      "commentCount": 3,
+      "comments": [
+        {
+          "id": "id_1",
+          "nickname": "苏打气泡",
+          "avatar": "",
+          "text": "机位太会找了，能说下大概在哪一段路吗？",
+          "time": ""
+        },
+        {
+          "id": "id_2",
+          "nickname": "麦芒",
+          "avatar": "",
+          "text": "后备箱视角学习了，下次直接复刻。",
+          "time": ""
+        },
+        {
+          "id": "id_3",
+          "nickname": "北方旅行者",
+          "avatar": "",
+          "text": "日落前会有光线提示吗？想参考时间。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-07-19 00:00:00"
+    },
+    {
+      "id": "n02",
+      "nickname": "北屿",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%8C%97%E5%B1%BF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "note",
+      "title": "阿尔山不冻河的早晨",
+      "tags": [
+        "阿尔山",
+        "避坑指南"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22660%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22652%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2273%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%86%B0%E6%B2%B3%E6%99%A8%E9%9B%BE%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%86%B0%E6%B2%B3%E6%99%A8%E9%9B%BE%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%86%B0%E6%B2%B3%E6%99%A8%E9%9B%BE%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%86%B0%E6%B2%B3%E6%99%A8%E9%9B%BE%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "零下二十五度，不冻河冒着白气，树梢的雾凇被晨光染成淡淡的粉色。\n穿两层羽绒服、贴满暖宝宝，手套一定要触屏款，不然拍两张就冻到没法操作相机。\n避坑：别挤在观景台入口，沿着栈道往上游再走三百米，人少机位好，还能听到水声。",
+      "tripRef": "",
+      "like": 341,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_4",
+          "nickname": "摄影师小陈",
+          "avatar": "",
+          "text": "参数有吗？雾凇和高光一起收位很考验构图。",
+          "time": ""
+        },
+        {
+          "id": "id_5",
+          "nickname": "安安",
+          "avatar": "",
+          "text": "上游三百米已记下，谢谢避坑。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-02-11 00:00:00"
+    },
+    {
+      "id": "n03",
+      "nickname": "糖糖妈妈",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%B3%96%E7%B3%96%E5%A6%88%E5%A6%88%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "note",
+      "title": "额尔古纳湿地栈道，遛娃真的舒服",
+      "tags": [
+        "亲子瞬间",
+        "呼伦贝尔草原"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22620%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22612%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2269%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B9%BF%E5%9C%B0%E6%A0%88%E9%81%93%E9%81%9B%E5%A8%83%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B9%BF%E5%9C%B0%E6%A0%88%E9%81%93%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B9%BF%E5%9C%B0%E6%A0%88%E9%81%93%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B9%BF%E5%9C%B0%E6%A0%88%E9%81%93%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "栈道全程平板，推婴儿车也没压力，走走停停刚好两小时就逛完。\n宝宝最喜欢趴在护栏上看根河弯来弯去，还数出了几只落单的野鸭。\n提醒：风大，给孩子多带一件防风的薄外套，帽子和防晒一个都不能少。",
+      "tripRef": "",
+      "like": 198,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_6",
+          "nickname": "大熊",
+          "avatar": "",
+          "text": "婴儿车直接推上栈道？那太好了。",
+          "time": ""
+        },
+        {
+          "id": "id_7",
+          "nickname": "小鹿",
+          "avatar": "",
+          "text": "落单野鸭也太可爱了，孩子眼里全是惊喜。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-08-03 00:00:00"
+    },
+    {
+      "id": "n04",
+      "nickname": "柠檬塔",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%9F%A0%E6%AA%AC%E5%A1%94%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "note",
+      "title": "满洲里：套娃广场夜灯 + 一顿俄餐",
+      "tags": [
+        "满洲里",
+        "美食探店"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22680%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22672%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2276%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%E5%A4%9C%E6%99%AF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%E5%A4%9C%E6%99%AF%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%E5%A4%9C%E6%99%AF%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A5%97%E5%A8%83%E5%B9%BF%E5%9C%BA%E5%A4%9C%E6%99%AF%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "天黑以后套娃广场亮灯，彩色穹顶和套娃像是从童话里跳出来，游客也不多。\n晚饭选了广场边一家俄餐，红菜汤和罐焖牛肉分量实在，人均不到一百。\n推荐点一份招牌列巴配蓝莓酱，甜度刚好，比纪念品店里的好吃太多。",
+      "tripRef": "",
+      "like": 224,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_8",
+          "nickname": "韩先生",
+          "avatar": "",
+          "text": "俄餐店名字给下吧，下周去满洲里。",
+          "time": ""
+        },
+        {
+          "id": "id_9",
+          "nickname": "Nina",
+          "avatar": "",
+          "text": "蓝莓酱列巴已记，谢谢推荐。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-07-27 00:00:00"
+    },
+    {
+      "id": "n05",
+      "nickname": "一朵野花",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E4%B8%80%E6%9C%B5%E9%87%8E%E8%8A%B1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "note",
+      "title": "恩和木刻楞：睡在百年木屋里听雨",
+      "tags": [
+        "住宿体验",
+        "避坑指南"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22640%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22632%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2271%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E6%9C%A8%E5%B1%8B%E5%90%AC%E9%9B%A8%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E6%9C%A8%E5%B1%8B%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E6%9C%A8%E5%B1%8B%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%81%A9%E5%92%8C%E6%9C%A8%E5%B1%8B%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "房间是整根圆木的墙，雨点打在屋顶上，声音温柔得像在盖一床厚被子。\n民宿主人家早上现烤列巴，配自熬的果酱，是我在草原吃过最舒服的一顿早饭。\n避坑：木屋隔音一般，浅睡眠建议戴耳塞；旺季的小屋很难订，最好提前两周定。",
+      "tripRef": "",
+      "like": 176,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_a",
+          "nickname": "老白",
+          "avatar": "",
+          "text": "现烤列巴的画面感太强了，想连夜定房。",
+          "time": ""
+        },
+        {
+          "id": "id_b",
+          "nickname": "苏苏",
+          "avatar": "",
+          "text": "隔音提示很实在，感谢。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-07-12 00:00:00"
+    },
+    {
+      "id": "n06",
+      "nickname": "周日不加班",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%A8%E6%97%A5%E4%B8%8D%E5%8A%A0%E7%8F%AD%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "note",
+      "title": "黑山头骑马看日落，有几点必须说",
+      "tags": [
+        "自驾随拍",
+        "避坑指南"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22700%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22692%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2278%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E9%AA%91%E9%A9%AC%E6%97%A5%E8%90%BD%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E9%A9%AC%E5%9C%BA%201%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E9%A9%AC%E5%9C%BA%202%3C%2Ftext%3E%3C%2Fsvg%3E",
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%E9%A9%AC%E5%9C%BA%203%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "日落前一个小时出马刚刚好，爬到高岗正好赶上太阳低垂，草尖全被镀成金色。\n先说几点：马跑起来风很大，帽子要系紧；裤子避开浅色，回来就能证明。\n新手别自己控缰，跟着马队走最稳，下坡时身子稍微后仰会舒服很多。",
+      "tripRef": "",
+      "like": 312,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_c",
+          "nickname": "老周",
+          "avatar": "",
+          "text": "「裤子颜色」这条我中过招，哈哈。",
+          "time": ""
+        },
+        {
+          "id": "id_d",
+          "nickname": "Cici",
+          "avatar": "",
+          "text": "求马场名字，想带爸妈去体验。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-07-30 00:00:00"
+    },
+    {
+      "id": "sh01",
+      "nickname": "林夕",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%9E%97%E5%A4%95%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "5天4晚呼伦贝尔草原亲子之旅",
+      "tags": [
+        "亲子游"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22640%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22632%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2271%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E5%E5%A4%A94%E6%99%9A%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E8%8D%89%E5%8E%9F%E4%BA%B2%E5%AD%90%E4%B9%8B%E6%97%85%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22520%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22512%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2258%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A4%8F%E5%AD%A3%E8%8D%89%E5%8E%9F%20%C2%B7%20%E4%BA%B2%E5%AD%90%E4%B9%8B%E6%97%85%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "带着孩子骑小马、挤牛奶、喂羊羔，草原上的日落和星空，是孩子童年最好的礼物。",
+      "tripRef": "",
+      "like": 328,
+      "commentCount": 3,
+      "comments": [
+        {
+          "id": "id_e",
+          "nickname": "芒果布丁",
+          "avatar": "",
+          "text": "刚好在计划带娃去呼伦贝尔，这份攻略太及时了，马场信息很实用！",
+          "time": ""
+        },
+        {
+          "id": "id_f",
+          "nickname": "小鹿",
+          "avatar": "",
+          "text": "蒙古包那晚星空真的绝了，孩子到现在还在念叨。",
+          "time": ""
+        },
+        {
+          "id": "id_g",
+          "nickname": "北方旅行者",
+          "avatar": "",
+          "text": "请问7月底去需要提前多久订蒙古包？",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-08-20 00:00:00",
+      "days": 5,
+      "season": "夏季草原",
+      "category": "亲子游",
+      "highlights": [
+        "莫日格勒河俯瞰九曲十八弯",
+        "黑山头马场小马骑行体验",
+        "牧民家挤牛奶、喂小羊",
+        "蒙古包住宿 + 篝火晚会"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s2"
+          ],
+          "hotelId": "h1",
+          "note": "下午抵达海拉尔，带娃休息调整"
+        },
+        {
+          "scenicIds": [
+            "s1",
+            "s3"
+          ],
+          "hotelId": "h2",
+          "note": "湿地栈道对孩子体能友好"
+        },
+        {
+          "scenicIds": [
+            "s4"
+          ],
+          "hotelId": "h3",
+          "note": "白桦林光影很适合拍照"
+        },
+        {
+          "scenicIds": [
+            "s6"
+          ],
+          "hotelId": "h4",
+          "note": "马场骑行需教练陪同"
+        },
+        {
+          "scenicIds": [
+            "s2"
+          ],
+          "hotelId": "",
+          "note": "返程前在草原放风筝"
+        }
+      ]
+    },
+    {
+      "id": "sh02",
+      "nickname": "北境旅人",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%8C%97%E5%A2%83%E6%97%85%E4%BA%BA%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "呼伦贝尔草原深度6日私家团 | 一价全含",
+      "tags": [
+        "私家团方案"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22680%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22672%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2276%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E8%8D%89%E5%8E%9F%E6%B7%B1%E5%BA%A66%E6%97%A5%E7%A7%81%E5%AE%B6%E5%9B%A2%20%7C%20%E4%B8%80%E4%BB%B7%E5%85%A8%E5%90%AB%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%A4%8F%E5%AD%A3%E8%8D%89%E5%8E%9F%20%C2%B7%20%E6%B7%B1%E5%BA%A66%E6%97%A5%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "独立用车随走随停，深入草原腹地，一条把所有呼伦贝尔经典都串起来的私家团方案。",
+      "tripRef": "",
+      "like": 512,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_h",
+          "nickname": "老周",
+          "avatar": "",
+          "text": "刚跟这个方案走完，用车很舒服，七卡线的风景超出预期。",
+          "time": ""
+        },
+        {
+          "id": "id_i",
+          "nickname": "叶子",
+          "avatar": "",
+          "text": "标记了！下次带爸妈来直接抄作业。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-08-12 00:00:00",
+      "days": 6,
+      "season": "夏季草原",
+      "category": "私家团方案",
+      "highlights": [
+        "SUV独立用车，随走随停",
+        "莫日格勒河制高点拍九曲十八弯",
+        "边境七卡线穿越",
+        "恩和木刻楞与黑山头蒙古包住宿"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "海拉尔集合，自由活动"
+        },
+        {
+          "scenicIds": [
+            "s2",
+            "s3"
+          ],
+          "hotelId": "h2",
+          "note": "额尔古纳湿地栈道日落"
+        },
+        {
+          "scenicIds": [
+            "s4"
+          ],
+          "hotelId": "h3",
+          "note": "恩和列巴博物馆 + 木刻楞体验"
+        },
+        {
+          "scenicIds": [
+            "s7"
+          ],
+          "hotelId": "h4",
+          "note": "界河晨雾拍摄尽早出发"
+        },
+        {
+          "scenicIds": [
+            "s5"
+          ],
+          "hotelId": "h5",
+          "note": "满洲里套娃广场夜景"
+        },
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "",
+          "note": "呼伦湖野餐后返程"
+        }
+      ]
+    },
+    {
+      "id": "sh03",
+      "nickname": "光影老王",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%85%89%E5%BD%B1%E8%80%81%E7%8E%8B%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "阿尔山秋色7日摄影之旅",
+      "tags": [
+        "秋季线"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22600%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22592%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2267%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E7%A7%8B%E8%89%B27%E6%97%A5%E6%91%84%E5%BD%B1%E4%B9%8B%E6%97%85%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22620%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22612%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2269%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%A7%8B%E5%AD%A3%E9%98%BF%E5%B0%94%E5%B1%B1%20%C2%B7%20%E5%B1%82%E6%9E%97%E5%B0%BD%E6%9F%93%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "九月的阿尔山，白桦金黄、天池湛蓝，把最佳机位和时间一次给你排好。",
+      "tripRef": "",
+      "like": 402,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_j",
+          "nickname": "Tina",
+          "avatar": "",
+          "text": "驼峰岭天池日出机位果然名不虚传，感谢详细时间表！",
+          "time": ""
+        },
+        {
+          "id": "id_k",
+          "nickname": "苏苏",
+          "avatar": "",
+          "text": "九月下旬去会不会叶子都落了？",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-09-01 00:00:00",
+      "days": 7,
+      "season": "秋季阿尔山",
+      "category": "秋季线",
+      "highlights": [
+        "驼峰岭天池日出机位",
+        "白桦林光影 + 杜鹃湖畔秋意",
+        "三潭峡栈道慢走慢拍",
+        "全程四星以上精品住宿"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "抵达海拉尔，采购补给"
+        },
+        {
+          "scenicIds": [
+            "s3",
+            "s4"
+          ],
+          "hotelId": "h2",
+          "note": "湿地观景台日出，白桦林秋色"
+        },
+        {
+          "scenicIds": [
+            "s8"
+          ],
+          "hotelId": "h6",
+          "note": "阿尔山天池下午柔和光线最佳"
+        },
+        {
+          "scenicIds": [
+            "s8"
+          ],
+          "hotelId": "h6",
+          "note": "杜鹃湖 + 三潭峡全天创作"
+        },
+        {
+          "scenicIds": [
+            "s5"
+          ],
+          "hotelId": "h5",
+          "note": "满洲里夜色扫街"
+        },
+        {
+          "scenicIds": [
+            "s6"
+          ],
+          "hotelId": "h4",
+          "note": "黑山头日落机位很重要"
+        },
+        {
+          "scenicIds": [
+            "s2"
+          ],
+          "hotelId": "",
+          "note": "莫日格勒河俯瞰后返程"
+        }
+      ]
+    },
+    {
+      "id": "sh04",
+      "nickname": "凛冬去看海",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%87%9B%E5%86%AC%E5%8E%BB%E7%9C%8B%E6%B5%B7%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "阿尔山冬季不冻河雪原3日",
+      "tags": [
+        "冬季线"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22660%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22652%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2273%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%E5%86%AC%E5%AD%A3%E4%B8%8D%E5%86%BB%E6%B2%B3%E9%9B%AA%E5%8E%9F3%E6%97%A5%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22472%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2253%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%86%AC%E5%AD%A3%E9%9B%AA%E5%8E%9F%20%C2%B7%20%E4%B8%8D%E5%86%BB%E6%B2%B3%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "零下二十度的阿尔山，雾凇挂满枝头，不冻河的水汽在雪原上氤氲，像走进了童话。",
+      "tripRef": "",
+      "like": 286,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_l",
+          "nickname": "摄影师小陈",
+          "avatar": "",
+          "text": "不冻河那张是怎么拍的？求参数！",
+          "time": ""
+        },
+        {
+          "id": "id_m",
+          "nickname": "安安",
+          "avatar": "",
+          "text": "零下二十度拍日出真的要勇气，片子值了！",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-01-15 00:00:00",
+      "days": 3,
+      "season": "冬季雪景",
+      "category": "冬季线",
+      "highlights": [
+        "不冻河晨雾与雾凇",
+        "石塘林雪景徒步",
+        "雪地火锅 + 温泉修复",
+        "小众雪景机位，游客极少"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s8"
+          ],
+          "hotelId": "h6",
+          "note": "乌兰浩特接站，入住温泉酒店"
+        },
+        {
+          "scenicIds": [
+            "s8"
+          ],
+          "hotelId": "h6",
+          "note": "不冻河日出拍摄，石塘林雪徒步"
+        },
+        {
+          "scenicIds": [
+            "s8"
+          ],
+          "hotelId": "",
+          "note": "自由滑雪/温泉后返程"
+        }
+      ]
+    },
+    {
+      "id": "sh05",
+      "nickname": "今天是周五",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E4%BB%8A%E5%A4%A9%E6%98%AF%E5%91%A8%E4%BA%94%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "呼伦贝尔自由行：1辆SUV玩7天",
+      "tags": [
+        "自由行"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22620%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22612%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2269%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E8%87%AA%E7%94%B1%E8%A1%8C%EF%BC%9A1%E8%BE%86SUV%E7%8E%A97%E5%A4%A9%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22440%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22432%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2249%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%87%AA%E7%94%B1%E8%A1%8C%20SUV%207%E6%97%A5%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "不跟团不自驾房车，租一辆SUV慢慢开，把呼伦贝尔玩出自由行天花板。",
+      "tripRef": "",
+      "like": 179,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_n",
+          "nickname": "阿凯",
+          "avatar": "",
+          "text": "同款玩法，SUV真的比大巴自由多了！",
+          "time": ""
+        },
+        {
+          "id": "id_o",
+          "nickname": "Cici",
+          "avatar": "",
+          "text": "求租车队联系方式～",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-07-28 00:00:00",
+      "days": 7,
+      "season": "夏季草原",
+      "category": "自由行",
+      "highlights": [
+        "SUV + 含司机，全家都能轻松",
+        "边境公路随走随停",
+        "每天车程控制在5小时以内",
+        "高性价比 + 每天换特色住宿"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "抵达海拉尔提车"
+        },
+        {
+          "scenicIds": [
+            "s2",
+            "s3"
+          ],
+          "hotelId": "h2",
+          "note": "湿地栈道看日落"
+        },
+        {
+          "scenicIds": [
+            "s4"
+          ],
+          "hotelId": "h3",
+          "note": "在恩和学做列巴"
+        },
+        {
+          "scenicIds": [
+            "s7"
+          ],
+          "hotelId": "h4",
+          "note": "室韦骑行界河"
+        },
+        {
+          "scenicIds": [
+            "s6"
+          ],
+          "hotelId": "h4",
+          "note": "马场体验 + 日落山"
+        },
+        {
+          "scenicIds": [
+            "s5"
+          ],
+          "hotelId": "h5",
+          "note": "国门 + 套娃广场"
+        },
+        {
+          "scenicIds": [
+            "s2"
+          ],
+          "hotelId": "",
+          "note": "最后一天睡到自然醒再返程"
+        }
+      ]
+    },
+    {
+      "id": "sh06",
+      "nickname": "糖糖妈妈",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%B3%96%E7%B3%96%E5%A6%88%E5%A6%88%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "满洲里+套娃主题乐园亲子3日",
+      "tags": [
+        "亲子游"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22700%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22692%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2278%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%2B%E5%A5%97%E5%A8%83%E4%B8%BB%E9%A2%98%E4%B9%90%E5%9B%AD%E4%BA%B2%E5%AD%903%E6%97%A5%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22460%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22452%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2251%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%20%C2%B7%20%E4%BA%B2%E5%AD%903%E6%97%A5%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "套娃乐园、国门、呼伦湖，一条孩子大人都喜欢的轻松短线。",
+      "tripRef": "",
+      "like": 243,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_p",
+          "nickname": "大熊",
+          "avatar": "",
+          "text": "套娃乐园小朋友根本玩不够，出片率也高。",
+          "time": ""
+        },
+        {
+          "id": "id_q",
+          "nickname": "林ya",
+          "avatar": "",
+          "text": "请问乐园门票直接现场买吗？",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-06-18 00:00:00",
+      "days": 3,
+      "season": "夏季草原",
+      "category": "亲子游",
+      "highlights": [
+        "套娃主题乐园畅玩一天",
+        "国门景区了解口岸历史",
+        "呼伦湖畔野餐看水鸟",
+        "节奏轻松，适合小长假"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h5",
+          "note": "午后抵达满洲里，傍晚看夜景"
+        },
+        {
+          "scenicIds": [
+            "s5"
+          ],
+          "hotelId": "h5",
+          "note": "国门 + 套娃乐园全天"
+        },
+        {
+          "scenicIds": [
+            "s6"
+          ],
+          "hotelId": "",
+          "note": "呼伦湖野餐后返程"
+        }
+      ]
+    },
+    {
+      "id": "sh07",
+      "nickname": "Lily",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%89%E8%8E%89%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "轻奢版呼伦贝尔8日 | 五星住宿+越野车",
+      "tags": [
+        "私家团方案"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22640%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22632%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2271%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%BD%BB%E5%A5%A2%E7%89%88%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%948%E6%97%A5%20%7C%20%E4%BA%94%E6%98%9F%E4%BD%8F%E5%AE%BF%2B%E8%B6%8A%E9%87%8E%E8%BD%A6%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22540%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22532%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2260%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%BD%BB%E5%A5%A2%20%E8%B6%8A%E9%87%8E%E8%BD%A68%E6%97%A5%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "预算充裕、追求体验的首选：越野车独立出行，全程五星，把那达慕演出也安排上。",
+      "tripRef": "",
+      "like": 456,
+      "commentCount": 2,
+      "comments": [
+        {
+          "id": "id_r",
+          "nickname": "韩先生",
+          "avatar": "",
+          "text": "那达慕演出值回票价，孩子印象特别深。",
+          "time": ""
+        },
+        {
+          "id": "id_s",
+          "nickname": "Nina",
+          "avatar": "",
+          "text": "越野车穿越泥路那段太爽了！",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-08-05 00:00:00",
+      "days": 8,
+      "season": "夏季草原",
+      "category": "私家团方案",
+      "highlights": [
+        "专属越野车队独立出行",
+        "全程五星/豪华住宿",
+        "那达慕实景演出加持",
+        "一价全含零自费"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "海拉尔接机休整"
+        },
+        {
+          "scenicIds": [
+            "s2",
+            "s3"
+          ],
+          "hotelId": "h2",
+          "note": "湿地与莫日格勒河连逛"
+        },
+        {
+          "scenicIds": [
+            "s4"
+          ],
+          "hotelId": "h3",
+          "note": "恩和俄式家庭晚餐"
+        },
+        {
+          "scenicIds": [
+            "s7",
+            "s6"
+          ],
+          "hotelId": "h4",
+          "note": "界河游 + 黑山头日落"
+        },
+        {
+          "scenicIds": [
+            "s6"
+          ],
+          "hotelId": "h4",
+          "note": "那达慕演出日"
+        },
+        {
+          "scenicIds": [
+            "s5"
+          ],
+          "hotelId": "h5",
+          "note": "满洲里夜景 + 套娃广场"
+        },
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "呼伦湖后返回海拉尔"
+        },
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "",
+          "note": "自由活动后送机"
+        }
+      ]
+    },
+    {
+      "id": "sh08",
+      "nickname": "快门日记",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%BF%AB%E9%97%A8%E6%97%A5%E8%AE%B0%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "额尔古纳湿地+白桦林秋色5日",
+      "tags": [
+        "秋季线"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22680%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22672%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2276%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B0%2B%E7%99%BD%E6%A1%A6%E6%9E%97%E7%A7%8B%E8%89%B25%E6%97%A5%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22500%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22492%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2256%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E7%A7%8B%E5%AD%A3%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "把呼伦贝尔的秋天浓缩进5天，湿地日出、白桦林光影、边境公路一个不落。",
+      "tripRef": "",
+      "like": 198,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "id_t",
+          "nickname": "老白",
+          "avatar": "",
+          "text": "领队太懂光了，出片率惊人。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-09-10 00:00:00",
+      "days": 5,
+      "season": "秋季阿尔山",
+      "category": "秋季线",
+      "highlights": [
+        "湿地日出专属机位",
+        "白桦林光影创作",
+        "边境七卡线秋色公路",
+        "摄影领队随队指导"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "海拉尔集合，采购秋日装备"
+        },
+        {
+          "scenicIds": [
+            "s3"
+          ],
+          "hotelId": "h2",
+          "note": "湿地日出，清晨出发"
+        },
+        {
+          "scenicIds": [
+            "s4"
+          ],
+          "hotelId": "h3",
+          "note": "白桦林全天创作"
+        },
+        {
+          "scenicIds": [
+            "s7",
+            "s6"
+          ],
+          "hotelId": "h4",
+          "note": "七卡线 + 黑山头日落"
+        },
+        {
+          "scenicIds": [
+            "s2"
+          ],
+          "hotelId": "",
+          "note": "莫日格勒河俯瞰后返程"
+        }
+      ]
+    },
+    {
+      "id": "sh09",
+      "nickname": "冬天的海",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%86%AC%E5%A4%A9%E7%9A%84%E6%B5%B7%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "海拉尔冬季冰雪那达慕体验3日",
+      "tags": [
+        "冬季线"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22600%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22592%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2267%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%B5%B7%E6%8B%89%E5%B0%94%E5%86%AC%E5%AD%A3%E5%86%B0%E9%9B%AA%E9%82%A3%E8%BE%BE%E6%85%95%E4%BD%93%E9%AA%8C3%E6%97%A5%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%86%AC%E5%AD%A3%E9%82%A3%E8%BE%BE%E6%85%95%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "冬季草原的另一种打开方式：冰上那达慕、雪地骆驼、马拉爬犁，热闹又新奇。",
+      "tripRef": "",
+      "like": 154,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "id_u",
+          "nickname": "雪豹",
+          "avatar": "",
+          "text": "冰上那达慕太刺激了，明年还去！",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2025-12-20 00:00:00",
+      "days": 3,
+      "season": "冬季雪景",
+      "category": "冬季线",
+      "highlights": [
+        "冬季那达慕大会见识冰上竞技",
+        "雪地骆驼与马拉爬犁体验",
+        "海拉尔雪夜漫步",
+        "室内温差大，装备清单已备好"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "海拉尔到达，逛雪夜古城"
+        },
+        {
+          "scenicIds": [
+            "s1"
+          ],
+          "hotelId": "h1",
+          "note": "那达慕大会全天"
+        },
+        {
+          "scenicIds": [
+            "s2"
+          ],
+          "hotelId": "",
+          "note": "莫日格勒河雪原后返程"
+        }
+      ]
+    },
+    {
+      "id": "sh10",
+      "nickname": "慢游博主",
+      "avatar": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22120%22%20height%3D%22120%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22112%22%20height%3D%22112%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2218%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%85%A2%E6%B8%B8%E5%8D%9A%E4%B8%BB%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "type": "trip",
+      "title": "额尔古纳湿地1日慢游+恩和半日",
+      "tags": [
+        "自由行"
+      ],
+      "cover": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22480%22%20height%3D%22660%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22472%22%20height%3D%22652%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2273%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%B9%BF%E5%9C%B01%E6%97%A5%E6%85%A2%E6%B8%B8%2B%E6%81%A9%E5%92%8C%E5%8D%8A%E6%97%A5%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "imgs": [
+        "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22480%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22472%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2253%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%E6%85%A2%E6%B8%B8%3C%2Ftext%3E%3C%2Fsvg%3E"
+      ],
+      "content": "不想赶路的两日慢游：湿地栈道发呆、白桦林野餐，再到恩和木刻楞里睡一晚。",
+      "tripRef": "",
+      "like": 121,
+      "commentCount": 1,
+      "comments": [
+        {
+          "id": "id_v",
+          "nickname": "阿宇",
+          "avatar": "",
+          "text": "两天也能玩得这么舒服，收藏了。",
+          "time": ""
+        }
+      ],
+      "status": 1,
+      "createTime": "2026-07-06 00:00:00",
+      "days": 2,
+      "season": "夏季草原",
+      "category": "自由行",
+      "highlights": [
+        "亚洲第一湿地栈道慢走",
+        "白桦林树下野餐",
+        "恩和俄式木刻楞住宿",
+        "全程零门票焦虑，随心情走"
+      ],
+      "timeline": [
+        {
+          "scenicIds": [
+            "s3",
+            "s4"
+          ],
+          "hotelId": "h3",
+          "note": "湿地 + 白桦林一日，晚上住恩和"
+        },
+        {
+          "scenicIds": [
+            "s7"
+          ],
+          "hotelId": "",
+          "note": "恩和晨雾与界河散步后返程"
+        }
+      ]
+    }
+  ],
+  "globalConfig": {
+    "notice": "暑期草原旺季已至，热门线路余位有限，出行前请咨询旅行顾问",
+    "homeCopy": {
+      "tourTitle": "私家团定制",
+      "tourSub": "一单一团 · 专属管家",
+      "hotTitle": "热门呼伦贝尔线路",
+      "destTitle": "目的地直达",
+      "destSub": "按目的地快速直达",
+      "offerTitle": "特惠推荐",
+      "offerSub": "限时优享线路",
+      "inspirationTitle": "灵感广场",
+      "inspirationSub": "看看大家的旅途",
+      "introTitle": "关于我们",
+      "contactTitle": "行前咨询",
+      "contactSub": "1 对 1 专属顾问",
+      "more": "查看全部",
+      "consult": "立即咨询"
+    },
+    "homeSections": {
+      "hot": {
+        "routeIds": [
+          "r001",
+          "r002",
+          "r006",
+          "r004"
+        ]
+      },
+      "dest": {
+        "items": [
+          {
+            "name": "阿尔山",
+            "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22340%22%20height%3D%22240%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22332%22%20height%3D%22232%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2227%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%98%BF%E5%B0%94%E5%B1%B1%3C%2Ftext%3E%3C%2Fsvg%3E"
+          },
+          {
+            "name": "满洲里",
+            "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22340%22%20height%3D%22240%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22332%22%20height%3D%22232%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2227%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E6%BB%A1%E6%B4%B2%E9%87%8C%3C%2Ftext%3E%3C%2Fsvg%3E"
+          },
+          {
+            "name": "额尔古纳",
+            "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22340%22%20height%3D%22240%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22332%22%20height%3D%22232%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2227%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%A2%9D%E5%B0%94%E5%8F%A4%E7%BA%B3%3C%2Ftext%3E%3C%2Fsvg%3E"
+          },
+          {
+            "name": "黑山头",
+            "image": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22340%22%20height%3D%22240%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22332%22%20height%3D%22232%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2227%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%BB%91%E5%B1%B1%E5%A4%B4%3C%2Ftext%3E%3C%2Fsvg%3E"
+          }
+        ]
+      },
+      "offer": {
+        "routeIds": [
+          "r005",
+          "r003",
+          "r008"
+        ]
+      }
+    },
+    "contact": {
+      "phone": "400-000-0000",
+      "wechat": "hulunbeier_trip",
+      "email": "hello@hulun-tour.com",
+      "address": "内蒙古自治区呼伦贝尔市海拉尔区"
+    },
+    "companyIntro": "专注呼伦贝尔草原深度旅行，坚持小车团、在地体验与品质住宿的旅行方式，让每一次出发都有温度。",
+    "slogan": "天边草原 · 自由出发",
+    "tabs": [
+      {
+        "id": "t1",
+        "page": "/pages/index/index",
+        "text": "首页",
+        "icon": "🏠",
+        "selectedIcon": "🏠",
+        "show": true
+      },
+      {
+        "id": "t2",
+        "page": "/pages/routes/routes",
+        "text": "线路",
+        "icon": "🧭",
+        "selectedIcon": "🧭",
+        "show": true
+      },
+      {
+        "id": "t3",
+        "page": "/pages/square/square",
+        "text": "灵感",
+        "icon": "✨",
+        "selectedIcon": "✨",
+        "show": true
+      },
+      {
+        "id": "t4",
+        "page": "/pages/my/my",
+        "text": "我的",
+        "icon": "👤",
+        "selectedIcon": "👤",
+        "show": true
+      }
+    ]
+  },
+  "assets": [
+    {
+      "id": "a1",
+      "url": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22750%22%20height%3D%22420%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22742%22%20height%3D%22412%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2247%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Ebanner%201%20%C2%B7%20%E8%8D%89%E5%8E%9F%E5%85%A8%E6%99%AF%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "name": "banner-草原全景",
+      "size": 180000,
+      "time": "2026-10-05 06:45:43"
+    },
+    {
+      "id": "a2",
+      "url": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E5%91%BC%E4%BC%A6%E8%B4%9D%E5%B0%94%E5%A4%A7%E8%8D%89%E5%8E%9F%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "name": "呼伦贝尔大草原",
+      "size": 140000,
+      "time": "2026-10-05 06:45:43"
+    },
+    {
+      "id": "a3",
+      "url": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E8%8E%AB%E6%97%A5%E6%A0%BC%E5%8B%92%E6%B2%B3%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "name": "莫日格勒河",
+      "size": 135000,
+      "time": "2026-10-05 06:45:43"
+    },
+    {
+      "id": "a4",
+      "url": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3E%E9%85%92%E5%BA%97%20h1%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "name": "海拉尔草原天际酒店",
+      "size": 170000,
+      "time": "2026-10-06 06:45:43"
+    },
+    {
+      "id": "a5",
+      "url": "data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22640%22%20height%3D%22400%22%3E%3Crect%20width%3D%22100%25%22%20height%3D%22100%25%22%20fill%3D%22%23F0EBE1%22%2F%3E%3Crect%20x%3D%224%22%20y%3D%224%22%20width%3D%22632%22%20height%3D%22392%22%20fill%3D%22none%22%20stroke%3D%22%23DCD3C2%22%20stroke-width%3D%222%22%20stroke-dasharray%3D%2210%2C8%22%2F%3E%3Ctext%20x%3D%2250%25%22%20y%3D%2250%25%22%20fill%3D%22%23B3A98F%22%20font-size%3D%2244%22%20font-family%3D%22sans-serif%22%20text-anchor%3D%22middle%22%20dominant-baseline%3D%22middle%22%3Er001%20%E5%B0%81%E9%9D%A2%3C%2Ftext%3E%3C%2Fsvg%3E",
+      "name": "草原深度6日封面",
+      "size": 150000,
+      "time": "2026-10-07 06:45:43"
+    }
+  ]
+};

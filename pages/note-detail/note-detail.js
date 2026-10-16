@@ -1,29 +1,31 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 
 Page({
   data: {
     c: copy.noteDetail,
     note: null,
     liked: false,
-    faved: false,
-    commentDraft: '',
-    comments: []
+    faved: false
   },
 
-  onLoad(query) {
+  async onLoad(query) {
     const id = query ? query.id : '';
-    const note = id ? data.getNote(id) : null;
+    let note = null;
+    try {
+      note = await api.getNote(id);
+    } catch (e) {
+      note = null;
+    }
+    if (!note) note = id ? data.getNote(id) : null;
     if (!note) {
       wx.showToast({ title: '笔记不存在', icon: 'none' });
       setTimeout(() => wx.navigateBack(), 1200);
       return;
     }
     wx.setNavigationBarTitle({ title: '旅行笔记' });
-    this.setData({
-      note,
-      comments: (note.comments || []).slice()
-    });
+    this.setData({ note });
   },
 
   previewImage(e) {
@@ -44,22 +46,5 @@ Page({
     const faved = !this.data.faved;
     this.setData({ faved });
     wx.showToast({ title: faved ? c.faved : c.fav, icon: 'none' });
-  },
-
-  onCommentInput(e) {
-    this.setData({ commentDraft: e.detail.value });
-  },
-
-  onCommentSend() {
-    const text = (this.data.commentDraft || '').trim();
-    if (!text) return;
-    const u = wx.getStorageSync('userInfo');
-    const me = {
-      name: (u && u.nickname) || '我',
-      avatar: (u && u.avatar) || '',
-      text,
-      likes: 0
-    };
-    this.setData({ comments: [me].concat(this.data.comments), commentDraft: '' });
   }
 });

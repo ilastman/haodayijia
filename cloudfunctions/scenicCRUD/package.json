@@ -1,0 +1,9 @@
+{
+  "name": "scenicCRUD",
+  "version": "1.0.0",
+  "description": "songtsam-miniprogram cloud function: scenicCRUD",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

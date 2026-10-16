@@ -1,0 +1,53 @@
+<view class="page">
+  <view class="ed-section">
+    <view class="ed-h">客户信息</view>
+    <view class="ed-row"><text class="ed-l">客户姓名</text><input class="ed-i" placeholder="必填" value="{{form.customer.name}}" data-k="name" bindinput="onCust" /></view>
+    <view class="ed-row"><text class="ed-l">联系电话</text><input class="ed-i" type="number" placeholder="选填" value="{{form.customer.phone}}" data-k="phone" bindinput="onCust" /></view>
+    <view class="ed-row"><text class="ed-l">微信号</text><input class="ed-i" placeholder="选填" value="{{form.customer.wechat}}" data-k="wechat" bindinput="onCust" /></view>
+    <view class="ed-row"><text class="ed-l">来源渠道</text><input class="ed-i" placeholder="如 抖音/转介绍/门店" value="{{form.customer.source}}" data-k="source" bindinput="onCust" /></view>
+    <view class="ed-row"><text class="ed-l">备注</text><input class="ed-i" placeholder="选填" value="{{form.customer.remark}}" data-k="remark" bindinput="onCust" /></view>
+  </view>
+
+  <view class="ed-section">
+    <view class="ed-h">出行信息</view>
+    <view class="ed-row"><text class="ed-l">出行人数</text><input class="ed-i" type="number" placeholder="0" value="{{form.people}}" data-k="people" bindinput="onField" /></view>
+    <view class="ed-row"><text class="ed-l">目的地</text><input class="ed-i" placeholder="如 呼伦贝尔" value="{{form.dest}}" data-k="dest" bindinput="onField" /></view>
+    <view class="ed-row"><text class="ed-l">出行日期</text>
+      <picker mode="date" value="{{form.departDate}}" data-k="departDate" bindchange="onField">
+        <view class="ed-pick">{{form.departDate || '请选择'}}</view>
+      </picker>
+    </view>
+    <view class="ed-row"><text class="ed-l">返程日期</text>
+      <picker mode="date" value="{{form.returnDate}}" data-k="returnDate" bindchange="onField">
+        <view class="ed-pick">{{form.returnDate || '请选择'}}</view>
+      </picker>
+    </view>
+    <view class="ed-row"><text class="ed-l">订单状态</text>
+      <picker range="{{statusList}}" value="{{statusIndex}}" bindchange="onStatus">
+        <view class="ed-pick">{{form.status}}</view>
+      </picker>
+    </view>
+    <view class="ed-row"><text class="ed-l">紧急置顶</text><switch checked="{{form.urgency}}" bindchange="onUrgency" color="#8A7152" /></view>
+  </view>
+
+  <view class="ed-section">
+    <view class="ed-h">分项成本（内部）</view>
+    <view class="ed-row"><text class="ed-l">酒店</text><input class="ed-i" type="digit" placeholder="0" value="{{form.costs.hotel}}" data-k="hotel" bindinput="onCost" /></view>
+    <view class="ed-row"><text class="ed-l">车辆</text><input class="ed-i" type="digit" placeholder="0" value="{{form.costs.car}}" data-k="car" bindinput="onCost" /></view>
+    <view class="ed-row"><text class="ed-l">导游</text><input class="ed-i" type="digit" placeholder="0" value="{{form.costs.guide}}" data-k="guide" bindinput="onCost" /></view>
+    <view class="ed-row"><text class="ed-l">门票</text><input class="ed-i" type="digit" placeholder="0" value="{{form.costs.ticket}}" data-k="ticket" bindinput="onCost" /></view>
+    <view class="ed-row"><text class="ed-l">餐费</text><input class="ed-i" type="digit" placeholder="0" value="{{form.costs.meal}}" data-k="meal" bindinput="onCost" /></view>
+    <view class="ed-row"><text class="ed-l">杂费</text><input class="ed-i" type="digit" placeholder="0" value="{{form.costs.misc}}" data-k="misc" bindinput="onCost" /></view>
+  </view>
+
+  <view class="ed-section">
+    <view class="ed-h">报价 / 毛利（内部）</view>
+    <view class="ed-row"><text class="ed-l">客户成交价</text><input class="ed-i" type="digit" placeholder="0" value="{{form.pricing.quote}}" data-k="quote" bindinput="onPrice" /></view>
+    <view class="ed-row"><text class="ed-l">预估毛利</text><input class="ed-i" type="digit" placeholder="不填则按成交价-总成本自动计算" value="{{form.pricing.estProfit}}" data-k="estProfit" bindinput="onPrice" /></view>
+  </view>
+
+  <view class="ed-actions">
+    <view class="btn-primary {{saving?'disabled':''}}" bindtap="save">{{saving ? '保存中…' : '保存'}}</view>
+  </view>
+  <view class="safe-bottom"></view>
+</view>

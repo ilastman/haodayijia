@@ -3,7 +3,6 @@
   <!-- 顶部标题栏 -->
   <view class="head">
     <view class="sq-title">{{c.title}}</view>
-    <view class="publish-circle" bindtap="goPublish">{{c.publishBtn}}</view>
   </view>
 
   <!-- 分类标签（极简无底色） -->

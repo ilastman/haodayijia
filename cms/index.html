@@ -1,0 +1,77 @@
+﻿<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>旅行社 CMS 后台</title>
+  <!-- Vue3 + Element Plus CDN -->
+  <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/element-plus/dist/index.css" />
+  <script src="https://unpkg.com/element-plus/dist/index.full.min.js"></script>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div id="app"></div>
+  <script src="js/api.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/views/login.js"></script>
+  <script src="js/views/home-module.js"></script>
+  <script src="js/views/banner.js"></script>
+  <script src="js/views/scenic.js"></script>
+  <script src="js/views/hotel.js"></script>
+  <script src="js/views/private-group.js"></script>
+  <script src="js/views/inspiration-audit.js"></script>
+  <script src="js/views/settings.js"></script>
+  <script>
+    const App = {
+      template: `
+        <div>
+          <header class="header" v-if="current !== 'login'">
+            <div class="logo">旅行社 CMS 后台</div>
+            <div class="flex">
+              <el-button size="small" @click="go('home-module')">首页板块</el-button>
+              <el-button size="small" @click="go('banner')">Banner</el-button>
+              <el-button size="small" @click="go('scenic')">景区</el-button>
+              <el-button size="small" @click="go('hotel')">酒店</el-button>
+              <el-button size="small" @click="go('private-group')">私家团</el-button>
+              <el-button size="small" @click="go('inspiration-audit')">灵感广场审核</el-button>
+              <el-button size="small" @click="go('settings')">系统设置</el-button>
+              <el-button size="small" @click="logout">退出</el-button>
+            </div>
+          </header>
+          <main class="container">
+            <component :is="viewComp"></component>
+          </main>
+        </div>
+      `,
+      data() { return { current: 'login' }; },
+      computed: {
+        viewComp() {
+          const map = {
+            login: LoginView,
+            'home-module': HomeModuleView,
+            banner: BannerView,
+            scenic: ScenicView,
+            hotel: HotelView,
+            'private-group': PrivateGroupView,
+            'inspiration-audit': InspAuditView,
+            settings: SettingsView
+          };
+          return map[this.current] || LoginView;
+        }
+      },
+      methods: {
+        go(k) { this.current = k; },
+        logout() { API.clear(); this.current = 'login'; }
+      },
+      mounted() {
+        if (!API.getToken()) this.current = 'login';
+        else this.current = 'home-module';
+      }
+    };
+    const app = Vue.createApp(App);
+    app.use(ElementPlus);
+    app.mount('#app');
+  </script>
+</body>
+</html>

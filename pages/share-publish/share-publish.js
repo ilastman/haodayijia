@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 const { ph } = require('../../utils/util');
 
 const PRESETS = [ph('封面 夏日草原', 640, 420), ph('封面 阿尔山秋色', 640, 420), ph('封面 冬季雪原', 640, 420)];
@@ -229,6 +230,42 @@ Page({
 
   noop() {},
 
+  // 云端发布灵感：上传图片 -> 写入 inspirationPost（待审核）。失败静默，不影响本地保存
+  async cloudPublish(postType, payload) {
+    try {
+      if (!(typeof wx !== 'undefined' && wx.cloud)) return;
+      const paths = payload.images && payload.images.length ? payload.images : (payload.cover ? [payload.cover] : []);
+      const fileIDs = [];
+      for (const p of paths) {
+        if (!p) continue;
+        if (p.indexOf('cloud://') === 0 || /^https?:\/\//.test(p)) { fileIDs.push(p); continue; }
+        const fid = await api.uploadImage(p);
+        fileIDs.push(fid || p);
+      }
+      const ext = {
+        title: payload.title || '',
+        tags: payload.tags || [],
+        category: payload.category || '',
+        authorName: (payload.author && payload.author.name) || '',
+        authorAvatar: (payload.author && payload.author.avatar) || '',
+        intro: payload.intro || '',
+        days: payload.days || 0,
+        season: payload.season || '',
+        highlights: payload.highlights || [],
+        timeline: payload.timeline || [],
+        images: fileIDs
+      };
+      await api.publishPost({
+        postType,
+        coverImg: fileIDs[0] || '',
+        contentText: payload.contentText || '',
+        extend: ext
+      });
+    } catch (e) {
+      // 云端发布失败不阻塞（已本地保存）
+    }
+  },
+
   publish() {
     if (this.data.mode === 'note') return this.publishNote();
     this.publishPlan();
@@ -265,6 +302,17 @@ Page({
     const mine = wx.getStorageSync('myShares') || [];
     mine.unshift(share);
     wx.setStorageSync('myShares', mine);
+    this.cloudPublish('trip', {
+      title,
+      days: this.data.days,
+      season: this.data.season || this.data.seasons[0],
+      category: share.category,
+      intro,
+      cover: share.cover,
+      highlights: share.highlights,
+      timeline: share.timeline,
+      author: share.author
+    });
     wx.setStorageSync('pendingToast', c.success);
     wx.switchTab({ url: '/pages/square/square' });
   },
@@ -302,6 +350,15 @@ Page({
     const mine = wx.getStorageSync('myNotes') || [];
     mine.unshift(note);
     wx.setStorageSync('myNotes', mine);
+    this.cloudPublish('note', {
+      title,
+      tags: note.tags,
+      category: '',
+      intro: content[0] || '',
+      images: this.data.noteImages.slice(),
+      contentText: content.join('\n'),
+      author: note.author
+    });
     wx.setStorageSync('pendingToast', c.success);
     wx.switchTab({ url: '/pages/square/square' });
   }

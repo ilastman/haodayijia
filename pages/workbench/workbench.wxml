@@ -1,0 +1,53 @@
+<view class="page">
+
+  <!-- 未识别员工 -->
+  <block wx:if="{{ready && !isStaff}}">
+    <view class="wb-guard">
+      <view class="wb-guard-icon">🔒</view>
+      <view class="wb-guard-title">{{disabled ? '账号已停用' : '仅员工可访问'}}</view>
+      <view class="wb-guard-desc">{{disabled ? '您的员工账号已被停用，请联系管理员。' : '请输入管理员分配的绑定码，绑定后即可进入员工工作台。'}}</view>
+      <view class="btn-primary wb-guard-btn" bindtap="goBind">输入绑定码</view>
+    </view>
+  </block>
+
+  <block wx:if="{{isStaff}}">
+    <view class="wb-head">
+      <view class="wb-title">员工工作台</view>
+      <view class="wb-tabs">
+        <view class="wb-tab {{tab==='active'?'on':''}}" data-tab="active" bindtap="switchTab">进行中</view>
+        <view class="wb-tab {{tab==='archived'?'on':''}}" data-tab="archived" bindtap="switchTab">归档专区</view>
+      </view>
+    </view>
+
+    <view class="wb-list" wx:if="{{list.length}}">
+      <view class="wb-card {{item.level==='overdue'?'ov':(item.level==='near'?'nr':'')}}"
+            wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
+        <view class="wb-card-top">
+          <view class="wb-cust ellipsis">{{item.name}}</view>
+          <view class="wb-flag" wx:if="{{item.urgency}}">急</view>
+        </view>
+        <view class="wb-meta">
+          <text class="wb-people">{{item.people}}人</text>
+          <text class="wb-dot">·</text>
+          <text class="wb-dest ellipsis">{{item.dest || '目的地待定'}}</text>
+        </view>
+        <view class="wb-bottom">
+          <text class="wb-date">{{item.departDate || '团期待定'}}</text>
+          <text class="wb-st {{item.statusClass}}">{{item.status}}</text>
+        </view>
+        <view class="wb-tags" wx:if="{{item.tags.length}}">
+          <text class="wb-tag {{item.level}}" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="empty" wx:else>
+      <view class="empty-icon">◇</view>
+      <text>{{tab==='active' ? '暂无进行中的客户，点击右下角新增' : '暂无归档订单'}}</text>
+    </view>
+
+    <view class="safe-bottom"></view>
+    <view class="wb-fab" bindtap="goAdd">＋</view>
+  </block>
+
+</view>

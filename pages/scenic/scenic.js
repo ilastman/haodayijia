@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
+const api = require('../../utils/api');
 
 Page({
   data: {
@@ -13,7 +14,28 @@ Page({
   },
 
   onLoad() {
+    this._all = data.scenics;
     this.apply();
+    this.loadCloud();
+  },
+
+  // 云端景区：加载成功后重建分类并刷新列表，失败保留本地数据
+  async loadCloud() {
+    try {
+      const list = await api.scenics();
+      if (!list || !list.length) return;
+      this._all = list;
+      const dests = [];
+      list.forEach(s => {
+        if (s.dest && dests.indexOf(s.dest) < 0) dests.push(s.dest);
+      });
+      const cats = [copy.scenic.all].concat(dests);
+      const activeCat = cats.indexOf(this.data.activeCat) < 0 ? copy.scenic.all : this.data.activeCat;
+      this.setData({ cats, activeCat });
+      this.apply();
+    } catch (e) {
+      // 静默失败，继续使用本地数据
+    }
   },
 
   onCat(e) {
@@ -22,10 +44,10 @@ Page({
   },
 
   apply() {
-    const { activeCat } = this.data;
-    const all = copy.scenic.all;
+    const all = this._all || data.scenics;
+    const activeCat = this.data.activeCat;
     this.setData({
-      list: data.scenics.filter(a => activeCat === all || a.dest === activeCat)
+      list: all.filter(a => activeCat === copy.scenic.all || a.dest === activeCat)
     });
   },
 
