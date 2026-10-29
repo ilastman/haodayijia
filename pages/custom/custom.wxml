@@ -54,6 +54,22 @@
         </view>
       </view>
     </view>
+    <view class="tip-line">{{c.editHint}}</view>
+  </view>
+
+  <!-- 封面：私人定制封面层，必填 -->
+  <view class="card">
+    <view class="card-title">{{c.coverTitle}}<text class="req">*</text></view>
+    <view class="tip-line">{{c.coverRequired}}</view>
+    <view class="cover-row" wx:if="{{cover}}">
+      <image class="cover-preview" src="{{cover}}" mode="aspectFill" />
+      <view class="op-btn del" bindtap="clearCover">{{c.remove}}</view>
+    </view>
+    <view class="sel-empty" wx:else>{{c.coverEmpty}}</view>
+    <view class="img-actions">
+      <view class="img-btn cover-upload" bindtap="uploadCover">+ {{c.coverUpload}}</view>
+      <view class="img-btn cover-pick" bindtap="openCoverLib">+ {{c.coverPick}}</view>
+    </view>
   </view>
 
   <!-- 员工内部核算价（仅员工可见） -->
@@ -158,6 +174,21 @@
   </view>
 
   <view class="card">
+    <view class="card-title">{{c.promoTitle}}</view>
+    <view class="tip-line">{{c.promoHint}}</view>
+    <view class="promo-row" wx:if="{{curPromo.length}}">
+      <view class="promo-cell" wx:for="{{curPromo}}" wx:key="*this">
+        <image class="promo-img" src="{{item}}" mode="aspectFill" />
+        <view class="op-btn del" catchtap="removePromo" data-index="{{index}}">{{c.remove}}</view>
+      </view>
+    </view>
+    <view class="img-actions">
+      <view class="img-btn promo-upload" bindtap="uploadPromo">+ {{c.promoUpload}}</view>
+      <view class="img-btn promo-pick" bindtap="openPromoLib">+ {{c.promoAdd}}</view>
+    </view>
+  </view>
+
+  <view class="card">
     <view class="card-title">{{c.noteTitle}}</view>
     <textarea class="note" placeholder="{{c.notePlaceholder}}" placeholder-class="ph" value="{{curNote}}"
       bindinput="onNote" maxlength="200" auto-height />
@@ -172,6 +203,40 @@
       <text class="sum-item">{{c.summaryHotel}} {{totalHotel}}</text>
     </view>
     <view class="submit-btn" bindtap="goGenerate">{{c.generateBtn}}</view>
+  </view>
+
+  <!-- 私人定制封面 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'cover'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.coverSheet}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="opt" wx:for="{{coverLib}}" wx:key="id" catchtap="pickCoverLib" data-url="{{item.url}}">
+          <image class="opt-thumb" src="{{item.url}}" mode="aspectFill" />
+          <view class="opt-body"><view class="opt-name">{{item.name}}</view></view>
+        </view>
+        <view class="sel-empty" wx:if="{{coverLib.length === 0}}">封面图库还是空的，可先上传，或在后台「图库管理 · 私人定制封面」添加</view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 当日宣传图 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'promo'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.promoSheet}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="opt" wx:for="{{promoLib}}" wx:key="id" catchtap="pickPromoLib" data-url="{{item.url}}">
+          <image class="opt-thumb" src="{{item.url}}" mode="aspectFill" />
+          <view class="opt-body"><view class="opt-name">{{item.name}}</view></view>
+        </view>
+        <view class="sel-empty" wx:if="{{promoLib.length === 0}}">宣传图库还是空的，可直接上传，或在后台按酒店 / 景区分类添加</view>
+      </scroll-view>
+    </view>
   </view>
 
   <!-- 景区选择面板 -->

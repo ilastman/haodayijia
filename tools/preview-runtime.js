@@ -236,7 +236,11 @@
     previewImage: previewImage,
     showActionSheet: function (o) {
       openSheet(o.itemList || [], function (i) { o.success && o.success({ tapIndex: i }); }, function () { o.fail && o.fail(); });
-    }
+    },
+    showShareMenu: function () {},
+    hideShareMenu: function () {},
+    showLoading: function () {},
+    hideLoading: function () {}
   };
 
   /* ================= WXML 解析 ================= */

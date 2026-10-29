@@ -1,0 +1,22 @@
+{
+  "collections": {
+    "gallery": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "url": { "type": "string", "required": true, "description": "图片地址或 cloud:// fileID" },
+        "name": { "type": "string", "description": "文件名" },
+        "size": { "type": "number", "default": 0, "description": "字节大小（本地 dataURL 时为字符长度）" },
+        "time": { "type": "string", "description": "入库时间" },
+        "tree": { "type": "string", "required": true, "description": "hotel=酒店图库 / scenic=景区图库 / customCover=私人定制封面层" },
+        "categoryId": { "type": "string", "description": "酒店或景区分类节点 id；封面层固定为 custom-cover" },
+        "role": { "type": "string", "description": "image=节点宣传图 / cover=私人定制封面。cover 只能出现在 customCover" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["tree", "categoryId"] }
+      ],
+      "remarks": "分类图库。酒店沿用两级（大区→地点，如呼伦贝尔→海拉尔/满洲里），景区沿用三级（大区→类型→地点）。私人定制封面是单独一层，封面图只在该层上传。"
+    }
+  }
+}

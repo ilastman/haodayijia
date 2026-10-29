@@ -222,9 +222,40 @@ function calcQuote(opts) {
   };
 }
 
+/* 无内部票价时的酒店参考合计：所选酒店公开价 × 当天间数 */
+function publicHotelQuote(plans, hotelsById) {
+  let hotel = 0;
+  (Array.isArray(plans) ? plans : []).forEach(p => {
+    const h = hotelsById && hotelsById[p && p.hotelId];
+    if (!h) return;
+    const qty = Math.max(1, parseInt(p.roomQty, 10) || 1);
+    hotel += num(h.price) * qty;
+  });
+  return { hotel, ticket: 0, car: 0, total: hotel };
+}
+
+/* 行程总价标注：金额 + 酒店/门票构成 + 成人/儿童人数 */
+function annotateQuote(q, adults, children) {
+  const hotel = num(q && q.hotel);
+  const ticket = num(q && q.ticket);
+  const total = (q && q.total != null) ? num(q.total) : hotel + ticket + num(q && q.car);
+  const a = Math.max(0, parseInt(adults, 10) || 0);
+  const c = Math.max(0, parseInt(children, 10) || 0);
+  return {
+    label: '行程总价',
+    total,
+    hotel,
+    ticket,
+    adults: a,
+    children: c,
+    pending: !(total > 0),
+    note: '酒店 ¥' + hotel + ' · 门票 ¥' + ticket + ' · ' + a + ' 成人 · ' + c + ' 儿童'
+  };
+}
+
 module.exports = {
   num, parseTicketPrice, normDate, monthOf, addDays,
   periodHasDate, periodHasMonth,
   periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, matchHotelPrice,
-  deriveDays, calcQuote
+  deriveDays, calcQuote, publicHotelQuote, annotateQuote
 };

@@ -15,9 +15,16 @@ window.VIEWS['user-trip'] = {
       },
     },
     methods: {
-      openEdit(t) { this.form = JSON.parse(JSON.stringify(t)); this.dlg = true; },
+      openEdit(t) {
+        this.form = JSON.parse(JSON.stringify(t));
+        if (this.form.adults == null || this.form.adults === '') this.form.adults = 2;
+        if (this.form.children == null || this.form.children === '') this.form.children = 0;
+        this.dlg = true;
+      },
       save() {
         if (!this.form.title.trim()) { ElementPlus.ElMessage.warning('请输入行程标题'); return; }
+        this.form.adults = Math.max(1, parseInt(this.form.adults, 10) || 1);
+        this.form.children = Math.max(0, parseInt(this.form.children, 10) || 0);
         Store.update('userTrip', this.form.id, this.form);
         ElementPlus.ElMessage.success('已保存');
         this.dlg = false;
@@ -43,6 +50,8 @@ window.VIEWS['user-trip'] = {
         </el-table-column>
         <el-table-column prop="title" label="行程标题" min-width="220" show-overflow-tooltip />
         <el-table-column label="天数" width="80"><template #default="{row}">{{row.days}} 天</template></el-table-column>
+        <el-table-column label="人数" width="110"><template #default="{row}">{{row.adults || 0}} 成人 · {{row.children || 0}} 儿童</template></el-table-column>
+        <el-table-column label="总价" width="100"><template #default="{row}">{{row.quote && row.quote.total ? ('¥' + row.quote.total) : '—'}}</template></el-table-column>
         <el-table-column prop="plan" label="行程概要" min-width="240" show-overflow-tooltip />
         <el-table-column label="状态" width="100">
           <template #default="{row}"><span class="st" :class="row.status === 'active' ? 'st-pending' : 'st-pass'">{{row.status === 'active' ? '进行中' : '已完成'}}</span></template>
@@ -63,6 +72,9 @@ window.VIEWS['user-trip'] = {
             <el-form-item label="用户"><div class="flex gap10"><img class="avatar-sm" :src="img(form.avatar)" alt=""/><span>{{form.nickname}}（ID: {{form.id}}）</span></div></el-form-item>
             <el-form-item label="行程标题"><el-input v-model="form.title" /></el-form-item>
             <el-form-item label="天数"><el-input-number v-model="form.days" :min="1" :max="30" /></el-form-item>
+            <el-form-item label="成人"><el-input-number v-model="form.adults" :min="1" :max="99" /></el-form-item>
+            <el-form-item label="儿童"><el-input-number v-model="form.children" :min="0" :max="20" /></el-form-item>
+            <el-form-item label="行程总价"><span v-if="form.quote && form.quote.total">¥{{form.quote.total}} <span class="faint">酒店 ¥{{form.quote.hotel || 0}} · 门票 ¥{{form.quote.ticket || 0}}</span></span><span v-else class="faint">生成行程后显示</span></el-form-item>
             <el-form-item label="行程概要"><el-input v-model="form.plan" type="textarea" :rows="5" /></el-form-item>
             <el-form-item label="状态">
               <el-select v-model="form.status"><el-option label="进行中" value="active" /><el-option label="已完成" value="done" /></el-select>

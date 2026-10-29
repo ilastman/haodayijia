@@ -265,7 +265,21 @@ const copy = {
     phoneError: '请输入正确的手机号码',
     success: '提交成功！定制顾问将在1小时内联系您',
     close: '关闭',
-    generateBtn: '生成我的专属行程'
+    generateBtn: '生成我的专属行程',
+    coverTitle: '行程封面',
+    coverRequired: '封面（第一张，必填）',
+    coverPick: '从私人定制封面选择',
+    coverUpload: '上传封面',
+    coverEmpty: '请上传或选择封面。封面只来自私人定制封面，不能用景区或酒店图。',
+    coverMiss: '请先上传封面图',
+    coverSheet: '选择私人定制封面',
+    promoTitle: '当日宣传图',
+    promoHint: '选填，每天最多 2 张',
+    promoAdd: '插入宣传图',
+    promoUpload: '上传宣传图',
+    promoFull: '当天最多 2 张宣传图',
+    promoSheet: '选择宣传图',
+    editHint: '生成后仍可返回修改人数、封面和每天的宣传图'
   },
 
   // 专属行程预览
@@ -280,6 +294,8 @@ const copy = {
     noScenic: '自由安排',
     saveBtn: '保存到我的行程',
     editBtn: '修改行程',
+    priceLabel: '行程总价',
+    pricePending: '待核算',
     saveSuccess: '行程已保存至【我的行程】',
     saveUpdated: '行程已更新',
     tipsTitle: '温馨提示',

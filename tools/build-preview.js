@@ -22,12 +22,21 @@ add('utils/data.js');
 add('utils/config.js');
 add('utils/cloud.js');
 add('utils/api.js');
+add('utils/quote.js');
+add('utils/workbench.js');
+add('utils/gallery.js');
+add('utils/user.js');
 add('utils/days.js');
 add('utils/route-extra.js');
 add('app.js');
 add('app.wxss');
 
 app.pages.forEach(pg => {
+  ['.js', '.json', '.wxml', '.wxss'].forEach(ext => add(pg + ext));
+});
+
+/* 广场仍会打开旧路径 share-detail，源码在，但不在 app.json 页面列表里 */
+['pages/share-detail/share-detail'].forEach(pg => {
   ['.js', '.json', '.wxml', '.wxss'].forEach(ext => add(pg + ext));
 });
 

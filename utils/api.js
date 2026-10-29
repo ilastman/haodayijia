@@ -251,6 +251,12 @@ const api = {
     };
   },
 
+  // 分类图库。tree 为空返回全部（含私人定制封面层）
+  async gallery(tree) {
+    const list = await call('galleryCRUD', { action: 'list', tree: tree || '' });
+    return Array.isArray(list) ? list : [];
+  },
+
   // 分类树（scenic 三级 / hotel 两级）。空库时云函数会写入默认分类。
   async categories(tree) {
     const list = await call('categoryCRUD', { action: 'list', tree: tree || '' });
@@ -334,10 +340,21 @@ const api = {
       title: t.title || '我的专属行程',
       days: t.days || 0,
       date: t.date || String(t.createTime || '').slice(0, 10),
+      adults: t.adults,
+      children: t.children,
+      quote: t.quote || null,
       cover: t.cover || '',
       plans: (Array.isArray(t.plans) && t.plans.length)
-        ? t.plans.map(p => ({ scenicIds: p.scenicIds || [], hotelId: p.hotelId || '', altHotelIds: p.altHotelIds || [], note: p.note || '' }))
-        : (t.plan ? [{ scenicIds: [], hotelId: '', altHotelIds: [], note: t.plan }] : []),
+        ? t.plans.map(p => ({
+          scenicIds: p.scenicIds || [],
+          hotelId: p.hotelId || '',
+          altHotelIds: p.altHotelIds || [],
+          note: p.note || '',
+          roomType: p.roomType || '',
+          roomQty: p.roomQty || 1,
+          promoImgs: Array.isArray(p.promoImgs) ? p.promoImgs.slice(0, 2) : []
+        }))
+        : (t.plan ? [{ scenicIds: [], hotelId: '', altHotelIds: [], note: t.plan, roomType: '', roomQty: 1, promoImgs: [] }] : []),
       savedAt: t.createTime || '',
       isPublish: t.status === 'published'
     }));

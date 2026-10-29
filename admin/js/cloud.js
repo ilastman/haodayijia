@@ -26,7 +26,8 @@
     opLog: 'opLogCRUD',
     user: 'userCRUD',
     category: 'categoryCRUD',
-    adminUser: 'adminUserCRUD'
+    adminUser: 'adminUserCRUD',
+    gallery: 'galleryCRUD'
   };
 
   function enabled() {

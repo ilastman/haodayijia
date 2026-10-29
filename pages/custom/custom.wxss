@@ -197,6 +197,63 @@
   margin-bottom: 18rpx;
 }
 
+.img-actions {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16rpx;
+}
+
+.img-btn {
+  display: inline-block;
+  font-size: 26rpx;
+  color: #8A7152;
+  background: #EDE4D2;
+  border-radius: 14rpx;
+  padding: 14rpx 30rpx;
+  margin: 0 16rpx 8rpx 0;
+}
+
+.cover-row, .promo-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: 12rpx;
+}
+
+.cover-preview {
+  width: 100%;
+  height: 280rpx;
+  border-radius: 16rpx;
+  display: block;
+  background: #EDE4D2;
+}
+
+.cover-row .op-btn {
+  margin-top: 12rpx;
+}
+
+.promo-cell {
+  width: 220rpx;
+  margin: 0 16rpx 12rpx 0;
+}
+
+.promo-img {
+  width: 220rpx;
+  height: 140rpx;
+  border-radius: 12rpx;
+  display: block;
+  background: #EDE4D2;
+}
+
+.opt-thumb {
+  width: 120rpx;
+  height: 80rpx;
+  border-radius: 10rpx;
+  margin-right: 16rpx;
+  flex: 0 0 120rpx;
+  background: #EDE4D2;
+}
+
 /* 已选列表 */
 .sel-list {
   border-top: 1rpx solid #F0EADB;

@@ -65,5 +65,18 @@ eq(r3.ticket, 120 * 3 * 2, '同景区重复累加：120×3×2 = 720');
 eq(quote.parseTicketPrice('免费'), 0, '免费 -> 0');
 eq(quote.parseTicketPrice(''), 0, '空 -> 0');
 
+console.log('== 参考总价与标注 ==');
+const pub = quote.publicHotelQuote([
+  { hotelId: 'h1', roomQty: 2 },
+  { hotelId: '', roomQty: 1 },
+  { hotelId: 'missing', roomQty: 1 }
+], hotelsById);
+eq(pub.total, 1000, '公开价 500 × 2 间 = 1000');
+const note = quote.annotateQuote({ hotel: 688, ticket: 120, total: 808 }, 2, 1);
+eq(note.total, 808, '标注总价 808');
+eq(note.pending, false, '有总价则不是待核算');
+eq(note.note, '酒店 ¥688 · 门票 ¥120 · 2 成人 · 1 儿童', '标注含酒店门票与人数');
+eq(quote.annotateQuote({ hotel: 0, ticket: 0, total: 0 }, 2, 0).pending, true, '零价待核算');
+
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);

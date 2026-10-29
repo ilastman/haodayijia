@@ -1,6 +1,10 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const quote = require('../../utils/quote');
+const gallery = require('../../utils/gallery');
+const cloud = require('../../utils/cloud');
+const wb = require('../../utils/workbench');
 const { ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -50,6 +54,12 @@ function buildInfo(days, month) {
   ];
 }
 
+function hotelsByIdFrom(list) {
+  const map = {};
+  (list || []).forEach(h => { if (h && h.id) map[h.id] = h; });
+  return map;
+}
+
 function buildOverallTips(plans) {
   const tips = FIXED_TIPS.slice();
   const seen = {};
@@ -86,7 +96,9 @@ Page({
     fromList: false,
     editingId: '',
     infoTags: [],
-    overallTips: []
+    overallTips: [],
+    cover: '',
+    priceView: { label: '行程总价', total: 0, hotel: 0, ticket: 0, adults: 2, children: 0, note: '', pending: true }
   },
 
   onLoad(query) {
@@ -102,27 +114,123 @@ Page({
     const saved = wx.getStorageSync('lastCustomPlan') || {};
     const days = Math.min(MAX_DAYS, Math.max(1, parseInt(query.days, 10) || (base && base.days) || saved.days || 3));
     const plans = (((base && base.plans) || (saved.plans || [])).slice()).slice(0, days);
-    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1 });
+    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] });
     const heroTitle = copy.customPreview.heroTitle + days + copy.customPreview.heroTitleSuffix;
     this._plans = plans;
     const date = query.date ? decodeURIComponent(query.date) : (base && base.date) || '';
+    let adults = 2;
+    let children = 0;
+    if (query.adults !== undefined && query.adults !== '') adults = query.adults;
+    else if (base && base.adults !== undefined && base.adults !== '') adults = base.adults;
+    else if (!fromList && saved.adults !== undefined && saved.adults !== '') adults = saved.adults;
+    if (query.children !== undefined && query.children !== '') children = query.children;
+    else if (base && base.children !== undefined && base.children !== '') children = base.children;
+    else if (!fromList && saved.children !== undefined && saved.children !== '') children = saved.children;
+    const cover = (base && base.cover) || (!fromList && saved.cover) || '';
+    const savedQuote = (base && base.quote) || (!fromList && saved.quote) || null;
+    const hotelsById = hotelsByIdFrom(data.hotels);
+    const priced = (savedQuote && savedQuote.total) ? savedQuote : quote.publicHotelQuote(plans, hotelsById);
     this.setData({
       days,
       date,
-      adults: query.adults || (base && base.adults) || '',
-      children: query.children || (base && base.children) || '',
+      adults,
+      children,
+      cover,
       heroTiles: this.buildHero(plans),
       dayList: plans.map((p, i) => this.buildDay(p, i, days)),
       heroTitle,
       fromList,
       editingId: fromList ? (query.trip || '') : editingId,
       infoTags: buildInfo(days, monthFromDate(date)),
-      overallTips: buildOverallTips(plans)
+      overallTips: buildOverallTips(plans),
+      priceView: quote.annotateQuote(priced, adults, children)
     });
+    this.refreshQuote();
+  },
+
+  draftBody() {
+    const pv = this.data.priceView || {};
+    return {
+      id: this.data.editingId || '',
+      days: this.data.days,
+      date: this.data.date,
+      adults: this.data.adults,
+      children: this.data.children,
+      cover: this.data.cover,
+      plans: this._plans,
+      quote: { hotel: pv.hotel || 0, ticket: pv.ticket || 0, total: pv.total || 0 }
+    };
   },
 
   goEdit() {
-    wx.navigateTo({ url: '/pages/custom/custom?edit=' + encodeURIComponent(this.data.editingId) });
+    const draft = this.draftBody();
+    wx.setStorageSync('lastCustomPlan', draft);
+    const pages = typeof getCurrentPages === 'function' ? getCurrentPages() : [];
+    const prev = pages.length > 1 ? pages[pages.length - 2] : null;
+    const route = (prev && (prev.route || prev.__route__)) || '';
+    if (route.indexOf('pages/custom/custom') >= 0 && prev && typeof prev.prefillTrip === 'function') {
+      prev.prefillTrip(draft);
+      wx.navigateBack();
+      return;
+    }
+    if (draft.id) {
+      const trips = wx.getStorageSync('myTrips') || [];
+      const idx = trips.findIndex(t => t.id === draft.id);
+      const row = Object.assign({}, draft, { title: this.data.heroTitle });
+      if (idx > -1) trips[idx] = Object.assign({}, trips[idx], row);
+      else trips.unshift(row);
+      wx.setStorageSync('myTrips', trips);
+      wx.navigateTo({ url: '/pages/custom/custom?edit=' + encodeURIComponent(draft.id) });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/custom/custom?draft=1' });
+  },
+
+  async refreshQuote() {
+    let idn = null;
+    try { idn = await wb.identity(); } catch (e) { idn = null; }
+    if (!idn || !idn.isStaff) return;
+    const [hotels, scenics, priceList] = await Promise.all([
+      api.hotels(),
+      this.loadRawScenics(),
+      this.loadHotelPrices()
+    ]);
+    const hotelPricesById = {};
+    (priceList || []).forEach(p => {
+      if (!p || !p.hotelId) return;
+      (hotelPricesById[p.hotelId] = hotelPricesById[p.hotelId] || []).push(p);
+    });
+    const calcHotelsById = hotelsByIdFrom(data.hotels);
+    (hotels || []).forEach(h => {
+      if (h && h.id) calcHotelsById[h.id] = Object.assign({}, h, { prices: hotelPricesById[h.id] || h.prices || [] });
+    });
+    const calcScenicsById = {};
+    (scenics || []).forEach(s => { if (s && s.id) calcScenicsById[s.id] = s; });
+    const plans = (this._plans || []).map((p, i) => Object.assign({}, p, {
+      checkinDate: quote.addDays(this.data.date, i)
+    }));
+    const internal = quote.calcQuote({
+      plans,
+      hotelsById: calcHotelsById,
+      hotelPricesById,
+      scenicsById: calcScenicsById,
+      departDate: this.data.date,
+      people: (parseInt(this.data.adults, 10) || 0) + (parseInt(this.data.children, 10) || 0),
+      carCost: 0
+    });
+    this.setData({ priceView: quote.annotateQuote(internal, this.data.adults, this.data.children) });
+  },
+
+  async loadRawScenics() {
+    const res = await cloud.callFunction('scenicCRUD', { action: 'list' });
+    if (res && res.code === 200 && Array.isArray(res.data)) return res.data.filter(s => s && s.online !== false);
+    return [];
+  },
+
+  async loadHotelPrices() {
+    const res = await cloud.callFunction('hotelCRUD', { action: 'listPrices' });
+    if (res && res.code === 200 && Array.isArray(res.data)) return res.data;
+    return [];
   },
 
   onRight() {
@@ -161,7 +269,15 @@ Page({
       }
     }
     const scene = scenics.length ? scenics[0].name : copy.customPreview.noScenic;
-    return { index: i, line: (i + 1) + copy.customPreview.dayUnit, scene, scenics, hotel, note: p.note || '' };
+    return {
+      index: i,
+      line: (i + 1) + copy.customPreview.dayUnit,
+      scene,
+      scenics,
+      hotel,
+      note: p.note || '',
+      promos: gallery.clipPromo(p.promoImgs)
+    };
   },
 
   goScenic(e) {
@@ -175,7 +291,7 @@ Page({
   saveToMine() {
     const days = this.data.days;
     const title = '我的专属呼伦贝尔' + days + '日行程';
-    let cover = this.data.heroTiles[0].img;
+    let cover = this.data.cover || (this.data.heroTiles[0] && this.data.heroTiles[0].img);
     if (!cover) cover = ph('我的专属呼伦贝尔 ' + days + '日行程', 640, 420);
     const id = this.data.editingId || ('trip' + Date.now());
     const trip = {
@@ -186,14 +302,20 @@ Page({
       adults: this.data.adults,
       children: this.data.children,
       cover,
+      quote: {
+        hotel: (this.data.priceView && this.data.priceView.hotel) || 0,
+        ticket: (this.data.priceView && this.data.priceView.ticket) || 0,
+        total: (this.data.priceView && this.data.priceView.total) || 0
+      },
       heroTitle: this.data.heroTitle,
       plans: this._plans.map(p => ({
         scenicIds: (p.scenicIds || []).slice(),
-      hotelId: p.hotelId || '',
-      altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds.slice() : [],
-      note: p.note || '',
-      roomType: p.roomType || '',
-      roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1)
+        hotelId: p.hotelId || '',
+        altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds.slice() : [],
+        note: p.note || '',
+        roomType: p.roomType || '',
+        roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1),
+        promoImgs: gallery.clipPromo(p.promoImgs)
       })),
       savedAt: TIME_STAMP
     };

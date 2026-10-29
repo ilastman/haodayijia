@@ -4,14 +4,15 @@ const api = require('../../utils/api');
 const cloud = require('../../utils/cloud');
 const wb = require('../../utils/workbench');
 const quote = require('../../utils/quote');
-const { isValidPhone, addConsultRecord } = require('../../utils/util');
+const gallery = require('../../utils/gallery');
+const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
 const MIN_DAYS = 1;
 const ITEM_H = 58;
 
 function emptyPlan() {
-  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1 };
+  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] };
 }
 
 function buildPlans(n) {
@@ -29,7 +30,8 @@ function normalizePlans(v, days) {
     altHotelIds: (p && Array.isArray(p.altHotelIds) ? p.altHotelIds : []).slice(),
     note: (p && p.note) || '',
     roomType: (p && p.roomType) || '',
-    roomQty: Math.max(1, parseInt(p && p.roomQty, 10) || 1)
+    roomQty: Math.max(1, parseInt(p && p.roomQty, 10) || 1),
+    promoImgs: gallery.clipPromo(p && p.promoImgs)
   }));
   while (out.length < n) out.push(emptyPlan());
   return out;
@@ -63,6 +65,10 @@ Page({
     form: { name: '', phone: '', wechat: '' },
     formError: '',
     editingTripId: '',
+    cover: '',
+    coverLib: [],
+    promoLib: [],
+    curPromo: [],
 
     /* 员工内部核价（仅员工可见） */
     isStaff: false,
@@ -94,11 +100,31 @@ Page({
       const trips = wx.getStorageSync('myTrips') || [];
       const t = trips.filter(x => x.id === decodeURIComponent(query.edit))[0];
       if (t) this.prefillTrip(t);
+    } else if (query && query.draft) {
+      const saved = wx.getStorageSync('lastCustomPlan') || null;
+      if (saved) this.prefillTrip(saved);
     } else if (query && query.shareId) {
       const share = data.getShare(query.shareId);
       if (share) this.prefillShare(share);
     }
     this.initStaff();
+    this.loadGallery();
+  },
+
+  onShow() {
+    this.loadGallery();
+  },
+
+  async loadGallery() {
+    let list = [];
+    try {
+      const res = await api.gallery();
+      if (Array.isArray(res)) list = res;
+    } catch (e) { list = []; }
+    this.setData({
+      coverLib: list.filter(gallery.isCover),
+      promoLib: list.filter(g => g && g.url && !gallery.isCover(g))
+    });
   },
 
   /* 员工身份识别：仅员工加载云端后台价并显示内部核价 */
@@ -171,7 +197,8 @@ Page({
       children: parseInt(t.children, 10) || 0,
       customActive: !preset,
       customDays: preset ? '' : String(max),
-      editingTripId: t.id
+      editingTripId: t.id || '',
+      cover: t.cover || ''
     });
     this.rebuildTabs();
     this.syncPlan();
@@ -185,15 +212,34 @@ Page({
     this.syncPlan();
   },
 
+  quoteSnapshot() {
+    const q = this.data.internalQuote;
+    if (q) return { hotel: q.hotel, ticket: q.ticket, total: q.total };
+    const hotelsById = {};
+    data.hotels.forEach(h => { if (h && h.id) hotelsById[h.id] = h; });
+    const pub = quote.publicHotelQuote(this.data.plans, hotelsById);
+    return { hotel: pub.hotel, ticket: 0, total: pub.total };
+  },
+
   savePlan() {
     wx.setStorageSync('lastCustomPlan', {
+      id: this.data.editingTripId || '',
       days: this.data.days,
       plans: normalizePlans(this.data.plans, this.data.days),
-      customActive: !!this.data.customActive
+      customActive: !!this.data.customActive,
+      date: this.data.date || '',
+      adults: this.data.adults,
+      children: this.data.children,
+      cover: this.data.cover || '',
+      quote: this.quoteSnapshot()
     });
   },
 
   goGenerate() {
+    if (!this.data.cover) {
+      wx.showToast({ title: this.data.c.coverMiss, icon: 'none' });
+      return;
+    }
     this.savePlan();
     const q = [
       'days=' + this.data.days,
@@ -306,6 +352,7 @@ Page({
       curHotel,
       altHotels,
       curNote: plan.note || '',
+      curPromo: gallery.clipPromo(plan.promoImgs),
       totalScenic,
       totalHotel,
       curRoomTypes
@@ -475,6 +522,129 @@ Page({
   dragEnd() {
     this._drag = null;
     this.setData({ dragging: -1 });
+  },
+
+  /* ---------- 封面 / 每日宣传图 ---------- */
+
+  storeUpload(filePath, done) {
+    if (!filePath) return;
+    if (typeof wx !== 'undefined' && wx.cloud && wx.cloud.uploadFile) {
+      wx.showLoading({ title: '上传中' });
+      const ext = (/\.(\w+)$/.exec(filePath) || [])[1] || 'jpg';
+      wx.cloud.uploadFile({
+        cloudPath: 'custom/' + Date.now() + '_' + Math.random().toString(36).slice(2, 6) + '.' + ext,
+        filePath
+      }).then(r => {
+        wx.hideLoading();
+        done((r && r.fileID) || filePath);
+      }).catch(() => {
+        wx.hideLoading();
+        done(filePath);
+      });
+      return;
+    }
+    done(filePath);
+  },
+
+  chooseLocal(count, cb) {
+    const n = Math.max(1, count || 1);
+    if (typeof wx.chooseMedia === 'function') {
+      wx.chooseMedia({
+        count: n,
+        mediaType: ['image'],
+        success: res => {
+          const files = (res && res.tempFiles) || [];
+          cb(files.map(f => f && f.tempFilePath).filter(Boolean));
+        }
+      });
+      return;
+    }
+    if (typeof wx.chooseImage === 'function') {
+      try {
+        wx.chooseImage({
+          count: n,
+          success: res => cb((res && res.tempFilePaths) || [])
+        });
+        return;
+      } catch (err) { /* 预览环境没有选图，走占位图 */ }
+    }
+    const pads = [];
+    for (let i = 0; i < n; i++) pads.push(ph(n > 1 ? '宣传图' : '私人定制封面', 640, 360));
+    cb(pads);
+  },
+
+  openCoverLib() {
+    this.setData({ sheet: { type: 'cover' } });
+  },
+
+  pickCoverLib(e) {
+    const url = e.currentTarget.dataset.url;
+    if (!url) return;
+    this.setData({ cover: url, sheet: null });
+  },
+
+  uploadCover() {
+    this.chooseLocal(1, paths => {
+      if (!paths.length) return;
+      this.storeUpload(paths[0], url => this.setData({ cover: url }));
+    });
+  },
+
+  clearCover() {
+    this.setData({ cover: '' });
+  },
+
+  openPromoLib() {
+    if ((this.data.curPromo || []).length >= gallery.MAX_PROMO) {
+      wx.showToast({ title: this.data.c.promoFull, icon: 'none' });
+      return;
+    }
+    this.setData({ sheet: { type: 'promo' } });
+  },
+
+  addPromo(url) {
+    if (!url) return;
+    const idx = this.data.activeDay;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    const arr = plans[idx].promoImgs;
+    if (arr.length >= gallery.MAX_PROMO) {
+      wx.showToast({ title: this.data.c.promoFull, icon: 'none' });
+      return;
+    }
+    if (arr.indexOf(url) >= 0) return;
+    arr.push(url);
+    this.setData({ plans });
+    this.syncPlan();
+  },
+
+  pickPromoLib(e) {
+    this.addPromo(e.currentTarget.dataset.url);
+    if ((this.planAt(this.data.activeDay).promoImgs || []).length >= gallery.MAX_PROMO) this.setData({ sheet: null });
+  },
+
+  uploadPromo() {
+    const left = gallery.MAX_PROMO - (this.data.curPromo || []).length;
+    if (left <= 0) {
+      wx.showToast({ title: this.data.c.promoFull, icon: 'none' });
+      return;
+    }
+    this.chooseLocal(left, paths => {
+      const queue = paths.slice(0, left);
+      const next = i => {
+        if (i >= queue.length) return;
+        this.storeUpload(queue[i], url => { this.addPromo(url); next(i + 1); });
+      };
+      next(0);
+    });
+  },
+
+  removePromo(e) {
+    const i = Number(e.currentTarget.dataset.index);
+    const idx = this.data.activeDay;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    plans[idx].promoImgs.splice(i, 1);
+    this.setData({ plans });
+    this.syncPlan();
   },
 
   /* ---------- 备注 ---------- */
