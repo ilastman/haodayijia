@@ -11,6 +11,7 @@
       "banner": { "read": false, "write": false },
       "scenic": { "read": false, "write": false },
       "hotel": { "read": false, "write": false },
+      "hotelPrice": { "read": false, "write": false },
       "privateGroup": { "read": false, "write": false },
       "userTrip": { "read": false, "write": false },
       "inspirationPost": { "read": false, "write": false },
@@ -19,22 +20,27 @@
       "asset": { "read": false, "write": false },
       "staff": { "read": false, "write": false },
       "order": { "read": false, "write": false },
-      "opLog": { "read": false, "write": false }
+      "opLog": { "read": false, "write": false },
+      "user": { "read": false, "write": false },
+      "category": { "read": false, "write": false }
     },
     "remarks": {
       "homeModule": "首页板块：读写由 homeModuleCRUD 云函数完成",
       "banner": "轮播：读写由 bannerCRUD 云函数完成",
       "scenic": "景区：读写由 scenicCRUD 云函数完成",
       "hotel": "酒店：读写由 hotelCRUD 云函数完成",
+      "hotelPrice": "酒店价格档期子表：读写由 hotelCRUD 云函数完成（一对多，按入住日期闭区间匹配）",
       "privateGroup": "私家团：读写由 privateGroupCRUD 云函数完成",
       "userTrip": "用户行程：小程序经 userTripCRUD 云函数（openid 取 WX 上下文）读写；管理员经同一云函数 token 校验",
       "inspirationPost": "灵感广场：小程序经 inspirationPostCRUD 云函数读取（status=1）与发布（status=0）；审核/删除经管理员 token 校验",
-      "adminUser": "管理员账号表：仅 login/adminInit 云函数读写",
+      "adminUser": "PC 后台管理员账号：login 登录；adminUserCRUD 仅超管可增删改；adminInit 仅首次建 admin。与小程序员工 staff 隔离",
       "globalConfig": "全局配置：读取经 homeConfigCRUD；保存需管理员 token",
       "asset": "素材库：读取经 assetCRUD；新增/删除需管理员 token",
       "staff": "员工账号表：员工端 bind/me 按 openid；管理端增改/启停/转移/绑定码按管理员 token，均经 staffCRUD",
       "order": "员工销售工作台订单表：员工仅可读写本人 staffId 记录，管理员可全局读写与硬删除，均经 orderCRUD（服务端按 openid 从 staff 表解析归属，客户端不可传 staffId）",
-      "opLog": "全局操作日志：只增，由各业务云函数内部写入；仅 opLogCRUD 管理员 token 可读取"
+      "opLog": "全局操作日志：只增，由各业务云函数内部写入；仅 opLogCRUD 管理员 token 可读取",
+      "user": "小程序游客档案（头像/昵称）：本人 me/saveProfile 按 openid，管理员 list 按 token，均经 userCRUD",
+      "category": "景区三级分类与酒店两级分类：读写经 categoryCRUD；查询公开，增删改需管理员 token"
     }
   }
 }

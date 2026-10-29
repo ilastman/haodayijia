@@ -74,6 +74,7 @@ function toRoute(p) {
     tags: p.tags || [],
     type: p.type || '私家团',
     dest: p.dest || '',
+    regionLevel1: p.regionLevel1 || '',
     departure: p.departure || '海拉尔集合',
     highlights: p.highlights || [],
     include: p.include || [],
@@ -91,7 +92,13 @@ function toScenic(s) {
   return {
     id: s.id,
     name: s.name || '',
-    dest: s.dest || '',
+    dest: s.dest || s.area || '',
+    regionLevel1: s.regionLevel1 || '',
+    regionCatId: s.regionCatId || '',
+    typeName: s.typeName || '',
+    typeCatId: s.typeCatId || '',
+    placeCatId: s.placeCatId || '',
+    subType: s.subType === 'entertainment' ? 'entertainment' : 'scenic',
     cover: s.cover || '',
     intro: s.intro || '',
     images: s.album || [],
@@ -110,6 +117,9 @@ function toHotel(h) {
     name: h.name || '',
     stars: h.stars ? (h.stars + '钻') : '',
     area: h.area || '',
+    areaCatId: h.areaCatId || '',
+    regionLevel1: h.regionLevel1 || '',
+    regionCatId: h.regionCatId || '',
     score: h.score || 0,
     price: h.price || 0,
     tags: (h.facilities || []).slice(0, 3),
@@ -119,7 +129,14 @@ function toHotel(h) {
     description: stripHtml(h.detailHtml),
     envImg: h.envImg || album[0] || '',
     roomImg: h.roomImg || album[1] || '',
-    rooms: h.rooms || [],
+    rooms: (h.rooms || []).map(r => (r && typeof r === 'object')
+      ? { name: r.name || '', price: r.price || '', desc: r.desc || '' }
+      : { name: String(r == null ? '' : r), price: '', desc: '' }),
+    pricePeriod: (h.pricePeriod || []).map(p => ({
+      start: p.start || '',
+      end: p.end || '',
+      rooms: (p.rooms || []).map(r => ({ name: r.name || '', price: r.price || '' }))
+    })),
     location: h.location || h.area || '',
     facilities: h.facilities || []
   };
@@ -234,6 +251,12 @@ const api = {
     };
   },
 
+  // 分类树（scenic 三级 / hotel 两级）。空库时云函数会写入默认分类。
+  async categories(tree) {
+    const list = await call('categoryCRUD', { action: 'list', tree: tree || '' });
+    return Array.isArray(list) ? list : [];
+  },
+
   // 景区列表（仅上架）
   async scenics() {
     const list = await call('scenicCRUD', { action: 'list' });
@@ -313,8 +336,8 @@ const api = {
       date: t.date || String(t.createTime || '').slice(0, 10),
       cover: t.cover || '',
       plans: (Array.isArray(t.plans) && t.plans.length)
-        ? t.plans.map(p => ({ scenicIds: p.scenicIds || [], hotelId: p.hotelId || '', note: p.note || '' }))
-        : (t.plan ? [{ scenicIds: [], hotelId: '', note: t.plan }] : []),
+        ? t.plans.map(p => ({ scenicIds: p.scenicIds || [], hotelId: p.hotelId || '', altHotelIds: p.altHotelIds || [], note: p.note || '' }))
+        : (t.plan ? [{ scenicIds: [], hotelId: '', altHotelIds: [], note: t.plan }] : []),
       savedAt: t.createTime || '',
       isPublish: t.status === 'published'
     }));
@@ -324,6 +347,18 @@ const api = {
   async saveTrip(trip) {
     const res = await cloud.callFunction('userTripCRUD', { action: 'save', data: trip });
     return !!(res && res.code === 200);
+  },
+
+  // 当前用户资料（按 openid 获取/创建，返回 { id, openid, nickname, avatarUrl, avatarType }）
+  async userMe() {
+    return await call('userCRUD', { action: 'me' });
+  },
+
+  // 保存昵称/头像（{ nickname?, avatarUrl?, avatarType? } -> 更新后的资料）
+  async saveProfile(patch) {
+    const res = await cloud.callFunction('userCRUD', { action: 'saveProfile', data: patch });
+    if (res && res.code === 200) return res.data;
+    return null;
   }
 };
 

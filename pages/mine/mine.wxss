@@ -35,6 +35,26 @@
   font-weight: 500;
 }
 
+.avatar-wrap {
+  position: relative;
+  display: inline-block;
+  width: 132rpx;
+  height: 132rpx;
+}
+
+.avatar-edit {
+  position: absolute;
+  right: -18rpx;
+  bottom: -4rpx;
+  font-size: 20rpx;
+  color: #FCF9F1;
+  background: #8A7152;
+  border-radius: 22rpx;
+  padding: 4rpx 16rpx;
+  border: 4rpx solid #FCF9F1;
+  white-space: nowrap;
+}
+
 .nick {
   position: relative;
   margin-top: 20rpx;

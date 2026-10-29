@@ -22,3 +22,6 @@ window.ADMIN_CONFIG = {
   gateway: 'https://cloudbase-d3gptvn88e6a4d78a.service.tcloudbase.com/httpGateway'
 };
 
+/* 全局一级大区（酒店 / 线路 / 景区 共用） */
+window.REGIONS = ['呼伦贝尔', '雪乡', '哈尔滨', '新疆'];
+

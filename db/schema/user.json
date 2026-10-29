@@ -1,0 +1,20 @@
+{
+  "collections": {
+    "user": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID（内部使用，不外露）" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "openid": { "type": "string", "required": true, "description": "微信 openid（来自 WX 上下文，客户端不可传）" },
+        "nickname": { "type": "string", "description": "昵称" },
+        "avatarUrl": { "type": "string", "description": "头像：自定义为云存储 fileID（cloud://...），默认内置为 /images/avatars/aN.png" },
+        "avatarType": { "type": "string", "default": "default", "description": "头像类型：default=内置默认 / custom=用户上传" },
+        "createTime": { "type": "number", "description": "首次建档时间戳" },
+        "updateTime": { "type": "number", "description": "最近更新时间戳" }
+      },
+      "indexes": [
+        { "fields": ["openid"] }
+      ],
+      "remarks": "小程序游客档案（头像/昵称）。me/saveProfile 按 openid；list 需管理员 token。均经 userCRUD 云函数。"
+    }
+  }
+}

@@ -50,8 +50,17 @@
         <view class="cp-spot-body">
           <view class="cp-spot-name">{{c.hotelLabel}} · {{day.hotel.name}}</view>
           <view class="cp-spot-sub">{{day.hotel.meta}}</view>
+          <view class="cp-spot-sub" wx:if="{{day.hotel.roomType}}">房型：{{day.hotel.roomType}} · {{day.hotel.qty}} 间</view>
+          <view class="cp-spot-sub" wx:elif="{{day.hotel.qty}}">{{day.hotel.qty}} 间</view>
         </view>
         <view class="cp-arrow">›</view>
+      </view>
+
+      <view class="cp-alt" wx:if="{{day.hotel && day.hotel.alts.length > 0}}">
+        <view class="cp-alt-title">{{c.hotelAltTitle}}</view>
+        <view class="cp-alt-list">
+          <text class="cp-alt-name" wx:for="{{day.hotel.alts}}" wx:key="*this">{{item}}</text>
+        </view>
       </view>
 
       <view class="cp-note" wx:if="{{day.note}}">

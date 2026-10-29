@@ -29,9 +29,9 @@
   <view class="block">
     <view class="block-title">{{d.roomTitle}}</view>
     <image class="pic" src="{{hotel.roomImg}}" mode="aspectFill" />
-    <view class="room" wx:for="{{hotel.rooms}}" wx:key="*this">
+    <view class="room" wx:for="{{hotel.rooms}}" wx:key="index">
       <text class="room-mark">✓</text>
-      <text class="room-text">{{item}}</text>
+      <text class="room-text">{{item.name || item}}</text>
     </view>
   </view>
 

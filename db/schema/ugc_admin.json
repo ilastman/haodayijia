@@ -11,7 +11,7 @@
         "days": { "type": "number", "default": 0, "description": "天数" },
         "cover": { "type": "string", "description": "封面图" },
         "plan": { "type": "string", "description": "行程概要文本" },
-        "plans": { "type": "array", "default": [], "description": "每日计划数组 [{scenicIds, hotelId, note}]" },
+        "plans": { "type": "array", "default": [], "description": "每日计划数组 [{scenicIds, hotelId, altHotelIds, note}]（hotelId=主推酒店，altHotelIds=同级备选酒店）" },
         "date": { "type": "string", "description": "出行日期" },
         "status": { "type": "string", "description": "状态" },
         "createTime": { "type": "number", "description": "创建时间戳" },
@@ -66,7 +66,8 @@
         "password": { "type": "string", "required": true, "description": "加密密码 sha256(salt:password)" },
         "nickname": { "type": "string", "description": "昵称" },
         "avatar": { "type": "string", "description": "头像" },
-        "role": { "type": "string", "default": "super", "description": "角色" },
+        "role": { "type": "string", "default": "admin", "description": "角色：super=超级管理员 / admin=普通后台管理员。用户名 admin 固定为 super" },
+        "status": { "type": "string", "default": "enabled", "description": "enabled=启用 / disabled=停用。停用后不能登录" },
         "lastLogin": { "type": "string", "description": "最近登录时间" },
         "createTime": { "type": "number", "description": "创建时间戳" },
         "extend": { "type": "object", "default": {}, "description": "扩展（含 token / tokenExpire）" }

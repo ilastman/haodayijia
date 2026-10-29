@@ -49,7 +49,7 @@
         "itinerary": {
           "type": "object",
           "default": { "source": "blank", "templateId": "", "days": [], "include": [], "exclude": [], "notices": { "tips": [], "gear": [], "refund": [] }, "versions": [] },
-          "description": "内部行程单 {source:'template'|'blank',templateId,days[],include[],exclude[],notices,versions[{id,time,operator,snapshot}]}"
+          "description": "内部行程单 {source:'template'|'mytrip'|'blank',templateId,days[],include[],exclude[],notices,versions[{id,time,operator,snapshot}]}"
         },
         "payments": {
           "type": "array",
@@ -85,7 +85,7 @@
         "id": { "type": "string", "required": true, "description": "业务ID" },
         "staffId": { "type": "string", "description": "操作员工ID" },
         "staffName": { "type": "string", "description": "操作员工姓名" },
-        "action": { "type": "string", "description": "动作：add/update/archive/addFollow/addPayment/addCost/saveItinerary/delete/transfer/disable/enable/bind" },
+        "action": { "type": "string", "description": "动作：add/update/archive/addFollow/addPayment/addCost/saveItinerary/applyMyTrip/delete/transfer/disable/enable/bind" },
         "targetType": { "type": "string", "description": "目标类型：order/staff" },
         "targetId": { "type": "string", "description": "目标业务ID" },
         "summary": { "type": "string", "description": "操作摘要" },

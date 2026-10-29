@@ -1,0 +1,24 @@
+<view class="page">
+  <view class="tip">拖动图片调整位置，双指缩放，方框内为头像预览</view>
+
+  <view class="stage">
+    <canvas type="2d" id="cropCanvas" class="crop-canvas" disable-scroll="{{true}}"
+      bindtouchstart="onTouchStart" bindtouchmove="onTouchMove" bindtouchend="onTouchEnd"></canvas>
+    <view class="mask" wx:if="{{ready}}">
+      <view class="corner tl"></view>
+      <view class="corner tr"></view>
+      <view class="corner bl"></view>
+      <view class="corner br"></view>
+    </view>
+  </view>
+
+  <view class="zoom">
+    <text class="zoom-label">缩放</text>
+    <slider class="zoom-slider" min="0" max="100" value="40" activeColor="#8A7152" block-size="20" bindchanging="onZoom" />
+  </view>
+
+  <view class="footer">
+    <view class="btn ghost" bindtap="cancel">取消</view>
+    <view class="btn primary" bindtap="confirm">确定</view>
+  </view>
+</view>

@@ -32,6 +32,11 @@
   padding: 0 24rpx;
 }
 
+.region-zone {
+  margin-top: 34rpx;
+  margin-bottom: -40rpx;
+}
+
 .cat-scroll {
   flex: 1;
   min-width: 0;

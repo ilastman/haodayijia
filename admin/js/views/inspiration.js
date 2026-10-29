@@ -170,7 +170,7 @@ window.VIEWS.inspiration = {
               <el-form-item label="分类"><el-input v-model="editForm.category" placeholder="如：亲子游 / 私家团方案 / 秋季线" /></el-form-item>
               <el-form-item label="季节"><el-input v-model="editForm.season" placeholder="如：夏季草原" /></el-form-item>
               <el-form-item label="天数"><el-input-number v-model="editForm.days" :min="1" :max="30" /></el-form-item>
-              <el-form-item label="亮点"><el-input :model-value="(editForm.highlights || []).join('\n')" type="textarea" :rows="3" @update:model-value="v => (editForm.highlights = v.split('\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
+              <el-form-item label="亮点"><el-input :model-value="(editForm.highlights || []).join('\\n')" type="textarea" :rows="3" @update:model-value="v => (editForm.highlights = v.split('\\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
               <el-form-item label="行程时间轴"><el-input :model-value="JSON.stringify(editForm.timeline || [], null, 2)" type="textarea" :rows="6" @update:model-value="v => { try { editForm.timeline = JSON.parse(v); } catch (e) {} }" placeholder='[{"scenicIds":["s2"],"hotelId":"h1","note":"下午抵达海拉尔"}]' /></el-form-item>
             </template>
             <el-form-item label="标签"><el-select v-model="editForm.tags" multiple filterable allow-create default-first-option style="width:100%" placeholder="输入后回车创建" /></el-form-item>

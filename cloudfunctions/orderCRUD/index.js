@@ -304,6 +304,47 @@ exports.main = async (event) => {
       return { code: 200, msg: '已生成', data: { itinerary: next } };
     }
 
+    /* ---------- 从「我的行程」复制生成行程单（并清空报价/成本/收款） ---------- */
+    if (action === 'applyMyTrip') {
+      const { order, err } = await loadOwned(id, ctx, true);
+      if (err) return err;
+      const tripId = (data && data.tripId) || event.tripId || '';
+      const title = (data && data.title) || event.title || '';
+      const rawDays = (data && data.days) || event.days || [];
+      if (!Array.isArray(rawDays) || !rawDays.length) return { code: 400, msg: '所选行程没有可复制的天数' };
+      const days = rawDays.map((d, i) => ({
+        dayNum: d.dayNum || (i + 1),
+        title: d.title || ('第' + (i + 1) + '天'),
+        content: d.content || '',
+        scenicId: d.scenicId || '',
+        hotelId: d.hotelId || '',
+        meals: d.meals || '',
+        hotel: d.hotel || ''
+      }));
+      const prev = order.itinerary || {};
+      const versions = (prev.versions || []).slice();
+      versions.push({ id: 'v_' + Date.now().toString(36), time: Date.now(), operator: ctx.actor.name, snapshot: {
+        source: prev.source, templateId: prev.templateId, days: prev.days || [],
+        include: prev.include || [], exclude: prev.exclude || [], notices: prev.notices || {}
+      } });
+      const next = Object.assign({}, prev, { source: 'mytrip', templateId: tripId, days, versions });
+      next.notices = Object.assign({ tips: [], gear: [], refund: [] }, next.notices || {});
+      order.itinerary = next;
+      order.costs = normalizeCosts({});
+      order.pricing = { quote: 0, estProfit: null, actualProfit: 0 };
+      order.payments = [];
+      computeDerived(order);
+      await db.collection(COLL).doc(order._id).update({ data: {
+        itinerary: next,
+        costs: order.costs, totalCost: order.totalCost, pricing: order.pricing, payments: order.payments,
+        updatedAt: Date.now()
+      } });
+      await log(ctx.actor, 'applyMyTrip', order.id, '复制我的行程生成行程单：' + (title || tripId) + '（已清空报价/成本/收款）');
+      return { code: 200, msg: '已生成', data: {
+        itinerary: next, costs: order.costs, totalCost: order.totalCost, pricing: order.pricing, payments: order.payments
+      } };
+    }
+
     /* ---------- 管理员：全员台账汇总 ---------- */
     if (action === 'report') {
       if (!ctx.admin) return { code: 403, msg: '无权限：需管理员token' };

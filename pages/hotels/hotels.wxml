@@ -10,6 +10,16 @@
     </view>
   </view>
 
+  <!-- 一级大区筛选 -->
+  <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="region-scroll">
+    <view class="region {{activeRegion === item ? 'on' : ''}}" wx:for="{{regions}}" wx:key="*this" bindtap="onRegion" data-region="{{item}}">{{item}}</view>
+  </scroll-view>
+
+  <!-- 二级地点筛选：随所选大区过滤 -->
+  <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="cat-scroll">
+    <view class="cat {{activePlace === item ? 'on' : ''}}" wx:for="{{places}}" wx:key="*this" bindtap="onPlace" data-place="{{item}}">{{item}}</view>
+  </scroll-view>
+
   <!-- 酒店列表 -->
   <view class="list" wx:if="{{list.length > 0}}">
     <view class="hotel" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">

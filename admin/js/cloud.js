@@ -8,6 +8,7 @@
 (function () {
   const CFG = window.ADMIN_CONFIG || {};
   const TOKEN_KEY = 'admin_cloud_token';
+  const ADMIN_KEY = 'admin_cloud_admin';
 
   // 集合名 -> 云函数名
   const FN = {
@@ -22,7 +23,10 @@
     globalConfig: 'homeConfigCRUD',
     staff: 'staffCRUD',
     order: 'orderCRUD',
-    opLog: 'opLogCRUD'
+    opLog: 'opLogCRUD',
+    user: 'userCRUD',
+    category: 'categoryCRUD',
+    adminUser: 'adminUserCRUD'
   };
 
   function enabled() {
@@ -30,7 +34,9 @@
   }
   function token() { return localStorage.getItem(TOKEN_KEY) || ''; }
   function setToken(t) { if (t) localStorage.setItem(TOKEN_KEY, t); }
-  function clearToken() { localStorage.removeItem(TOKEN_KEY); }
+  function clearToken() { localStorage.removeItem(TOKEN_KEY); localStorage.removeItem(ADMIN_KEY); }
+  function admin() { try { return JSON.parse(localStorage.getItem(ADMIN_KEY) || 'null'); } catch (e) { return null; } }
+  function setAdmin(a) { try { if (a) localStorage.setItem(ADMIN_KEY, JSON.stringify(a)); } catch (e) { /* ignore */ } }
 
   async function raw(name, data) {
     const body = { name, data: data || {} };
@@ -40,6 +46,7 @@
       body: JSON.stringify(body)
     });
     let json = await res.json().catch(() => null);
+    if (!json) return { code: res.status || 500, msg: res.ok ? '网关返回空响应' : ('网关请求失败 HTTP ' + res.status) };
     // 兼容两种网关响应：
     // 1) 已带 CORS 头结构：{ statusCode, headers, body: '{"result":...}' }
     // 2) 直接返回：{ result: {...} } 或云函数结果本身
@@ -63,6 +70,7 @@
   const Cloud = {
     enabled,
     token, setToken, clearToken,
+    admin, setAdmin,
     raw, call,
     fnOf(coll) { return FN[coll] || coll; },
 
@@ -71,6 +79,7 @@
       const res = await raw('login', { username, password });
       if (res && res.code === 200 && res.data && res.data.token) {
         setToken(res.data.token);
+        setAdmin(res.data.admin);
         return { ok: true, admin: res.data.admin };
       }
       return { ok: false, msg: (res && res.msg) || '登录失败' };

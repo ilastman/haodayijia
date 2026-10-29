@@ -194,7 +194,18 @@ async function deployOne(name) {
     const p = { FunctionName: name, Namespace: NS };
     if (opts.timeout) p.Timeout = opts.timeout;
     if (opts.memory) p.MemorySize = opts.memory;
-    await call('UpdateFunctionConfiguration', p);
+    /* 代码更新后函数会进入 Updating 状态，需等待其就绪再改配置 */
+    let done = false, lastErr = null;
+    for (let attempt = 0; attempt < 12 && !done; attempt++) {
+      try { await call('UpdateFunctionConfiguration', p); done = true; }
+      catch (e) {
+        lastErr = e;
+        if (/Updating状态|Updating state|请稍后/.test(e.message)) {
+          await new Promise((r) => setTimeout(r, 5000));
+        } else throw e;
+      }
+    }
+    if (!done) throw lastErr || new Error('UpdateFunctionConfiguration 失败');
   }
 
   await new Promise((r) => setTimeout(r, 6000));

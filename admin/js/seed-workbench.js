@@ -8,4 +8,5 @@
   if (!Array.isArray(window.SEED.staff)) window.SEED.staff = [];
   if (!Array.isArray(window.SEED.order)) window.SEED.order = [];
   if (!Array.isArray(window.SEED.opLog)) window.SEED.opLog = [];
+  if (!Array.isArray(window.SEED.user)) window.SEED.user = [];
 })();

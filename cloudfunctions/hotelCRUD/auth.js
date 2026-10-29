@@ -46,4 +46,14 @@ async function verifyAdminToken(token) {
   }
 }
 
-module.exports = { hashPassword, generateToken, verifyAdminToken, PWD_SALT };
+/**
+ * 校验超级管理员token（仅 role==='super' 通过）
+ * @returns admin文档对象 | null
+ */
+async function verifySuperAdmin(token) {
+  const admin = await verifyAdminToken(token);
+  if (!admin) return null;
+  return String(admin.role || '') === 'super' ? admin : null;
+}
+
+module.exports = { hashPassword, generateToken, verifyAdminToken, verifySuperAdmin, PWD_SALT };

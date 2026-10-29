@@ -12,7 +12,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 
-const COLLECTIONS = ['staff', 'order', 'opLog'];
+const COLLECTIONS = ['staff', 'order', 'opLog', 'user'];
 
 const DEFAULT_ALERT = {
   departWarnDays: 7,          // 团期临近出团预警（提前天数）

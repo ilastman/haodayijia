@@ -41,6 +41,28 @@
   font-weight: 500;
 }
 
+/* 一级大区筛选 */
+.region-scroll {
+  white-space: nowrap;
+  padding: 24rpx 24rpx 4rpx;
+}
+
+.region {
+  display: inline-block;
+  font-size: 24rpx;
+  color: #6E6555;
+  background: #F1E9DB;
+  border-radius: 30rpx;
+  padding: 12rpx 28rpx;
+  margin-right: 16rpx;
+}
+
+.region.on {
+  background: linear-gradient(135deg, #8A7152, #5F4B33);
+  color: #FCF9F1;
+  font-weight: 500;
+}
+
 /* 景区卡片 */
 .list {
   padding: 12rpx 24rpx;

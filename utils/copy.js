@@ -184,7 +184,8 @@ const copy = {
     envTitle: '酒店环境',
     roomTitle: '房型特色',
     locTitle: '周边位置',
-    facTitle: '配套设施'
+    facTitle: '配套设施',
+    priceTitle: '分时段价格'
   },
 
   // 租车
@@ -238,6 +239,7 @@ const copy = {
     hotelTitle: '当日酒店',
     addHotel: '选择酒店',
     hotelEmpty: '还未选择酒店',
+    hotelAltTitle: '或以下同等级酒店：',
     noteTitle: '当日备注',
     notePlaceholder: '写下当天的特殊需求，如想看日落、想体验骑马、想品尝特色餐…',
     summaryScenic: '已选景区',
@@ -273,6 +275,7 @@ const copy = {
     slogan: '走到哪一片草地，哪里就是你的花园。',
     dayUnit: '天',
     hotelLabel: '当日住宿',
+    hotelAltTitle: '或以下同等级酒店：',
     noteLabel: '行程备注',
     noScenic: '自由安排',
     saveBtn: '保存到我的行程',

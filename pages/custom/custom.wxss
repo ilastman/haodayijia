@@ -287,6 +287,59 @@
   margin-left: 14rpx;
 }
 
+.hotel-cover {
+  width: 150rpx;
+  height: 100rpx;
+  border-radius: 12rpx;
+  flex-shrink: 0;
+  background: #EDE5D6;
+}
+
+/* 同级备选酒店（纯文字多选） */
+.alt-block {
+  margin-top: 18rpx;
+}
+
+.alt-title {
+  font-size: 24rpx;
+  color: #8A7152;
+  margin-bottom: 10rpx;
+}
+
+.alt-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.alt-item {
+  display: flex;
+  align-items: center;
+  background: #F3EDDF;
+  border-radius: 30rpx;
+  padding: 10rpx 18rpx 10rpx 24rpx;
+  margin: 0 14rpx 14rpx 0;
+}
+
+.alt-item.on {
+  background: #8A7152;
+}
+
+.alt-name {
+  font-size: 24rpx;
+  color: #6E6555;
+}
+
+.alt-item.on .alt-name {
+  color: #FCF9F1;
+}
+
+.alt-check {
+  width: 30rpx;
+  text-align: right;
+  font-size: 22rpx;
+  color: #FCF9F1;
+}
+
 .tip-line {
   margin-top: 12rpx;
   font-size: 22rpx;
@@ -400,7 +453,7 @@
 }
 
 .sheet-list {
-  max-height: 520rpx;
+  height: 560rpx;
 }
 
 .opt {
@@ -408,6 +461,10 @@
   align-items: center;
   padding: 22rpx 28rpx;
   border-bottom: 1rpx solid #F0EADB;
+}
+
+.opt.on {
+  background: #F1EADD;
 }
 
 .opt.on .opt-name {
@@ -509,4 +566,142 @@
   font-weight: 500;
   text-align: center;
   line-height: 1.6;
+}
+
+/* 每日房型 / 间数 */
+.room-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18rpx;
+  padding-top: 18rpx;
+  border-top: 1rpx solid #F0EADB;
+}
+
+.room-item {
+  display: flex;
+  align-items: center;
+}
+
+.room-label {
+  font-size: 26rpx;
+  color: #817A6A;
+  margin-right: 16rpx;
+}
+
+.room-pick {
+  font-size: 26rpx;
+  color: #3D362A;
+  background: #F3EDDF;
+  border-radius: 12rpx;
+  padding: 12rpx 24rpx;
+}
+
+.room-qty .stepper-btn {
+  width: 52rpx;
+  height: 52rpx;
+  line-height: 52rpx;
+  text-align: center;
+  font-size: 32rpx;
+  color: #8A7152;
+  background: #EDE4D2;
+  border-radius: 12rpx;
+}
+
+.room-qty .stepper-num {
+  min-width: 56rpx;
+  text-align: center;
+  font-size: 28rpx;
+  font-weight: 500;
+  color: #3D362A;
+}
+
+/* 员工内部核算价卡片 */
+.quote-card {
+  background: #FBF4E6;
+  border: 2rpx solid #E7D9BC;
+}
+
+.quote-card .card-title::before {
+  background: #A4653A;
+}
+
+.quote-sum {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16rpx 0;
+  border-top: 1rpx solid #F0E6CE;
+  font-size: 27rpx;
+  color: #6E6555;
+}
+
+.quote-sum:first-of-type {
+  border-top: none;
+}
+
+.quote-sum-label {
+  color: #817A6A;
+}
+
+.quote-sum-val {
+  color: #3D362A;
+}
+
+.quote-total {
+  border-top: 2rpx solid #E7D9BC;
+  margin-top: 6rpx;
+  padding-top: 20rpx;
+}
+
+.quote-sum-val.total {
+  font-size: 36rpx;
+  font-weight: 600;
+  color: #A4653A;
+}
+
+.quote-bd {
+  margin-top: 16rpx;
+  border-top: 1rpx dashed #E7D9BC;
+  padding-top: 14rpx;
+}
+
+.quote-bd-row {
+  display: flex;
+  align-items: center;
+  padding: 8rpx 0;
+  font-size: 24rpx;
+  color: #6E6555;
+}
+
+.quote-bd-day {
+  width: 100rpx;
+  flex: 0 0 100rpx;
+  color: #9E9886;
+}
+
+.quote-bd-name {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.quote-bd-unit {
+  color: #9E9886;
+  margin: 0 14rpx;
+}
+
+.quote-bd-sub {
+  width: 130rpx;
+  text-align: right;
+  flex: 0 0 130rpx;
+  color: #3D362A;
+}
+
+.quote-warn {
+  margin-top: 16rpx;
+  font-size: 24rpx;
+  color: #A4653A;
 }

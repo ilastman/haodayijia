@@ -47,6 +47,7 @@ async function addCost(id, costs) { return callRaw('orderCRUD', { action: 'addCo
 async function savePricing(id, pricing) { return callRaw('orderCRUD', { action: 'savePricing', id, data: { pricing } }); }
 async function saveItinerary(id, itinerary) { return callRaw('orderCRUD', { action: 'saveItinerary', id, data: { itinerary } }); }
 async function fromTemplate(id, templateId) { return callRaw('orderCRUD', { action: 'fromTemplate', id, data: { templateId } }); }
+async function applyMyTrip(id, payload) { return callRaw('orderCRUD', { action: 'applyMyTrip', id, data: payload }); }
 
 /* 线路模板（私家团） */
 async function templates() {
@@ -138,6 +139,6 @@ module.exports = {
   num, fmtDate, today, STATUS, STATUS_CLASS,
   identity, bind,
   listOrders, getOrder, createOrder, updateOrder, archiveOrder,
-  addFollow, addPayment, removePayment, addCost, savePricing, saveItinerary, fromTemplate,
+  addFollow, addPayment, removePayment, addCost, savePricing, saveItinerary, fromTemplate, applyMyTrip,
   templates, alertConfig, scenicLeadMap, exportPdf, requestSubscribe, warnOf, daysUntil
 };

@@ -76,7 +76,7 @@
 
           <view class="dt-row2" wx:if="{{!vm.archived}}">
             <view class="btn-outline dt-btn2" bindtap="openTpl">复制线路模板</view>
-            <view class="btn-outline dt-btn2" bindtap="editDays">手动编辑</view>
+            <view class="btn-outline dt-btn2" bindtap="openMyTrips">复制我的行程</view>
           </view>
         </block>
 
@@ -238,6 +238,27 @@
         <view class="dt-sheet-btns">
           <view class="btn-outline dt-btn2" bindtap="closeTpl">取消</view>
           <view class="btn-primary dt-btn2" bindtap="applyTpl">生成行程单</view>
+        </view>
+      </view>
+    </view>
+
+    <!-- 我的行程弹层 -->
+    <view class="dt-mask" wx:if="{{mtVisible}}" bindtap="closeMyTrips">
+      <view class="dt-sheet" catchtap="noop">
+        <view class="dt-sheet-t">选择我的行程</view>
+        <scroll-view scroll-y class="dt-mt-list">
+          <view class="dt-mt-item {{mtIndex === index ? 'on' : ''}}" wx:for="{{mtList}}" wx:key="id" data-i="{{index}}" bindtap="onMtSelect">
+            <view class="dt-mt-main">
+              <view class="dt-mt-t">{{item.title}}</view>
+              <view class="dt-mt-m">{{item.days}}天{{item.date ? ' · ' + item.date : ''}}</view>
+            </view>
+            <text class="dt-mt-check">{{mtIndex === index ? '●' : '○'}}</text>
+          </view>
+          <view class="dt-empty" wx:if="{{!mtList.length}}">暂无我的行程</view>
+        </scroll-view>
+        <view class="dt-sheet-btns">
+          <view class="btn-outline dt-btn2" bindtap="closeMyTrips">取消</view>
+          <view class="btn-primary dt-btn2" bindtap="doMyTrip">复制并编辑</view>
         </view>
       </view>
     </view>

@@ -33,8 +33,7 @@
 .dt-v { flex: 1; color: #3D362A; }
 .dt-v.neg { color: #C0504D; }
 
-.dt-btn { margin-top: 22rpx; }
-.dt-btn2 { flex: 1; }
+.dt-btn { margin-top: 22rpx; }.dt-btn2 { flex: 1; }
 .dt-row2 { display: flex; gap: 20rpx; margin-top: 22rpx; }
 .dt-actions { margin: 40rpx 28rpx 0; display: flex; gap: 20rpx; }
 .dt-actions .disabled { opacity: .6; }
@@ -76,7 +75,12 @@
 .dt-frow { display: flex; align-items: center; min-height: 92rpx; border-top: 1rpx solid #F2ECDD; }
 .dt-fl { width: 180rpx; font-size: 28rpx; color: #6E6656; flex: 0 0 180rpx; }
 .dt-fv { flex: 1; font-size: 28rpx; color: #3D362A; }
-.dt-tpl-pick { padding: 24rpx 0; }
-.dt-sheet-btns { display: flex; gap: 20rpx; margin-top: 34rpx; }
+.dt-mt-list { max-height: 50vh; padding: 0 0 10rpx; }
+.dt-mt-item { display: flex; align-items: center; justify-content: space-between; padding: 20rpx 16rpx; border: 1rpx solid #e5ded4; border-radius: 12rpx; margin-bottom: 16rpx; background: #fff; }
+.dt-mt-item.on { border-color: #B89D67; background: #f3ecde; }
+.dt-mt-main { flex: 1; margin-right: 18rpx; }
+.dt-mt-t { font-size: 28rpx; color: #443A2C; font-weight: 500; }
+.dt-mt-m { font-size: 24rpx; color: #7c7061; margin-top: 4rpx; }
+.dt-mt-check { color: #B89D67; font-size: 32rpx; }
 .dt-voucher { width: 130rpx; height: 130rpx; border-radius: 12rpx; background: #F6F1E7; display: flex; align-items: center; justify-content: center; font-size: 24rpx; color: #A59E8D; overflow: hidden; }
 .dt-voucher-img { width: 130rpx; height: 130rpx; }

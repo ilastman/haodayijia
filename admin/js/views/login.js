@@ -50,7 +50,7 @@ window.VIEWS.login = {
           </el-form-item>
           <el-button type="primary" size="large" class="w-full" :loading="loading" @click="submit" style="letter-spacing:4px">登 录</el-button>
         </el-form>
-        <div class="tac faint" style="margin-top:16px">默认账号 admin / admin123（本地演示）</div>
+        <div class="tac faint" style="margin-top:16px">后台管理员账号登录，与小程序员工账号无关<br>默认超管 admin / admin123</div>
       </div>
     </div>`,
   },

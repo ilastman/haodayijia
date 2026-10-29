@@ -4,6 +4,7 @@
     "pages/routes/routes",
     "pages/strategy/strategy",
     "pages/mine/mine",
+    "pages/avatar-crop/avatar-crop",
     "pages/route-detail/route-detail",
     "pages/strategy-detail/strategy-detail",
     "pages/hotels/hotels",

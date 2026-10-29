@@ -45,6 +45,7 @@ exports.main = async (event) => {
       const plans = Array.isArray(d.plans) ? d.plans.map(p => ({
         scenicIds: Array.isArray(p.scenicIds) ? p.scenicIds : [],
         hotelId: p.hotelId || '',
+        altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds : [],
         note: p.note || ''
       })) : null;
       const plan = d.plan || (plans ? plans.map(p => p.note || '').filter(Boolean).join('\n') : '');

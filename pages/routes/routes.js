@@ -74,6 +74,8 @@ function decorate(route) {
 Page({
   data: {
     copy: copy.routes,
+    regions: ['全部'].concat(data.REGIONS || []),
+    activeRegion: '全部',
     cats: CATS,
     activeCat: ALL,
     moreOpen: false,
@@ -129,6 +131,11 @@ Page({
     this.render(() => wx.stopPullDownRefresh());
   },
 
+  onRegion(e) {
+    this.setData({ activeRegion: e.currentTarget.dataset.region });
+    this.render();
+  },
+
   onCategory(e) {
     this.setData({ activeCat: e.currentTarget.dataset.cat });
     this.render();
@@ -159,8 +166,9 @@ Page({
   },
 
   getMatched(list) {
-    const { activeCat, more } = this.data;
+    const { activeCat, more, activeRegion } = this.data;
     return list.filter(r => {
+      if (activeRegion !== '全部' && r.regionLevel1 !== activeRegion) return false;
       if (activeCat !== ALL && CAT_ROUTES[activeCat] && CAT_ROUTES[activeCat].indexOf(r.id) === -1) return false;
       if (more.dest !== '全部' && r.dest !== more.dest) return false;
       if (more.type !== '全部' && r.type !== more.type) return false;

@@ -31,6 +31,12 @@ window.VIEWS.users = {
         this.boundPosts = (Store.db.inspirationPost || []).filter(p => (p.openid || '') === u.openid && (!u.anon || !p.openid));
         this.dlg = true;
       },
+      /* 仅云存储/网络头像可在后台展示；包内默认头像（/images/avatars/）在后台不可达，改显首字 */
+      av(a) {
+        if (!a || typeof a !== 'string') return '';
+        return (a.indexOf('cloud://') === 0 || a.indexOf('http') === 0) ? a : '';
+      },
+      initial(u) { const n = u.nickname || (u.anon ? '匿名' : '旅'); return n.slice(0, 1); },
       copyId(id) {
         if (!id) return;
         const t = document.createElement('textarea'); t.value = id; document.body.appendChild(t); t.select();
@@ -77,7 +83,8 @@ window.VIEWS.users = {
           <el-table-column label="用户" min-width="200">
             <template #default="{row}">
               <div class="flex gap10">
-                <img class="avatar-sm" :src="img(row.avatar)" alt=""/>
+                <img v-if="av(row.avatar)" class="avatar-sm" :src="img(row.avatar)" alt=""/>
+                <span v-else class="avatar-sm" style="display:inline-flex;align-items:center;justify-content:center;background:#8A7152;color:#fff">{{initial(row)}}</span>
                 <div>
                   <div>{{fmt(row)}}</div>
                   <div class="faint" style="font-size:11px">{{mask(row.openid)}}</div>
@@ -99,7 +106,8 @@ window.VIEWS.users = {
       <el-drawer v-model="dlg" size="480px" :title="'用户详情 · ' + (cur ? fmt(cur) : '')" append-to-body>
         <div v-if="cur" style="padding:0 20px 20px">
           <div class="flex gap10" style="margin-bottom:16px">
-            <img class="avatar-sm" style="width:56px;height:56px;border-radius:50%" :src="img(cur.avatar)" alt=""/>
+            <img v-if="av(cur.avatar)" class="avatar-sm" style="width:56px;height:56px;border-radius:50%" :src="img(cur.avatar)" alt=""/>
+            <span v-else class="avatar-sm" style="width:56px;height:56px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:#8A7152;color:#fff;font-size:20px">{{initial(cur)}}</span>
             <div style="flex:1">
               <div style="font-size:16px;font-weight:600">{{fmt(cur)}}</div>
               <div class="faint" style="font-size:12px;word-break:break-all">openid：{{cur.openid || '（匿名/无）'}}</div>
@@ -141,7 +149,7 @@ window.VIEWS.users = {
 /* 云模式下重新拉取集合（供刷新用）：复用 store 的内部逻辑不可直接访问，这里走 Cloud.list */
 async function syncFromCloudSafe() {
   if (!(window.Cloud && Cloud.enabled())) return;
-  const colls = ['userTrip', 'inspirationPost'];
+  const colls = ['userTrip', 'inspirationPost', 'user'];
   for (const c of colls) {
     const list = await Cloud.list(c);
     if (Array.isArray(list) && list.length) Store.db[c] = list;

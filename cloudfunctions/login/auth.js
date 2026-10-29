@@ -38,6 +38,7 @@ async function verifyAdminToken(token) {
     const res = await db.collection('adminUser').where({ 'extend.token': token }).limit(1).get();
     if (!res.data || res.data.length === 0) return null;
     const admin = res.data[0];
+    if (admin.status === 'disabled') return null;
     const expire = admin.extend && admin.extend.tokenExpire;
     if (expire && Date.now() > expire) return null;
     return admin;

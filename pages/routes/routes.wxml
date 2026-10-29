@@ -6,6 +6,17 @@
     <view class="header-slogan">{{copy.slogan}}</view>
   </view>
 
+  <!-- 1.5 一级大区筛选 -->
+  <view class="cat-zone region-zone">
+    <scroll-view class="cat-scroll" scroll-x enhanced="{{true}}" show-scrollbar="{{false}}">
+      <view class="cat-row">
+        <view wx:for="{{regions}}" wx:key="*this"
+          class="cat {{activeRegion === item ? 'on' : ''}}"
+          bindtap="onRegion" data-region="{{item}}">{{item}}</view>
+      </view>
+    </scroll-view>
+  </view>
+
   <!-- 2. 横向分类标签（无底色） -->
   <view class="cat-zone">
     <scroll-view class="cat-scroll" scroll-x enhanced="{{true}}" show-scrollbar="{{false}}">

@@ -25,6 +25,7 @@ exports.main = async (event, context) => {
         nickname,
         avatar,
         role,
+        status: 'enabled',
         lastLogin: '',
         createTime: Date.now(),
         extend: {}

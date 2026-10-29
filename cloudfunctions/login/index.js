@@ -41,6 +41,7 @@ exports.main = async (event, context) => {
     }
 
     const admin = res.data[0];
+    if (admin.status === 'disabled') return { code: 403, msg: '账号已停用，请联系超级管理员' };
     // 兼容：已加密的按 hash 比对；历史明文则直接比对并升级为加密
     const inputHash = hashPassword(password);
     const ok = admin.password === inputHash || admin.password === password;
@@ -52,9 +53,9 @@ exports.main = async (event, context) => {
     const lastLogin = new Date(now).toISOString().slice(0, 19).replace('T', ' ');
 
     const extend = Object.assign({}, admin.extend || {}, { token: newToken, tokenExpire: expire, lastLogin: now });
-    await db.collection('adminUser').doc(admin._id).update({
-      data: { password: inputHash, lastLogin, extend }
-    });
+    const upd = { password: inputHash, lastLogin, extend };
+    if (admin.username === 'admin') upd.role = 'super';
+    await db.collection('adminUser').doc(admin._id).update({ data: upd });
 
     return {
       code: 200,
@@ -62,7 +63,7 @@ exports.main = async (event, context) => {
       data: {
         token: newToken,
         expiresAt: expire,
-        admin: { id: admin.id || admin._id, username: admin.username, nickname: admin.nickname || admin.username, role: admin.role || 'admin' }
+        admin: { id: admin.id || admin._id, username: admin.username, nickname: admin.nickname || admin.username, role: (admin.username === 'admin' || admin.role === 'super') ? 'super' : 'admin' }
       }
     };
   } catch (err) {

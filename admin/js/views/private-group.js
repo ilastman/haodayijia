@@ -4,7 +4,7 @@ window.VIEWS['private-group'] = {
   nav: true, title: '线路管理', icon: '🧭',
   comp: {
     name: 'GroupView',
-    data() { return { S: Store, dlg: false, form: {}, kw: '', online: '' }; },
+    data() { return { S: Store, dlg: false, form: {}, kw: '', online: '', regions: window.REGIONS || [] }; },
     computed: {
       list() {
         let l = Store.db.privateGroup.slice();
@@ -26,7 +26,7 @@ window.VIEWS['private-group'] = {
       openAdd() {
         this.form = {
           id: '', title: '', cover: '', images: [], tags: [], price: 5000, originalPrice: 0, days: 1, departure: '海拉尔集合',
-          dest: '', type: '私家团', brief: '', highlights: ['专属管家', '越野车'], detailHtml: '',
+          dest: '', regionLevel1: '', type: '私家团', brief: '', highlights: ['专属管家', '越野车'], detailHtml: '',
           include: [], exclude: [], notices: { tips: [], gear: [], refund: [] }, reviews: [],
           sort: this.list.length + 1, online: true,
           dayList: [{ id: Store.uid(), dayNum: 1, title: '第 1 天', scenicId: '', hotelId: '', spots: [], meals: '', hotel: '', content: '', imgs: [] }],
@@ -35,6 +35,7 @@ window.VIEWS['private-group'] = {
       },
       openEdit(g) {
         this.form = JSON.parse(JSON.stringify(g));
+        if (this.form.regionLevel1 == null) this.form.regionLevel1 = '';
         this.form.images = (g.images || []).slice();
         this.form.tags = (g.tags || []).slice();
         this.form.dayList = (g.dayList || []).map((d, i) => ({ id: d.id || Store.uid(), ...d }));
@@ -114,6 +115,11 @@ window.VIEWS['private-group'] = {
                     <el-select v-model="form.type" style="width:100%"><el-option label="私家团" value="私家团" /><el-option label="拼团" value="拼团" /></el-select>
                   </el-form-item>
                   <el-form-item label="所属目的地"><el-input v-model="form.dest" placeholder="如：呼伦贝尔 / 阿尔山 / 满洲里" /></el-form-item>
+                  <el-form-item label="一级大区">
+                    <el-select v-model="form.regionLevel1" clearable style="width:100%" placeholder="选择一级大区">
+                      <el-option v-for="r in regions" :key="r" :label="r" :value="r" />
+                    </el-select>
+                  </el-form-item>
                   <el-form-item label="集合地点"><el-input v-model="form.departure" placeholder="如：海拉尔集合" /></el-form-item>
                   <el-form-item label="行程天数"><el-input :model-value="form.dayList.length + ' 天'" disabled /></el-form-item>
                 </div>
@@ -176,9 +182,9 @@ window.VIEWS['private-group'] = {
                 <el-form-item label="费用不含">
                   <el-select v-model="form.exclude" multiple filterable allow-create default-first-option style="width:100%" placeholder="输入后回车创建，如：往返大交通" />
                 </el-form-item>
-                <el-form-item label="温馨提示"><el-input :model-value="(form.notices.tips || []).join('\n')" type="textarea" :rows="4" @update:model-value="v => (form.notices.tips = v.split('\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
-                <el-form-item label="出行装备"><el-input :model-value="(form.notices.gear || []).join('\n')" type="textarea" :rows="4" @update:model-value="v => (form.notices.gear = v.split('\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
-                <el-form-item label="退改规则"><el-input :model-value="(form.notices.refund || []).join('\n')" type="textarea" :rows="4" @update:model-value="v => (form.notices.refund = v.split('\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
+                <el-form-item label="温馨提示"><el-input :model-value="(form.notices.tips || []).join('\\n')" type="textarea" :rows="4" @update:model-value="v => (form.notices.tips = v.split('\\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
+                <el-form-item label="出行装备"><el-input :model-value="(form.notices.gear || []).join('\\n')" type="textarea" :rows="4" @update:model-value="v => (form.notices.gear = v.split('\\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
+                <el-form-item label="退改规则"><el-input :model-value="(form.notices.refund || []).join('\\n')" type="textarea" :rows="4" @update:model-value="v => (form.notices.refund = v.split('\\n').filter(Boolean))" placeholder="每行一条" /></el-form-item>
                 <el-form-item label="游客评价">
                   <div v-if="form.reviews.length">
                     <div v-for="(rv, i) in form.reviews" :key="i" style="border:1px dashed var(--line);border-radius:8px;padding:10px;margin-bottom:10px">

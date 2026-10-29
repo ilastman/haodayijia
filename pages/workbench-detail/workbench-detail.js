@@ -1,4 +1,6 @@
 const wb = require('../../utils/workbench');
+const api = require('../../utils/api');
+const data = require('../../utils/data');
 
 const PAY_TYPES = ['定金', '中期款', '尾款', '其他'];
 const COST_LABELS = { hotel: '酒店', car: '车辆', guide: '导游', ticket: '门票', meal: '餐费', misc: '杂费' };
@@ -32,6 +34,11 @@ Page({
     tplVisible: false,
     tplList: [],
     tplIndex: 0,
+
+    mtVisible: false,
+    mtList: [],
+    mtIndex: 0,
+    mtLoading: false,
 
     dayEditing: false,
     dayDraft: [],
@@ -180,12 +187,49 @@ Page({
     else wx.showToast({ title: (res && res.msg) || '失败', icon: 'none' });
   },
 
-  /* ---------- 行程单：手动编辑 ---------- */
-  editDays() {
-    const days = (this.data.vm.days || []).map(d => Object.assign({}, d));
-    if (!days.length) days.push({ dayNum: 1, title: '第1天', content: '', meals: '', hotel: '' });
-    this.setData({ dayEditing: true, dayDraft: days });
+  /* ---------- 行程单：复制我的行程 ---------- */
+  async openMyTrips() {
+    this.setData({ mtLoading: true });
+    let list = await api.myTrips();
+    if (!list || !list.length) list = wx.getStorageSync('myTrips') || [];
+    this.setData({ mtLoading: false });
+    if (!list.length) { wx.showToast({ title: '暂无我的行程，请先在「我的行程」创建', icon: 'none' }); return; }
+    this.setData({ mtVisible: true, mtList: list, mtIndex: 0 });
   },
+  closeMyTrips() { this.setData({ mtVisible: false }); },
+  onMtSelect(e) { this.setData({ mtIndex: Number(e.currentTarget.dataset.i) }); },
+  async doMyTrip() {
+    const t = this.data.mtList[this.data.mtIndex];
+    if (!t) return;
+    const days = (t.plans || []).map((p, i) => {
+      const names = (p.scenicIds || []).map(id => { const s = data.getScenic(id); return s ? s.name : ''; }).filter(Boolean);
+      const hotel = p.hotelId ? data.getHotel(p.hotelId) : null;
+      const content = (names.join('、') + (p.note ? (names.length ? '\n' : '') + p.note : '')) || p.note || '';
+      return {
+        dayNum: i + 1,
+        title: names[0] || ('第' + (i + 1) + '天'),
+        content,
+        scenicId: (p.scenicIds && p.scenicIds[0]) || '',
+        hotelId: p.hotelId || '',
+        meals: '',
+        hotel: hotel ? hotel.name : ''
+      };
+    });
+    if (!days.length) { wx.showToast({ title: '该行程没有可复制的天数', icon: 'none' }); return; }
+    wx.showLoading({ title: '复制中' });
+    const res = await wb.applyMyTrip(this.data.id, { tripId: t.id, title: t.title, days });
+    wx.hideLoading();
+    if (res && res.code === 200) {
+      const nd = ((res.data && res.data.itinerary && res.data.itinerary.days) || days).map(d => Object.assign({}, d));
+      await this.load();
+      this.setData({ mtVisible: false, 'openSec.itinerary': true, dayEditing: true, dayDraft: nd });
+      wx.showToast({ title: '已复制，可编辑', icon: 'none' });
+    } else {
+      wx.showToast({ title: (res && res.msg) || '失败', icon: 'none' });
+    }
+  },
+
+  /* ---------- 行程单：编辑 ---------- */
   addDay() {
     const d = this.data.dayDraft;
     d.push({ dayNum: d.length + 1, title: '第' + (d.length + 1) + '天', content: '', meals: '', hotel: '' });

@@ -76,6 +76,8 @@
     if (!Array.isArray(d.staff)) d.staff = [];
     if (!Array.isArray(d.order)) d.order = [];
     if (!Array.isArray(d.opLog)) d.opLog = [];
+    if (!Array.isArray(d.user)) d.user = [];
+    if (!Array.isArray(d.category)) d.category = [];
     return d;
   }
 
@@ -91,6 +93,7 @@
   }
 
   const db = Vue.reactive(load() || clone(window.SEED));
+  if (!Array.isArray(db.category)) db.category = [];
 
   /* 本地数据桥：与 tools/preview-server.js 的 /api/db 双向同步 */
   const API_DB = '/api/db';
@@ -197,22 +200,42 @@
         const r = await Cloud.login(username, password);
         return r;
       }
-      const admin = db.admin[0];
-      if (admin.username === username && admin.password === password) {
-        admin.lastLogin = new Date().toISOString().slice(0, 19).replace('T', ' ');
-        save();
-        localStorage.setItem(TOKEN_KEY, '1');
-        return { ok: true, admin: clone(admin) };
-      }
-      return { ok: false };
+      const admin = (db.admin || []).find(a => a.username === username && a.password === password);
+      if (!admin) return { ok: false, msg: '账号或密码错误' };
+      if (admin.status === 'disabled') return { ok: false, msg: '账号已停用，请联系超级管理员' };
+      admin.lastLogin = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      save();
+      localStorage.setItem(TOKEN_KEY, '1');
+      const pub = { id: admin.id, username: admin.username, nickname: admin.nickname || admin.username, role: (admin.username === 'admin' || admin.role === 'super') ? 'super' : 'admin' };
+      localStorage.setItem('admin_local_user', JSON.stringify(pub));
+      return { ok: true, admin: pub };
     },
     logout() {
       if (Cloud && Cloud.enabled()) { Cloud.logout(); return; }
       localStorage.removeItem(TOKEN_KEY);
+      localStorage.removeItem('admin_local_user');
     },
 
     /* ---------- 集合 ---------- */
     coll(name) { return db[name]; },
+
+    /* 当前登录管理员（云端取自登录返回，本地取 SEED） */
+    currentAdmin() {
+      if (Cloud && Cloud.enabled() && Cloud.admin()) return Cloud.admin();
+      try {
+        const local = JSON.parse(localStorage.getItem('admin_local_user') || 'null');
+        if (local && local.username) return local;
+      } catch (e) { /* ignore */ }
+      return (db.admin && db.admin[0]) || null;
+    },
+    isSuper() {
+      const a = this.currentAdmin();
+      return !!(a && (a.role === 'super' || a.username === 'admin'));
+    },
+    /* 直接调用云函数（用于批量导入等动作），非云模式返回 null */
+    cloudCall(name, data) {
+      return (Cloud && Cloud.enabled()) ? Cloud.call(name, data) : Promise.resolve(null);
+    },
 
     add(name, doc) {
       doc = Object.assign({ id: uid() }, clone(doc));
@@ -315,6 +338,10 @@
       };
       (db.userTrip || []).forEach(t => { const r = touch(t); r.trips++; bump(r, t.updatedAt || t.createTime); });
       (db.inspirationPost || []).forEach(p => { const r = touch(p); r.posts++; bump(r, p.createTime); });
+      (db.user || []).forEach(u => {
+        const rec = touch({ openid: u.openid, nickname: u.nickname, avatar: u.avatarUrl });
+        bump(rec, u.updateTime || u.createTime);
+      });
       return Object.keys(map).map(k => map[k]).sort((a, b) => (b.lastSeen || '').localeCompare(a.lastSeen || ''));
     },
 
@@ -358,7 +385,7 @@
 
   /* ---------- 启动时加载数据 ---------- */
   async function syncFromCloud() {
-    const colls = ['homeModule', 'banner', 'scenic', 'hotel', 'privateGroup', 'inspirationPost', 'userTrip', 'assets', 'staff', 'order', 'opLog'];
+    const colls = ['homeModule', 'banner', 'scenic', 'hotel', 'privateGroup', 'inspirationPost', 'userTrip', 'assets', 'staff', 'order', 'opLog', 'user', 'category'];
     for (const c of colls) {
       const list = await Cloud.list(c);
       if (Array.isArray(list) && list.length) db[c] = list;

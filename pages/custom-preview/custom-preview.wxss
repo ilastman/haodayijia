@@ -204,6 +204,32 @@
   height: 92rpx;
 }
 
+/* 同级备选酒店（纯文字） */
+.cp-alt {
+  margin-top: 12rpx;
+  padding: 0 4rpx;
+}
+
+.cp-alt-title {
+  font-size: 22rpx;
+  color: #8A7152;
+  margin-bottom: 8rpx;
+}
+
+.cp-alt-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.cp-alt-name {
+  font-size: 24rpx;
+  color: #6E6555;
+  background: #F1E9DB;
+  border-radius: 24rpx;
+  padding: 6rpx 18rpx;
+  margin: 0 12rpx 10rpx 0;
+}
+
 /* 备注 */
 .cp-note {
   margin-top: 20rpx;

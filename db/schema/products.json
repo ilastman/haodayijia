@@ -11,12 +11,29 @@
         "detailHtml": { "type": "string", "description": "富文本酒店介绍" },
         "facilities": { "type": "array", "items": { "type": "string" }, "default": [], "description": "配套设施数组" },
         "price": { "type": "number", "default": 0, "description": "参考价格" },
-        "stars": { "type": "number", "description": "钻级" },
+        "stars": { "type": "number", "description": "钻级（Excel 导入时从级别文字解析）" },
+        "levelText": { "type": "string", "description": "酒店级别原文（如：五钻/精品民宿；Excel 导入保留，小程序不展示）" },
         "score": { "type": "number", "description": "评分" },
-        "area": { "type": "string", "description": "所在区域" },
+        "area": { "type": "string", "description": "二级地点名称，对应 category 酒店树 level=2" },
+        "areaCatId": { "type": "string", "description": "二级地点分类 id（category.id）" },
+        "regionLevel1": { "type": "string", "description": "一级大区名称，对应 category 酒店树 level=1" },
+        "regionCatId": { "type": "string", "description": "一级大区分类 id（category.id）" },
+        "pricePeriod": {
+          "type": "array",
+          "default": [],
+          "description": "【已废弃】旧分时段价格结构，改用 hotelPrice 集合存储自定义日期区间；新导入不再写入此字段",
+          "items": {
+            "type": "object",
+            "fields": {
+              "start": { "type": "string", "description": "起始日期" },
+              "end": { "type": "string", "description": "结束日期" },
+              "rooms": { "type": "array", "default": [], "description": "该时段各房型价格 [{name,price}]" }
+            }
+          }
+        },
         "envImg": { "type": "string", "description": "环境图" },
         "roomImg": { "type": "string", "description": "房型图" },
-        "rooms": { "type": "array", "default": [], "description": "房型数组" },
+        "rooms": { "type": "array", "default": [], "description": "房型数组 [{name,bedType,desc,img}]，bedType 为床型（大床/双床等），价格走 hotelPrice 档期" },
         "location": { "type": "string", "description": "位置说明" },
         "lon": { "type": "number", "description": "经度" },
         "lat": { "type": "number", "description": "纬度" },
@@ -29,6 +46,30 @@
       ],
       "remarks": "酒店表（字段与本地完全对齐）"
     },
+    "hotelPrice": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "hotelId": { "type": "string", "required": true, "description": "关联 hotel.id" },
+        "hotelName": { "type": "string", "description": "关联标识：酒店名称（冗余）" },
+        "roomType": { "type": "string", "description": "关联标识：房型名称" },
+        "bedType": { "type": "string", "description": "床型说明（如：1.2*2；横向导入保留，不参与核价）" },
+        "start": { "type": "string", "description": "价格生效开始日期 yyyy-MM-dd（模糊档期为空）" },
+        "end": { "type": "string", "description": "价格生效结束日期 yyyy-MM-dd（闭区间，含当天；模糊档期为空）" },
+        "price": { "type": "number", "required": true, "description": "核价用售价：区间价取较低值，单值即原值" },
+        "priceMin": { "type": "number", "description": "区间价下限（单值等于 price）" },
+        "priceMax": { "type": "number", "description": "区间价上限（单值等于 price）" },
+        "priceRaw": { "type": "string", "description": "售价原文（如：680-775）" },
+        "fuzzy": { "type": "boolean", "default": false, "description": "是否模糊档期（如 11月中/12月上旬/春节），不参与自动核价，待人工确认" },
+        "remark": { "type": "string", "description": "档期备注/原文（模糊档期存原始写法）" },
+        "sort": { "type": "number", "default": 0, "description": "排序" },
+        "createdAt": { "type": "number", "description": "创建时间戳" }
+      },
+      "indexes": [
+        { "fields": ["hotelId"] },
+        { "fields": ["hotelName", "roomType"] }
+      ],
+      "remarks": "酒店自定义日期价格档期子表：一房型一档期一条记录，与 hotel 一对多；核价按入住日期闭区间匹配；区间价存 priceMin/priceMax，price 取低值；模糊档期 fuzzy=true 不参与核价"
+    },
     "privateGroup": {
       "fields": {
         "_id": { "type": "string", "description": "云开发自动生成ID" },
@@ -40,7 +81,8 @@
         "originalPrice": { "type": "number", "default": 0, "description": "原价" },
         "days": { "type": "number", "default": 1, "description": "行程天数" },
         "departure": { "type": "string", "default": "海拉尔集合", "description": "出发地" },
-        "dest": { "type": "string", "description": "目的地" },
+        "dest": { "type": "string", "description": "目的地（二级筛选子地点）" },
+        "regionLevel1": { "type": "string", "description": "一级大区：呼伦贝尔/雪乡/哈尔滨/新疆" },
         "type": { "type": "string", "default": "私家团", "description": "产品类型" },
         "tags": { "type": "array", "items": { "type": "string" }, "default": [], "description": "标签" },
         "brief": { "type": "string", "description": "一句话简介" },

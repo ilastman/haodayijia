@@ -33,7 +33,10 @@ const ALLOWED = [
   'orderCRUD',
   'opLogCRUD',
   'workOrderPdf',
-  'workbenchInit'
+  'workbenchInit',
+  'userCRUD',
+  'categoryCRUD',
+  'adminUserCRUD'
 ];
 
 const CORS = {

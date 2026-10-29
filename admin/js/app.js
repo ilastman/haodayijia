@@ -12,10 +12,12 @@
           ['private-group', '线路管理', '🧭'],
           ['hotel', '酒店管理', '🏨'],
           ['scenic', '景区管理', '⛰'],
+          ['category', '分类管理', '🏷'],
           ['user-trip', '定制行程管理', '📋'],
           ['inspiration', '灵感广场管理', '✨'],
           ['users', '用户管理', '👥'],
           ['staff', '员工账号', '🧑💼'],
+          ['admin-users', '后台管理员', '🔐'],
           ['orders', '全部订单', '🧾'],
           ['customers', '客户管理', '👤'],
           ['ledger', '全员台账', '📈'],
@@ -32,6 +34,10 @@
     },
     computed: {
       isLogin() { return Store.isLogin(); },
+      isSuper() { return Store.isSuper(); },
+      visibleMenu() {
+        return this.menu.filter(([k]) => k !== 'admin-users' || this.isSuper);
+      },
       view() { return this.Views[this.route] || this.Views.dashboard; },
       title() { return (this.Views[this.route] && this.Views[this.route].title) || '数据大盘'; },
       badgeOf() {
@@ -47,7 +53,8 @@
         this.route = this.Views[key] ? key : 'dashboard';
         if (this.route !== 'login' && !Store.isLogin()) { location.hash = '#/login'; return; }
         if (this.route === 'login' && Store.isLogin()) { location.hash = '#/dashboard'; return; }
-        this.user = Store.db.admin[0] || null;
+        if (this.route === 'admin-users' && !Store.isSuper()) { location.hash = '#/dashboard'; return; }
+        this.user = Store.currentAdmin();
       },
       go(key) { if (key !== this.route) location.hash = '#/' + key; },
       logout() {
@@ -78,7 +85,7 @@
           </div>
         </div>
         <nav class="side-menu">
-          <div v-for="[k, t, ic] in menu" :key="k" class="menu-item" :class="{on: route === k}" @click="go(k)">
+          <div v-for="[k, t, ic] in visibleMenu" :key="k" class="menu-item" :class="{on: route === k}" @click="go(k)">
             <span class="t-i">{{ic}}</span>{{t}}
             <span class="badge" v-if="badgeOf(k)">{{badgeOf(k)}}</span>
           </div>
@@ -122,7 +129,25 @@
   if (globalThis.ElementPlusIconsVue) {
     for (const [name, comp] of Object.entries(globalThis.ElementPlusIconsVue)) app.component(name, comp);
   }
-  app.use(ElementPlus);
+  app.use(ElementPlus, {
+    locale: {
+      name: 'zh-cn',
+      el: {
+        pagination: { goto: '前往', pagesize: '条/页', total: '共 {total} 条', pageClassifier: '页' },
+        datepicker: {
+          now: '此刻', today: '今天', cancel: '取消', clear: '清空', confirm: '确定',
+          selectDate: '选择日期', startDate: '开始日期', endDate: '结束日期',
+          prevYear: '前一年', nextYear: '后一年', prevMonth: '上个月', nextMonth: '下个月',
+          year: '年',
+          month1: '1 月', month2: '2 月', month3: '3 月', month4: '4 月',
+          month5: '5 月', month6: '6 月', month7: '7 月', month8: '8 月',
+          month9: '9 月', month10: '10 月', month11: '11 月', month12: '12 月',
+          weeks: { sun: '日', mon: '一', tue: '二', wed: '三', thu: '四', fri: '五', sat: '六' },
+          months: { jan: '一月', feb: '二月', mar: '三月', apr: '四月', may: '五月', jun: '六月', jul: '七月', aug: '八月', sep: '九月', oct: '十月', nov: '十一月', dec: '十二月' }
+        }
+      }
+    }
+  });
   // 全局混入：图片地址解析（cloud:// -> 临时链接），所有视图可直接使用 img(...)
   app.mixin({ methods: { img(v) { return window.Store ? window.Store.img(v) : v; } } });
   window.UI.install(app);

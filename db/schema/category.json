@@ -1,0 +1,20 @@
+{
+  "collections": {
+    "category": {
+      "fields": {
+        "_id": { "type": "string", "description": "云开发自动生成ID" },
+        "id": { "type": "string", "required": true, "description": "业务ID" },
+        "tree": { "type": "string", "required": true, "description": "分类树：scenic=景区三级 / hotel=酒店两级" },
+        "parentId": { "type": "string", "default": "", "description": "上级分类 id，一级为空" },
+        "level": { "type": "number", "required": true, "description": "层级。景区 1大区 2类型 3地点；酒店 1大区 2地点" },
+        "name": { "type": "string", "required": true, "description": "分类名称" },
+        "sort": { "type": "number", "default": 0, "description": "同级排序，越小越靠前" }
+      },
+      "indexes": [
+        { "fields": ["id"] },
+        { "fields": ["tree", "parentId"] }
+      ],
+      "remarks": "景区、酒店各自一棵分类树。景区：大区→类型→地点。酒店：大区→地点。前后端筛选与录入都读这一份。"
+    }
+  }
+}

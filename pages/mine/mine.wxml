@@ -4,28 +4,17 @@
   <view class="profile">
     <view class="profile-bg"></view>
 
-    <block wx:if="{{userInfo}}">
-      <image class="avatar" src="{{userInfo.avatar}}" mode="aspectFill" wx:if="{{userInfo.avatar}}" />
-      <view class="avatar avatar-empty" wx:else>{{userInfo.nickname[0]}}</view>
-      <view class="nick-row">
-        <input class="nick-input" type="nickname" placeholder="{{copy.nicknamePlaceholder}}" placeholder-class="nick-ph"
-          value="{{editNick}}" bindinput="onNickInput" bindconfirm="saveProfile" />
-        <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">{{copy.avatarBtn}}</button>
-      </view>
-      <view class="nick-tip" bindtap="saveProfile">{{copy.confirmSave}} ›</view>
-    </block>
+    <view class="avatar-wrap" bindtap="onAvatarTap">
+      <image class="avatar" src="{{editAvatar}}" mode="aspectFill" wx:if="{{editAvatar}}" />
+      <view class="avatar avatar-empty" wx:else>{{(editNick && editNick[0]) || '旅'}}</view>
+      <view class="avatar-edit">{{copy.avatarBtn}}</view>
+    </view>
 
-    <block wx:else>
-      <image class="avatar" src="{{userIcon}}" mode="aspectFit" />
-      <view class="nick">{{copy.notLogin}}</view>
-      <view class="login-tip">{{copy.loginTip}}</view>
-      <view class="nick-row">
-        <input class="nick-input" type="nickname" placeholder="{{copy.nicknamePlaceholder}}" placeholder-class="nick-ph"
-          value="{{editNick}}" bindinput="onNickInput" />
-        <button class="avatar-btn" open-type="chooseAvatar" bindchooseavatar="onChooseAvatar">{{copy.avatarBtn}}</button>
-      </view>
-      <button class="login-btn" bindtap="saveProfile">{{copy.loginBtn}}</button>
-    </block>
+    <view class="nick-row">
+      <input class="nick-input" type="nickname" placeholder="{{copy.nicknamePlaceholder}}" placeholder-class="nick-ph"
+        value="{{editNick}}" bindinput="onNickInput" bindconfirm="saveProfile" />
+    </view>
+    <view class="nick-tip" bindtap="saveProfile">{{copy.confirmSave}} ›</view>
   </view>
 
   <!-- 功能菜单 -->

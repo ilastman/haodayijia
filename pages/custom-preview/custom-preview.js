@@ -102,7 +102,7 @@ Page({
     const saved = wx.getStorageSync('lastCustomPlan') || {};
     const days = Math.min(MAX_DAYS, Math.max(1, parseInt(query.days, 10) || (base && base.days) || saved.days || 3));
     const plans = (((base && base.plans) || (saved.plans || [])).slice()).slice(0, days);
-    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', note: '' });
+    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1 });
     const heroTitle = copy.customPreview.heroTitle + days + copy.customPreview.heroTitleSuffix;
     this._plans = plans;
     const date = query.date ? decodeURIComponent(query.date) : (base && base.date) || '';
@@ -153,7 +153,12 @@ Page({
     let hotel = null;
     if (p.hotelId) {
       const h = data.hotels.filter(x => x.id === p.hotelId)[0];
-      if (h) hotel = { id: h.id, name: h.name, img: h.image, meta: h.stars + ' · ' + h.area };
+      if (h) {
+        const alts = (p.altHotelIds || []).map(id => data.hotels.filter(x => x.id === id)[0]).filter(Boolean).map(x => x.name);
+        const roomType = p.roomType || '';
+        const qty = Math.max(1, parseInt(p.roomQty, 10) || 1);
+        hotel = { id: h.id, name: h.name, img: h.image, meta: h.stars + ' · ' + h.area, alts, roomType, qty };
+      }
     }
     const scene = scenics.length ? scenics[0].name : copy.customPreview.noScenic;
     return { index: i, line: (i + 1) + copy.customPreview.dayUnit, scene, scenics, hotel, note: p.note || '' };
@@ -184,8 +189,11 @@ Page({
       heroTitle: this.data.heroTitle,
       plans: this._plans.map(p => ({
         scenicIds: (p.scenicIds || []).slice(),
-        hotelId: p.hotelId || '',
-        note: p.note || ''
+      hotelId: p.hotelId || '',
+      altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds.slice() : [],
+      note: p.note || '',
+      roomType: p.roomType || '',
+      roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1)
       })),
       savedAt: TIME_STAMP
     };

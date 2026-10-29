@@ -1014,6 +1014,38 @@ const sampleOrders = [
   { id: 'o2', routeId: 'r003', title: '满洲里+额尔古纳5日精华拼团', cover: ph('r003 封面', 640, 400), date: '2026-09-01', people: 2, amount: 6560, status: 'cancelled' }
 ];
 
+/* ---------------- 一级大区 / 子类型（景区/娱乐） ---------------- */
+
+/* 一级大区（全局筛选，与后台 window.REGIONS 保持一致） */
+const REGIONS = ['呼伦贝尔', '雪乡', '哈尔滨', '新疆'];
+
+/* 现有子地点到一级大区的映射（历史数据无 regionLevel1 时兜底） */
+const REGION_BY_DEST = {
+  海拉尔: '呼伦贝尔', 额尔古纳: '呼伦贝尔', 满洲里: '呼伦贝尔', 黑山头: '呼伦贝尔',
+  室韦: '呼伦贝尔', 阿尔山: '呼伦贝尔', 恩和: '呼伦贝尔', 根河: '呼伦贝尔', 莫尔道嘎: '呼伦贝尔'
+};
+
+routes.forEach(r => { if (!r.regionLevel1) r.regionLevel1 = REGION_BY_DEST[r.dest] || '呼伦贝尔'; });
+scenics.forEach(s => {
+  if (!s.regionLevel1) s.regionLevel1 = REGION_BY_DEST[s.dest] || '呼伦贝尔';
+  if (!s.subType) s.subType = 'scenic';
+});
+hotels.forEach(h => { if (!h.regionLevel1) h.regionLevel1 = REGION_BY_DEST[h.area] || '呼伦贝尔'; });
+
+/* 分时段价格示例（演示用；房型为对象数组时详情页按月/时段展示） */
+if (hotels[5]) {
+  hotels[5].pricePeriod = [
+    { start: '2026-07-01', end: '2026-08-31', rooms: [{ name: '温泉私汤房', price: '1299' }, { name: '山景双床房', price: '899' }] },
+    { start: '2026-09-01', end: '2026-10-15', rooms: [{ name: '温泉私汤房', price: '999' }, { name: '山景双床房', price: '699' }] }
+  ];
+}
+if (hotels[4]) {
+  hotels[4].pricePeriod = [
+    { start: '2026-07-01', end: '2026-08-31', rooms: [{ name: '俄式童话亲子房', price: '1099' }, { name: '景观大床房', price: '899' }] },
+    { start: '2026-09-01', end: '2026-10-15', rooms: [{ name: '俄式童话亲子房', price:'899' }, { name: '景观大床房', price: '699' }] }
+  ];
+}
+
 /* ---------------- 查询方法 ---------------- */
 
 function getRoute(id) {
@@ -1045,6 +1077,7 @@ function pickRoutes(ids) {
 }
 
 module.exports = {
+  REGIONS,
   destList,
   typeList,
   navIcons,
