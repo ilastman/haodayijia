@@ -32,7 +32,7 @@
       "hotel": "酒店：读写由 hotelCRUD 云函数完成",
       "hotelPrice": "酒店价格档期子表：读写由 hotelCRUD 云函数完成（一对多，按入住日期闭区间匹配）",
       "privateGroup": "私家团：读写由 privateGroupCRUD 云函数完成",
-      "userTrip": "用户行程：小程序经 userTripCRUD 云函数（openid 取 WX 上下文）读写；管理员经同一云函数 token 校验",
+      "userTrip": "用户行程：小程序经 userTripCRUD 云函数（openid 取 WX 上下文）读写；分享页 getPublic 不返回内部核算 quote；管理员经同一云函数 token 校验",
       "inspirationPost": "灵感广场：小程序经 inspirationPostCRUD 云函数读取（status=1）与发布（status=0）；审核/删除经管理员 token 校验",
       "adminUser": "PC 后台管理员账号：login 登录；adminUserCRUD 仅超管可增删改；adminInit 仅首次建 admin。与小程序员工 staff 隔离",
       "globalConfig": "全局配置：读取经 homeConfigCRUD；保存需管理员 token",

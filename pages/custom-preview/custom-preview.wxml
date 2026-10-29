@@ -5,7 +5,10 @@
     <image class="cp-hero-img cp-hero-cover" src="{{cover}}" mode="aspectFill" />
     <view class="cp-hero-shade"></view>
     <view class="cp-hero-cap">
-      <view class="cp-hero-title">{{heroTitle}}</view>
+      <view class="cp-hero-title-row">
+        <view class="cp-hero-title">{{heroTitle}}</view>
+        <view class="cp-hero-quote" wx:if="{{guestQuoteText}}">{{guestQuoteText}}</view>
+      </view>
       <view class="cp-hero-slogan">{{c.slogan}}</view>
     </view>
   </view>
@@ -15,17 +18,19 @@
     </view>
     <view class="cp-hero-shade"></view>
     <view class="cp-hero-cap">
-      <view class="cp-hero-title">{{heroTitle}}</view>
+      <view class="cp-hero-title-row">
+        <view class="cp-hero-title">{{heroTitle}}</view>
+        <view class="cp-hero-quote" wx:if="{{guestQuoteText}}">{{guestQuoteText}}</view>
+      </view>
       <view class="cp-hero-slogan">{{c.slogan}}</view>
     </view>
   </view>
 
-  <!-- 行程总价 -->
-  <view class="cp-price">
-    <view class="cp-price-k">{{priceView.label || c.priceLabel}}</view>
-    <view class="cp-price-v" wx:if="{{!priceView.pending}}">¥{{priceView.total}}</view>
-    <view class="cp-price-v pending" wx:else>{{c.pricePending}}</view>
-    <view class="cp-price-note">{{priceView.note}}</view>
+  <!-- 内部核算只给员工，客人分享页不渲染这块 -->
+  <view class="cp-price" wx:if="{{isStaff && internalView}}">
+    <view class="cp-price-k">内部核算</view>
+    <view class="cp-price-v">¥{{internalView.total}}</view>
+    <view class="cp-price-note">{{internalView.note}}</view>
   </view>
 
   <!-- 基础信息标签区（自动匹配天数与出行月份） -->
@@ -130,10 +135,6 @@
 
   <!-- 底部：总价常驻，生成后仍可修改 -->
   <view class="cp-bottom">
-    <view class="cp-price-side">
-      <text class="cp-price-side-k">{{c.priceLabel}}</text>
-      <text class="cp-price-side-v">{{priceView.pending ? c.pricePending : ('¥' + priceView.total)}}</text>
-    </view>
     <view class="cp-btn cp-btn-outline" bindtap="goEdit">{{c.editBtn}}</view>
     <view class="cp-btn cp-btn-outline" wx:if="{{!fromList}}" bindtap="saveToMine">{{c.saveBtn}}</view>
   </view>

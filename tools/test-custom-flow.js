@@ -41,6 +41,13 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(30);
   click($('#screen .add-btn'));
   await sleep(40);
+  const harbin = $$('#screen .sheet-chip').find(e => e.textContent.trim() === '哈尔滨');
+  ok(!!harbin, '景区面板有哈尔滨分类');
+  click(harbin);
+  await sleep(30);
+  ok(!$$('#screen .opt').some(e => /呼伦贝尔大草原/.test(e.textContent)), '哈尔滨下不出现海拉尔景区');
+  click($$('#screen .sheet-chip').find(e => e.textContent.trim() === '全部'));
+  await sleep(30);
   click($$('#screen .opt').find(e => /呼伦贝尔大草原/.test(e.textContent)));
   await sleep(20);
   click($$('#screen .opt').find(e => /莫日格勒河/.test(e.textContent)));
@@ -81,9 +88,9 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click($('#screen .bottom-bar .submit-btn'));
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '生成进入详情');
-  ok($('#screen').textContent.indexOf('行程总价') > -1, '详情页标注行程总价');
-  ok($('#screen').textContent.indexOf('¥688') > -1, '总价 ¥688');
-  ok($('#screen').textContent.indexOf('3 成人') > -1 && $('#screen').textContent.indexOf('0 儿童') > -1, '总价标注人数');
+  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '分享标题在首屏');
+  ok($('#screen').textContent.indexOf('内部核算') === -1, '客人看不到内部核算');
+  ok($('#screen').textContent.indexOf('¥688') === -1, '客人不看到核算价');
   ok($$('#screen .cp-day')[1].querySelectorAll('.cp-promo-img').length === 2, '第2天展示 2 张宣传图');
   ok(!!$('#screen .cp-hero-cover'), '封面作为详情首图');
 

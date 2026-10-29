@@ -511,7 +511,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '进入专属行程预览页: ' + $('#nav-title').textContent);
   const heroTitle = $('#screen .cp-hero-title').textContent;
-  ok(heroTitle.includes('你的专属呼伦贝尔') && heroTitle.includes('4天行程'), '首屏标题正确: ' + heroTitle);
+  ok(heroTitle.indexOf('4天3晚的海拉尔行程') > -1, '分享页标题: ' + heroTitle);
   ok($('#screen .cp-hero-slogan').textContent.trim().length > 0, '首屏 slogan 存在');
   ok($$('#screen .cp-hero-img').length >= 1, '首屏拼合景区图 >= 1');
   ok($$('#screen .cp-day').length === 4, '预览按天 4 天模块');
@@ -521,9 +521,8 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   ok(d1.indexOf('海拉尔草原天际酒店') > -1, '第2天酒店展示');
   ok(d1.indexOf('想看日落') > -1, '第2天备注展示');
   ok(!$('#screen .mask'), '预览页未自动弹出留资');
-  ok($('#screen').textContent.indexOf('行程总价') > -1, '预览页标注行程总价');
-  ok($('#screen').textContent.indexOf('¥688') > -1, '总价展示酒店参考价 688');
-  ok($('#screen').textContent.indexOf('2 成人') > -1 && $('#screen').textContent.indexOf('0 儿童') > -1, '总价标注成人与儿童');
+  ok($('#screen').textContent.indexOf('内部核算') === -1, '客人看不到内部核算');
+  ok($('#screen').textContent.indexOf('¥688') === -1 && $('#screen').textContent.indexOf('行程总价') === -1, '客人看不到核算总价');
   ok($('#screen').textContent.indexOf('游客评价') === -1, '预览页无游客评价板块');
   const editNow = $$('#screen .cp-btn').find(e => /修改行程/.test(e.textContent));
   ok(!!editNow, '生成后即可修改行程');
@@ -575,7 +574,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(60);
   const myTrips = window.__preview.wx.getStorageSync('myTrips') || [];
   ok(myTrips.length === 1, 'myTrips 保存 1 条');
-  ok(myTrips[0].title === '我的专属呼伦贝尔4日行程', '保存行程标题: ' + myTrips[0].title);
+  ok(myTrips[0].title === '4天3晚的海拉尔行程', '保存行程标题: ' + myTrips[0].title);
   ok(myTrips[0].plans.length === 4, '保存行程 4 天');
   ok(myTrips[0].plans[1].scenicIds.length === 2 && myTrips[0].plans[1].hotelId === 'h1' && myTrips[0].plans[1].note === '想看日落',
     '第2天景区/酒店/备注已保存');
@@ -638,13 +637,13 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(80);
   ok($$('#screen .mt-card').length === 1, '我的行程列表 1 条');
   const mtName = $$('#screen .mt-card .mt-name').map(e => e.textContent);
-  ok(mtName.indexOf('我的专属呼伦贝尔4日行程') > -1, '行程卡片标题正确');
+  ok(mtName.indexOf('4天3晚的海拉尔行程') > -1, '行程卡片标题正确');
   ok($$('#screen .mt-card img').length >= 1, '行程卡片大图在上');
   ok($$('#screen .mt-card .mt-days')[0].textContent.includes('4天'), '卡片天数展示');
   click($('#screen .mt-card'));
   await sleep(120);
   const prevId = window.__preview.wx.getStorageSync('myTrips')[0].id;
-  ok($('#screen .cp-hero-title').textContent.includes('你的专属呼伦贝尔4天行程'), '卡片重新打开专属预览');
+  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '卡片重新打开专属预览');
   ok($$('#screen .cp-day').length === 4, '预览恢复 4 天模块');
   const rDay = $$('#screen .cp-day')[1].textContent;
   ok(rDay.indexOf('呼伦贝尔大草原') > -1 && rDay.indexOf('想看日落') > -1, '预览恢复第2天景区与备注');
@@ -683,7 +682,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click($('#screen .bottom-bar .submit-btn'));
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '编辑后重新生成进入预览');
-  ok($('#screen .cp-hero-title').textContent.includes('你的专属呼伦贝尔4天行程'), '重新生成预览标题 4 天');
+  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '重新生成预览标题');
   const eDay = $$('#screen .cp-day')[1].textContent;
   ok(eDay.indexOf('想看日落·再改一下') > -1, '编辑后预览第2天备注更新');
   ok(!!$$('#screen .cp-btn').find(e => /保存到我的行程/.test(e.textContent)), '重新生成预览含【保存到我的行程】');
@@ -694,7 +693,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   ok(trips2.length === 1, '覆盖保存不新增条目(仍 1 条)');
   ok(trips2[0].id === prevId, '覆盖后行程 id 不变: ' + trips2[0].id);
   ok(trips2[0].days === 4 && trips2[0].plans[1].note.indexOf('再改一下') > -1, '覆盖保存内容为修改后行程');
-  ok($('#screen').textContent.includes('你的专属呼伦贝尔4天行程'), '保存后仍停留预览页');
+  ok($('#screen').textContent.indexOf('4天3晚的海拉尔行程') > -1, '保存后仍停留预览页');
 
   // 22c. 返回我的行程 -> 左滑删除（二次确认）-> 灵感广场已发布内容不受影响
   click($('#nav-back')); await sleep(60);

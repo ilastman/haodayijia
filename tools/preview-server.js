@@ -124,6 +124,14 @@ function handleCall(payload) {
   }
 
   if (name === 'userTripCRUD') {
+    if (action === 'getPublic') {
+      const row = (state.userTrip || []).filter(x => x.id === body.id)[0];
+      if (!row) return { code: 404, msg: '行程不存在' };
+      const doc = Object.assign({}, row);
+      delete doc.quote;
+      delete doc.openid;
+      return { code: 200, data: doc };
+    }
     if (action === 'save') {
       const src = (body.data && typeof body.data === 'object') ? body.data : body;
       const doc = Object.assign({ id: src.id || ('ut_' + Date.now().toString(36)) }, src);

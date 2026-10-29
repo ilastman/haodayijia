@@ -343,6 +343,8 @@ const api = {
       adults: t.adults,
       children: t.children,
       quote: t.quote || null,
+      guestName: t.guestName || '',
+      guestQuote: t.guestQuote || 0,
       cover: t.cover || '',
       plans: (Array.isArray(t.plans) && t.plans.length)
         ? t.plans.map(p => ({
@@ -358,6 +360,15 @@ const api = {
       savedAt: t.createTime || '',
       isPublish: t.status === 'published'
     }));
+  },
+
+  // 分享打开的行程。不含内部核算 quote。
+  async getPublicTrip(id) {
+    if (!id) return null;
+    const t = await call('userTripCRUD', { action: 'getPublic', id });
+    if (!t || !t.id) return null;
+    if (t.quote) delete t.quote;
+    return t;
   },
 
   // 保存/更新我的行程（尽力而为，失败不影响本地保存）

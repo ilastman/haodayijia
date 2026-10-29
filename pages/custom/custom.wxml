@@ -72,9 +72,21 @@
     </view>
   </view>
 
-  <!-- 员工内部核算价（仅员工可见） -->
-  <view class="card quote-card" wx:if="{{isStaff && internalQuote}}">
-    <view class="card-title">内部核算价</view>
+  <!-- 对客报价 + 内部核算（仅员工；客人看不到内部核算） -->
+  <view class="card quote-card" wx:if="{{isStaff}}">
+    <view class="card-title">对客报价</view>
+    <view class="row">
+      <view class="row-label">客人称呼</view>
+      <input class="guest-input" placeholder="如：张先生" placeholder-class="ph" value="{{guestName}}" bindinput="onGuestName" maxlength="20" />
+    </view>
+    <view class="row">
+      <view class="row-label">每人报价</view>
+      <input class="guest-input" type="digit" placeholder="填写给客人的每人价格" placeholder-class="ph" value="{{guestQuote}}" bindinput="onGuestQuote" maxlength="8" />
+      <text class="days-unit">元/人</text>
+    </view>
+    <view class="tip-line">分享页标题旁只展示这个每人报价。内部核算不会出现在客人看到的页面上。</view>
+    <block wx:if="{{internalQuote}}">
+    <view class="card-title quote-inner-title">内部核算价</view>
     <view class="quote-sum">
       <text class="quote-sum-label">酒店（逐日房型 × 间数）</text>
       <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
@@ -96,6 +108,7 @@
       </view>
     </view>
     <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
+    </block>
   </view>
 
   <!-- ② 每日行程标签 -->
@@ -246,7 +259,17 @@
         <text class="sheet-title">{{c.sheetScenicTitle}}</text>
         <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
       </view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetRegion === item ? 'on' : ''}}" wx:for="{{sheetRegions}}" wx:key="*this" bindtap="onSheetRegion" data-region="{{item}}">{{item}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetSub === item.key ? 'on' : ''}}" wx:for="{{sheetSubs}}" wx:key="key" bindtap="onSheetSub" data-sub="{{item.key}}">{{item.label}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetPlace === item ? 'on' : ''}}" wx:for="{{sheetPlaces}}" wx:key="*this" bindtap="onSheetPlace" data-place="{{item}}">{{item}}</view>
+      </scroll-view>
       <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetScenics.length === 0}}">该分类下暂无景区</view>
         <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetScenics}}" wx:key="id" catchtap="toggleScenic" data-id="{{item.id}}">
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>
@@ -265,7 +288,14 @@
         <text class="sheet-title">{{c.sheetHotelTitle}}</text>
         <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
       </view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetRegion === item ? 'on' : ''}}" wx:for="{{sheetRegions}}" wx:key="*this" bindtap="onSheetRegion" data-region="{{item}}">{{item}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetPlace === item ? 'on' : ''}}" wx:for="{{sheetPlaces}}" wx:key="*this" bindtap="onSheetPlace" data-place="{{item}}">{{item}}</view>
+      </scroll-view>
       <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetHotels.length === 0}}">该分类下暂无酒店</view>
         <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleHotel" data-id="{{item.id}}">
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>

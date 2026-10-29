@@ -94,12 +94,27 @@
   letter-spacing: 3rpx;
 }
 
-.mt-name {
+.mt-name-row {
+  display: flex;
+  align-items: baseline;
   margin-top: 14rpx;
+}
+
+.mt-name {
+  flex: 1;
+  min-width: 0;
   font-size: 30rpx;
   font-weight: 400;
   color: #3D362A;
   line-height: 1.45;
+}
+
+.mt-quote {
+  flex: 0 0 auto;
+  margin-left: 16rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #A4653A;
 }
 
 .mt-brief {

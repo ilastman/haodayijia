@@ -234,7 +234,42 @@ function publicHotelQuote(plans, hotelsById) {
   return { hotel, ticket: 0, car: 0, total: hotel };
 }
 
-/* 行程总价标注：金额 + 酒店/门票构成 + 成人/儿童人数 */
+/* 分享页标题：张先生的5天4晚的海拉尔行程。没有称呼时省略人名。 */
+function shareTitle(opts) {
+  const o = opts || {};
+  const days = Math.max(1, parseInt(o.days, 10) || 1);
+  const nights = Math.max(0, days - 1);
+  const who = String(o.guestName || '').trim();
+  const place = String(o.place || '').trim() || '呼伦贝尔';
+  return (who ? who + '的' : '') + days + '天' + nights + '晚的' + place + '行程';
+}
+
+/* 标题里的地点：优先第一个景区所在地，其次酒店地点 */
+function tripPlace(plans, scenicsById, hotelsById) {
+  const list = Array.isArray(plans) ? plans : [];
+  for (let i = 0; i < list.length; i++) {
+    const ids = (list[i] && list[i].scenicIds) || [];
+    for (let j = 0; j < ids.length; j++) {
+      const s = scenicsById && scenicsById[ids[j]];
+      const name = s && (s.dest || s.area);
+      if (name) return name;
+    }
+  }
+  for (let i = 0; i < list.length; i++) {
+    const h = hotelsById && list[i] && hotelsById[list[i].hotelId];
+    if (h && h.area) return h.area;
+  }
+  return '';
+}
+
+/* 对客报价只保留客人能看的每人价格，不带内部核算 */
+function guestQuoteText(amount) {
+  const n = num(amount);
+  if (!(n > 0)) return '';
+  return '¥' + n + '/人';
+}
+
+/* 行程总价标注：金额 + 酒店/门票构成 + 成人/儿童人数。仅员工可见。 */
 function annotateQuote(q, adults, children) {
   const hotel = num(q && q.hotel);
   const ticket = num(q && q.ticket);
@@ -257,5 +292,6 @@ module.exports = {
   num, parseTicketPrice, normDate, monthOf, addDays,
   periodHasDate, periodHasMonth,
   periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, matchHotelPrice,
-  deriveDays, calcQuote, publicHotelQuote, annotateQuote
+  deriveDays, calcQuote, publicHotelQuote, annotateQuote,
+  shareTitle, tripPlace, guestQuoteText
 };

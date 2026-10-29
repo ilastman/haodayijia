@@ -78,5 +78,12 @@ eq(note.pending, false, '有总价则不是待核算');
 eq(note.note, '酒店 ¥688 · 门票 ¥120 · 2 成人 · 1 儿童', '标注含酒店门票与人数');
 eq(quote.annotateQuote({ hotel: 0, ticket: 0, total: 0 }, 2, 0).pending, true, '零价待核算');
 
+console.log('== 分享标题与对客报价 ==');
+eq(quote.shareTitle({ days: 5, guestName: '张先生', place: '海拉尔' }), '张先生的5天4晚的海拉尔行程', '有称呼的分享标题');
+eq(quote.shareTitle({ days: 4, place: '海拉尔' }), '4天3晚的海拉尔行程', '无称呼的分享标题');
+eq(quote.guestQuoteText(1280), '¥1280/人', '每人报价文案');
+eq(quote.guestQuoteText(0), '', '没有报价就不展示');
+eq(quote.tripPlace([{ scenicIds: ['s1'] }], { s1: { dest: '海拉尔' } }, {}), '海拉尔', '地点取第一个景区');
+
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);

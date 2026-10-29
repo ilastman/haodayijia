@@ -509,6 +509,41 @@
   font-weight: 500;
 }
 
+.guest-input {
+  flex: 1;
+  min-height: 60rpx;
+  line-height: 60rpx;
+  background: #F2ECDF;
+  border-radius: 12rpx;
+  padding: 0 24rpx;
+  font-size: 26rpx;
+  color: #3D362A;
+}
+
+.quote-inner-title {
+  margin-top: 28rpx;
+}
+
+.sheet-cats {
+  white-space: nowrap;
+  padding: 0 8rpx 8rpx;
+}
+
+.sheet-chip {
+  display: inline-block;
+  margin: 0 12rpx 8rpx 0;
+  padding: 8rpx 22rpx;
+  border-radius: 24rpx;
+  font-size: 24rpx;
+  color: #817A6A;
+  background: #F3EDDF;
+}
+
+.sheet-chip.on {
+  color: #FCF9F1;
+  background: #8A7152;
+}
+
 .sheet-list {
   height: 560rpx;
 }

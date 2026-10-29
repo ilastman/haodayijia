@@ -5,6 +5,7 @@ const cloud = require('../../utils/cloud');
 const wb = require('../../utils/workbench');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
+const catalog = require('../../utils/catalog');
 const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -76,7 +77,15 @@ Page({
     hotelPricesById: {},
     calcScenicsById: {},
     internalQuote: null,
-    curRoomTypes: []
+    curRoomTypes: [],
+    guestName: '',
+    guestQuote: '',
+    sheetRegion: catalog.ALL,
+    sheetSub: 'all',
+    sheetPlace: catalog.ALL,
+    sheetRegions: [catalog.ALL],
+    sheetSubs: [{ key: 'all', label: '全部' }],
+    sheetPlaces: [catalog.ALL]
   },
 
   plansArray() {
@@ -109,11 +118,42 @@ Page({
     }
     this.initStaff();
     this.loadGallery();
+    this.loadCatalog();
   },
 
   onShow() {
     this.loadGallery();
+    this.loadCatalog();
   },
+
+  async loadCatalog() {
+    let scenics = null;
+    let hotels = null;
+    let scenicCats = [];
+    let hotelCats = [];
+    try {
+      const all = await Promise.all([
+        api.scenics(),
+        api.hotels(),
+        api.categories('scenic'),
+        api.categories('hotel')
+      ]);
+      scenics = all[0];
+      hotels = all[1];
+      scenicCats = all[2] || [];
+      hotelCats = all[3] || [];
+    } catch (e) { /* 继续用本地分类 */ }
+    if (scenics && scenics.length) this._scenics = scenics;
+    if (hotels && hotels.length) this._hotels = hotels;
+    this._scenicCats = scenicCats;
+    this._hotelCats = hotelCats;
+    if (this.data.sheet && (this.data.sheet.type === 'scenic' || this.data.sheet.type === 'hotel')) this.refreshSheet();
+  },
+
+  scenicsOf() { return (this._scenics && this._scenics.length) ? this._scenics : data.scenics; },
+  hotelsOf() { return (this._hotels && this._hotels.length) ? this._hotels : data.hotels; },
+  scenicById(id) { return this.scenicsOf().filter(s => s.id === id)[0] || data.getScenic(id); },
+  hotelById(id) { return this.hotelsOf().filter(h => h.id === id)[0] || data.hotels.filter(h => h.id === id)[0] || null; },
 
   async loadGallery() {
     let list = [];
@@ -198,7 +238,9 @@ Page({
       customActive: !preset,
       customDays: preset ? '' : String(max),
       editingTripId: t.id || '',
-      cover: t.cover || ''
+      cover: t.cover || '',
+      guestName: t.guestName || '',
+      guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : ''
     });
     this.rebuildTabs();
     this.syncPlan();
@@ -231,6 +273,8 @@ Page({
       adults: this.data.adults,
       children: this.data.children,
       cover: this.data.cover || '',
+      guestName: this.data.guestName || '',
+      guestQuote: this.data.guestQuote || '',
       quote: this.quoteSnapshot()
     });
   },
@@ -327,10 +371,10 @@ Page({
   syncPlan() {
     const plans = this.plansArray();
     const plan = this.planAt(this.data.activeDay);
-    const curScenics = (plan.scenicIds || []).map(data.getScenic).filter(Boolean);
-    const curHotel = data.hotels.filter(h => h.id === plan.hotelId)[0] || null;
+    const curScenics = (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean);
+    const curHotel = plan.hotelId ? this.hotelById(plan.hotelId) : null;
     const altIds = Array.isArray(plan.altHotelIds) ? plan.altHotelIds : [];
-    const altHotels = curHotel ? data.hotels
+    const altHotels = curHotel ? this.hotelsOf()
       .filter(h => h.id !== curHotel.id && h.stars === curHotel.stars)
       .map(h => ({ id: h.id, name: h.name, sel: altIds.indexOf(h.id) > -1 })) : [];
     let totalScenic = 0;
@@ -375,18 +419,84 @@ Page({
   scenicOptions() {
     const plan = this.planAt(this.data.activeDay);
     const ids = plan.scenicIds || [];
-    return data.scenics.map(s => Object.assign({}, s, { sel: ids.indexOf(s.id) > -1 }));
+    const fac = catalog.facet('scenic', this.scenicsOf(), this._scenicCats || [], {
+      region: this.data.sheetRegion,
+      sub: this.data.sheetSub,
+      place: this.data.sheetPlace
+    }, data.REGIONS || []);
+    return { fac, list: fac.list.map(s => Object.assign({}, s, { sel: ids.indexOf(s.id) > -1 })) };
   },
 
   hotelOptions() {
     const plan = this.planAt(this.data.activeDay);
-    return data.hotels.map(h => Object.assign({}, h, { sel: h.id === plan.hotelId }));
+    const fac = catalog.facet('hotel', this.hotelsOf(), this._hotelCats || [], {
+      region: this.data.sheetRegion,
+      place: this.data.sheetPlace
+    }, data.REGIONS || []);
+    return { fac, list: fac.list.map(h => Object.assign({}, h, { sel: h.id === plan.hotelId })) };
+  },
+
+  refreshSheet() {
+    const type = this.data.sheet && this.data.sheet.type;
+    if (type === 'scenic') {
+      const pack = this.scenicOptions();
+      this.setData({
+        sheetScenics: pack.list,
+        sheetRegions: pack.fac.regions,
+        sheetSubs: pack.fac.subs,
+        sheetPlaces: pack.fac.places,
+        sheetRegion: pack.fac.region,
+        sheetSub: pack.fac.sub,
+        sheetPlace: pack.fac.place
+      });
+      return;
+    }
+    if (type === 'hotel') {
+      const pack = this.hotelOptions();
+      this.setData({
+        sheetHotels: pack.list,
+        sheetRegions: pack.fac.regions,
+        sheetPlaces: pack.fac.places,
+        sheetRegion: pack.fac.region,
+        sheetPlace: pack.fac.place
+      });
+    }
+  },
+
+  onSheetRegion(e) {
+    this.setData({ sheetRegion: e.currentTarget.dataset.region, sheetSub: 'all', sheetPlace: catalog.ALL });
+    this.refreshSheet();
+  },
+
+  onSheetSub(e) {
+    this.setData({ sheetSub: e.currentTarget.dataset.sub, sheetPlace: catalog.ALL });
+    this.refreshSheet();
+  },
+
+  onSheetPlace(e) {
+    this.setData({ sheetPlace: e.currentTarget.dataset.place });
+    this.refreshSheet();
+  },
+
+  onGuestName(e) {
+    this.setData({ guestName: e.detail.value });
+  },
+
+  onGuestQuote(e) {
+    const v = String(e.detail.value || '').replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1');
+    this.setData({ guestQuote: v });
   },
 
   /* ---------- 景区选择 ---------- */
 
   openScenic() {
-    this.setData({ sheet: { type: 'scenic' }, sheetScenics: this.scenicOptions() });
+    this.setData({
+      sheet: { type: 'scenic' },
+      sheetRegion: catalog.ALL,
+      sheetSub: 'all',
+      sheetPlace: catalog.ALL
+    });
+    this.refreshSheet();
   },
 
   toggleScenic(e) {
@@ -399,13 +509,19 @@ Page({
     else ids.push(id);
     this.setData({ plans });
     this.syncPlan();
-    this.setData({ sheetScenics: this.scenicOptions() });
+    this.refreshSheet();
   },
 
   /* ---------- 酒店选择 ---------- */
 
   openHotel() {
-    this.setData({ sheet: { type: 'hotel' }, sheetHotels: this.hotelOptions() });
+    this.setData({
+      sheet: { type: 'hotel' },
+      sheetRegion: catalog.ALL,
+      sheetSub: 'all',
+      sheetPlace: catalog.ALL
+    });
+    this.refreshSheet();
   },
 
   toggleHotel(e) {
@@ -419,7 +535,7 @@ Page({
     plans[idx].roomQty = 1;
     this.setData({ plans });
     this.syncPlan();
-    this.setData({ sheetHotels: this.hotelOptions() });
+    this.refreshSheet();
   },
 
   toggleAlt(e) {
@@ -690,15 +806,15 @@ Page({
     const lines = [];
     plans.forEach((p, i) => {
       if (!p) return;
-      const sc = (p.scenicIds || []).map(data.getScenic).filter(Boolean).map(s => s.name).join('、');
+      const sc = (p.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean).map(s => s.name).join('、');
       const seg = '第' + (i + 1) + '天';
       const parts = [];
       if (sc) parts.push('景区:' + sc);
       if (p.hotelId) {
-        const h = data.hotels.filter(x => x.id === p.hotelId)[0];
+        const h = this.hotelById(p.hotelId);
         if (h) {
           let hseg = '宿:' + h.name;
-          const alts = (p.altHotelIds || []).map(id => data.hotels.filter(x => x.id === id)[0]).filter(Boolean).map(x => x.name);
+          const alts = (p.altHotelIds || []).map(id => this.hotelById(id)).filter(Boolean).map(x => x.name);
           if (alts.length) hseg += '（备选:' + alts.join('、') + '）';
           parts.push(hseg);
         }

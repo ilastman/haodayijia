@@ -98,7 +98,11 @@ Page({
     infoTags: [],
     overallTips: [],
     cover: '',
-    priceView: { label: '行程总价', total: 0, hotel: 0, ticket: 0, adults: 2, children: 0, note: '', pending: true }
+    guestName: '',
+    guestQuote: '',
+    guestQuoteText: '',
+    isStaff: false,
+    internalView: null
   },
 
   onLoad(query) {
@@ -115,8 +119,6 @@ Page({
     const days = Math.min(MAX_DAYS, Math.max(1, parseInt(query.days, 10) || (base && base.days) || saved.days || 3));
     const plans = (((base && base.plans) || (saved.plans || [])).slice()).slice(0, days);
     while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] });
-    const heroTitle = copy.customPreview.heroTitle + days + copy.customPreview.heroTitleSuffix;
-    this._plans = plans;
     const date = query.date ? decodeURIComponent(query.date) : (base && base.date) || '';
     let adults = 2;
     let children = 0;
@@ -127,15 +129,28 @@ Page({
     else if (base && base.children !== undefined && base.children !== '') children = base.children;
     else if (!fromList && saved.children !== undefined && saved.children !== '') children = saved.children;
     const cover = (base && base.cover) || (!fromList && saved.cover) || '';
-    const savedQuote = (base && base.quote) || (!fromList && saved.quote) || null;
-    const hotelsById = hotelsByIdFrom(data.hotels);
-    const priced = (savedQuote && savedQuote.total) ? savedQuote : quote.publicHotelQuote(plans, hotelsById);
+    const guestName = (base && base.guestName) || (!fromList && saved.guestName) || '';
+    const guestQuote = (base && base.guestQuote != null && base.guestQuote !== '')
+      ? base.guestQuote
+      : ((!fromList && saved.guestQuote != null && saved.guestQuote !== '') ? saved.guestQuote : '');
+    const scenicMap = {};
+    const hotelMap = hotelsByIdFrom(data.hotels);
+    (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
+    const heroTitle = quote.shareTitle({
+      days,
+      guestName,
+      place: quote.tripPlace(plans, scenicMap, hotelMap)
+    });
+    this._plans = plans;
     this.setData({
       days,
       date,
       adults,
       children,
       cover,
+      guestName,
+      guestQuote,
+      guestQuoteText: quote.guestQuoteText(guestQuote),
       heroTiles: this.buildHero(plans),
       dayList: plans.map((p, i) => this.buildDay(p, i, days)),
       heroTitle,
@@ -143,13 +158,59 @@ Page({
       editingId: fromList ? (query.trip || '') : editingId,
       infoTags: buildInfo(days, monthFromDate(date)),
       overallTips: buildOverallTips(plans),
-      priceView: quote.annotateQuote(priced, adults, children)
+      isStaff: false,
+      internalView: null
     });
+    if (typeof wx.showShareMenu === 'function') wx.showShareMenu({ menus: ['shareAppMessage'] });
     this.refreshQuote();
+    if (query.trip && !base) this.loadShared(query.trip);
+  },
+
+  async loadShared(id) {
+    let trip = null;
+    try { trip = await api.getPublicTrip(id); } catch (e) { trip = null; }
+    if (!trip || !trip.id) return;
+    const plans = (Array.isArray(trip.plans) ? trip.plans : []).slice();
+    const days = Math.min(MAX_DAYS, Math.max(1, parseInt(trip.days, 10) || plans.length || 1));
+    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] });
+    this._plans = plans.slice(0, days);
+    const scenicMap = {};
+    const hotelMap = hotelsByIdFrom(data.hotels);
+    (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
+    const guestName = trip.guestName || '';
+    this.setData({
+      days,
+      date: trip.date || '',
+      adults: trip.adults != null ? trip.adults : 2,
+      children: trip.children != null ? trip.children : 0,
+      cover: trip.cover || '',
+      guestName,
+      guestQuote: trip.guestQuote || '',
+      guestQuoteText: quote.guestQuoteText(trip.guestQuote),
+      heroTitle: quote.shareTitle({ days, guestName, place: quote.tripPlace(this._plans, scenicMap, hotelMap) }),
+      heroTiles: this.buildHero(this._plans),
+      dayList: this._plans.map((p, i) => this.buildDay(p, i, days)),
+      fromList: true,
+      editingId: trip.id,
+      infoTags: buildInfo(days, monthFromDate(trip.date || '')),
+      overallTips: buildOverallTips(this._plans),
+      isStaff: false,
+      internalView: null
+    });
+  },
+
+  onShareAppMessage() {
+    const title = this.data.guestQuoteText
+      ? (this.data.heroTitle + ' ' + this.data.guestQuoteText)
+      : this.data.heroTitle;
+    const id = this.data.editingId || '';
+    return {
+      title,
+      path: '/pages/custom-preview/custom-preview?trip=' + encodeURIComponent(id)
+    };
   },
 
   draftBody() {
-    const pv = this.data.priceView || {};
     return {
       id: this.data.editingId || '',
       days: this.data.days,
@@ -157,8 +218,14 @@ Page({
       adults: this.data.adults,
       children: this.data.children,
       cover: this.data.cover,
+      guestName: this.data.guestName || '',
+      guestQuote: this.data.guestQuote || '',
       plans: this._plans,
-      quote: { hotel: pv.hotel || 0, ticket: pv.ticket || 0, total: pv.total || 0 }
+      quote: (this.data.isStaff && this.data.internalView) ? {
+        hotel: this.data.internalView.hotel || 0,
+        ticket: this.data.internalView.ticket || 0,
+        total: this.data.internalView.total || 0
+      } : undefined
     };
   },
 
@@ -189,7 +256,10 @@ Page({
   async refreshQuote() {
     let idn = null;
     try { idn = await wb.identity(); } catch (e) { idn = null; }
-    if (!idn || !idn.isStaff) return;
+    if (!idn || !idn.isStaff) {
+      this.setData({ isStaff: false, internalView: null });
+      return;
+    }
     const [hotels, scenics, priceList] = await Promise.all([
       api.hotels(),
       this.loadRawScenics(),
@@ -218,7 +288,10 @@ Page({
       people: (parseInt(this.data.adults, 10) || 0) + (parseInt(this.data.children, 10) || 0),
       carCost: 0
     });
-    this.setData({ priceView: quote.annotateQuote(internal, this.data.adults, this.data.children) });
+    this.setData({
+      isStaff: true,
+      internalView: quote.annotateQuote(internal, this.data.adults, this.data.children)
+    });
   },
 
   async loadRawScenics() {
@@ -290,7 +363,7 @@ Page({
 
   saveToMine() {
     const days = this.data.days;
-    const title = '我的专属呼伦贝尔' + days + '日行程';
+    const title = this.data.heroTitle || quote.shareTitle({ days, guestName: this.data.guestName });
     let cover = this.data.cover || (this.data.heroTiles[0] && this.data.heroTiles[0].img);
     if (!cover) cover = ph('我的专属呼伦贝尔 ' + days + '日行程', 640, 420);
     const id = this.data.editingId || ('trip' + Date.now());
@@ -301,12 +374,14 @@ Page({
       date: this.data.date,
       adults: this.data.adults,
       children: this.data.children,
+      guestName: this.data.guestName || '',
+      guestQuote: Number(this.data.guestQuote) || 0,
       cover,
-      quote: {
-        hotel: (this.data.priceView && this.data.priceView.hotel) || 0,
-        ticket: (this.data.priceView && this.data.priceView.ticket) || 0,
-        total: (this.data.priceView && this.data.priceView.total) || 0
-      },
+      quote: (this.data.isStaff && this.data.internalView) ? {
+        hotel: this.data.internalView.hotel || 0,
+        ticket: this.data.internalView.ticket || 0,
+        total: this.data.internalView.total || 0
+      } : { hotel: 0, ticket: 0, total: 0 },
       heroTitle: this.data.heroTitle,
       plans: this._plans.map(p => ({
         scenicIds: (p.scenicIds || []).slice(),
