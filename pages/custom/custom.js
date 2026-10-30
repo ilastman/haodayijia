@@ -4,14 +4,16 @@ const api = require('../../utils/api');
 const cloud = require('../../utils/cloud');
 const wb = require('../../utils/workbench');
 const quote = require('../../utils/quote');
-const { isValidPhone, addConsultRecord } = require('../../utils/util');
+const gallery = require('../../utils/gallery');
+const catalog = require('../../utils/catalog');
+const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
 const MIN_DAYS = 1;
 const ITEM_H = 58;
 
 function emptyPlan() {
-  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1 };
+  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] };
 }
 
 function buildPlans(n) {
@@ -29,7 +31,8 @@ function normalizePlans(v, days) {
     altHotelIds: (p && Array.isArray(p.altHotelIds) ? p.altHotelIds : []).slice(),
     note: (p && p.note) || '',
     roomType: (p && p.roomType) || '',
-    roomQty: Math.max(1, parseInt(p && p.roomQty, 10) || 1)
+    roomQty: Math.max(1, parseInt(p && p.roomQty, 10) || 1),
+    promoImgs: gallery.clipPromo(p && p.promoImgs)
   }));
   while (out.length < n) out.push(emptyPlan());
   return out;
@@ -63,6 +66,10 @@ Page({
     form: { name: '', phone: '', wechat: '' },
     formError: '',
     editingTripId: '',
+    cover: '',
+    coverLib: [],
+    promoLib: [],
+    curPromo: [],
 
     /* 员工内部核价（仅员工可见） */
     isStaff: false,
@@ -70,7 +77,17 @@ Page({
     hotelPricesById: {},
     calcScenicsById: {},
     internalQuote: null,
-    curRoomTypes: []
+    curRoomTypes: [],
+    guestName: '',
+    guestQuote: '',
+    guestTotalText: '',
+    guestTotalNote: '',
+    sheetRegion: catalog.ALL,
+    sheetSub: 'all',
+    sheetPlace: catalog.ALL,
+    sheetRegions: [catalog.ALL],
+    sheetSubs: [{ key: 'all', label: '全部' }],
+    sheetPlaces: [catalog.ALL]
   },
 
   plansArray() {
@@ -94,11 +111,62 @@ Page({
       const trips = wx.getStorageSync('myTrips') || [];
       const t = trips.filter(x => x.id === decodeURIComponent(query.edit))[0];
       if (t) this.prefillTrip(t);
+    } else if (query && query.draft) {
+      const saved = wx.getStorageSync('lastCustomPlan') || null;
+      if (saved) this.prefillTrip(saved);
     } else if (query && query.shareId) {
       const share = data.getShare(query.shareId);
       if (share) this.prefillShare(share);
     }
     this.initStaff();
+    this.loadGallery();
+    this.loadCatalog();
+  },
+
+  onShow() {
+    this.loadGallery();
+    this.loadCatalog();
+  },
+
+  async loadCatalog() {
+    let scenics = null;
+    let hotels = null;
+    let scenicCats = [];
+    let hotelCats = [];
+    try {
+      const all = await Promise.all([
+        api.scenics(),
+        api.hotels(),
+        api.categories('scenic'),
+        api.categories('hotel')
+      ]);
+      scenics = all[0];
+      hotels = all[1];
+      scenicCats = all[2] || [];
+      hotelCats = all[3] || [];
+    } catch (e) { /* 继续用本地分类 */ }
+    if (scenics && scenics.length) this._scenics = scenics;
+    if (hotels && hotels.length) this._hotels = hotels;
+    this._scenicCats = scenicCats;
+    this._hotelCats = hotelCats;
+    if (this.data.sheet && (this.data.sheet.type === 'scenic' || this.data.sheet.type === 'hotel')) this.refreshSheet();
+  },
+
+  scenicsOf() { return (this._scenics && this._scenics.length) ? this._scenics : data.scenics; },
+  hotelsOf() { return (this._hotels && this._hotels.length) ? this._hotels : data.hotels; },
+  scenicById(id) { return this.scenicsOf().filter(s => s.id === id)[0] || data.getScenic(id); },
+  hotelById(id) { return this.hotelsOf().filter(h => h.id === id)[0] || data.hotels.filter(h => h.id === id)[0] || null; },
+
+  async loadGallery() {
+    let list = [];
+    try {
+      const res = await api.gallery();
+      if (Array.isArray(res)) list = res;
+    } catch (e) { list = []; }
+    this.setData({
+      coverLib: list.filter(gallery.isCover),
+      promoLib: list.filter(g => g && g.url && !gallery.isCover(g))
+    });
   },
 
   /* 员工身份识别：仅员工加载云端后台价并显示内部核价 */
@@ -171,7 +239,15 @@ Page({
       children: parseInt(t.children, 10) || 0,
       customActive: !preset,
       customDays: preset ? '' : String(max),
-      editingTripId: t.id
+      editingTripId: t.id || '',
+      cover: t.cover || '',
+      guestName: t.guestName || '',
+      guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : ''
+    });
+    this.refreshGuestTotal({
+      guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : '',
+      adults: parseInt(t.adults, 10) || 2,
+      children: parseInt(t.children, 10) || 0
     });
     this.rebuildTabs();
     this.syncPlan();
@@ -185,15 +261,36 @@ Page({
     this.syncPlan();
   },
 
+  quoteSnapshot() {
+    const q = this.data.internalQuote;
+    if (q) return { hotel: q.hotel, ticket: q.ticket, total: q.total };
+    const hotelsById = {};
+    data.hotels.forEach(h => { if (h && h.id) hotelsById[h.id] = h; });
+    const pub = quote.publicHotelQuote(this.data.plans, hotelsById);
+    return { hotel: pub.hotel, ticket: 0, total: pub.total };
+  },
+
   savePlan() {
     wx.setStorageSync('lastCustomPlan', {
+      id: this.data.editingTripId || '',
       days: this.data.days,
       plans: normalizePlans(this.data.plans, this.data.days),
-      customActive: !!this.data.customActive
+      customActive: !!this.data.customActive,
+      date: this.data.date || '',
+      adults: this.data.adults,
+      children: this.data.children,
+      cover: this.data.cover || '',
+      guestName: this.data.guestName || '',
+      guestQuote: this.data.guestQuote || '',
+      quote: this.quoteSnapshot()
     });
   },
 
   goGenerate() {
+    if (!this.data.cover) {
+      wx.showToast({ title: this.data.c.coverMiss, icon: 'none' });
+      return;
+    }
     this.savePlan();
     const q = [
       'days=' + this.data.days,
@@ -259,6 +356,7 @@ Page({
     const next = this.data.adults + (String(e.currentTarget.dataset.d) === '+' ? 1 : -1);
     if (next < 1 || next > 99) return;
     this.setData({ adults: next });
+    this.refreshGuestTotal({ adults: next });
     this.calcInternal();
   },
 
@@ -266,7 +364,19 @@ Page({
     const next = this.data.children + (String(e.currentTarget.dataset.d) === '+' ? 1 : -1);
     if (next < 0 || next > 20) return;
     this.setData({ children: next });
+    this.refreshGuestTotal({ children: next });
     this.calcInternal();
+  },
+
+  refreshGuestTotal(patch) {
+    const guestQuote = patch && patch.guestQuote != null ? patch.guestQuote : this.data.guestQuote;
+    const adults = patch && patch.adults != null ? patch.adults : this.data.adults;
+    const children = patch && patch.children != null ? patch.children : this.data.children;
+    const view = quote.guestTotalView(guestQuote, adults, children);
+    this.setData({
+      guestTotalText: view ? view.totalText : '',
+      guestTotalNote: view ? view.note : ''
+    });
   },
 
   /* ---------- 每日切换 ---------- */
@@ -281,10 +391,10 @@ Page({
   syncPlan() {
     const plans = this.plansArray();
     const plan = this.planAt(this.data.activeDay);
-    const curScenics = (plan.scenicIds || []).map(data.getScenic).filter(Boolean);
-    const curHotel = data.hotels.filter(h => h.id === plan.hotelId)[0] || null;
+    const curScenics = (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean);
+    const curHotel = plan.hotelId ? this.hotelById(plan.hotelId) : null;
     const altIds = Array.isArray(plan.altHotelIds) ? plan.altHotelIds : [];
-    const altHotels = curHotel ? data.hotels
+    const altHotels = curHotel ? this.hotelsOf()
       .filter(h => h.id !== curHotel.id && h.stars === curHotel.stars)
       .map(h => ({ id: h.id, name: h.name, sel: altIds.indexOf(h.id) > -1 })) : [];
     let totalScenic = 0;
@@ -306,6 +416,7 @@ Page({
       curHotel,
       altHotels,
       curNote: plan.note || '',
+      curPromo: gallery.clipPromo(plan.promoImgs),
       totalScenic,
       totalHotel,
       curRoomTypes
@@ -328,18 +439,85 @@ Page({
   scenicOptions() {
     const plan = this.planAt(this.data.activeDay);
     const ids = plan.scenicIds || [];
-    return data.scenics.map(s => Object.assign({}, s, { sel: ids.indexOf(s.id) > -1 }));
+    const fac = catalog.facet('scenic', this.scenicsOf(), this._scenicCats || [], {
+      region: this.data.sheetRegion,
+      sub: this.data.sheetSub,
+      place: this.data.sheetPlace
+    }, data.REGIONS || []);
+    return { fac, list: fac.list.map(s => Object.assign({}, s, { sel: ids.indexOf(s.id) > -1 })) };
   },
 
   hotelOptions() {
     const plan = this.planAt(this.data.activeDay);
-    return data.hotels.map(h => Object.assign({}, h, { sel: h.id === plan.hotelId }));
+    const fac = catalog.facet('hotel', this.hotelsOf(), this._hotelCats || [], {
+      region: this.data.sheetRegion,
+      place: this.data.sheetPlace
+    }, data.REGIONS || []);
+    return { fac, list: fac.list.map(h => Object.assign({}, h, { sel: h.id === plan.hotelId })) };
+  },
+
+  refreshSheet() {
+    const type = this.data.sheet && this.data.sheet.type;
+    if (type === 'scenic') {
+      const pack = this.scenicOptions();
+      this.setData({
+        sheetScenics: pack.list,
+        sheetRegions: pack.fac.regions,
+        sheetSubs: pack.fac.subs,
+        sheetPlaces: pack.fac.places,
+        sheetRegion: pack.fac.region,
+        sheetSub: pack.fac.sub,
+        sheetPlace: pack.fac.place
+      });
+      return;
+    }
+    if (type === 'hotel') {
+      const pack = this.hotelOptions();
+      this.setData({
+        sheetHotels: pack.list,
+        sheetRegions: pack.fac.regions,
+        sheetPlaces: pack.fac.places,
+        sheetRegion: pack.fac.region,
+        sheetPlace: pack.fac.place
+      });
+    }
+  },
+
+  onSheetRegion(e) {
+    this.setData({ sheetRegion: e.currentTarget.dataset.region, sheetSub: 'all', sheetPlace: catalog.ALL });
+    this.refreshSheet();
+  },
+
+  onSheetSub(e) {
+    this.setData({ sheetSub: e.currentTarget.dataset.sub, sheetPlace: catalog.ALL });
+    this.refreshSheet();
+  },
+
+  onSheetPlace(e) {
+    this.setData({ sheetPlace: e.currentTarget.dataset.place });
+    this.refreshSheet();
+  },
+
+  onGuestName(e) {
+    this.setData({ guestName: e.detail.value });
+  },
+
+  onGuestQuote(e) {
+    const v = String(e.detail.value || '').replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1');
+    this.setData({ guestQuote: v });
+    this.refreshGuestTotal({ guestQuote: v });
   },
 
   /* ---------- 景区选择 ---------- */
 
   openScenic() {
-    this.setData({ sheet: { type: 'scenic' }, sheetScenics: this.scenicOptions() });
+    this.setData({
+      sheet: { type: 'scenic' },
+      sheetRegion: catalog.ALL,
+      sheetSub: 'all',
+      sheetPlace: catalog.ALL
+    });
+    this.refreshSheet();
   },
 
   toggleScenic(e) {
@@ -352,13 +530,19 @@ Page({
     else ids.push(id);
     this.setData({ plans });
     this.syncPlan();
-    this.setData({ sheetScenics: this.scenicOptions() });
+    this.refreshSheet();
   },
 
   /* ---------- 酒店选择 ---------- */
 
   openHotel() {
-    this.setData({ sheet: { type: 'hotel' }, sheetHotels: this.hotelOptions() });
+    this.setData({
+      sheet: { type: 'hotel' },
+      sheetRegion: catalog.ALL,
+      sheetSub: 'all',
+      sheetPlace: catalog.ALL
+    });
+    this.refreshSheet();
   },
 
   toggleHotel(e) {
@@ -372,7 +556,7 @@ Page({
     plans[idx].roomQty = 1;
     this.setData({ plans });
     this.syncPlan();
-    this.setData({ sheetHotels: this.hotelOptions() });
+    this.refreshSheet();
   },
 
   toggleAlt(e) {
@@ -477,6 +661,129 @@ Page({
     this.setData({ dragging: -1 });
   },
 
+  /* ---------- 封面 / 每日宣传图 ---------- */
+
+  storeUpload(filePath, done) {
+    if (!filePath) return;
+    if (typeof wx !== 'undefined' && wx.cloud && wx.cloud.uploadFile) {
+      wx.showLoading({ title: '上传中' });
+      const ext = (/\.(\w+)$/.exec(filePath) || [])[1] || 'jpg';
+      wx.cloud.uploadFile({
+        cloudPath: 'custom/' + Date.now() + '_' + Math.random().toString(36).slice(2, 6) + '.' + ext,
+        filePath
+      }).then(r => {
+        wx.hideLoading();
+        done((r && r.fileID) || filePath);
+      }).catch(() => {
+        wx.hideLoading();
+        done(filePath);
+      });
+      return;
+    }
+    done(filePath);
+  },
+
+  chooseLocal(count, cb) {
+    const n = Math.max(1, count || 1);
+    if (typeof wx.chooseMedia === 'function') {
+      wx.chooseMedia({
+        count: n,
+        mediaType: ['image'],
+        success: res => {
+          const files = (res && res.tempFiles) || [];
+          cb(files.map(f => f && f.tempFilePath).filter(Boolean));
+        }
+      });
+      return;
+    }
+    if (typeof wx.chooseImage === 'function') {
+      try {
+        wx.chooseImage({
+          count: n,
+          success: res => cb((res && res.tempFilePaths) || [])
+        });
+        return;
+      } catch (err) { /* 预览环境没有选图，走占位图 */ }
+    }
+    const pads = [];
+    for (let i = 0; i < n; i++) pads.push(ph(n > 1 ? '宣传图' : '私人定制封面', 640, 360));
+    cb(pads);
+  },
+
+  openCoverLib() {
+    this.setData({ sheet: { type: 'cover' } });
+  },
+
+  pickCoverLib(e) {
+    const url = e.currentTarget.dataset.url;
+    if (!url) return;
+    this.setData({ cover: url, sheet: null });
+  },
+
+  uploadCover() {
+    this.chooseLocal(1, paths => {
+      if (!paths.length) return;
+      this.storeUpload(paths[0], url => this.setData({ cover: url }));
+    });
+  },
+
+  clearCover() {
+    this.setData({ cover: '' });
+  },
+
+  openPromoLib() {
+    if ((this.data.curPromo || []).length >= gallery.MAX_PROMO) {
+      wx.showToast({ title: this.data.c.promoFull, icon: 'none' });
+      return;
+    }
+    this.setData({ sheet: { type: 'promo' } });
+  },
+
+  addPromo(url) {
+    if (!url) return;
+    const idx = this.data.activeDay;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    const arr = plans[idx].promoImgs;
+    if (arr.length >= gallery.MAX_PROMO) {
+      wx.showToast({ title: this.data.c.promoFull, icon: 'none' });
+      return;
+    }
+    if (arr.indexOf(url) >= 0) return;
+    arr.push(url);
+    this.setData({ plans });
+    this.syncPlan();
+  },
+
+  pickPromoLib(e) {
+    this.addPromo(e.currentTarget.dataset.url);
+    if ((this.planAt(this.data.activeDay).promoImgs || []).length >= gallery.MAX_PROMO) this.setData({ sheet: null });
+  },
+
+  uploadPromo() {
+    const left = gallery.MAX_PROMO - (this.data.curPromo || []).length;
+    if (left <= 0) {
+      wx.showToast({ title: this.data.c.promoFull, icon: 'none' });
+      return;
+    }
+    this.chooseLocal(left, paths => {
+      const queue = paths.slice(0, left);
+      const next = i => {
+        if (i >= queue.length) return;
+        this.storeUpload(queue[i], url => { this.addPromo(url); next(i + 1); });
+      };
+      next(0);
+    });
+  },
+
+  removePromo(e) {
+    const i = Number(e.currentTarget.dataset.index);
+    const idx = this.data.activeDay;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    plans[idx].promoImgs.splice(i, 1);
+    this.setData({ plans });
+    this.syncPlan();
+  },
+
   /* ---------- 备注 ---------- */
 
   onNote(e) {
@@ -520,15 +827,15 @@ Page({
     const lines = [];
     plans.forEach((p, i) => {
       if (!p) return;
-      const sc = (p.scenicIds || []).map(data.getScenic).filter(Boolean).map(s => s.name).join('、');
+      const sc = (p.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean).map(s => s.name).join('、');
       const seg = '第' + (i + 1) + '天';
       const parts = [];
       if (sc) parts.push('景区:' + sc);
       if (p.hotelId) {
-        const h = data.hotels.filter(x => x.id === p.hotelId)[0];
+        const h = this.hotelById(p.hotelId);
         if (h) {
           let hseg = '宿:' + h.name;
-          const alts = (p.altHotelIds || []).map(id => data.hotels.filter(x => x.id === id)[0]).filter(Boolean).map(x => x.name);
+          const alts = (p.altHotelIds || []).map(id => this.hotelById(id)).filter(Boolean).map(x => x.name);
           if (alts.length) hseg += '（备选:' + alts.join('、') + '）';
           parts.push(hseg);
         }

@@ -19,7 +19,10 @@
         <view class="mt-del-btn" catchtap="onDeleteTap" data-id="{{item.id}}">{{c.del}}</view>
         <view class="mt-body">
           <view class="mt-days">{{item.daysText}}</view>
-          <view class="mt-name ellipsis">{{item.name}}</view>
+          <view class="mt-name-row">
+            <view class="mt-name ellipsis">{{item.name}}</view>
+            <view class="mt-quote" wx:if="{{item.guestQuoteText}}">{{item.guestQuoteText}}</view>
+          </view>
           <view class="mt-brief ellipsis">{{item.brief}}</view>
         </view>
       </view>

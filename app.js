@@ -7,11 +7,11 @@ App({
     servicePhone: copy.servicePhone
   },
 
-  onLaunch() {wx.cloud.init({
-    env: "cloudbase-d3gptvn88e6a4d78a",
-    traceUser: true
-  })
-  
+  onLaunch() {
+    if (wx.cloud) {
+      try { wx.cloud.init({ env: 'cloudbase-d3gptvn88e6a4d78a', traceUser: true }); } catch (e) { /* 预览环境无云开发 */ }
+    }
+
     if (!wx.getStorageSync('favorites')) {
       wx.setStorageSync('favorites', []);
     }

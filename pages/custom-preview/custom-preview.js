@@ -1,6 +1,10 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const quote = require('../../utils/quote');
+const gallery = require('../../utils/gallery');
+const cloud = require('../../utils/cloud');
+const wb = require('../../utils/workbench');
 const { ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -50,6 +54,12 @@ function buildInfo(days, month) {
   ];
 }
 
+function hotelsByIdFrom(list) {
+  const map = {};
+  (list || []).forEach(h => { if (h && h.id) map[h.id] = h; });
+  return map;
+}
+
 function buildOverallTips(plans) {
   const tips = FIXED_TIPS.slice();
   const seen = {};
@@ -86,7 +96,15 @@ Page({
     fromList: false,
     editingId: '',
     infoTags: [],
-    overallTips: []
+    overallTips: [],
+    cover: '',
+    guestName: '',
+    guestQuote: '',
+    guestQuoteText: '',
+    guestTotalText: '',
+    guestTotalNote: '',
+    isStaff: false,
+    internalView: null
   },
 
   onLoad(query) {
@@ -102,27 +120,198 @@ Page({
     const saved = wx.getStorageSync('lastCustomPlan') || {};
     const days = Math.min(MAX_DAYS, Math.max(1, parseInt(query.days, 10) || (base && base.days) || saved.days || 3));
     const plans = (((base && base.plans) || (saved.plans || [])).slice()).slice(0, days);
-    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1 });
-    const heroTitle = copy.customPreview.heroTitle + days + copy.customPreview.heroTitleSuffix;
-    this._plans = plans;
+    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] });
     const date = query.date ? decodeURIComponent(query.date) : (base && base.date) || '';
+    let adults = 2;
+    let children = 0;
+    if (query.adults !== undefined && query.adults !== '') adults = query.adults;
+    else if (base && base.adults !== undefined && base.adults !== '') adults = base.adults;
+    else if (!fromList && saved.adults !== undefined && saved.adults !== '') adults = saved.adults;
+    if (query.children !== undefined && query.children !== '') children = query.children;
+    else if (base && base.children !== undefined && base.children !== '') children = base.children;
+    else if (!fromList && saved.children !== undefined && saved.children !== '') children = saved.children;
+    const cover = (base && base.cover) || (!fromList && saved.cover) || '';
+    const guestName = (base && base.guestName) || (!fromList && saved.guestName) || '';
+    const guestQuote = (base && base.guestQuote != null && base.guestQuote !== '')
+      ? base.guestQuote
+      : ((!fromList && saved.guestQuote != null && saved.guestQuote !== '') ? saved.guestQuote : '');
+    const guestPrice = quote.guestTotalView(guestQuote, adults, children) || {};
+    const scenicMap = {};
+    const hotelMap = hotelsByIdFrom(data.hotels);
+    (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
+    const heroTitle = quote.shareTitle({
+      days,
+      guestName,
+      place: quote.tripPlace(plans, scenicMap, hotelMap)
+    });
+    this._plans = plans;
     this.setData({
       days,
       date,
-      adults: query.adults || (base && base.adults) || '',
-      children: query.children || (base && base.children) || '',
+      adults,
+      children,
+      cover,
+      guestName,
+      guestQuote,
+      guestQuoteText: quote.guestQuoteText(guestQuote),
+      guestTotalText: guestPrice.totalText || '',
+      guestTotalNote: guestPrice.note || '',
       heroTiles: this.buildHero(plans),
       dayList: plans.map((p, i) => this.buildDay(p, i, days)),
       heroTitle,
       fromList,
       editingId: fromList ? (query.trip || '') : editingId,
       infoTags: buildInfo(days, monthFromDate(date)),
-      overallTips: buildOverallTips(plans)
+      overallTips: buildOverallTips(plans),
+      isStaff: false,
+      internalView: null
+    });
+    if (typeof wx.showShareMenu === 'function') wx.showShareMenu({ menus: ['shareAppMessage'] });
+    this.refreshQuote();
+    if (query.trip && !base) this.loadShared(query.trip);
+  },
+
+  async loadShared(id) {
+    let trip = null;
+    try { trip = await api.getPublicTrip(id); } catch (e) { trip = null; }
+    if (!trip || !trip.id) return;
+    const plans = (Array.isArray(trip.plans) ? trip.plans : []).slice();
+    const days = Math.min(MAX_DAYS, Math.max(1, parseInt(trip.days, 10) || plans.length || 1));
+    while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] });
+    this._plans = plans.slice(0, days);
+    const scenicMap = {};
+    const hotelMap = hotelsByIdFrom(data.hotels);
+    (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
+    const guestName = trip.guestName || '';
+    const guestPrice = quote.guestTotalView(trip.guestQuote, trip.adults, trip.children) || {};
+    this.setData({
+      days,
+      date: trip.date || '',
+      adults: trip.adults != null ? trip.adults : 2,
+      children: trip.children != null ? trip.children : 0,
+      cover: trip.cover || '',
+      guestName,
+      guestQuote: trip.guestQuote || '',
+      guestQuoteText: quote.guestQuoteText(trip.guestQuote),
+      guestTotalText: guestPrice.totalText || '',
+      guestTotalNote: guestPrice.note || '',
+      heroTitle: quote.shareTitle({ days, guestName, place: quote.tripPlace(this._plans, scenicMap, hotelMap) }),
+      heroTiles: this.buildHero(this._plans),
+      dayList: this._plans.map((p, i) => this.buildDay(p, i, days)),
+      fromList: true,
+      editingId: trip.id,
+      infoTags: buildInfo(days, monthFromDate(trip.date || '')),
+      overallTips: buildOverallTips(this._plans),
+      isStaff: false,
+      internalView: null
     });
   },
 
+  onShareAppMessage() {
+    const title = this.data.guestQuoteText
+      ? (this.data.heroTitle + ' ' + this.data.guestQuoteText)
+      : this.data.heroTitle;
+    const id = this.data.editingId || '';
+    return {
+      title,
+      path: '/pages/custom-preview/custom-preview?trip=' + encodeURIComponent(id)
+    };
+  },
+
+  draftBody() {
+    return {
+      id: this.data.editingId || '',
+      days: this.data.days,
+      date: this.data.date,
+      adults: this.data.adults,
+      children: this.data.children,
+      cover: this.data.cover,
+      guestName: this.data.guestName || '',
+      guestQuote: this.data.guestQuote || '',
+      plans: this._plans,
+      quote: (this.data.isStaff && this.data.internalView) ? {
+        hotel: this.data.internalView.hotel || 0,
+        ticket: this.data.internalView.ticket || 0,
+        total: this.data.internalView.total || 0
+      } : undefined
+    };
+  },
+
   goEdit() {
-    wx.navigateTo({ url: '/pages/custom/custom?edit=' + encodeURIComponent(this.data.editingId) });
+    const draft = this.draftBody();
+    wx.setStorageSync('lastCustomPlan', draft);
+    const pages = typeof getCurrentPages === 'function' ? getCurrentPages() : [];
+    const prev = pages.length > 1 ? pages[pages.length - 2] : null;
+    const route = (prev && (prev.route || prev.__route__)) || '';
+    if (route.indexOf('pages/custom/custom') >= 0 && prev && typeof prev.prefillTrip === 'function') {
+      prev.prefillTrip(draft);
+      wx.navigateBack();
+      return;
+    }
+    if (draft.id) {
+      const trips = wx.getStorageSync('myTrips') || [];
+      const idx = trips.findIndex(t => t.id === draft.id);
+      const row = Object.assign({}, draft, { title: this.data.heroTitle });
+      if (idx > -1) trips[idx] = Object.assign({}, trips[idx], row);
+      else trips.unshift(row);
+      wx.setStorageSync('myTrips', trips);
+      wx.navigateTo({ url: '/pages/custom/custom?edit=' + encodeURIComponent(draft.id) });
+      return;
+    }
+    wx.navigateTo({ url: '/pages/custom/custom?draft=1' });
+  },
+
+  async refreshQuote() {
+    let idn = null;
+    try { idn = await wb.identity(); } catch (e) { idn = null; }
+    if (!idn || !idn.isStaff) {
+      this.setData({ isStaff: false, internalView: null });
+      return;
+    }
+    const [hotels, scenics, priceList] = await Promise.all([
+      api.hotels(),
+      this.loadRawScenics(),
+      this.loadHotelPrices()
+    ]);
+    const hotelPricesById = {};
+    (priceList || []).forEach(p => {
+      if (!p || !p.hotelId) return;
+      (hotelPricesById[p.hotelId] = hotelPricesById[p.hotelId] || []).push(p);
+    });
+    const calcHotelsById = hotelsByIdFrom(data.hotels);
+    (hotels || []).forEach(h => {
+      if (h && h.id) calcHotelsById[h.id] = Object.assign({}, h, { prices: hotelPricesById[h.id] || h.prices || [] });
+    });
+    const calcScenicsById = {};
+    (scenics || []).forEach(s => { if (s && s.id) calcScenicsById[s.id] = s; });
+    const plans = (this._plans || []).map((p, i) => Object.assign({}, p, {
+      checkinDate: quote.addDays(this.data.date, i)
+    }));
+    const internal = quote.calcQuote({
+      plans,
+      hotelsById: calcHotelsById,
+      hotelPricesById,
+      scenicsById: calcScenicsById,
+      departDate: this.data.date,
+      people: (parseInt(this.data.adults, 10) || 0) + (parseInt(this.data.children, 10) || 0),
+      carCost: 0
+    });
+    this.setData({
+      isStaff: true,
+      internalView: quote.annotateQuote(internal, this.data.adults, this.data.children)
+    });
+  },
+
+  async loadRawScenics() {
+    const res = await cloud.callFunction('scenicCRUD', { action: 'list' });
+    if (res && res.code === 200 && Array.isArray(res.data)) return res.data.filter(s => s && s.online !== false);
+    return [];
+  },
+
+  async loadHotelPrices() {
+    const res = await cloud.callFunction('hotelCRUD', { action: 'listPrices' });
+    if (res && res.code === 200 && Array.isArray(res.data)) return res.data;
+    return [];
   },
 
   onRight() {
@@ -161,7 +350,15 @@ Page({
       }
     }
     const scene = scenics.length ? scenics[0].name : copy.customPreview.noScenic;
-    return { index: i, line: (i + 1) + copy.customPreview.dayUnit, scene, scenics, hotel, note: p.note || '' };
+    return {
+      index: i,
+      line: (i + 1) + copy.customPreview.dayUnit,
+      scene,
+      scenics,
+      hotel,
+      note: p.note || '',
+      promos: gallery.clipPromo(p.promoImgs)
+    };
   },
 
   goScenic(e) {
@@ -174,8 +371,8 @@ Page({
 
   saveToMine() {
     const days = this.data.days;
-    const title = '我的专属呼伦贝尔' + days + '日行程';
-    let cover = this.data.heroTiles[0].img;
+    const title = this.data.heroTitle || quote.shareTitle({ days, guestName: this.data.guestName });
+    let cover = this.data.cover || (this.data.heroTiles[0] && this.data.heroTiles[0].img);
     if (!cover) cover = ph('我的专属呼伦贝尔 ' + days + '日行程', 640, 420);
     const id = this.data.editingId || ('trip' + Date.now());
     const trip = {
@@ -185,15 +382,23 @@ Page({
       date: this.data.date,
       adults: this.data.adults,
       children: this.data.children,
+      guestName: this.data.guestName || '',
+      guestQuote: Number(this.data.guestQuote) || 0,
       cover,
+      quote: (this.data.isStaff && this.data.internalView) ? {
+        hotel: this.data.internalView.hotel || 0,
+        ticket: this.data.internalView.ticket || 0,
+        total: this.data.internalView.total || 0
+      } : { hotel: 0, ticket: 0, total: 0 },
       heroTitle: this.data.heroTitle,
       plans: this._plans.map(p => ({
         scenicIds: (p.scenicIds || []).slice(),
-      hotelId: p.hotelId || '',
-      altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds.slice() : [],
-      note: p.note || '',
-      roomType: p.roomType || '',
-      roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1)
+        hotelId: p.hotelId || '',
+        altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds.slice() : [],
+        note: p.note || '',
+        roomType: p.roomType || '',
+        roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1),
+        promoImgs: gallery.clipPromo(p.promoImgs)
       })),
       savedAt: TIME_STAMP
     };

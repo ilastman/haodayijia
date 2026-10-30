@@ -95,9 +95,47 @@ function handleCall(payload) {
     return { code: 200, data: (state.inspirationPost || []).filter(p => p.status === 1) };
   }
 
+  if (name === 'galleryCRUD') {
+    state.gallery = state.gallery || [];
+    if (action === 'add') {
+      const src = body.data || {};
+      const doc = Object.assign({
+        id: src.id || ('gal_' + Date.now().toString(36)),
+        time: new Date().toISOString().slice(0, 19).replace('T', ' ')
+      }, src);
+      state.gallery.unshift(doc);
+      persist();
+      return { code: 200, data: doc };
+    }
+    if (action === 'remove') {
+      const ids = Array.isArray(body.ids) && body.ids.length ? body.ids : (body.id ? [body.id] : []);
+      state.gallery = state.gallery.filter(x => ids.indexOf(x.id) < 0);
+      persist();
+      return { code: 200, data: { removed: ids.length } };
+    }
+    let list = state.gallery.slice();
+    const tree = body.tree || (body.data && body.data.tree);
+    if (tree) list = list.filter(x => x.tree === tree);
+    return { code: 200, data: list };
+  }
+
+  if (name === 'categoryCRUD' && (!action || action === 'list')) {
+    return { code: 200, data: state.category || [] };
+  }
+
   if (name === 'userTripCRUD') {
+    if (action === 'getPublic') {
+      const row = (state.userTrip || []).filter(x => x.id === body.id)[0];
+      if (!row) return { code: 404, msg: '行程不存在' };
+      const doc = Object.assign({}, row);
+      delete doc.quote;
+      delete doc.openid;
+      return { code: 200, data: doc };
+    }
     if (action === 'save') {
-      const doc = Object.assign({ id: body.id || ('ut_' + Date.now().toString(36)) }, body);
+      const src = (body.data && typeof body.data === 'object') ? body.data : body;
+      const doc = Object.assign({ id: src.id || ('ut_' + Date.now().toString(36)) }, src);
+      delete doc.action;
       state.userTrip = state.userTrip || [];
       const i = state.userTrip.findIndex(x => x.id === doc.id);
       if (i > -1) state.userTrip[i] = doc; else state.userTrip.unshift(doc);

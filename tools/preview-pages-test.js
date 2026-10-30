@@ -1,8 +1,9 @@
+const path = require('path');
 const { JSDOM } = require('jsdom');
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 (async () => {
-  const dom = await JSDOM.fromFile('C:/xiaochengxu/preview.html', {
+  const dom = await JSDOM.fromFile(path.join(__dirname, '../preview.html'), {
     runScripts: 'dangerously', resources: 'usable', pretendToBeVisual: true
   });
   const { window } = dom;

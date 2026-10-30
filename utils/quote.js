@@ -222,9 +222,105 @@ function calcQuote(opts) {
   };
 }
 
+/* 无内部票价时的酒店参考合计：所选酒店公开价 × 当天间数 */
+function publicHotelQuote(plans, hotelsById) {
+  let hotel = 0;
+  (Array.isArray(plans) ? plans : []).forEach(p => {
+    const h = hotelsById && hotelsById[p && p.hotelId];
+    if (!h) return;
+    const qty = Math.max(1, parseInt(p.roomQty, 10) || 1);
+    hotel += num(h.price) * qty;
+  });
+  return { hotel, ticket: 0, car: 0, total: hotel };
+}
+
+/* 分享页标题：张先生的5天4晚的海拉尔行程。没有称呼时省略人名。 */
+function shareTitle(opts) {
+  const o = opts || {};
+  const days = Math.max(1, parseInt(o.days, 10) || 1);
+  const nights = Math.max(0, days - 1);
+  const who = String(o.guestName || '').trim();
+  const place = String(o.place || '').trim() || '呼伦贝尔';
+  return (who ? who + '的' : '') + days + '天' + nights + '晚的' + place + '行程';
+}
+
+/* 标题里的地点：优先第一个景区所在地，其次酒店地点 */
+function tripPlace(plans, scenicsById, hotelsById) {
+  const list = Array.isArray(plans) ? plans : [];
+  for (let i = 0; i < list.length; i++) {
+    const ids = (list[i] && list[i].scenicIds) || [];
+    for (let j = 0; j < ids.length; j++) {
+      const s = scenicsById && scenicsById[ids[j]];
+      const name = s && (s.dest || s.area);
+      if (name) return name;
+    }
+  }
+  for (let i = 0; i < list.length; i++) {
+    const h = hotelsById && list[i] && hotelsById[list[i].hotelId];
+    if (h && h.area) return h.area;
+  }
+  return '';
+}
+
+function moneyText(n) {
+  const x = Math.round(num(n) * 100) / 100;
+  if (Object.is(x, -0)) return '0';
+  if (Math.abs(x - Math.round(x)) < 1e-9) return String(Math.round(x));
+  return String(x);
+}
+
+/* 对客报价只保留客人能看的每人价格，不带内部核算 */
+function guestQuoteText(amount) {
+  const n = num(amount);
+  if (!(n > 0)) return '';
+  return '¥' + moneyText(n) + '/人';
+}
+
+/* 客人详情页上的总价：每人报价 ×（成人 + 儿童），并标注构成。没有报价或没有人数则不展示。 */
+function guestTotalView(amount, adults, children) {
+  const unit = num(amount);
+  if (!(unit > 0)) return null;
+  const a = Math.max(0, parseInt(adults, 10) || 0);
+  const c = Math.max(0, parseInt(children, 10) || 0);
+  const people = a + c;
+  if (!people) return null;
+  const total = Math.round(unit * people * 100) / 100;
+  const unitText = moneyText(unit);
+  return {
+    unit,
+    adults: a,
+    children: c,
+    people,
+    total,
+    text: '¥' + unitText + '/人',
+    totalText: '¥' + moneyText(total),
+    note: '¥' + unitText + '/人 · ' + a + ' 成人 · ' + c + ' 儿童'
+  };
+}
+
+/* 行程总价标注：金额 + 酒店/门票构成 + 成人/儿童人数。仅员工可见。 */
+function annotateQuote(q, adults, children) {
+  const hotel = num(q && q.hotel);
+  const ticket = num(q && q.ticket);
+  const total = (q && q.total != null) ? num(q.total) : hotel + ticket + num(q && q.car);
+  const a = Math.max(0, parseInt(adults, 10) || 0);
+  const c = Math.max(0, parseInt(children, 10) || 0);
+  return {
+    label: '行程总价',
+    total,
+    hotel,
+    ticket,
+    adults: a,
+    children: c,
+    pending: !(total > 0),
+    note: '酒店 ¥' + hotel + ' · 门票 ¥' + ticket + ' · ' + a + ' 成人 · ' + c + ' 儿童'
+  };
+}
+
 module.exports = {
   num, parseTicketPrice, normDate, monthOf, addDays,
   periodHasDate, periodHasMonth,
   periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, matchHotelPrice,
-  deriveDays, calcQuote
+  deriveDays, calcQuote, publicHotelQuote, annotateQuote,
+  shareTitle, tripPlace, guestQuoteText, guestTotalView
 };

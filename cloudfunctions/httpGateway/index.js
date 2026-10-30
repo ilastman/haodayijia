@@ -36,7 +36,8 @@ const ALLOWED = [
   'workbenchInit',
   'userCRUD',
   'categoryCRUD',
-  'adminUserCRUD'
+  'adminUserCRUD',
+  'galleryCRUD'
 ];
 
 const CORS = {

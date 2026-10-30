@@ -51,6 +51,7 @@ Page({
         id: t.id,
         cover: t.cover || ph(t.title || '我的专属行程', 640, 420),
         name: t.title || ('我的专属呼伦贝尔' + (t.days || 3) + '日行程'),
+        guestQuoteText: (Number(t.guestQuote) > 0) ? ('¥' + Number(t.guestQuote) + '/人') : '',
         daysText: (t.days || 3) + copy.myTrips.daysUnit,
         brief: brief.join(' · '),
         open: false

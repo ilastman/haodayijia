@@ -78,6 +78,7 @@
     if (!Array.isArray(d.opLog)) d.opLog = [];
     if (!Array.isArray(d.user)) d.user = [];
     if (!Array.isArray(d.category)) d.category = [];
+    if (!Array.isArray(d.gallery)) d.gallery = [];
     return d;
   }
 
@@ -94,6 +95,7 @@
 
   const db = Vue.reactive(load() || clone(window.SEED));
   if (!Array.isArray(db.category)) db.category = [];
+  if (!Array.isArray(db.gallery)) db.gallery = [];
 
   /* 本地数据桥：与 tools/preview-server.js 的 /api/db 双向同步 */
   const API_DB = '/api/db';
@@ -385,7 +387,7 @@
 
   /* ---------- 启动时加载数据 ---------- */
   async function syncFromCloud() {
-    const colls = ['homeModule', 'banner', 'scenic', 'hotel', 'privateGroup', 'inspirationPost', 'userTrip', 'assets', 'staff', 'order', 'opLog', 'user', 'category'];
+    const colls = ['homeModule', 'banner', 'scenic', 'hotel', 'privateGroup', 'inspirationPost', 'userTrip', 'assets', 'staff', 'order', 'opLog', 'user', 'category', 'gallery'];
     for (const c of colls) {
       const list = await Cloud.list(c);
       if (Array.isArray(list) && list.length) db[c] = list;

@@ -1,15 +1,43 @@
 <view class="cp-page">
 
-  <!-- 首屏：16:9 拼合大图 + 标题 -->
-  <view class="cp-hero">
+  <!-- 首屏：有封面时用封面，否则用景区拼图 -->
+  <view class="cp-hero" wx:if="{{cover}}">
+    <image class="cp-hero-img cp-hero-cover" src="{{cover}}" mode="aspectFill" />
+    <view class="cp-hero-shade"></view>
+    <view class="cp-hero-cap">
+      <view class="cp-hero-title-row">
+        <view class="cp-hero-title">{{heroTitle}}</view>
+        <view class="cp-hero-quote" wx:if="{{guestQuoteText}}">{{guestQuoteText}}</view>
+      </view>
+      <view class="cp-hero-slogan">{{c.slogan}}</view>
+    </view>
+  </view>
+  <view class="cp-hero" wx:else>
     <view class="cp-hero-tile" wx:for="{{heroTiles}}" wx:key="id">
       <image wx:if="{{item.img}}" class="cp-hero-img" src="{{item.img}}" mode="aspectFill" />
     </view>
     <view class="cp-hero-shade"></view>
     <view class="cp-hero-cap">
-      <view class="cp-hero-title">{{heroTitle}}</view>
+      <view class="cp-hero-title-row">
+        <view class="cp-hero-title">{{heroTitle}}</view>
+        <view class="cp-hero-quote" wx:if="{{guestQuoteText}}">{{guestQuoteText}}</view>
+      </view>
       <view class="cp-hero-slogan">{{c.slogan}}</view>
     </view>
+  </view>
+
+  <!-- 客人看到的总价：每人报价 × 人数。内部核算不在这里。 -->
+  <view class="cp-price" wx:if="{{guestTotalText}}">
+    <view class="cp-price-k">{{c.guestTotalLabel}}</view>
+    <view class="cp-price-v">{{guestTotalText}}</view>
+    <view class="cp-price-note">{{guestTotalNote}}</view>
+  </view>
+
+  <!-- 内部核算只给员工，客人分享页不渲染这块 -->
+  <view class="cp-price" wx:if="{{isStaff && internalView}}">
+    <view class="cp-price-k">内部核算</view>
+    <view class="cp-price-v">¥{{internalView.total}}</view>
+    <view class="cp-price-note">{{internalView.note}}</view>
   </view>
 
   <!-- 基础信息标签区（自动匹配天数与出行月份） -->
@@ -63,6 +91,10 @@
         </view>
       </view>
 
+      <view class="cp-promo" wx:if="{{day.promos.length}}">
+        <image class="cp-promo-img" wx:for="{{day.promos}}" wx:for-item="pic" wx:key="*this" src="{{pic}}" mode="aspectFill" />
+      </view>
+
       <view class="cp-note" wx:if="{{day.note}}">
         <view class="cp-note-label">{{c.noteLabel}}</view>
         <view class="cp-note-text">{{day.note}}</view>
@@ -108,9 +140,14 @@
     </view>
   </view>
 
-  <!-- 底部按钮 -->
+  <!-- 底部：有对客报价时总价留在操作栏旁，生成后仍可修改 -->
   <view class="cp-bottom">
-    <view class="cp-btn cp-btn-outline" bindtap="onRight">{{fromList ? c.editBtn : c.saveBtn}}</view>
+    <view class="cp-price-side" wx:if="{{guestTotalText}}">
+      <text class="cp-price-side-k">{{c.guestTotalLabel}}</text>
+      <text class="cp-price-side-v">{{guestTotalText}}</text>
+    </view>
+    <view class="cp-btn cp-btn-outline" bindtap="goEdit">{{c.editBtn}}</view>
+    <view class="cp-btn cp-btn-outline" wx:if="{{!fromList}}" bindtap="saveToMine">{{c.saveBtn}}</view>
   </view>
   <view class="cp-safe"></view>
 </view>
