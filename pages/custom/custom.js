@@ -6,6 +6,7 @@ const wb = require('../../utils/workbench');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
 const catalog = require('../../utils/catalog');
+const play = require('../../utils/play-items');
 const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -13,7 +14,7 @@ const MIN_DAYS = 1;
 const ITEM_H = 58;
 
 function emptyPlan() {
-  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] };
+  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [], playItemSelections: [] };
 }
 
 function buildPlans(n) {
@@ -32,7 +33,8 @@ function normalizePlans(v, days) {
     note: (p && p.note) || '',
     roomType: (p && p.roomType) || '',
     roomQty: Math.max(1, parseInt(p && p.roomQty, 10) || 1),
-    promoImgs: gallery.clipPromo(p && p.promoImgs)
+    promoImgs: gallery.clipPromo(p && p.promoImgs),
+    playItemSelections: play.normalizeSelections(p && p.playItemSelections, (p && Array.isArray(p.scenicIds) ? p.scenicIds : []))
   }));
   while (out.length < n) out.push(emptyPlan());
   return out;
@@ -52,6 +54,7 @@ Page({
     dayTabs: ['第1天', '第2天', '第3天'],
     plans: buildPlans(3),
     curScenics: [],
+    hasPlays: false,
     curHotel: null,
     altHotels: [],
     curNote: '',
@@ -371,7 +374,18 @@ Page({
   syncPlan() {
     const plans = this.plansArray();
     const plan = this.planAt(this.data.activeDay);
-    const curScenics = (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean);
+    const aligned = this.alignPlay(plan);
+    if (JSON.stringify(aligned) !== JSON.stringify(plan.playItemSelections || [])) {
+      const plans2 = normalizePlans(plans, this.data.days);
+      plans2[this.data.activeDay].playItemSelections = aligned;
+      plan.playItemSelections = aligned;
+      this.setData({ plans: plans2 });
+    }
+    const curScenics = (plan.scenicIds || []).map(id => {
+      const s = this.scenicById(id);
+      if (!s) return null;
+      return Object.assign({}, s, { plays: this.playRows(id, aligned) });
+    }).filter(Boolean);
     const curHotel = plan.hotelId ? this.hotelById(plan.hotelId) : null;
     const altIds = Array.isArray(plan.altHotelIds) ? plan.altHotelIds : [];
     const altHotels = curHotel ? this.hotelsOf()
@@ -393,6 +407,7 @@ Page({
     }
     this.setData({
       curScenics,
+      hasPlays: curScenics.some(s => s.plays && s.plays.length),
       curHotel,
       altHotels,
       curNote: plan.note || '',
@@ -487,6 +502,49 @@ Page({
     this.setData({ guestQuote: v });
   },
 
+  /* 景区上的游玩项目：优先用列表里的 playItems，员工原始单据作补充 */
+  playCatalog(scenicId) {
+    const scenic = this.scenicById(scenicId);
+    const raw = this.data.calcScenicsById && this.data.calcScenicsById[scenicId];
+    const fromScenic = scenic && Array.isArray(scenic.playItems) ? scenic.playItems : [];
+    const fromRaw = raw && Array.isArray(raw.playItems) ? raw.playItems : [];
+    return play.normalizePlayItems(fromScenic.length ? fromScenic : fromRaw);
+  },
+
+  /* 用当前景区项目刷新已选名称和价格；目录还没到时保留已存快照 */
+  alignPlay(plan) {
+    const scenicIds = (plan && plan.scenicIds) || [];
+    const prev = play.normalizeSelections(plan && plan.playItemSelections, scenicIds);
+    const byId = {};
+    prev.forEach(r => { byId[r.scenicId] = r; });
+    const out = [];
+    const seen = {};
+    scenicIds.forEach(sid => {
+      if (!sid || seen[sid]) return;
+      seen[sid] = 1;
+      const old = byId[sid];
+      if (!old) return;
+      const catalog = this.playCatalog(sid);
+      if (!catalog.length) { out.push(old); return; }
+      const want = {};
+      old.items.forEach(it => { want[it.id] = 1; });
+      const items = catalog.filter(it => want[it.id]).map(it => ({ id: it.id, name: it.name, price: it.price }));
+      if (items.length) out.push({ scenicId: sid, items: items });
+    });
+    return out;
+  },
+
+  playRows(scenicId, selections) {
+    const catalog = this.playCatalog(scenicId);
+    const row = (selections || []).filter(r => r && r.scenicId === scenicId)[0];
+    const picked = {};
+    ((row && row.items) || []).forEach(it => { if (it && it.id) picked[it.id] = it; });
+    if (catalog.length) {
+      return catalog.map(it => ({ id: it.id, name: it.name, price: it.price, sel: !!picked[it.id] }));
+    }
+    return Object.keys(picked).map(id => ({ id: id, name: picked[id].name, price: picked[id].price, sel: true }));
+  },
+
   /* ---------- 景区选择 ---------- */
 
   openScenic() {
@@ -507,6 +565,7 @@ Page({
     const pos = ids.indexOf(id);
     if (pos > -1) ids.splice(pos, 1);
     else ids.push(id);
+    plans[idx].playItemSelections = play.normalizeSelections(plans[idx].playItemSelections, ids);
     this.setData({ plans });
     this.syncPlan();
     this.refreshSheet();
@@ -603,6 +662,8 @@ Page({
     const idx = Number(e.currentTarget.dataset.index);
     const plans = normalizePlans(this.data.plans, this.data.days);
     plans[this.data.activeDay].scenicIds.splice(idx, 1);
+    const day = plans[this.data.activeDay];
+    day.playItemSelections = play.normalizeSelections(day.playItemSelections, day.scenicIds);
     this.setData({ plans });
     this.syncPlan();
   },
@@ -638,6 +699,30 @@ Page({
   dragEnd() {
     this._drag = null;
     this.setData({ dragging: -1 });
+  },
+
+  togglePlay(e) {
+    const scenicId = e.currentTarget.dataset.scenicId;
+    const itemId = e.currentTarget.dataset.id;
+    if (!scenicId || !itemId) return;
+    const idx = this.data.activeDay;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    const day = plans[idx];
+    let row = (day.playItemSelections || []).filter(r => r && r.scenicId === scenicId)[0];
+    if (!row) {
+      row = { scenicId: scenicId, items: [] };
+      day.playItemSelections.push(row);
+    }
+    const pos = row.items.findIndex(it => it && it.id === itemId);
+    if (pos > -1) row.items.splice(pos, 1);
+    else {
+      const item = this.playCatalog(scenicId).filter(it => it.id === itemId)[0];
+      if (!item) return;
+      row.items.push({ id: item.id, name: item.name, price: item.price });
+    }
+    day.playItemSelections = play.normalizeSelections(day.playItemSelections, day.scenicIds);
+    this.setData({ plans });
+    this.syncPlan();
   },
 
   /* ---------- 封面 / 每日宣传图 ---------- */
@@ -810,6 +895,8 @@ Page({
       const seg = '第' + (i + 1) + '天';
       const parts = [];
       if (sc) parts.push('景区:' + sc);
+      const plays = (p.playItemSelections || []).map(r => (r.items || []).map(it => it.name + (it.price ? (' ' + it.price) : '')).join('、')).filter(Boolean);
+      if (plays.length) parts.push('游玩:' + plays.join('、'));
       if (p.hotelId) {
         const h = this.hotelById(p.hotelId);
         if (h) {

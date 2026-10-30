@@ -75,6 +75,9 @@ const scenic = data.scenics.map((s, i) => ({
   dest: s.dest,
   duration: s.duration,
   bestSeason: s.bestSeason,
+  playItems: Array.isArray(s.playItems) ? s.playItems.map(it => ({
+    id: it.id, name: it.name, price: String(it.price == null ? '' : it.price)
+  })) : [],
   lon: 0,
   lat: 0,
   weight: 100 - i,

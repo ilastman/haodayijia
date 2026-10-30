@@ -57,6 +57,7 @@
           <view class="cp-spot-body">
             <view class="cp-spot-name">{{item.name}}</view>
             <view class="cp-spot-sub">{{item.dest}}</view>
+            <view class="cp-play" wx:for="{{item.plays}}" wx:for-item="play" wx:key="id">{{play.name}}<text wx:if="{{isStaff && play.price}}"> {{play.price}}</text></view>
           </view>
           <view class="cp-arrow">›</view>
         </view>

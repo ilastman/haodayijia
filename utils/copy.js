@@ -236,6 +236,8 @@ const copy = {
     scenicTitle: '当日景区',
     addScenic: '选择景区',
     scenicEmpty: '还没有选择景区，点击添加',
+    playTitle: '游玩项目',
+    playHint: '可多选。价格为参考价，例如 10元、免费',
     hotelTitle: '当日酒店',
     addHotel: '选择酒店',
     hotelEmpty: '还未选择酒店',

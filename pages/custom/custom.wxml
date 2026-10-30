@@ -92,7 +92,7 @@
       <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
     </view>
     <view class="quote-sum">
-      <text class="quote-sum-label">门票（{{internalQuote.people}}人）</text>
+      <text class="quote-sum-label">门票与游玩项目（{{internalQuote.people}}人）</text>
       <text class="quote-sum-val">¥{{internalQuote.ticket}}</text>
     </view>
     <view class="quote-sum quote-total">
@@ -107,7 +107,7 @@
         <text class="quote-bd-sub">¥{{item.subtotal}}</text>
       </view>
     </view>
-    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
+    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价或游玩项目价 / 酒店该入住日无价格档期），请核对</view>
     </block>
   </view>
 
@@ -123,22 +123,36 @@
     <view class="add-btn" bindtap="openScenic">+ {{c.addScenic}}</view>
 
     <view class="sel-list" wx:if="{{curScenics.length > 0}}">
-      <view class="sel-item {{dragging === index ? 'dragging' : ''}}" wx:for="{{curScenics}}" wx:key="id"
-        data-index="{{index}}"
-        bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
-        <text class="sel-order">{{index + 1}}</text>
-        <view class="sel-body">
-          <view class="sel-name">{{item.name}}</view>
-          <view class="sel-sub">{{item.dest}}</view>
+      <block wx:for="{{curScenics}}" wx:key="id">
+        <view class="sel-item {{dragging === index ? 'dragging' : ''}}"
+          data-index="{{index}}"
+          bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
+          <text class="sel-order">{{index + 1}}</text>
+          <view class="sel-body">
+            <view class="sel-name">{{item.name}}</view>
+            <view class="sel-sub">{{item.dest}}</view>
+          </view>
+          <view class="sel-ops">
+            <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="-1">{{c.up}}</view>
+            <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="1">{{c.down}}</view>
+            <view class="op-btn del" bindtap="removeScenic" data-index="{{index}}">{{c.remove}}</view>
+          </view>
         </view>
-        <view class="sel-ops">
-          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="-1">{{c.up}}</view>
-          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="1">{{c.down}}</view>
-          <view class="op-btn del" bindtap="removeScenic" data-index="{{index}}">{{c.remove}}</view>
+        <view class="play-block" wx:if="{{item.plays.length}}">
+          <view class="play-title">{{c.playTitle}}</view>
+          <view class="play-list">
+            <view class="play-item {{p.sel ? 'on' : ''}}" wx:for="{{item.plays}}" wx:for-item="p" wx:key="id"
+              catchtap="togglePlay" data-scenic-id="{{item.id}}" data-id="{{p.id}}">
+              <text class="play-name">{{p.name}}</text>
+              <text class="play-price">{{p.price}}</text>
+              <text class="play-check">{{p.sel ? '✓' : ''}}</text>
+            </view>
+          </view>
         </view>
-      </view>
+      </block>
     </view>
     <view class="sel-empty" wx:else>{{c.scenicEmpty}}</view>
+    <view class="tip-line" wx:if="{{hasPlays}}">{{c.playHint}}</view>
     <view class="tip-line">{{c.tips}}</view>
   </view>
 

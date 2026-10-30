@@ -1,9 +1,11 @@
 ﻿const cloud = require('wx-server-sdk');
+const { normalizePlayItems, parsePlayItems } = require('./play-items');
 
 /**
  * 云函数：scenicCRUD
  * 功能：景区增删改查（字段与本地 admin SEED 完全对齐）
- * 字段：{ id, name, cover, album, intro, detailHtml, tags, dest, duration, bestSeason, lon, lat, weight, online }
+ * 字段：{ id, name, cover, album, intro, detailHtml, tags, dest, duration, bestSeason, lon, lat, weight, online, playItems }
+ * playItems: [{ id, name, price }]，price 为字符串（如「10元」「免费」）
  * 权限：查询公开；增删改需管理员 token
  */
 
@@ -173,6 +175,7 @@ exports.main = async (event) => {
           intro: String(r.briefDesc || '').trim(),
           tags: toArray(feature),
           weight: Number(r.sort) || 0,
+          playItems: parsePlayItems(r.playItems),
           cover: '', album: [], detailHtml: '', bestSeason: '', online: true
         };
         if (ll) { doc.lon = ll.lon; doc.lat = ll.lat; }
@@ -186,6 +189,7 @@ exports.main = async (event) => {
       const doc = clean(data);
       if (!doc.id) doc.id = genId();
       if (!Array.isArray(doc.album)) doc.album = [];
+      doc.playItems = normalizePlayItems(doc.playItems);
       if (doc.online === undefined) doc.online = true;
       if (doc.weight === undefined) doc.weight = 0;
       const r = await db.collection(COLL).add({ data: doc });
@@ -195,6 +199,7 @@ exports.main = async (event) => {
       const f = await findBiz(id);
       if (!f) return { code: 404, msg: '记录不存在' };
       const d = clean(data); delete d.id;
+      if (d.playItems !== undefined) d.playItems = normalizePlayItems(d.playItems);
       await db.collection(COLL).doc(f._id).update({ data: d });
       return { code: 200, msg: '更新成功' };
     }
