@@ -185,6 +185,12 @@
   color: #9E9886;
 }
 
+.cp-play {
+  margin-top: 6rpx;
+  font-size: 22rpx;
+  color: #8A7152;
+}
+
 .cp-arrow {
   font-size: 34rpx;
   color: #C9C2B2;

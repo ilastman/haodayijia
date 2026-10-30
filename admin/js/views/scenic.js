@@ -13,8 +13,32 @@ const SCENIC_IMPORT_HEADERS = [
   { key: 'address', title: '详细地址', headerText: '详细地址【选填】', aliases: ['地址'], desc: '景区详细地址' },
   { key: 'openTime', title: '开放时间', headerText: '开放时间【选填】', desc: '如：08:00-18:00' },
   { key: 'feature', title: '特色看点', headerText: '特色看点【选填，多个用英文逗号分隔】', aliases: ['标签'], desc: '多个用英文逗号分隔，如：草原,骑马,摄影' },
+  { key: 'playItems', title: '游玩项目', headerText: '游玩项目【选填】', aliases: ['游玩项目及价格'], desc: '多项用分号分隔，每项「名称|价格」。价格可写文字，如：骑马|10元;篝火|免费' },
   { key: 'sort', title: '排序权重', headerText: '排序权重【选填】', aliases: ['排序'], desc: '数字，越大越靠前' }
 ];
+
+/* 与 utils/play-items.js 同一套规则：price 一律存成字符串 */
+const PlayItems = (function () {
+  function playId() {
+    return 'pi_' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+  }
+  function normalize(list) {
+    const src = Array.isArray(list) ? list : [];
+    const out = [];
+    const seen = {};
+    src.forEach(it => {
+      if (!it || typeof it !== 'object') return;
+      const name = String(it.name == null ? '' : it.name).trim();
+      if (!name) return;
+      let id = String(it.id == null ? '' : it.id).trim();
+      if (!id || seen[id]) id = playId();
+      seen[id] = 1;
+      out.push({ id: id, name: name, price: String(it.price == null ? '' : it.price).trim() });
+    });
+    return out;
+  }
+  return { normalize: normalize, id: playId };
+})();
 
 window.VIEWS.scenic = {
   nav: true, title: '景区管理', icon: '⛰',
@@ -160,7 +184,7 @@ window.VIEWS.scenic = {
           if (p) this.form.placeCatId = p.id;
         }
       },
-      openAdd() { this.form = { id: '', name: '', cover: '', album: [], intro: '', detailHtml: '', tags: [], dest: '', area: '', regionLevel1: '', regionCatId: '', typeName: '', typeCatId: '', placeCatId: '', subType: 'scenic', duration: '', bestSeason: '', lon: 100, lat: 27, weight: 1, online: true }; this.dlg = true; },
+      openAdd() { this.form = { id: '', name: '', cover: '', album: [], intro: '', detailHtml: '', tags: [], dest: '', area: '', regionLevel1: '', regionCatId: '', typeName: '', typeCatId: '', placeCatId: '', subType: 'scenic', duration: '', bestSeason: '', playItems: [], lon: 100, lat: 27, weight: 1, online: true }; this.dlg = true; },
       openEdit(s) {
         this.form = JSON.parse(JSON.stringify(s));
         this.form.album = (s.album || []).slice();
@@ -171,8 +195,17 @@ window.VIEWS.scenic = {
         if (!this.form.typeCatId) this.form.typeCatId = '';
         if (!this.form.placeCatId) this.form.placeCatId = '';
         if (!this.form.typeName) this.form.typeName = this.form.subType === 'entertainment' ? '远野体验' : '景区';
+        this.form.playItems = PlayItems.normalize(s.playItems);
         this.bindScenicCats();
         this.dlg = true;
+      },
+      addPlay() {
+        if (!Array.isArray(this.form.playItems)) this.form.playItems = [];
+        this.form.playItems.push({ id: PlayItems.id(), name: '', price: '' });
+      },
+      removePlay(i) {
+        if (!Array.isArray(this.form.playItems)) return;
+        this.form.playItems.splice(i, 1);
       },
       save() {
         if (!String(this.form.name || '').trim()) { ElementPlus.ElMessage.warning('请输入景区名称'); return; }
@@ -180,6 +213,7 @@ window.VIEWS.scenic = {
         if (!String(this.form.typeName || this.form.typeCatId || '').trim()) { ElementPlus.ElMessage.warning('请选择类型'); return; }
         if (!String(this.form.dest || this.form.area || '').trim()) { ElementPlus.ElMessage.warning('请选择地点'); return; }
         this.form.area = this.form.dest || '';
+        this.form.playItems = PlayItems.normalize(this.form.playItems);
         if (this.form.id) { Store.update('scenic', this.form.id, this.form); ElementPlus.ElMessage.success('已保存'); }
         else { Store.add('scenic', this.form); ElementPlus.ElMessage.success('已新增'); }
         this.dlg = false;
@@ -212,7 +246,7 @@ window.VIEWS.scenic = {
         try {
           const rows = this.impRows.map(r => ({
             _row: r._row, name: r.name, area: r.area, regionLevel1: r.regionLevel1, subType: r.subType,
-            ticketPrice: r.ticketPrice, duration: r.duration, briefDesc: r.briefDesc,
+            ticketPrice: r.ticketPrice, duration: r.duration, briefDesc: r.briefDesc, playItems: r.playItems,
             location: r.location, address: r.address, openTime: r.openTime,
             feature: r.feature, sort: r.sort
           }));
@@ -233,6 +267,7 @@ window.VIEWS.scenic = {
           sample: {
             name: '呼伦贝尔大草原', regionLevel1: '呼伦贝尔', subType: '景区', area: '海拉尔',
             ticketPrice: '免费', duration: '建议 2-3 小时', briefDesc: '一望无际的绿色海洋',
+            playItems: '骑马|10元;蒙古包午宴|68元',
             location: '119.760,49.211', address: '内蒙古呼伦贝尔市',
             openTime: '08:00-18:00', feature: '草原,骑马,摄影', sort: 10
           }
@@ -271,6 +306,7 @@ window.VIEWS.scenic = {
                 <span class="st" style="margin-left:8px" :class="s.online ? 'st-on' : 'st-off'">{{s.online ? '已上架' : '已下架'}}</span>
                 <span class="chip" style="margin-left:8px">{{s.typeName || subTypeTxt(s.subType)}}</span>
                 <span class="chip" v-if="s.regionLevel1" style="margin-left:6px">{{s.regionLevel1}}</span>
+                <span class="chip" v-if="(s.playItems || []).length" style="margin-left:6px">游玩项目 {{s.playItems.length}}</span>
               </div>
               <div style="margin-top:5px;display:flex;gap:6px;flex-wrap:wrap">
                 <span class="chip" v-for="t in (s.tags || [])" :key="t">{{t}}</span>
@@ -325,6 +361,17 @@ window.VIEWS.scenic = {
             </el-form-item>
             <el-form-item label="景区简介"><el-input v-model="form.intro" type="textarea" :rows="2" placeholder="一句话介绍，用于列表展示" /></el-form-item>
             <el-form-item label="游玩时长"><el-input v-model="form.duration" placeholder="如：建议 2-3 小时" /></el-form-item>
+            <el-form-item label="游玩项目">
+              <div style="width:100%">
+                <div v-for="(p, i) in (form.playItems || [])" :key="p.id || i" class="flex gap10" style="margin-bottom:8px;align-items:center">
+                  <el-input v-model="p.name" placeholder="项目名称，如：骑马" style="flex:1" />
+                  <el-input v-model="p.price" placeholder="价格，如：10元" style="width:160px" />
+                  <el-button plain @click="removePlay(i)">删除</el-button>
+                </div>
+                <el-button plain @click="addPlay">＋ 添加游玩项目</el-button>
+                <div class="faint" style="margin-top:6px">价格按文字保存，可以写「10元」「免费」，不必只填数字。</div>
+              </div>
+            </el-form-item>
             <el-form-item label="最佳季节"><el-input v-model="form.bestSeason" placeholder="如：6月-9月" /></el-form-item>
             <el-form-item label="详细介绍"><RichText v-model="form.detailHtml" /></el-form-item>
             <el-form-item label="坐标">

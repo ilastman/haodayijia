@@ -2,7 +2,8 @@
  * 员工内部核价计算（纯函数，无副作用，便于 Node 单测）
  * - 酒店：逐日累加，第 N 晚住第 N 晚；每晚按【入住日期】闭区间匹配价格档期
  *         小计 = 所选房型当档期价 × 当天间数
- * - 景区：解析文本 ticketPrice 得到固定单价，同景区重复出现重复累加
+ * - 景区：未选游玩项目时，解析文本 ticketPrice 得到固定单价，同景区重复出现重复累加
+ *         选了游玩项目时，按项目 price 文本计价（「10元」→ 10），同一景区当天只计一次，不再叠加门票
  * - 车辆：暂不参与选择（carCost 传 0 或外部值）
  * 价格数据来源：hotelPrice 集合（自定义日期区间，闭区间 []
  */
@@ -137,10 +138,22 @@ function deriveDays(order) {
   return 1;
 }
 
+/* 当天某景区已选游玩项目。price 保持原文字，计价时再解析数字。 */
+function playPicks(plan, scenicId) {
+  const rows = (plan && plan.playItemSelections) || [];
+  const row = rows.filter(r => r && String(r.scenicId || '') === String(scenicId || ''))[0];
+  if (!row || !Array.isArray(row.items)) return [];
+  return row.items.filter(it => it && (it.name || it.id)).map(it => ({
+    id: String(it.id || ''),
+    name: String(it.name || '游玩项目'),
+    price: String(it.price == null ? '' : it.price)
+  }));
+}
+
 /*
  * 核价主函数
  * opts = {
- *   plans: [{ scenicIds:[], hotelId:'', roomType:'', roomQty:1, checkinDate:'2026-11-20' }],
+ *   plans: [{ scenicIds:[], playItemSelections:[{scenicId, items:[{id,name,price}]}], hotelId:'', roomType:'', roomQty:1, checkinDate:'2026-11-20' }],
  *   hotelsById: { id: hotel },   // hotel.prices = [{roomType,start,end,price}]（或由 hotelPricesById 注入）
  *   hotelPricesById: { id: [{roomType,start,end,price}] },  // 可选：覆盖 hotelsById[id].prices
  *   scenicsById: { id: scenic },             // 需含 ticketPrice（原始字段）
@@ -185,8 +198,23 @@ function calcQuote(opts) {
     const checkinDate = normDate(plan.checkinDate) || addDays(o.departDate, i);
 
     const ids = (plan.scenicIds || []);
+    const playCharged = {};
     ids.forEach(id => {
       const s = scenicsById[id];
+      const picks = playPicks(plan, id);
+      if (picks.length) {
+        if (playCharged[id]) return;
+        playCharged[id] = 1;
+        if (!s) missing.push({ type: 'scenic', id, day: i + 1 });
+        picks.forEach(it => {
+          const unit = parseTicketPrice(it.price);
+          const sub = unit * people;
+          ticketTotal += sub;
+          const who = s && s.name ? (s.name + ' · ' + it.name) : it.name;
+          breakdown.push({ day: dayLabel, type: 'play', name: who, unit, qty: people, subtotal: sub });
+        });
+        return;
+      }
       if (!s) { missing.push({ type: 'scenic', id, day: i + 1 }); return; }
       const unit = parseTicketPrice(s.ticketPrice);
       const sub = unit * people;
@@ -289,7 +317,7 @@ function annotateQuote(q, adults, children) {
 }
 
 module.exports = {
-  num, parseTicketPrice, normDate, monthOf, addDays,
+  num, parseTicketPrice, normDate, monthOf, addDays, playPicks,
   periodHasDate, periodHasMonth,
   periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, matchHotelPrice,
   deriveDays, calcQuote, publicHotelQuote, annotateQuote,

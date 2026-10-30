@@ -1,4 +1,5 @@
 ﻿const cloud = require('wx-server-sdk');
+const { normalizeSelections } = require('./play-items');
 
 /**
  * 云函数：userTripCRUD
@@ -49,7 +50,8 @@ exports.main = async (event) => {
         note: p.note || '',
         roomType: p.roomType || '',
         roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1),
-        promoImgs: (Array.isArray(p.promoImgs) ? p.promoImgs : []).map(x => String(x || '').trim()).filter(Boolean).slice(0, 2)
+        promoImgs: (Array.isArray(p.promoImgs) ? p.promoImgs : []).map(x => String(x || '').trim()).filter(Boolean).slice(0, 2),
+        playItemSelections: normalizeSelections(p.playItemSelections, Array.isArray(p.scenicIds) ? p.scenicIds : [])
       })) : null;
       const plan = d.plan || (plans ? plans.map(p => p.note || '').filter(Boolean).join('\n') : '');
       const doc = {

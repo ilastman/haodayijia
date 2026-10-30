@@ -23,6 +23,7 @@ add('utils/config.js');
 add('utils/cloud.js');
 add('utils/api.js');
 add('utils/quote.js');
+add('utils/play-items.js');
 add('utils/workbench.js');
 add('utils/gallery.js');
 add('utils/catalog.js');

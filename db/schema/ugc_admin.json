@@ -11,7 +11,7 @@
         "days": { "type": "number", "default": 0, "description": "天数" },
         "cover": { "type": "string", "description": "封面图（私人定制必填，取第一张）" },
         "plan": { "type": "string", "description": "行程概要文本" },
-        "plans": { "type": "array", "default": [], "description": "每日计划数组 [{scenicIds, hotelId, altHotelIds, note, roomType, roomQty, promoImgs}]。promoImgs 为当天宣传图，最多 2 张，可空" },
+        "plans": { "type": "array", "default": [], "description": "每日计划数组 [{scenicIds, hotelId, altHotelIds, note, roomType, roomQty, promoImgs, playItemSelections}]。promoImgs 为当天宣传图，最多 2 张，可空。playItemSelections 为 [{scenicId, items:[{id,name,price}]}] ，price 为字符串" },
         "date": { "type": "string", "description": "出行日期" },
         "adults": { "type": "number", "default": 2, "description": "成人数量" },
         "children": { "type": "number", "default": 0, "description": "儿童数量" },

@@ -85,5 +85,39 @@ eq(quote.guestQuoteText(1280), '¥1280/人', '每人报价文案');
 eq(quote.guestQuoteText(0), '', '没有报价就不展示');
 eq(quote.tripPlace([{ scenicIds: ['s1'] }], { s1: { dest: '海拉尔' } }, {}), '海拉尔', '地点取第一个景区');
 
+console.log('== 游玩项目（价格是文字）==');
+const r4 = quote.calcQuote({
+  plans: [{
+    scenicIds: ['s1'],
+    playItemSelections: [{
+      scenicId: 's1',
+      items: [
+        { id: 'a', name: '骑马', price: '10元' },
+        { id: 'b', name: '篝火', price: '免费' }
+      ]
+    }]
+  }],
+  scenicsById: { s1: { id: 's1', name: '草原', ticketPrice: '120元' } },
+  people: 2
+});
+eq(r4.ticket, 20, '选中项目按文字价×人数，不再叠加景区门票');
+eq(r4.breakdown.filter(b => b.type === 'play').map(b => b.name), ['草原 · 骑马', '草原 · 篝火'], '明细带项目名');
+const r5 = quote.calcQuote({
+  plans: [{
+    scenicIds: ['s1', 's1'],
+    playItemSelections: [{ scenicId: 's1', items: [{ id: 'a', name: '骑马', price: '10元' }] }]
+  }],
+  scenicsById: { s1: { id: 's1', name: '草原', ticketPrice: '120元' } },
+  people: 1
+});
+eq(r5.ticket, 10, '同一景区出现两次只计一次游玩项目');
+eq(typeof r4.breakdown[0].unit, 'number', '核算单价是数字');
+const r6 = quote.calcQuote({
+  plans: [{ scenicIds: ['s9'], playItemSelections: [{ scenicId: 's9', items: [{ id: 'a', name: '骑马', price: 10 }] }] }],
+  scenicsById: {},
+  people: 1
+});
+eq(r6.ticket, 10, '数字价格也会按字符串规则解析');
+
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);

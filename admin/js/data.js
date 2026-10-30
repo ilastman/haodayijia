@@ -123,6 +123,10 @@ window.SEED = {
       "dest": "海拉尔",
       "duration": "建议 2-3 小时",
       "bestSeason": "6月-9月",
+      "playItems": [
+        { "id": "s1p1", "name": "骑马", "price": "10元" },
+        { "id": "s1p2", "name": "蒙古包午宴", "price": "68元" }
+      ],
       "lon": 0,
       "lat": 0,
       "weight": 100,
@@ -147,6 +151,10 @@ window.SEED = {
       "dest": "海拉尔",
       "duration": "建议 2-3 小时",
       "bestSeason": "6月-10月",
+      "playItems": [
+        { "id": "s2p1", "name": "观景台", "price": "免费" },
+        { "id": "s2p2", "name": "热气球", "price": "199元" }
+      ],
       "lon": 0,
       "lat": 0,
       "weight": 99,

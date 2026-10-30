@@ -332,6 +332,59 @@
   padding: 16rpx 0;
 }
 
+.play-block {
+  padding: 4rpx 0 16rpx 62rpx;
+  border-bottom: 1rpx solid #F0EADB;
+}
+
+.play-title {
+  font-size: 22rpx;
+  color: #8A7152;
+  margin-bottom: 8rpx;
+}
+
+.play-list {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.play-item {
+  display: flex;
+  align-items: center;
+  background: #F3EDDF;
+  border-radius: 30rpx;
+  padding: 10rpx 18rpx 10rpx 22rpx;
+  margin: 0 12rpx 12rpx 0;
+}
+
+.play-item.on {
+  background: #8A7152;
+}
+
+.play-name {
+  font-size: 24rpx;
+  color: #6E6555;
+}
+
+.play-price {
+  margin-left: 10rpx;
+  font-size: 22rpx;
+  color: #8A7152;
+}
+
+.play-item.on .play-name,
+.play-item.on .play-price {
+  color: #FCF9F1;
+}
+
+.play-check {
+  width: 28rpx;
+  margin-left: 8rpx;
+  text-align: right;
+  font-size: 22rpx;
+  color: #FCF9F1;
+}
+
 .hotel-sel {
   display: flex;
   align-items: center;
