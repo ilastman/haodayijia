@@ -123,18 +123,31 @@
     <view class="add-btn" bindtap="openScenic">+ {{c.addScenic}}</view>
 
     <view class="sel-list" wx:if="{{curScenics.length > 0}}">
-      <view class="sel-item {{dragging === index ? 'dragging' : ''}}" wx:for="{{curScenics}}" wx:key="id"
-        data-index="{{index}}"
-        bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
-        <text class="sel-order">{{index + 1}}</text>
-        <view class="sel-body">
-          <view class="sel-name">{{item.name}}</view>
-          <view class="sel-sub">{{item.dest}}</view>
+      <view class="sel-block" wx:for="{{curScenics}}" wx:key="id">
+        <view class="sel-item {{dragging === index ? 'dragging' : ''}}"
+          data-index="{{index}}"
+          bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
+          <text class="sel-order">{{index + 1}}</text>
+          <view class="sel-body">
+            <view class="sel-name">{{item.name}}</view>
+            <view class="sel-sub">{{item.dest}}</view>
+          </view>
+          <view class="sel-ops">
+            <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="-1">{{c.up}}</view>
+            <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="1">{{c.down}}</view>
+            <view class="op-btn del" bindtap="removeScenic" data-index="{{index}}">{{c.remove}}</view>
+          </view>
         </view>
-        <view class="sel-ops">
-          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="-1">{{c.up}}</view>
-          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="1">{{c.down}}</view>
-          <view class="op-btn del" bindtap="removeScenic" data-index="{{index}}">{{c.remove}}</view>
+        <view class="play-block" wx:if="{{item.playItems.length}}">
+          <view class="play-title">{{c.playTitle}}</view>
+          <view class="play-list">
+            <view class="play-item {{p.sel ? 'on' : ''}}" wx:for="{{item.playItems}}" wx:for-item="p" wx:key="id"
+              catchtap="togglePlayItem" data-sid="{{item.id}}" data-pid="{{p.id}}">
+              <text class="play-name">{{p.name}}</text>
+              <text class="play-price" wx:if="{{p.price}}">{{p.price}}</text>
+              <text class="play-check">{{p.sel ? '✓' : ''}}</text>
+            </view>
+          </view>
         </view>
       </view>
     </view>

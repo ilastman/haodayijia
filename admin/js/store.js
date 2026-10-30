@@ -47,7 +47,7 @@
   function normalize(d) {
     if (!d || typeof d !== 'object') return d;
     if (d && !d.homeModule && d.moduleLayout) d.homeModule = d.moduleLayout;
-    (d.scenic || []).forEach(s => { if (s.dest == null) s.dest = ''; if (s.duration == null) s.duration = ''; if (s.bestSeason == null) s.bestSeason = ''; if (!Array.isArray(s.album)) s.album = []; });
+    (d.scenic || []).forEach(s => { if (s.dest == null) s.dest = ''; if (s.duration == null) s.duration = ''; if (s.bestSeason == null) s.bestSeason = ''; if (!Array.isArray(s.album)) s.album = []; if (!Array.isArray(s.playItems)) s.playItems = []; });
     (d.hotel || []).forEach(h => { if (h.envImg == null) h.envImg = ''; if (h.roomImg == null) h.roomImg = ''; if (!Array.isArray(h.rooms)) h.rooms = []; if (h.location == null) h.location = ''; if (!Array.isArray(h.facilities)) h.facilities = []; });
     (d.privateGroup || []).forEach(g => {
       if (g.dest == null) g.dest = '';

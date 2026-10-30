@@ -85,5 +85,27 @@ eq(quote.guestQuoteText(1280), '¥1280/人', '每人报价文案');
 eq(quote.guestQuoteText(0), '', '没有报价就不展示');
 eq(quote.tripPlace([{ scenicIds: ['s1'] }], { s1: { dest: '海拉尔' } }, {}), '海拉尔', '地点取第一个景区');
 
+console.log('== 游玩项目价格并入门票 ==');
+const rPlay = quote.calcQuote({
+  plans: [{
+    scenicIds: ['s1'],
+    playItemSelections: [{
+      scenicId: 's1',
+      items: [
+        { id: 'pi1', name: '草原骑马', price: '10元' },
+        { id: 'pi2', name: '篝火晚会', price: '免费' }
+      ]
+    }, {
+      scenicId: 's9',
+      items: [{ id: 'px', name: '未选景区', price: '99元' }]
+    }]
+  }],
+  scenicsById: { s1: { id: 's1', name: '呼伦贝尔大草原', ticketPrice: '120元' } },
+  people: 2,
+  departDate: '2026-08-01'
+});
+eq(rPlay.ticket, 120 * 2 + 10 * 2, '门票 120×2 + 骑马 10元×2，免费不计，未选景区不计');
+eq(rPlay.breakdown.filter(b => b.type === 'play').map(b => b.name), ['草原骑马', '篝火晚会'], '明细保留游玩项目名称');
+
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);

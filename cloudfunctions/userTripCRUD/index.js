@@ -11,6 +11,7 @@
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const { verifyAdminToken } = require('./auth');
+const play = require('./play-items');
 const COLL = 'userTrip';
 
 async function isAdmin(token) { return !!(await verifyAdminToken(token)); }
@@ -42,15 +43,19 @@ exports.main = async (event) => {
       const { OPENID } = cloud.getWXContext();
       if (!OPENID) return { code: 403, msg: '无法获取openid' };
       const d = data || {};
-      const plans = Array.isArray(d.plans) ? d.plans.map(p => ({
-        scenicIds: Array.isArray(p.scenicIds) ? p.scenicIds : [],
-        hotelId: p.hotelId || '',
-        altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds : [],
-        note: p.note || '',
-        roomType: p.roomType || '',
-        roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1),
-        promoImgs: (Array.isArray(p.promoImgs) ? p.promoImgs : []).map(x => String(x || '').trim()).filter(Boolean).slice(0, 2)
-      })) : null;
+      const plans = Array.isArray(d.plans) ? d.plans.map(p => {
+        const scenicIds = Array.isArray(p.scenicIds) ? p.scenicIds : [];
+        return {
+          scenicIds,
+          hotelId: p.hotelId || '',
+          altHotelIds: Array.isArray(p.altHotelIds) ? p.altHotelIds : [],
+          note: p.note || '',
+          roomType: p.roomType || '',
+          roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1),
+          promoImgs: (Array.isArray(p.promoImgs) ? p.promoImgs : []).map(x => String(x || '').trim()).filter(Boolean).slice(0, 2),
+          playItemSelections: play.normalizeSelections(p.playItemSelections, scenicIds)
+        };
+      }) : null;
       const plan = d.plan || (plans ? plans.map(p => p.note || '').filter(Boolean).join('\n') : '');
       const doc = {
         openid: OPENID,
