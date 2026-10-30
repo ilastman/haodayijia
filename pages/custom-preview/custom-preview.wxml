@@ -26,6 +26,13 @@
     </view>
   </view>
 
+  <!-- 客人看到的总价：每人报价 × 人数。内部核算不在这里。 -->
+  <view class="cp-price" wx:if="{{guestTotalText}}">
+    <view class="cp-price-k">{{c.guestTotalLabel}}</view>
+    <view class="cp-price-v">{{guestTotalText}}</view>
+    <view class="cp-price-note">{{guestTotalNote}}</view>
+  </view>
+
   <!-- 内部核算只给员工，客人分享页不渲染这块 -->
   <view class="cp-price" wx:if="{{isStaff && internalView}}">
     <view class="cp-price-k">内部核算</view>
@@ -133,8 +140,12 @@
     </view>
   </view>
 
-  <!-- 底部：总价常驻，生成后仍可修改 -->
+  <!-- 底部：有对客报价时总价留在操作栏旁，生成后仍可修改 -->
   <view class="cp-bottom">
+    <view class="cp-price-side" wx:if="{{guestTotalText}}">
+      <text class="cp-price-side-k">{{c.guestTotalLabel}}</text>
+      <text class="cp-price-side-v">{{guestTotalText}}</text>
+    </view>
     <view class="cp-btn cp-btn-outline" bindtap="goEdit">{{c.editBtn}}</view>
     <view class="cp-btn cp-btn-outline" wx:if="{{!fromList}}" bindtap="saveToMine">{{c.saveBtn}}</view>
   </view>

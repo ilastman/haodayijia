@@ -83,6 +83,12 @@ eq(quote.shareTitle({ days: 5, guestName: '张先生', place: '海拉尔' }), '�
 eq(quote.shareTitle({ days: 4, place: '海拉尔' }), '4天3晚的海拉尔行程', '无称呼的分享标题');
 eq(quote.guestQuoteText(1280), '¥1280/人', '每人报价文案');
 eq(quote.guestQuoteText(0), '', '没有报价就不展示');
+const gt = quote.guestTotalView(1280, 2, 1);
+eq(gt.total, 3840, '总价 1280×3=3840');
+eq(gt.totalText, '¥3840', '总价文案');
+eq(gt.note, '¥1280/人 · 2 成人 · 1 儿童', '总价标注每人与人数');
+eq(quote.guestTotalView(0, 2, 1), null, '没有每人报价就不算总价');
+eq(quote.guestTotalView(1280, 0, 0), null, '没有人数就不展示总价');
 eq(quote.tripPlace([{ scenicIds: ['s1'] }], { s1: { dest: '海拉尔' } }, {}), '海拉尔', '地点取第一个景区');
 
 console.log('\n通过 ' + pass + '，失败 ' + fail);

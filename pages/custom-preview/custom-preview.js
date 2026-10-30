@@ -101,6 +101,8 @@ Page({
     guestName: '',
     guestQuote: '',
     guestQuoteText: '',
+    guestTotalText: '',
+    guestTotalNote: '',
     isStaff: false,
     internalView: null
   },
@@ -133,6 +135,7 @@ Page({
     const guestQuote = (base && base.guestQuote != null && base.guestQuote !== '')
       ? base.guestQuote
       : ((!fromList && saved.guestQuote != null && saved.guestQuote !== '') ? saved.guestQuote : '');
+    const guestPrice = quote.guestTotalView(guestQuote, adults, children) || {};
     const scenicMap = {};
     const hotelMap = hotelsByIdFrom(data.hotels);
     (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
@@ -151,6 +154,8 @@ Page({
       guestName,
       guestQuote,
       guestQuoteText: quote.guestQuoteText(guestQuote),
+      guestTotalText: guestPrice.totalText || '',
+      guestTotalNote: guestPrice.note || '',
       heroTiles: this.buildHero(plans),
       dayList: plans.map((p, i) => this.buildDay(p, i, days)),
       heroTitle,
@@ -178,6 +183,7 @@ Page({
     const hotelMap = hotelsByIdFrom(data.hotels);
     (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
     const guestName = trip.guestName || '';
+    const guestPrice = quote.guestTotalView(trip.guestQuote, trip.adults, trip.children) || {};
     this.setData({
       days,
       date: trip.date || '',
@@ -187,6 +193,8 @@ Page({
       guestName,
       guestQuote: trip.guestQuote || '',
       guestQuoteText: quote.guestQuoteText(trip.guestQuote),
+      guestTotalText: guestPrice.totalText || '',
+      guestTotalNote: guestPrice.note || '',
       heroTitle: quote.shareTitle({ days, guestName, place: quote.tripPlace(this._plans, scenicMap, hotelMap) }),
       heroTiles: this.buildHero(this._plans),
       dayList: this._plans.map((p, i) => this.buildDay(p, i, days)),

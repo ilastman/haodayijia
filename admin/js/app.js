@@ -30,11 +30,12 @@
           ['asset-library', '素材库', '🗄'],
         ],
         user: null,
+        sessionOn: false,
         zoomPhone: false,
       };
     },
     computed: {
-      isLogin() { return Store.isLogin(); },
+      isLogin() { return this.sessionOn; },
       isSuper() { return Store.isSuper(); },
       visibleMenu() {
         return this.menu.filter(([k]) => k !== 'admin-users' || this.isSuper);
@@ -50,10 +51,12 @@
     },
     methods: {
       parse() {
+        const logged = Store.isLogin();
+        this.sessionOn = logged;
         const key = (location.hash.replace(/^#\//, '') || 'dashboard');
         this.route = this.Views[key] ? key : 'dashboard';
-        if (this.route !== 'login' && !Store.isLogin()) { location.hash = '#/login'; return; }
-        if (this.route === 'login' && Store.isLogin()) { location.hash = '#/dashboard'; return; }
+        if (this.route !== 'login' && !logged) { location.hash = '#/login'; return; }
+        if (this.route === 'login' && logged) { location.hash = '#/dashboard'; return; }
         if (this.route === 'admin-users' && !Store.isSuper()) { location.hash = '#/dashboard'; return; }
         this.user = Store.currentAdmin();
       },

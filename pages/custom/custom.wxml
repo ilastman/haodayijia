@@ -84,7 +84,12 @@
       <input class="guest-input" type="digit" placeholder="填写给客人的每人价格" placeholder-class="ph" value="{{guestQuote}}" bindinput="onGuestQuote" maxlength="8" />
       <text class="days-unit">元/人</text>
     </view>
-    <view class="tip-line">分享页标题旁只展示这个每人报价。内部核算不会出现在客人看到的页面上。</view>
+    <view class="tip-line">客人页面标题旁显示每人报价，首屏下面标出总价（每人报价 × 成人和儿童）。内部核算不会出现在客人看到的页面上。</view>
+    <view class="quote-sum quote-total" wx:if="{{guestTotalText}}">
+      <text class="quote-sum-label">客人看到的总价</text>
+      <text class="quote-sum-val total">{{guestTotalText}}</text>
+    </view>
+    <view class="tip-line" wx:if="{{guestTotalNote}}">{{guestTotalNote}}</view>
     <block wx:if="{{internalQuote}}">
     <view class="card-title quote-inner-title">内部核算价</view>
     <view class="quote-sum">

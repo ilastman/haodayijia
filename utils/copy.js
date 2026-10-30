@@ -295,6 +295,7 @@ const copy = {
     saveBtn: '保存到我的行程',
     editBtn: '修改行程',
     priceLabel: '行程总价',
+    guestTotalLabel: '总价',
     pricePending: '待核算',
     saveSuccess: '行程已保存至【我的行程】',
     saveUpdated: '行程已更新',

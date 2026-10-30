@@ -33,7 +33,8 @@ window.VIEWS.gallery = {
       }
     },
     watch: {
-      tree() { this.pickDefault(); }
+      tree() { this.pickDefault(); },
+      cats() { this.pickDefault(); }
     },
     created() { this.reload(); },
     methods: {

@@ -80,6 +80,8 @@ Page({
     curRoomTypes: [],
     guestName: '',
     guestQuote: '',
+    guestTotalText: '',
+    guestTotalNote: '',
     sheetRegion: catalog.ALL,
     sheetSub: 'all',
     sheetPlace: catalog.ALL,
@@ -242,6 +244,11 @@ Page({
       guestName: t.guestName || '',
       guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : ''
     });
+    this.refreshGuestTotal({
+      guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : '',
+      adults: parseInt(t.adults, 10) || 2,
+      children: parseInt(t.children, 10) || 0
+    });
     this.rebuildTabs();
     this.syncPlan();
   },
@@ -349,6 +356,7 @@ Page({
     const next = this.data.adults + (String(e.currentTarget.dataset.d) === '+' ? 1 : -1);
     if (next < 1 || next > 99) return;
     this.setData({ adults: next });
+    this.refreshGuestTotal({ adults: next });
     this.calcInternal();
   },
 
@@ -356,7 +364,19 @@ Page({
     const next = this.data.children + (String(e.currentTarget.dataset.d) === '+' ? 1 : -1);
     if (next < 0 || next > 20) return;
     this.setData({ children: next });
+    this.refreshGuestTotal({ children: next });
     this.calcInternal();
+  },
+
+  refreshGuestTotal(patch) {
+    const guestQuote = patch && patch.guestQuote != null ? patch.guestQuote : this.data.guestQuote;
+    const adults = patch && patch.adults != null ? patch.adults : this.data.adults;
+    const children = patch && patch.children != null ? patch.children : this.data.children;
+    const view = quote.guestTotalView(guestQuote, adults, children);
+    this.setData({
+      guestTotalText: view ? view.totalText : '',
+      guestTotalNote: view ? view.note : ''
+    });
   },
 
   /* ---------- 每日切换 ---------- */
@@ -485,6 +505,7 @@ Page({
   onGuestQuote(e) {
     const v = String(e.detail.value || '').replace(/[^\d.]/g, '').replace(/(\..*)\./g, '$1');
     this.setData({ guestQuote: v });
+    this.refreshGuestTotal({ guestQuote: v });
   },
 
   /* ---------- 景区选择 ---------- */

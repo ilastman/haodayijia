@@ -262,11 +262,40 @@ function tripPlace(plans, scenicsById, hotelsById) {
   return '';
 }
 
+function moneyText(n) {
+  const x = Math.round(num(n) * 100) / 100;
+  if (Object.is(x, -0)) return '0';
+  if (Math.abs(x - Math.round(x)) < 1e-9) return String(Math.round(x));
+  return String(x);
+}
+
 /* 对客报价只保留客人能看的每人价格，不带内部核算 */
 function guestQuoteText(amount) {
   const n = num(amount);
   if (!(n > 0)) return '';
-  return '¥' + n + '/人';
+  return '¥' + moneyText(n) + '/人';
+}
+
+/* 客人详情页上的总价：每人报价 ×（成人 + 儿童），并标注构成。没有报价或没有人数则不展示。 */
+function guestTotalView(amount, adults, children) {
+  const unit = num(amount);
+  if (!(unit > 0)) return null;
+  const a = Math.max(0, parseInt(adults, 10) || 0);
+  const c = Math.max(0, parseInt(children, 10) || 0);
+  const people = a + c;
+  if (!people) return null;
+  const total = Math.round(unit * people * 100) / 100;
+  const unitText = moneyText(unit);
+  return {
+    unit,
+    adults: a,
+    children: c,
+    people,
+    total,
+    text: '¥' + unitText + '/人',
+    totalText: '¥' + moneyText(total),
+    note: '¥' + unitText + '/人 · ' + a + ' 成人 · ' + c + ' 儿童'
+  };
 }
 
 /* 行程总价标注：金额 + 酒店/门票构成 + 成人/儿童人数。仅员工可见。 */
@@ -293,5 +322,5 @@ module.exports = {
   periodHasDate, periodHasMonth,
   periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, matchHotelPrice,
   deriveDays, calcQuote, publicHotelQuote, annotateQuote,
-  shareTitle, tripPlace, guestQuoteText
+  shareTitle, tripPlace, guestQuoteText, guestTotalView
 };
