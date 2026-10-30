@@ -6,6 +6,7 @@ const wb = require('../../utils/workbench');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
 const catalog = require('../../utils/catalog');
+const play = require('../../utils/play-items');
 const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -13,7 +14,7 @@ const MIN_DAYS = 1;
 const ITEM_H = 58;
 
 function emptyPlan() {
-  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] };
+  return { scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [], playItemSelections: [] };
 }
 
 function buildPlans(n) {
@@ -25,15 +26,19 @@ function buildPlans(n) {
 function normalizePlans(v, days) {
   const n = Math.max(MIN_DAYS, parseInt(days, 10) || 3);
   const src = Array.isArray(v) ? v : [];
-  const out = src.slice(0, n).map(p => ({
-    scenicIds: (p && Array.isArray(p.scenicIds) ? p.scenicIds : []).slice(),
-    hotelId: (p && p.hotelId) || '',
-    altHotelIds: (p && Array.isArray(p.altHotelIds) ? p.altHotelIds : []).slice(),
-    note: (p && p.note) || '',
-    roomType: (p && p.roomType) || '',
-    roomQty: Math.max(1, parseInt(p && p.roomQty, 10) || 1),
-    promoImgs: gallery.clipPromo(p && p.promoImgs)
-  }));
+  const out = src.slice(0, n).map(p => {
+    const scenicIds = (p && Array.isArray(p.scenicIds) ? p.scenicIds : []).slice();
+    return {
+      scenicIds,
+      hotelId: (p && p.hotelId) || '',
+      altHotelIds: (p && Array.isArray(p.altHotelIds) ? p.altHotelIds : []).slice(),
+      note: (p && p.note) || '',
+      roomType: (p && p.roomType) || '',
+      roomQty: Math.max(1, parseInt(p && p.roomQty, 10) || 1),
+      promoImgs: gallery.clipPromo(p && p.promoImgs),
+      playItemSelections: play.normalizeSelections(p && p.playItemSelections, scenicIds)
+    };
+  });
   while (out.length < n) out.push(emptyPlan());
   return out;
 }
@@ -371,7 +376,10 @@ Page({
   syncPlan() {
     const plans = this.plansArray();
     const plan = this.planAt(this.data.activeDay);
-    const curScenics = (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean);
+    const curScenics = play.decorateScenics(
+      (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean),
+      plan.playItemSelections
+    );
     const curHotel = plan.hotelId ? this.hotelById(plan.hotelId) : null;
     const altIds = Array.isArray(plan.altHotelIds) ? plan.altHotelIds : [];
     const altHotels = curHotel ? this.hotelsOf()
@@ -507,9 +515,23 @@ Page({
     const pos = ids.indexOf(id);
     if (pos > -1) ids.splice(pos, 1);
     else ids.push(id);
+    plans[idx].playItemSelections = play.normalizeSelections(plans[idx].playItemSelections, ids);
     this.setData({ plans });
     this.syncPlan();
     this.refreshSheet();
+  },
+
+  togglePlayItem(e) {
+    const scenicId = e.currentTarget.dataset.sid;
+    const itemId = e.currentTarget.dataset.pid;
+    const scenic = this.scenicById(scenicId);
+    const item = play.normalizePlayItems(scenic && scenic.playItems).filter(it => it.id === itemId)[0];
+    if (!item) return;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    const plan = plans[this.data.activeDay];
+    plan.playItemSelections = play.togglePlayItem(plan.playItemSelections, plan.scenicIds, scenicId, item);
+    this.setData({ plans });
+    this.syncPlan();
   },
 
   /* ---------- 酒店选择 ---------- */
@@ -603,6 +625,10 @@ Page({
     const idx = Number(e.currentTarget.dataset.index);
     const plans = normalizePlans(this.data.plans, this.data.days);
     plans[this.data.activeDay].scenicIds.splice(idx, 1);
+    plans[this.data.activeDay].playItemSelections = play.normalizeSelections(
+      plans[this.data.activeDay].playItemSelections,
+      plans[this.data.activeDay].scenicIds
+    );
     this.setData({ plans });
     this.syncPlan();
   },
@@ -810,6 +836,8 @@ Page({
       const seg = '第' + (i + 1) + '天';
       const parts = [];
       if (sc) parts.push('景区:' + sc);
+      const plays = (p.playItemSelections || []).map(row => play.playLine(row.items)).filter(Boolean);
+      if (plays.length) parts.push('游玩:' + plays.join('、'));
       if (p.hotelId) {
         const h = this.hotelById(p.hotelId);
         if (h) {

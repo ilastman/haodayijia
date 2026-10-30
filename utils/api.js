@@ -6,6 +6,7 @@
  */
 
 const cloud = require('./cloud');
+const play = require('./play-items');
 
 async function call(name, data) {
   const res = await cloud.callFunction(name, data);
@@ -105,7 +106,8 @@ function toScenic(s) {
     description: stripHtml(s.detailHtml),
     duration: s.duration || '',
     bestSeason: s.bestSeason || '',
-    tips: s.tags || []
+    tips: s.tags || [],
+    playItems: play.normalizePlayItems(s.playItems)
   };
 }
 
@@ -354,9 +356,10 @@ const api = {
           note: p.note || '',
           roomType: p.roomType || '',
           roomQty: p.roomQty || 1,
-          promoImgs: Array.isArray(p.promoImgs) ? p.promoImgs.slice(0, 2) : []
+          promoImgs: Array.isArray(p.promoImgs) ? p.promoImgs.slice(0, 2) : [],
+          playItemSelections: play.normalizeSelections(p.playItemSelections, p.scenicIds || [])
         }))
-        : (t.plan ? [{ scenicIds: [], hotelId: '', altHotelIds: [], note: t.plan, roomType: '', roomQty: 1, promoImgs: [] }] : []),
+        : (t.plan ? [{ scenicIds: [], hotelId: '', altHotelIds: [], note: t.plan, roomType: '', roomQty: 1, promoImgs: [], playItemSelections: [] }] : []),
       savedAt: t.createTime || '',
       isPublish: t.status === 'published'
     }));

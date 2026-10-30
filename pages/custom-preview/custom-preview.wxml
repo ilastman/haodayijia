@@ -57,6 +57,7 @@
           <view class="cp-spot-body">
             <view class="cp-spot-name">{{item.name}}</view>
             <view class="cp-spot-sub">{{item.dest}}</view>
+            <view class="cp-spot-sub" wx:if="{{item.playLine}}">{{item.playLine}}</view>
           </view>
           <view class="cp-arrow">›</view>
         </view>

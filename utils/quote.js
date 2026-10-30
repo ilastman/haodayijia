@@ -3,9 +3,12 @@
  * - 酒店：逐日累加，第 N 晚住第 N 晚；每晚按【入住日期】闭区间匹配价格档期
  *         小计 = 所选房型当档期价 × 当天间数
  * - 景区：解析文本 ticketPrice 得到固定单价，同景区重复出现重复累加
+ * - 游玩项目：当天 playItemSelections 里选中项的 price 同样按文本解析后 × 人数，并入门票
  * - 车辆：暂不参与选择（carCost 传 0 或外部值）
  * 价格数据来源：hotelPrice 集合（自定义日期区间，闭区间 []
  */
+
+const play = require('./play-items');
 
 function num(v) { const n = Number(v); return isNaN(n) ? 0 : n; }
 
@@ -144,6 +147,7 @@ function deriveDays(order) {
  *   hotelsById: { id: hotel },   // hotel.prices = [{roomType,start,end,price}]（或由 hotelPricesById 注入）
  *   hotelPricesById: { id: [{roomType,start,end,price}] },  // 可选：覆盖 hotelsById[id].prices
  *   scenicsById: { id: scenic },             // 需含 ticketPrice（原始字段）
+ *   plans[].playItemSelections: [{ scenicId, items:[{ id, name, price }] }]  // price 为字符串
  *   departDate, returnDate, people, carCost
  * }
  * 返回 { hotel, ticket, car, total, nights, days, people, breakdown:[...], missing:[...] }
@@ -192,6 +196,15 @@ function calcQuote(opts) {
       const sub = unit * people;
       ticketTotal += sub;
       breakdown.push({ day: dayLabel, type: 'scenic', name: s.name, unit, qty: people, subtotal: sub });
+    });
+
+    play.normalizeSelections(plan.playItemSelections, ids).forEach(row => {
+      row.items.forEach(it => {
+        const unit = parseTicketPrice(it.price);
+        const sub = unit * people;
+        ticketTotal += sub;
+        breakdown.push({ day: dayLabel, type: 'play', name: it.name, unit, qty: people, subtotal: sub });
+      });
     });
 
     if (plan.hotelId) {

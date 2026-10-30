@@ -37,6 +37,19 @@
         "address": { "type": "string", "description": "地址（Excel 导入）" },
         "openTime": { "type": "string", "description": "开放时间（Excel 导入）" },
         "ticketPrice": { "type": "string", "description": "参考门票（Excel 导入，可为文字如'免费/120元'）" },
+        "playItems": {
+          "type": "array",
+          "default": [],
+          "description": "游玩项目 [{id, name, price}]。price 为字符串，如 10元 / 免费，不限于纯数字",
+          "items": {
+            "type": "object",
+            "fields": {
+              "id": { "type": "string", "description": "项目ID" },
+              "name": { "type": "string", "description": "项目名称" },
+              "price": { "type": "string", "description": "价格原文，如 10元" }
+            }
+          }
+        },
         "feature": { "type": "string", "description": "特色看点（Excel 导入）" },
         "duration": { "type": "string", "description": "建议游玩时长" },
         "bestSeason": { "type": "string", "description": "最佳季节" },

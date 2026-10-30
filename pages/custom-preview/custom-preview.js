@@ -3,6 +3,7 @@ const data = require('../../utils/data');
 const api = require('../../utils/api');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
+const play = require('../../utils/play-items');
 const cloud = require('../../utils/cloud');
 const wb = require('../../utils/workbench');
 const { ph } = require('../../utils/util');
@@ -325,11 +326,16 @@ Page({
   },
 
   buildDay(p, i, days) {
+    const picked = {};
+    play.normalizeSelections(p.playItemSelections, p.scenicIds || []).forEach(row => {
+      picked[row.scenicId] = play.playLine(row.items);
+    });
     const scenics = (p.scenicIds || []).map(data.getScenic).filter(Boolean).map(s => ({
       id: s.id,
       name: s.name,
       img: s.cover,
-      dest: s.dest
+      dest: s.dest,
+      playLine: picked[s.id] || ''
     }));
     let hotel = null;
     if (p.hotelId) {
@@ -390,7 +396,8 @@ Page({
         note: p.note || '',
         roomType: p.roomType || '',
         roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1),
-        promoImgs: gallery.clipPromo(p.promoImgs)
+        promoImgs: gallery.clipPromo(p.promoImgs),
+        playItemSelections: play.normalizeSelections(p.playItemSelections, p.scenicIds || [])
       })),
       savedAt: TIME_STAMP
     };
