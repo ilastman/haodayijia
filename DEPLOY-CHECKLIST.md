@@ -5,7 +5,7 @@
 
 - 项目根：`C:\xiaochengxu`
 - AppID：`wx01bb5f6cfc904f92`
-- 云环境 ID：`cloudbase-d3gptvn88e6a4d78a`
+- 云环境名：`qq511601433`；云环境 ID：`qq511601433-d9g83bbc542c7988a`
 - 后台入口：微信开发者工具里运行 `tools/preview-server.js` 后访问 `http://127.0.0.1:8080/admin/index.html`
 - 后台默认账号：`admin / admin123`
 
@@ -14,7 +14,7 @@
 ## 0. 前置条件
 
 - [ ] 安装微信开发者工具（稳定版），并用 AppID `wx01bb5f6cfc904f92` 打开本项目。
-- [ ] 云开发已开通，环境 ID 为 `cloudbase-d3gptvn88e6a4d78a`（云开发控制台可确认）。
+- [ ] 云开发已开通，环境 ID 为 `qq511601433-d9g83bbc542c7988a`（环境名 `qq511601433`，云开发控制台可确认）。云函数与 `httpGateway` 需另行部署到该环境后，网关地址才会可用。
 - [ ] 本机 Node.js ≥ 16（当前 v24 可用），PowerShell 中 `npm.cmd` 可用（本机策略拦截 `npm` 时可改用 `npm.cmd`）。
 - [ ] 无需 cloudbase CLI；云函数部署走微信开发者工具「上传并部署」，初始化函数走云开发控制台「测试」。
 
@@ -161,7 +161,7 @@ Get-ChildItem -Recurse -Filter *.js -Path admin\js | ForEach-Object { node --che
 - [ ] 复制生成的公网地址，形如：
 
   ```text
-  https://cloudbase-d3gptvn88e6a4d78a.service.tcloudbase.com/httpGateway
+  https://qq511601433-d9g83bbc542c7988a.service.tcloudbase.com/httpGateway
   ```
 
   （实际路径以控制台显示为准，通常是函数名。）
@@ -170,8 +170,8 @@ Get-ChildItem -Recurse -Filter *.js -Path admin\js | ForEach-Object { node --che
   ```js
   window.ADMIN_CONFIG = {
     mode: 'cloud',
-    envId: 'cloudbase-d3gptvn88e6a4d78a',
-    gateway: 'https://cloudbase-d3gptvn88e6a4d78a.service.tcloudbase.com/httpGateway'
+    envId: 'qq511601433-d9g83bbc542c7988a',
+    gateway: 'https://qq511601433-d9g83bbc542c7988a.service.tcloudbase.com/httpGateway'
   };
   ```
 - [ ] 保存。`Cloud.enabled()` 现在为 `true`，后台自动改走云端（`gateway` 为空时自动回退本地桥，属正常降级）。
@@ -195,7 +195,7 @@ Get-ChildItem -Recurse -Filter *.js -Path admin\js | ForEach-Object { node --che
 
 ## 9. 小程序端接云验证（不改页面逻辑，仅配置）
 
-- [ ] 确认 `utils/config.js` 的 `envId = 'cloudbase-d3gptvn88e6a4d78a'`。
+- [ ] 确认 `utils/config.js` 的 `envId = 'qq511601433-d9g83bbc542c7988a'`。
 - [ ] 生产/真机联调：将 `utils/config.js` 的 `useBridge` 置为 `false`（不再走本地桥，直接走 `wx.cloud.callFunction`）。
 
   > 开发预览可保留 `useBridge: true`；真机 / 体验版 / 发布前务必置 `false`。

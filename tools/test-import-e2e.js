@@ -8,7 +8,7 @@ const https = require('https');
 const HI = require('../admin/js/hotel-import.js');
 const { readXlsx } = require('./xlsx-read.js');
 
-const GATEWAY = 'https://cloudbase-d3gptvn88e6a4d78a.service.tcloudbase.com/httpGateway';
+const GATEWAY = 'https://qq511601433-d9g83bbc542c7988a.service.tcloudbase.com/httpGateway';
 const SAMPLE = 'C:\\Users\\51160\\AppData\\Local\\Temp\\opencode\\hotel-sample.xlsx';
 const COMMIT = process.argv.indexOf('--commit') >= 0;
 

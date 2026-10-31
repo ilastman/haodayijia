@@ -17,7 +17,7 @@
  *   --no-install          随包上传 node_modules（默认走云端安装依赖）
  *   --timeout <秒>        同时更新函数超时时间
  *   --memory <MB>         同时更新函数内存
- *   --env <envId>         云环境 ID（默认 cloudbase-d3gptvn88e6a4d78a）
+ *   --env <envId>         云环境 ID（默认 qq511601433-d9g83bbc542c7988a）
  *   --region <region>     地域（默认 ap-shanghai）
  *   --namespace <ns>      SCF 命名空间（默认取 envId）
  *
@@ -36,7 +36,7 @@ const ROOT = path.resolve(__dirname, '..');
 
 /* ---------------- 参数解析 ---------------- */
 const argv = process.argv.slice(2);
-const opts = { dir: null, install: true, timeout: null, memory: null, env: 'cloudbase-d3gptvn88e6a4d78a', region: 'ap-shanghai', namespace: null, all: false };
+const opts = { dir: null, install: true, timeout: null, memory: null, env: 'qq511601433-d9g83bbc542c7988a', region: 'ap-shanghai', namespace: null, all: false };
 const names = [];
 for (let i = 0; i < argv.length; i++) {
   const a = argv[i];
