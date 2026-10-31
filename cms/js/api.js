@@ -10,7 +10,7 @@
 //    配置 httpGateway 后优先走真实云端；本地预览可随时设回 mock: true。
 const API = {
   // 浏览器网关完整 URL（留空则不会走网关）
-  httpGateway: 'https://cloudbase-d3gptvn88e6a4d78a.service.tcloudbase.com/httpGateway',
+  httpGateway: 'https://qq511601433-d9g83bbc542c7988a.service.tcloudbase.com/httpGateway',
   // 本地预览开关（仅当非微信环境且 httpGateway 为空时生效）
   mock: true,
 

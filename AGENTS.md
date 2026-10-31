@@ -5,9 +5,9 @@
 ## 环境
 
 - 小程序 AppID：`wx01bb5f6cfc904f92`
-- 云开发环境 ID：`cloudbase-d3gptvn88e6a4d78a`（地域 `ap-shanghai`，个人版）
-- PC 后台公网地址（默认托管域，根 = `admin/`）：`https://cloudbase-d3gptvn88e6a4d78a-1376001235.tcloudbaseapp.com/`
-- 统一云函数网关：`https://cloudbase-d3gptvn88e6a4d78a.service.tcloudbase.com/httpGateway`
+- 云开发环境名：`qq511601433`；环境 ID：`qq511601433-d9g83bbc542c7988a`（地域 `ap-shanghai`）
+- PC 后台公网地址（默认托管域，根 = `admin/`）：静态托管开通后形如 `https://qq511601433-d9g83bbc542c7988a-<腾讯云AppID>.tcloudbaseapp.com/`。AppID 后缀属于账号，需在新环境控制台确认后才能当作线上地址；本次未部署托管。
+- 统一云函数网关（预期地址，云函数与 `httpGateway` 尚未部署到新环境）：`https://qq511601433-d9g83bbc542c7988a.service.tcloudbase.com/httpGateway`
 - 后台账号：`admin` / `admin123`
 - Shell：Windows PowerShell 5.1。**不能用** `&&`、`.ps1`、`tail`/`grep`/`sed`；用 `;`、`Select-Object`、`Select-String`。tcb 命令用 `& "$env:APPDATA\npm\tcb.cmd" ...`。
 
@@ -32,10 +32,10 @@ node tools\deploy-fn.js workOrderPdf --timeout 30 --memory 512
 node tools\deploy-fn.js --all
 
 # 部署 PC 后台到托管
-& "$env:APPDATA\npm\tcb.cmd" hosting deploy ./admin -e cloudbase-d3gptvn88e6a4d78a --entry index.html --verify
+& "$env:APPDATA\npm\tcb.cmd" hosting deploy ./admin -e qq511601433-d9g83bbc542c7988a --entry index.html --verify
 
 # 调用云函数（调试）
-& "$env:APPDATA\npm\tcb.cmd" fn invoke workbenchInit --params '{}' -e cloudbase-d3gptvn88e6a4d78a --json
+& "$env:APPDATA\npm\tcb.cmd" fn invoke workbenchInit --params '{}' -e qq511601433-d9g83bbc542c7988a --json
 ```
 
 ## 关键须知：云函数部署

@@ -7,8 +7,8 @@
  * - 任一数据源不可用时自动回退到本地静态数据（utils/data.js），保证 UI 不空白
  */
 module.exports = {
-  // 云开发环境 ID（当前环境）
-  envId: 'cloudbase-d3gptvn88e6a4d78a',
+  // 云开发环境 ID（当前环境 qq511601433）
+  envId: 'qq511601433-d9g83bbc542c7988a',
   // 本地数据桥开关：本地开发预览可用；真机/生产可置为 false
   useBridge: true,
   apiBase: 'http://127.0.0.1:8080'

@@ -8,7 +8,7 @@ App({
   },
 
   onLaunch() {wx.cloud.init({
-    env: "cloudbase-d3gptvn88e6a4d78a",
+    env: "qq511601433-d9g83bbc542c7988a",
     traceUser: true
   })
   

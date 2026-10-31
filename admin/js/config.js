@@ -16,10 +16,10 @@
 window.ADMIN_CONFIG = {
   mode: 'cloud',
   // 云开发环境 ID（后台仅作记录；小程序侧在 utils/config.js 使用）
-  envId: 'cloudbase-d3gptvn88e6a4d78a',
+  envId: 'qq511601433-d9g83bbc542c7988a',
   // 例：https://<env-id>.service.tcloudbase.com/http-gateway
-  // 暂不填写时后台自动回退本地数据桥（mode 仍为 cloud，代码已就绪）
-  gateway: 'https://cloudbase-d3gptvn88e6a4d78a.service.tcloudbase.com/httpGateway'
+  // 预期地址：httpGateway 部署到新环境并开启 HTTP 访问服务后生效。尚未部署时请求会失败。
+  gateway: 'https://qq511601433-d9g83bbc542c7988a.service.tcloudbase.com/httpGateway'
 };
 
 /* 全局一级大区（酒店 / 线路 / 景区 共用） */
