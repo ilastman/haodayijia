@@ -183,6 +183,7 @@ const copy = {
     envTitle: '酒店环境',
     roomTitle: '房型特色',
     locTitle: '周边位置',
+    facTitle: '配套设施',
     priceTitle: '分时段价格'
   },
 

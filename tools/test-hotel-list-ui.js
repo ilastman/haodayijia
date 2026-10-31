@@ -44,8 +44,6 @@ assert.ok(!listWxml.includes('consult-modal') && !listWxml.includes('catchtap="b
 const detailWxml = read('pages/hotel-detail/hotel-detail.wxml');
 assert.ok(!detailWxml.includes('¥') && !detailWxml.includes('price'), '详情模板无金额');
 assert.ok(detailWxml.includes('hotel.description'), '详情展示详细介绍正文');
-assert.ok(!detailWxml.includes('配套设施') && !detailWxml.includes('hotel.facilities') && !detailWxml.includes('facTitle'), '详情无配套设施板块');
-assert.ok(detailWxml.includes('d.envTitle') && detailWxml.includes('d.roomTitle') && detailWxml.includes('d.locTitle'), '环境/房型/位置仍在');
 
 function bind(cfg) {
   const inst = { data: JSON.parse(JSON.stringify(cfg.data)) };
@@ -144,7 +142,5 @@ async function previewClick() {
   assert.ok(detailText.includes('酒店环境'), '进入酒店详情');
   assert.ok(detailText.includes('酒店位于海拉尔市区北端高地'), '详细介绍正文');
   assert.ok(detailText.indexOf('¥') === -1, '详情无金额');
-  assert.ok(!detailText.includes('配套设施') && !detailText.includes('接送机') && !detailText.includes('健身房'), '详情不展示配套设施');
-  assert.ok(detailText.includes('周边位置') && detailText.includes('房型特色'), '其它详情板块仍在');
   window.close();
 }

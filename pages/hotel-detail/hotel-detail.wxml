@@ -41,6 +41,14 @@
     <view class="desc">{{hotel.location}}</view>
   </view>
 
+  <!-- 配套设施 -->
+  <view class="block">
+    <view class="block-title">{{d.facTitle}}</view>
+    <view class="fac-chips">
+      <text class="chip" wx:for="{{hotel.facilities}}" wx:key="*this">{{item}}</text>
+    </view>
+  </view>
+
   <view class="bottom-holder"></view>
 
   <!-- 底部咨询定制 -->
