@@ -63,6 +63,16 @@
   font-weight: 500;
 }
 
+.cloud-miss {
+  margin: 16rpx 24rpx 0;
+  padding: 16rpx 20rpx;
+  font-size: 24rpx;
+  line-height: 1.5;
+  color: #8A5A2A;
+  background: #F6E7CF;
+  border-radius: 12rpx;
+}
+
 /* 景区卡片 */
 .list {
   padding: 12rpx 24rpx;
