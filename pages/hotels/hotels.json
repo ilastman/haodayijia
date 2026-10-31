@@ -1,7 +1,4 @@
 {
   "navigationBarTitleText": "酒店预订",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "consult-modal": "/components/consult-modal/consult-modal"
-  }
+  "enablePullDownRefresh": false
 }

@@ -33,13 +33,9 @@
         <view class="tags">
           <text class="tag" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
         </view>
-        <view class="hotel-price-row">
-          <view class="price">
-            <text class="price-symbol">¥</text>
-            <text class="price-num">{{item.price}}</text>
-            <text class="per">{{perNight}}</text>
-          </view>
-          <view class="book-btn" catchtap="book" data-name="{{item.name}}">{{bookLabel}}</view>
+        <view class="hotel-foot">
+          <text class="hotel-place" wx:if="{{item.placeLabel}}">{{item.placeLabel}}</text>
+          <view class="book-btn" catchtap="goDetail" data-id="{{item.id}}">{{bookLabel}}</view>
         </view>
       </view>
     </view>
@@ -51,6 +47,4 @@
   </view>
 
   <view class="safe-bottom"></view>
-
-  <consult-modal visible="{{consultVisible}}" route-title="{{currentName}}" bind:close="onConsultClose" />
 </view>

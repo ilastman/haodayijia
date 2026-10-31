@@ -8,7 +8,9 @@ function ok(cond, msg) {
 function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
 (async () => {
-  const dom = await JSDOM.fromFile('C:/xiaochengxu/preview.html', {
+  const path = require('path');
+  const previewFile = path.join(__dirname, '..', 'preview.html');
+  const dom = await JSDOM.fromFile(previewFile, {
     runScripts: 'dangerously',
     resources: 'usable',
     pretendToBeVisual: true
@@ -360,25 +362,26 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(50);
   ok($('#screen').textContent.includes('热门'), '返回首页');
 
-  // 12b. 酒店列表 -> 预订咨询(不出跳) -> 详情 -> 咨询定制
+  // 12b. 酒店列表 -> 查看详情（进该酒店详细介绍，不出咨询弹窗）-> 详情咨询定制仍可用
   const hotelNav = $$('#screen .nav-item').find(e => /酒店/.test(e.textContent));
   ok(!!hotelNav, '首页酒店导航存在');
   click(hotelNav);
   await sleep(80);
   ok($('#screen').textContent.includes('精选草原沿线住宿'), '进入酒店列表');
   ok($$('#screen .hotel').length === 8, '酒店列表 8 项');
-  ok($$('#screen .book-btn').length === 8, '酒店列表预订入口 8 个');
-  click($('#screen .book-btn'));
-  await sleep(50);
-  ok(!!$('#screen .mask'), '列表预订咨询弹窗打开');
-  ok($('#screen').textContent.includes('咨询线路：酒店：海拉尔草原天际酒店'), '弹窗带酒店名');
-  ok(!$('#screen').textContent.includes('酒店环境'), '弹窗不触发跳转详情');
-  click($('#screen .mask'));
-  await sleep(50);
-  ok(!$('#screen .mask'), '弹窗点击遮罩关闭');
-  click($('#screen .hotel'));
+  const bookBtns = $$('#screen .book-btn');
+  ok(bookBtns.length === 8, '酒店列表查看详情 8 个');
+  ok(bookBtns.every(b => b.textContent.trim() === '查看详情'), '按钮文案为查看详情');
+  ok(!$('#screen').textContent.includes('预订咨询'), '列表不再出现预订咨询');
+  ok($('#screen').textContent.indexOf('¥') === -1, '列表不展示金额');
+  ok(!$('#screen').textContent.includes('起 / 晚'), '列表不展示每晚价格');
+  const places = $$('#screen .hotel-place').map(e => e.textContent.trim());
+  ok(places.length === 8 && places[0] === '海拉尔' && places.indexOf('满洲里') >= 0, '原价位展示地区: ' + places.join(','));
+  click(bookBtns[0]);
   await sleep(80);
-  ok($('#screen').textContent.includes('酒店环境'), '进入酒店详情(酒店环境)');
+  ok(!$('#screen .mask'), '查看详情不打开咨询弹窗');
+  ok($('#screen').textContent.includes('酒店环境'), '查看详情进入酒店详情');
+  ok($('#screen').textContent.includes('酒店位于海拉尔市区北端高地'), '详情展示该酒店详细介绍');
   ok($('#screen').textContent.includes('房型特色') && $('#screen').textContent.includes('周边位置'), '详情含房型/位置板块');
   ok($$('#screen .gallery-img').length === 3, '酒店轮播 3 张');
   ok($('#nav-back').style.visibility === 'visible', '酒店详情显示返回');
