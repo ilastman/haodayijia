@@ -172,9 +172,8 @@ const copy = {
   hotels: {
     title: '酒店预订',
     subtitle: '精选草原沿线住宿',
-    perNight: '起 / 晚',
     score: '分',
-    book: '预订咨询',
+    book: '查看详情',
     empty: '暂无酒店'
   },
 
