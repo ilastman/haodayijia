@@ -105,7 +105,8 @@ function toScenic(s) {
     description: stripHtml(s.detailHtml),
     duration: s.duration || '',
     bestSeason: s.bestSeason || '',
-    tips: s.tags || []
+    tips: s.tags || [],
+    weight: Number(s.weight) || 0
   };
 }
 

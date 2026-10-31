@@ -99,7 +99,25 @@ Page({
       if (share) this.prefillShare(share);
     }
     this.initStaff();
+    this.loadCatalog();
   },
+
+  /* 选景区/酒店走云端列表。失败时才回退 utils/data.js 的本地示例（里面没有后台导入的娱乐） */
+  async loadCatalog() {
+    try {
+      const [scenics, hotels] = await Promise.all([api.scenics(), api.hotels()]);
+      if (scenics && scenics.length) this._scenics = scenics;
+      if (hotels && hotels.length) this._hotels = hotels;
+    } catch (e) { /* 继续用本地示例 */ }
+    this.syncPlan();
+    if (this.data.sheet && this.data.sheet.type === 'scenic') this.setData({ sheetScenics: this.scenicOptions() });
+    else if (this.data.sheet && this.data.sheet.type === 'hotel') this.setData({ sheetHotels: this.hotelOptions() });
+  },
+
+  scenicsOf() { return (this._scenics && this._scenics.length) ? this._scenics : data.scenics; },
+  hotelsOf() { return (this._hotels && this._hotels.length) ? this._hotels : data.hotels; },
+  scenicById(id) { return this.scenicsOf().filter(s => s.id === id)[0] || data.getScenic(id) || null; },
+  hotelById(id) { return this.hotelsOf().filter(h => h.id === id)[0] || null; },
 
   /* 员工身份识别：仅员工加载云端后台价并显示内部核价 */
   async initStaff() {
@@ -281,10 +299,10 @@ Page({
   syncPlan() {
     const plans = this.plansArray();
     const plan = this.planAt(this.data.activeDay);
-    const curScenics = (plan.scenicIds || []).map(data.getScenic).filter(Boolean);
-    const curHotel = data.hotels.filter(h => h.id === plan.hotelId)[0] || null;
+    const curScenics = (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean);
+    const curHotel = this.hotelById(plan.hotelId);
     const altIds = Array.isArray(plan.altHotelIds) ? plan.altHotelIds : [];
-    const altHotels = curHotel ? data.hotels
+    const altHotels = curHotel ? this.hotelsOf()
       .filter(h => h.id !== curHotel.id && h.stars === curHotel.stars)
       .map(h => ({ id: h.id, name: h.name, sel: altIds.indexOf(h.id) > -1 })) : [];
     let totalScenic = 0;
@@ -328,12 +346,12 @@ Page({
   scenicOptions() {
     const plan = this.planAt(this.data.activeDay);
     const ids = plan.scenicIds || [];
-    return data.scenics.map(s => Object.assign({}, s, { sel: ids.indexOf(s.id) > -1 }));
+    return this.scenicsOf().map(s => Object.assign({}, s, { sel: ids.indexOf(s.id) > -1 }));
   },
 
   hotelOptions() {
     const plan = this.planAt(this.data.activeDay);
-    return data.hotels.map(h => Object.assign({}, h, { sel: h.id === plan.hotelId }));
+    return this.hotelsOf().map(h => Object.assign({}, h, { sel: h.id === plan.hotelId }));
   },
 
   /* ---------- 景区选择 ---------- */
@@ -520,15 +538,15 @@ Page({
     const lines = [];
     plans.forEach((p, i) => {
       if (!p) return;
-      const sc = (p.scenicIds || []).map(data.getScenic).filter(Boolean).map(s => s.name).join('、');
+      const sc = (p.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean).map(s => s.name).join('、');
       const seg = '第' + (i + 1) + '天';
       const parts = [];
       if (sc) parts.push('景区:' + sc);
       if (p.hotelId) {
-        const h = data.hotels.filter(x => x.id === p.hotelId)[0];
+        const h = this.hotelById(p.hotelId);
         if (h) {
           let hseg = '宿:' + h.name;
-          const alts = (p.altHotelIds || []).map(id => data.hotels.filter(x => x.id === id)[0]).filter(Boolean).map(x => x.name);
+          const alts = (p.altHotelIds || []).map(id => this.hotelById(id)).filter(Boolean).map(x => x.name);
           if (alts.length) hseg += '（备选:' + alts.join('、') + '）';
           parts.push(hseg);
         }

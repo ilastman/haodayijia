@@ -21,6 +21,8 @@
     <view class="cat {{activeCat === item ? 'on' : ''}}" wx:for="{{cats}}" wx:key="*this" bindtap="onCat" data-cat="{{item}}">{{item}}</view>
   </scroll-view>
 
+  <view class="cloud-miss" wx:if="{{usingLocal}}">未连上云端，当前是本地示例。后台新导入的景区（含娱乐）不会出现在这里。</view>
+
   <!-- 景区列表 -->
   <view class="list" wx:if="{{list.length > 0}}">
     <view class="scenic" wx:for="{{list}}" wx:key="id" bindtap="goDetail" data-id="{{item.id}}">

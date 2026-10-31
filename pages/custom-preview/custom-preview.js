@@ -50,13 +50,25 @@ function buildInfo(days, month) {
   ];
 }
 
-function buildOverallTips(plans) {
+function scenicOf(page, id) {
+  const map = page && page._scenicsById;
+  if (map && map[id]) return map[id];
+  return data.getScenic(id);
+}
+
+function hotelOf(page, id) {
+  const map = page && page._hotelsById;
+  if (map && map[id]) return map[id];
+  return (data.hotels || []).filter(h => h.id === id)[0] || null;
+}
+
+function buildOverallTips(plans, page) {
   const tips = FIXED_TIPS.slice();
   const seen = {};
   FIXED_TIPS.forEach(t => { seen[t] = 1; });
   (plans || []).forEach(p => {
     (p.scenicIds || []).forEach(id => {
-      const s = data.getScenic(id);
+      const s = scenicOf(page, id);
       if (!s) return;
       (s.tips || []).forEach(t => {
         if (tips.length >= 7 || seen[t]) return;
@@ -117,7 +129,27 @@ Page({
       fromList,
       editingId: fromList ? (query.trip || '') : editingId,
       infoTags: buildInfo(days, monthFromDate(date)),
-      overallTips: buildOverallTips(plans)
+      overallTips: buildOverallTips(plans, this)
+    });
+    this.loadCloud();
+  },
+
+  /* 预览里的景区/酒店名称走云端，否则后台导入的娱乐只有 id、本地示例对不上 */
+  async loadCloud() {
+    try {
+      const [scenics, hotels] = await Promise.all([api.scenics(), api.hotels()]);
+      const scenicsById = {};
+      const hotelsById = {};
+      (scenics || []).forEach(s => { if (s && s.id) scenicsById[s.id] = s; });
+      (hotels || []).forEach(h => { if (h && h.id) hotelsById[h.id] = h; });
+      if (Object.keys(scenicsById).length) this._scenicsById = scenicsById;
+      if (Object.keys(hotelsById).length) this._hotelsById = hotelsById;
+    } catch (e) { /* 继续用本地示例 */ }
+    const plans = this._plans || [];
+    this.setData({
+      heroTiles: this.buildHero(plans),
+      dayList: plans.map((p, i) => this.buildDay(p, i, this.data.days)),
+      overallTips: buildOverallTips(plans, this)
     });
   },
 
@@ -135,7 +167,7 @@ Page({
     plans.forEach(p => {
       (p.scenicIds || []).forEach(id => {
         if (seen.length >= MAX_TILES || seen.some(t => t.id === id)) return;
-        const s = data.getScenic(id);
+        const s = scenicOf(this, id);
         if (s) seen.push({ id, img: s.cover, name: s.name });
       });
     });
@@ -144,7 +176,7 @@ Page({
   },
 
   buildDay(p, i, days) {
-    const scenics = (p.scenicIds || []).map(data.getScenic).filter(Boolean).map(s => ({
+    const scenics = (p.scenicIds || []).map(id => scenicOf(this, id)).filter(Boolean).map(s => ({
       id: s.id,
       name: s.name,
       img: s.cover,
@@ -152,9 +184,9 @@ Page({
     }));
     let hotel = null;
     if (p.hotelId) {
-      const h = data.hotels.filter(x => x.id === p.hotelId)[0];
+      const h = hotelOf(this, p.hotelId);
       if (h) {
-        const alts = (p.altHotelIds || []).map(id => data.hotels.filter(x => x.id === id)[0]).filter(Boolean).map(x => x.name);
+        const alts = (p.altHotelIds || []).map(id => hotelOf(this, id)).filter(Boolean).map(x => x.name);
         const roomType = p.roomType || '';
         const qty = Math.max(1, parseInt(p.roomQty, 10) || 1);
         hotel = { id: h.id, name: h.name, img: h.image, meta: h.stars + ' · ' + h.area, alts, roomType, qty };
