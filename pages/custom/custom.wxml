@@ -161,20 +161,6 @@
     </view>
   </view>
 
-  <view class="card car-card">
-    <view class="card-title">{{c.carTitle}}</view>
-    <view class="add-btn" bindtap="openCar">+ {{c.addCar}}</view>
-    <view class="hotel-sel" wx:if="{{curCar}}">
-      <image class="hotel-cover" src="{{curCar.image}}" mode="aspectFill" lazy-load="{{true}}" />
-      <view class="sel-body">
-        <view class="sel-name">{{curCar.name}}</view>
-        <view class="sel-sub">{{curCar.type}} · {{curCar.seats}}座</view>
-      </view>
-      <view class="op-btn del" bindtap="clearCar">{{c.remove}}</view>
-    </view>
-    <view class="sel-empty" wx:else>{{c.carEmpty}}</view>
-  </view>
-
   <view class="card">
     <view class="card-title">{{c.promoTitle}}</view>
     <view class="tip-line">{{c.promoHint}}</view>
@@ -196,6 +182,20 @@
         <text class="upload-sub">{{c.promoSlotPick}}</text>
       </view>
     </view>
+  </view>
+
+  <view class="card car-card">
+    <view class="card-title">{{c.carTitle}}</view>
+    <view class="add-btn" bindtap="openCar">+ {{c.addCar}}</view>
+    <view class="hotel-sel" wx:if="{{curCar}}">
+      <image class="hotel-cover" src="{{curCar.image}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="sel-body">
+        <view class="sel-name">{{curCar.name}}</view>
+        <view class="sel-sub">{{curCar.type}} · {{curCar.seats}}座</view>
+      </view>
+      <view class="op-btn del" bindtap="clearCar">{{c.remove}}</view>
+    </view>
+    <view class="sel-empty" wx:else>{{c.carEmpty}}</view>
   </view>
 
   <view class="card">

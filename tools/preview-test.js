@@ -442,9 +442,10 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   ok(!!promoPick && promoPick.textContent.indexOf('当日宣传图') >= 0 && promoPick.textContent.indexOf('图库') >= 0, '宣传图图库槽同一类图片');
   const pageText = $('#screen').textContent;
   const hotelAt = pageText.indexOf('当日酒店');
+  const promoAt = pageText.indexOf('当日宣传图');
   const carAt = pageText.indexOf('用车车型');
   const noteAt = pageText.indexOf('当日备注');
-  ok(hotelAt >= 0 && carAt > hotelAt && noteAt > carAt, '用车车型紧跟当日酒店、在备注之前');
+  ok(hotelAt >= 0 && promoAt > hotelAt && carAt > promoAt && noteAt > carAt, '酒店之后是宣传图，再用车，然后备注');
   click($('#screen .car-card .add-btn'));
   await sleep(40);
   ok($('#screen .sheet-title') && $('#screen .sheet-title').textContent.trim() === '选择车型', '车型仍走选择面板');
