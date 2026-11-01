@@ -3,6 +3,56 @@ const data = require('../../utils/data');
 const api = require('../../utils/api');
 const { ICONS } = require('../../utils/util');
 
+/* 私人定制名片默认进现有定制页；云端金刚区若改过该入口地址，以云端为准 */
+const CUSTOM_PAGE = '/pages/custom/custom';
+
+/* 内置绿色 data URI 线稿换成首页大地色图标；后台单独上传的图保持原样 */
+const NAV_ICON_BY_LABEL = {
+  '私家团': '/images/nav/private.svg',
+  '拼团': '/images/nav/group.svg',
+  '景区': '/images/nav/scenic.svg',
+  '酒店': '/images/nav/hotel.svg',
+  '旅行攻略': '/images/nav/guide.svg'
+};
+
+function iconText(src) {
+  try { return decodeURIComponent(src || ''); } catch (e) { return src || ''; }
+}
+
+function isPrivateCustom(item) {
+  if (!item) return false;
+  const label = String(item.label || '').replace(/\s/g, '');
+  const key = String(item.key || '');
+  const url = String(item.url || '');
+  if (label === '私人定制' || key === 'custom') return true;
+  return /\/pages\/custom\/custom(?:\?|$)/.test(url);
+}
+
+function presentNavIcon(item) {
+  const src = (item && item.icon) || '';
+  const local = NAV_ICON_BY_LABEL[item && item.label];
+  if (!local) return item;
+  const decoded = iconText(src);
+  const stockSvg = decoded.indexOf('data:image/svg+xml') === 0 && /2F8F5B/i.test(decoded);
+  if (!src || stockSvg) return Object.assign({}, item, { icon: local });
+  return item;
+}
+
+function presentNav(list) {
+  const navIcons = [];
+  let customUrl = CUSTOM_PAGE;
+  (list || []).forEach(item => {
+    if (isPrivateCustom(item)) {
+      if (item.url) customUrl = item.url;
+      return;
+    }
+    navIcons.push(presentNavIcon(item));
+  });
+  return { navIcons, customUrl };
+}
+
+const homeNav = presentNav(data.navIcons);
+
 Page({
   data: {
     brand: copy.brand,
@@ -11,7 +61,8 @@ Page({
     home: copy.home,
     serviceIcon: ICONS.serviceWhite,
     banners: data.banners,
-    navIcons: data.navIcons,
+    navIcons: homeNav.navIcons,
+    customUrl: homeNav.customUrl,
     destinations: data.destinations,
     hotRoutes: data.pickRoutes(data.hotRouteIds),
     offers: data.pickRoutes(data.offerIds),
@@ -44,7 +95,11 @@ Page({
       const [banners, navIcons, home] = await Promise.all([api.banners(), api.homeModules(), api.homeContent()]);
       const patch = {};
       if (banners && banners.length) patch.banners = banners;
-      if (navIcons && navIcons.length) patch.navIcons = navIcons;
+      if (navIcons && navIcons.length) {
+        const next = presentNav(navIcons);
+        patch.navIcons = next.navIcons;
+        patch.customUrl = next.customUrl;
+      }
       if (home) {
         if (home.hot && home.hot.length) patch.hotRoutes = home.hot;
         if (home.offers && home.offers.length) patch.offers = home.offers;
@@ -81,6 +136,10 @@ Page({
 
   onNav(e) {
     this.openUrl(e.currentTarget.dataset.url);
+  },
+
+  goCustom() {
+    this.openUrl(this.data.customUrl || CUSTOM_PAGE);
   },
 
   openUrl(url) {

@@ -8,7 +8,12 @@
     </swiper-item>
   </swiper>
 
-  <!-- 2. 横向图标导航 -->
+  <!-- 2. 私人定制名片（代替原金刚区入口） -->
+  <view class="custom-card" hover-class="custom-card-on" bindtap="goCustom" aria-role="button" aria-label="定制一段专属冬旅">
+    <image class="custom-card-img" src="/images/home/custom-card.jpg" mode="widthFix" />
+  </view>
+
+  <!-- 3. 横向图标导航 -->
   <view class="nav-bar">
     <view class="nav-item" wx:for="{{navIcons}}" wx:key="key" bindtap="onNav" data-url="{{item.url}}">
       <view class="nav-icon">
