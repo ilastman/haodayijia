@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 750 900" fill="none">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F2C9A0"/>
+      <stop offset="0.38" stop-color="#C45B32"/>
+      <stop offset="0.7" stop-color="#8A3E2A"/>
+      <stop offset="1" stop-color="#3A2A22"/>
+    </linearGradient>
+  </defs>
+  <rect width="750" height="900" fill="url(#sky)"/>
+  <path d="M0 500c90 80 160 40 250 10 110-36 180 70 300 40 80-20 140 30 200 10v340H0V500z" fill="#5C2E22" opacity="0.4"/>
+  <path d="M0 680c180-80 300-20 460-60 120-30 200 20 290-10v290H0V680z" fill="#2C1814" opacity="0.5"/>
+  <text x="120" y="250" fill="#FBF7F0" font-size="64" font-family="Georgia, 'Songti SC', serif">阿尔山秋色</text>
+</svg>

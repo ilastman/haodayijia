@@ -47,8 +47,12 @@
       '.pv-swiper{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}',
       '.pv-slide{flex:0 0 100%;height:100%;scroll-snap-align:start}',
       '.pv-swiper-wrap,.pv-swiper,.pv-slide{height:100%}',
-      '.pv-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;z-index:5;pointer-events:none}',
+      '.pv-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;align-items:center;z-index:5;pointer-events:none}',
       '.pv-dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.5);margin:0 3px;transition:width .2s}',
+      '.pv-swiper-wrap.banner .pv-dots{bottom:58px}',
+      '.pv-swiper-wrap.banner .pv-dots i{width:5px;height:5px;border-radius:5px;box-shadow:0 1px 2px rgba(36,28,20,.28)}',
+      '.pv-swiper-wrap.banner .pv-dots i.on{width:14px}',
+      '.pv-slide{position:relative}',
       '.pv-comp{display:contents}',
       '.pv-date-input{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;border:none;padding:0;background:transparent}',
       '.pv-toast{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);background:rgba(0,0,0,.78);color:#fff;font-size:14px;line-height:1.5;padding:14px 18px;border-radius:10px;max-width:80%;text-align:center;z-index:2000}',
@@ -236,7 +240,10 @@
     previewImage: previewImage,
     showActionSheet: function (o) {
       openSheet(o.itemList || [], function (i) { o.success && o.success({ tapIndex: i }); }, function () { o.fail && o.fail(); });
-    }
+    },
+    /* app.js / 首页 onLoad 会调用；预览环境没有真云开发 */
+    cloud: { init: function () {}, callFunction: function () { return Promise.resolve({ result: null }); } },
+    showShareMenu: function () {}
   };
 
   /* ================= WXML 解析 ================= */
@@ -641,6 +648,7 @@
       for (var i = 0; i < slides.length; i++) {
         var d = document.createElement('i');
         d.style.background = i === 0 ? activeColor : idleColor;
+        d.className = i === 0 ? 'on' : '';
         dotsBox.appendChild(d);
       }
       wrap.appendChild(dotsBox);
@@ -656,6 +664,7 @@
       var idx = activeIndex();
       Array.prototype.forEach.call(dotsBox.children, function (d, i) {
         d.style.background = i === idx ? active : idle;
+        d.className = i === idx ? 'on' : '';
       });
     }
     var lastTouch = 0;

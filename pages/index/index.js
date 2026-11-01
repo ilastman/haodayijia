@@ -3,6 +3,25 @@ const data = require('../../utils/data');
 const api = require('../../utils/api');
 const { ICONS } = require('../../utils/util');
 
+/* 内置绿色 data URI 线稿换成本地大地色图标；后台上传的云存储/网络图保持原样 */
+const NAV_ICON_BY_LABEL = {
+  '私家团': '/images/nav/private.svg',
+  '拼团': '/images/nav/group.svg',
+  '景区': '/images/nav/scenic.svg',
+  '酒店': '/images/nav/hotel.svg',
+  '旅行攻略': '/images/nav/guide.svg',
+  '私人定制': '/images/nav/custom.svg'
+};
+
+function presentNavIcon(item) {
+  const src = (item && item.icon) || '';
+  const local = NAV_ICON_BY_LABEL[item && item.label];
+  if (!local) return item;
+  const stockSvg = src.indexOf('data:image/svg+xml') === 0 && /2F8F5B/i.test(src);
+  if (!src || stockSvg) return Object.assign({}, item, { icon: local });
+  return item;
+}
+
 Page({
   data: {
     brand: copy.brand,
@@ -44,7 +63,7 @@ Page({
       const [banners, navIcons, home] = await Promise.all([api.banners(), api.homeModules(), api.homeContent()]);
       const patch = {};
       if (banners && banners.length) patch.banners = banners;
-      if (navIcons && navIcons.length) patch.navIcons = navIcons;
+      if (navIcons && navIcons.length) patch.navIcons = navIcons.map(presentNavIcon);
       if (home) {
         if (home.hot && home.hot.length) patch.hotRoutes = home.hot;
         if (home.offers && home.offers.length) patch.offers = home.offers;
