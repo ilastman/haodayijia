@@ -56,10 +56,10 @@ node tools\deploy-fn.js --all
 - 员工身份：`staff` 表按 `openid`（来自 `cloud.getWXContext()`，绝不信任客户端传入的 staffId）解析；员工无删除能力（仅归档）。
 - 管理员：`adminUser.extend.token` 校验；仅超管可硬删除。
 - 网关白名单：`cloudfunctions/httpGateway/index.js` 的 `ALLOWED`（`reminderScheduler` 刻意不加入，避免公网触发群发）。
-- 存储桶/文件：PDF 由 `workOrderPdf` 生成，中文字体需在 `globalConfig.alert.pdfFontFileID` 配置。
+- 存储桶/文件：PDF 由 `workOrderPdf` 生成。函数内置 `fonts/NotoSansSC-Regular.otf`（Noto Sans SC），不配字体也能显示中文。`globalConfig.alert.pdfFontFileID` / `pdfFontUrl` 只用于替换字体，失败会回退内置字体。
 
 ## 待办（上线前）
 
-1. 上传中文字体到云存储并在后台「预警设置」配置 `pdfFontFileID`（否则 PDF 中文可能不显示）。
+1. 部署 `workOrderPdf` 后行程单中文走内置 Noto Sans SC。只有要替换字体时，才在后台「预警设置」填写 `pdfFontFileID`。
 2. 订阅消息：在 `globalConfig.alert.msgTemplates` 配置模板 ID，并确认 `reminderScheduler` 具备 `subscribeMessage.send` 权限。
 3. 小程序端在微信开发者工具中回归（工作台绑定/建单/归档/PDF 等）。

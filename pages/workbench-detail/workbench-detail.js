@@ -271,17 +271,19 @@ Page({
     const res = await wb.exportPdf(this.data.id);
     if (!res || res.code !== 200 || !res.data) { wx.hideLoading(); wx.showToast({ title: (res && res.msg) || '生成失败', icon: 'none' }); return; }
     const fileID = res.data.fileID;
+    const fontWarn = res.data.fontEmbedded === false;
     if (fileID && wx.cloud && wx.cloud.downloadFile) {
       try {
         const d = await wx.cloud.downloadFile({ fileID });
         wx.hideLoading();
+        if (fontWarn) wx.showToast({ title: '未嵌入中文字体，PDF可能乱码', icon: 'none' });
         wx.openDocument({ filePath: d.tempFilePath, fileType: 'pdf', showMenu: true });
         return;
       } catch (e) { /* 回退下方 */ }
     }
     wx.hideLoading();
     if (res.data.url) wx.setClipboardData({ data: res.data.url });
-    wx.showToast({ title: '下载链接已复制', icon: 'none' });
+    wx.showToast({ title: fontWarn ? '链接已复制，但中文字体未嵌入' : '下载链接已复制', icon: 'none' });
   },
 
   noop() {}

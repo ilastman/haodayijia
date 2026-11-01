@@ -1,40 +1,53 @@
 const cloud = require('wx-server-sdk');
-const fs = require('fs');
-const path = require('path');
+const {
+  PDFDocument,
+  buildPdf,
+  chooseFontBuffer,
+  readBundledFont,
+  readFontCache,
+  writeFontCache
+} = require('./render');
 
 /**
  * 云函数：workOrderPdf
  * 功能：将单个客户的内部工作单（行程/收款/成本/毛利）导出为 PDF，上传云存储并返回 fileID
  * 运行环境：nodejs16
- * 依赖：pdfkit（含中文需 CJK 字体，见下）
+ * 依赖：pdfkit。中文必须嵌入 CJK 字体，标准字体 Helvetica 没有中文字形，导出后会乱码。
  * 权限：员工（按 openid 归属）或管理员 token
  *
- * 中文字体来源（优先级）：
- *   1) globalConfig.alert.pdfFontFileID（云存储 fileID，后台可上传一次）
- *   2) globalConfig.alert.pdfFontUrl（http(s) 直链）
- *   3) /tmp 缓存
- *   4) 函数内置 fonts/NotoSansSC-Regular.otf（若打包）
- *   5) 回退 Helvetica（中文可能无法显示）
+ * 中文字体来源（优先级，每一级失败都继续下一级，不会因为某一级抛错而直接退回 Helvetica）：
+ *   1) globalConfig.alert.pdfFontFileID（云存储 fileID，可选覆盖）
+ *   2) globalConfig.alert.pdfFontUrl（http(s) 直链，可选覆盖）
+ *   3) /tmp/cjk-font.bin（仅当当前配置 key 与缓存一致，且文件通过 CJK 字形校验）
+ *   4) 函数内置 fonts/NotoSansSC-Regular.otf（Noto Sans SC 简体区域子集，随包发布）
+ *   5) Helvetica（仅当前面全部不可用；响应 fontEmbedded=false，中文会乱码）
+ *
+ * 未配置 fileID / url 时直接用内置字体，不读 /tmp，避免过期缓存盖住内置字体。
  */
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const { verifyAdminToken, resolveStaff } = require('./auth');
 
-let PDFDocument;
-try { PDFDocument = require('pdfkit'); } catch (e) { PDFDocument = null; }
+const FONT_CACHE_DIR = '/tmp';
+let MEM = null;
 
-let FONT_BUFFER = null;
-let FONT_KEY = '';
-
-function httpGetBuffer(url) {
+function httpGetBuffer(url, redirects) {
+  const n = redirects || 0;
   return new Promise((resolve, reject) => {
-    const lib = url.indexOf('https:') === 0 ? require('https') : require('http');
-    const req = lib.get(url, { timeout: 20000 }, res => {
+    if (n > 3) return reject(new Error('font redirect'));
+    let lib;
+    try { lib = url.indexOf('https:') === 0 ? require('https') : require('http'); }
+    catch (e) { return reject(e); }
+    const req = lib.get(url, { timeout: 15000 }, res => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        return httpGetBuffer(res.headers.location).then(resolve, reject);
+        res.resume();
+        return httpGetBuffer(res.headers.location, n + 1).then(resolve, reject);
       }
-      if (res.statusCode !== 200) return reject(new Error('HTTP ' + res.statusCode));
+      if (res.statusCode !== 200) {
+        res.resume();
+        return reject(new Error('HTTP ' + res.statusCode));
+      }
       const data = [];
       res.on('data', d => data.push(d));
       res.on('end', () => resolve(Buffer.concat(data)));
@@ -44,160 +57,116 @@ function httpGetBuffer(url) {
   });
 }
 
-async function loadFontBuffer() {
-  if (FONT_BUFFER) return FONT_BUFFER;
-  let alert = {};
-  try {
-    const r = await db.collection('globalConfig').doc('global').get();
-    alert = (r && r.data && r.data.alert) || {};
-  } catch (e) { alert = {}; }
-  FONT_KEY = (alert.pdfFontFileID || '') + '|' + (alert.pdfFontUrl || '');
-
-  const cachePath = '/tmp/cjk-font.bin';
-  try {
-    if (alert.pdfFontFileID) {
-      const res = await cloud.downloadFile({ fileID: alert.pdfFontFileID });
-      if (res && res.fileContent) { FONT_BUFFER = res.fileContent; return FONT_BUFFER; }
-    }
-    if (alert.pdfFontUrl) {
-      const buf = await httpGetBuffer(alert.pdfFontUrl);
-      FONT_BUFFER = buf; try { fs.writeFileSync(cachePath, buf); } catch (e) {}
-      return FONT_BUFFER;
-    }
-    if (fs.existsSync(cachePath)) { FONT_BUFFER = fs.readFileSync(cachePath); return FONT_BUFFER; }
-    const local = path.join(__dirname, 'fonts', 'NotoSansSC-Regular.otf');
-    if (fs.existsSync(local)) { FONT_BUFFER = fs.readFileSync(local); return FONT_BUFFER; }
-  } catch (e) { /* fall through */ }
-  return null;
+function asBuffer(fileContent) {
+  if (!fileContent) return null;
+  if (Buffer.isBuffer(fileContent)) return fileContent;
+  if (typeof fileContent === 'string') return Buffer.from(fileContent, 'base64');
+  try { return Buffer.from(fileContent); } catch (e) { return null; }
 }
 
-function num(v) { const n = Number(v); return isNaN(n) ? 0 : n; }
+async function readAlert() {
+  try {
+    const r = await db.collection('globalConfig').doc('global').get();
+    return (r && r.data && r.data.alert) || {};
+  } catch (e) {
+    return {};
+  }
+}
 
-function buildPdf(order, fontBuffer) {
-  return new Promise((resolve, reject) => {
-    const doc = new PDFDocument({ size: 'A4', margin: 42, bufferPages: true });
-    const chunks = [];
-    doc.on('data', c => chunks.push(c));
-    doc.on('end', () => resolve(Buffer.concat(chunks)));
-    doc.on('error', reject);
+async function loadFont() {
+  const alert = await readAlert();
+  const fileID = String((alert && alert.pdfFontFileID) || '').trim();
+  const url = String((alert && alert.pdfFontUrl) || '').trim();
+  const key = (fileID || url) ? (fileID + '|' + url) : 'bundled';
+  if (MEM && MEM.key === key && MEM.chosen && MEM.chosen.buffer) return MEM.chosen;
 
-    let fontName = 'Helvetica';
-    if (fontBuffer) {
-      try { doc.registerFont('cjk', fontBuffer); fontName = 'cjk'; } catch (e) { fontName = 'Helvetica'; }
-    }
-    doc.font(fontName);
-
-    const M = 42;
-    const W = doc.page.width - M * 2;
-
-    function line(y) { doc.moveTo(M, y).lineTo(M + W, y).strokeColor('#d9d2c5').lineWidth(0.6).stroke(); }
-    function kv(label, value, y, col) {
-      const x = M + (col === 2 ? W / 2 : 0);
-      doc.fontSize(9).fillColor('#8a8478').text(label, x, y, { width: (col === 2 ? W / 2 : W / 2) - 6 });
-      doc.fontSize(10).fillColor('#201d18').text(String(value == null ? '' : value), x + 60, y, { width: (col === 2 ? W / 2 : W / 2) - 66 });
-    }
-
-    // 标题
-    doc.fontSize(18).fillColor('#2f3a33').text('内部工作单（仅内部存档）', M, M, { width: W });
-    doc.moveDown(0.3);
-    doc.fontSize(9).fillColor('#8a8478').text('生成时间：' + new Date().toLocaleString('zh-CN'), { width: W });
-    doc.moveDown(0.6);
-    line(doc.y); doc.moveDown(0.8);
-
-    const c = order.customer || {};
-    doc.fontSize(12).fillColor('#2f3a33').text('一、客户信息');
-    doc.moveDown(0.3);
-    kv('客户姓名', c.name, doc.y, 1); kv('联系电话', c.phone, doc.y, 2);
-    doc.moveDown(1.1);
-    kv('人数', order.people, doc.y, 1); kv('目的地', order.dest, doc.y, 2);
-    doc.moveDown(1.1);
-    kv('出行日期', order.departDate, doc.y, 1); kv('返程日期', order.returnDate, doc.y, 2);
-    doc.moveDown(1.1);
-    kv('状态', order.status, doc.y, 1); kv('归属销售', order.staffName, doc.y, 2);
-    doc.moveDown(1.2); line(doc.y); doc.moveDown(0.8);
-
-    // 行程单
-    doc.fontSize(12).fillColor('#2f3a33').text('二、内部行程单');
-    doc.moveDown(0.3);
-    const days = (order.itinerary && order.itinerary.days) || [];
-    if (!days.length) { doc.fontSize(10).fillColor('#8a8478').text('（暂无行程内容）'); }
-    days.forEach((d, i) => {
-      doc.fontSize(10).fillColor('#201d18').text('第 ' + (d.dayNum || (i + 1)) + ' 天 · ' + (d.title || ''), { width: W });
-      if (d.content) doc.fontSize(9).fillColor('#4a463d').text(d.content, { width: W });
-      if (d.meals || d.hotel) { doc.fontSize(9).fillColor('#8a8478').text('餐：' + (d.meals || '-') + '    宿：' + (d.hotel || '-'), { width: W }); }
-      doc.moveDown(0.3);
+  const loaders = [];
+  if (fileID || url) {
+    loaders.push({
+      source: 'tmp-cache',
+      load: function () { return Promise.resolve(readFontCache(FONT_CACHE_DIR, key)); }
     });
-    const inc = (order.itinerary && order.itinerary.include) || [];
-    const exc = (order.itinerary && order.itinerary.exclude) || [];
-    if (inc.length) doc.fontSize(9).fillColor('#4a463d').text('费用包含：' + inc.join('、'), { width: W });
-    if (exc.length) doc.fontSize(9).fillColor('#4a463d').text('费用不含：' + exc.join('、'), { width: W });
-    doc.moveDown(1); line(doc.y); doc.moveDown(0.8);
-
-    // 收款台账
-    doc.fontSize(12).fillColor('#2f3a33').text('三、收款台账');
-    doc.moveDown(0.3);
-    const pays = order.payments || [];
-    if (!pays.length) doc.fontSize(10).fillColor('#8a8478').text('（暂无收款记录）');
-    pays.forEach(p => {
-      doc.fontSize(9).fillColor('#201d18').text(
-        (p.type || '-') + '    ¥' + num(p.amount) + '    收款日 ' + (p.time || '-') + '    ' + (p.remark || ''),
-        { width: W }
-      );
+  }
+  if (fileID) {
+    loaders.push({
+      source: 'fileID',
+      load: async function () {
+        const res = await cloud.downloadFile({ fileID: fileID });
+        return asBuffer(res && res.fileContent);
+      }
     });
-    doc.moveDown(1); line(doc.y); doc.moveDown(0.8);
-
-    // 成本 / 毛利
-    doc.fontSize(12).fillColor('#2f3a33').text('四、成本与毛利');
-    doc.moveDown(0.3);
-    const costs = order.costs || {};
-    const costLabel = { hotel: '酒店', car: '车辆', guide: '导游', ticket: '门票', meal: '餐费', misc: '杂费' };
-    Object.keys(costLabel).forEach(k => {
-      doc.fontSize(9).fillColor('#4a463d').text(costLabel[k] + '：¥' + num(costs[k]), { width: W / 2, continued: false });
+  }
+  if (url) {
+    loaders.push({
+      source: 'url',
+      load: function () { return httpGetBuffer(url, 0); }
     });
-    doc.moveDown(0.3);
-    const pricing = order.pricing || {};
-    doc.fontSize(10).fillColor('#201d18').text('总成本：¥' + num(order.totalCost), { width: W });
-    doc.fontSize(10).fillColor('#201d18').text('成交价：¥' + num(pricing.quote), { width: W });
-    doc.fontSize(10).fillColor('#201d18').text('预估毛利：¥' + num(pricing.estProfit), { width: W });
-    doc.fontSize(10).fillColor('#8a2f2f').text('实际毛利：¥' + num(pricing.actualProfit), { width: W });
-
-    doc.fontSize(8).fillColor('#b3a98f').text('本单为内部经营资料，请勿对客展示。', M, doc.page.height - 40, { width: W, align: 'center' });
-
-    doc.end();
+  }
+  loaders.push({
+    source: 'bundled',
+    load: function () { return Promise.resolve(readBundledFont()); }
   });
+
+  const chosen = await chooseFontBuffer(loaders);
+  if (chosen.buffer && (chosen.source === 'fileID' || chosen.source === 'url')) {
+    try { writeFontCache(FONT_CACHE_DIR, key, chosen.buffer); } catch (e) {}
+  }
+  if (chosen.buffer) MEM = { key: key, chosen: chosen };
+  if (!chosen.buffer) {
+    console.warn('[workOrderPdf] 未找到可用中文字体，PDF 中文将乱码');
+  } else {
+    console.log('[workOrderPdf] font source=' + chosen.source);
+  }
+  return chosen;
 }
 
 exports.main = async (event) => {
-  const { action, token, id } = event || {};
+  const ev = event || {};
+  const action = ev.action;
+  const token = ev.token;
+  const id = ev.id;
   try {
     if (!PDFDocument) return { code: 500, msg: '缺少 pdfkit 依赖，请在函数目录执行 npm install 后重部署' };
     if (action && action !== 'export') return { code: 400, msg: '不支持的action' };
     if (!id) return { code: 400, msg: '参数缺失：id' };
 
-    // 鉴权：管理员或归属员工
     const admin = await verifyAdminToken(token);
     let staff = null;
     if (!admin) {
-      const { OPENID } = cloud.getWXContext();
-      staff = await resolveStaff(OPENID);
+      const ctx = cloud.getWXContext();
+      const openid = ctx && ctx.OPENID;
+      staff = await resolveStaff(openid);
       if (!staff) return { code: 403, msg: '无权限：需管理员token或员工身份' };
     }
 
-    const r = await db.collection('order').where({ id }).limit(1).get();
+    const r = await db.collection('order').where({ id: id }).limit(1).get();
     if (!r.data || !r.data.length) return { code: 404, msg: '订单不存在' };
     const order = r.data[0];
     if (!admin && order.staffId !== staff.id) return { code: 403, msg: '无权导出该订单' };
 
-    const fontBuffer = await loadFontBuffer();
-    const pdf = await buildPdf(order, fontBuffer);
+    const font = await loadFont();
+    const built = await buildPdf(order, font);
+    if (!built.fontEmbedded) {
+      console.warn('[workOrderPdf] CJK font was not embedded; Chinese will be garbled');
+    }
 
     const up = await cloud.uploadFile({
       cloudPath: 'work-orders/' + id + '_' + Date.now() + '.pdf',
-      fileContent: pdf
+      fileContent: built.pdf
     });
     const urlRes = await cloud.getTempFileURL({ fileList: [up.fileID] });
-    const url = urlRes.fileList && urlRes.fileList[0] && urlRes.fileList[0].tempFileURL;
-    return { code: 200, msg: '导出成功', data: { fileID: up.fileID, url: url || '', fontEmbedded: !!fontBuffer } };
+    const temp = urlRes.fileList && urlRes.fileList[0] && urlRes.fileList[0].tempFileURL;
+    return {
+      code: 200,
+      msg: built.fontEmbedded ? '导出成功' : '导出成功，但未嵌入中文字体，PDF中文可能乱码',
+      data: {
+        fileID: up.fileID,
+        url: temp || '',
+        fontEmbedded: built.fontEmbedded,
+        fontSource: built.fontSource,
+        fontName: built.fontName
+      }
+    };
   } catch (err) {
     return { code: 500, msg: (err && err.message) || '导出失败', error: err };
   }

@@ -79,9 +79,11 @@ window.VIEWS.alerts = {
         </el-form>
 
         <el-divider content-position="left">PDF 中文字体（导出行程单）</el-divider>
+        <el-alert type="info" :closable="false" show-icon style="margin-bottom:14px"
+          title="云函数已内置 Noto Sans SC。这两项留空即可正常导出中文。仅在要替换字体时填写；下载或校验失败会自动回退内置字体。" />
         <el-form label-width="190px">
-          <el-form-item label="字体文件 fileID"><el-input v-model="form.pdfFontFileID" placeholder="cloud:// 开头；留空则用内置字体" /></el-form-item>
-          <el-form-item label="字体下载直链"><el-input v-model="form.pdfFontUrl" placeholder="可公开访问的 .otf / .ttf 直链" /></el-form-item>
+          <el-form-item label="字体文件 fileID"><el-input v-model="form.pdfFontFileID" placeholder="选填，cloud:// 开头；留空使用内置 Noto Sans SC" /></el-form-item>
+          <el-form-item label="字体下载直链"><el-input v-model="form.pdfFontUrl" placeholder="选填，可公开访问的 .otf / .ttf 直链" /></el-form-item>
         </el-form>
 
         <div class="flex gap10" style="margin-top:8px">
