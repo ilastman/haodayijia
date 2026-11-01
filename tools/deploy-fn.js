@@ -180,7 +180,13 @@ async function deployOne(name) {
   const exclude = install ? ['node_modules', '.git'] : ['.git'];
   const zip = makeZip(dir, exclude);
   const base64 = zip.toString('base64');
-  if (base64.length > 1500 * 1024 * 4 / 3) { console.error(`✗ [${name}] 包过大，请改用 COS 上传`); return false; }
+  /* UpdateFunctionCode 的 ZipFile 是 zip 的 base64。微信云开发文档上限约 20MB。
+     旧阈值 1.5MB 会拒绝 workOrderPdf 内置的 Noto Sans SC（约 8MB）。留 1MB 余量。 */
+  const MAX_BASE64 = 19 * 1024 * 1024;
+  if (base64.length > MAX_BASE64) {
+    console.error(`✗ [${name}] 压缩包 base64 ${base64.length} 字节，超过 ${MAX_BASE64}（接口约 20MB），请改用 COS 上传`);
+    return false;
+  }
 
   let before = null;
   try { before = await call('GetFunction', { FunctionName: name, Namespace: NS }); } catch (e) { before = null; }

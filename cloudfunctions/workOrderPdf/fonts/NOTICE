@@ -1,0 +1,23 @@
+Noto Sans SC Regular (Simplified Chinese region subset)
+Unmodified upstream file: notofonts/noto-cjk tag Sans2.004
+  Sans/SubsetOTF/SC/NotoSansSC-Regular.otf
+sha256: faa6c9df652116dde789d351359f3d7e5d2285a2b2a1f04a2d7244df706d5ea9
+License: SIL Open Font License 1.1 (see OFL.txt in this directory)
+
+Copyright 2014-2021 Adobe, with Reserved Font Name Source.
+Copyright 2012 Google LLC. All Rights Reserved.
+The name table inside the font file is the authoritative copyright notice.
+
+Why this file is bundled
+- workOrderPdf uses pdfkit. Standard fonts (Helvetica) have no CJK glyphs, so
+  Chinese in the work-order PDF becomes mojibake unless a CJK font is embedded.
+- This region subset covers simplified-Chinese itineraries, customer names, and
+  place names (not only the fixed headings). A labels-only subset would still
+  garble body text such as 呼伦贝尔 / 莫尔道嘎.
+- pdfkit subsets the embedded font to the characters actually drawn, so the
+  exported PDF stays small even though this source file is about 8.0 MiB.
+- On-disk size fits the cloud function ZipFile API (base64 payload under 20MB).
+  No cold-start download is required, so export works when outbound network
+  or globalConfig.alert.pdfFontFileID / pdfFontUrl is unset.
+- Those two config fields remain optional overrides. If an override is missing,
+  invalid, or fails to register, generation falls back to this file.

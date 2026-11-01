@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "songtsam-miniprogram cloud function: workOrderPdf",
   "main": "index.js",
+  "scripts": {
+    "test": "node ../../tools/test-work-order-pdf.js"
+  },
   "dependencies": {
     "wx-server-sdk": "~2.6.3",
     "pdfkit": "^0.15.0"
