@@ -81,50 +81,6 @@
     </view>
   </view>
 
-  <!-- 对客报价 + 内部核算（仅员工；客人看不到内部核算） -->
-  <view class="card quote-card" wx:if="{{isStaff}}">
-    <view class="card-title">对客报价</view>
-    <view class="row">
-      <view class="row-label">客人称呼</view>
-      <input class="guest-input" placeholder="如：张先生" placeholder-class="ph" value="{{guestName}}" bindinput="onGuestName" maxlength="20" />
-    </view>
-    <view class="row">
-      <view class="row-label">每人报价</view>
-      <input class="guest-input" type="digit" placeholder="填写给客人的每人价格" placeholder-class="ph" value="{{guestQuote}}" bindinput="onGuestQuote" maxlength="8" />
-      <text class="days-unit">元/人</text>
-    </view>
-    <view class="tip-line">客人页面标题旁显示每人报价，首屏下面标出总价（每人报价 × 成人和儿童）。内部核算不会出现在客人看到的页面上。</view>
-    <view class="quote-sum quote-total" wx:if="{{guestTotalText}}">
-      <text class="quote-sum-label">客人看到的总价</text>
-      <text class="quote-sum-val total">{{guestTotalText}}</text>
-    </view>
-    <view class="tip-line" wx:if="{{guestTotalNote}}">{{guestTotalNote}}</view>
-    <block wx:if="{{internalQuote}}">
-    <view class="card-title quote-inner-title">内部核算价</view>
-    <view class="quote-sum">
-      <text class="quote-sum-label">酒店（逐日房型 × 间数）</text>
-      <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
-    </view>
-    <view class="quote-sum">
-      <text class="quote-sum-label">门票（{{internalQuote.people}}人）</text>
-      <text class="quote-sum-val">¥{{internalQuote.ticket}}</text>
-    </view>
-    <view class="quote-sum quote-total">
-      <text class="quote-sum-label">内部核算合计</text>
-      <text class="quote-sum-val total">¥{{internalQuote.total}}</text>
-    </view>
-    <view class="quote-bd" wx:if="{{internalQuote.breakdown.length}}">
-      <view class="quote-bd-row" wx:for="{{internalQuote.breakdown}}" wx:key="index">
-        <text class="quote-bd-day">{{item.day}}</text>
-        <text class="quote-bd-name">{{item.name}}</text>
-        <text class="quote-bd-unit">¥{{item.unit}} × {{item.qty}}</text>
-        <text class="quote-bd-sub">¥{{item.subtotal}}</text>
-      </view>
-    </view>
-    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
-    </block>
-  </view>
-
   <!-- ② 每日行程标签 -->
   <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="day-scroll">
     <view class="day-chip {{activeDay === index ? 'on' : ''}}" wx:for="{{dayTabs}}" wx:key="index"
@@ -246,6 +202,50 @@
     <view class="card-title">{{c.noteTitle}}</view>
     <textarea class="note" placeholder="{{c.notePlaceholder}}" placeholder-class="ph" value="{{curNote}}"
       bindinput="onNote" maxlength="200" auto-height />
+  </view>
+
+  <!-- 对客报价 + 内部核算（仅员工；客人看不到内部核算）。放在当天内容之后。 -->
+  <view class="card quote-card" wx:if="{{isStaff}}">
+    <view class="card-title">对客报价</view>
+    <view class="row">
+      <view class="row-label">客人称呼</view>
+      <input class="guest-input" placeholder="如：张先生" placeholder-class="ph" value="{{guestName}}" bindinput="onGuestName" maxlength="20" />
+    </view>
+    <view class="row">
+      <view class="row-label">每人报价</view>
+      <input class="guest-input" type="digit" placeholder="填写给客人的每人价格" placeholder-class="ph" value="{{guestQuote}}" bindinput="onGuestQuote" maxlength="8" />
+      <text class="days-unit">元/人</text>
+    </view>
+    <view class="tip-line">客人页面标题旁显示每人报价，首屏下面标出总价（每人报价 × 成人和儿童）。内部核算不会出现在客人看到的页面上。</view>
+    <view class="quote-sum quote-total" wx:if="{{guestTotalText}}">
+      <text class="quote-sum-label">客人看到的总价</text>
+      <text class="quote-sum-val total">{{guestTotalText}}</text>
+    </view>
+    <view class="tip-line" wx:if="{{guestTotalNote}}">{{guestTotalNote}}</view>
+    <block wx:if="{{internalQuote}}">
+    <view class="card-title quote-inner-title">内部核算价</view>
+    <view class="quote-sum">
+      <text class="quote-sum-label">酒店（逐日房型 × 间数）</text>
+      <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
+    </view>
+    <view class="quote-sum">
+      <text class="quote-sum-label">门票（{{internalQuote.people}}人）</text>
+      <text class="quote-sum-val">¥{{internalQuote.ticket}}</text>
+    </view>
+    <view class="quote-sum quote-total">
+      <text class="quote-sum-label">内部核算合计</text>
+      <text class="quote-sum-val total">¥{{internalQuote.total}}</text>
+    </view>
+    <view class="quote-bd" wx:if="{{internalQuote.breakdown.length}}">
+      <view class="quote-bd-row" wx:for="{{internalQuote.breakdown}}" wx:key="index">
+        <text class="quote-bd-day">{{item.day}}</text>
+        <text class="quote-bd-name">{{item.name}}</text>
+        <text class="quote-bd-unit">¥{{item.unit}} × {{item.qty}}</text>
+        <text class="quote-bd-sub">¥{{item.subtotal}}</text>
+      </view>
+    </view>
+    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
+    </block>
   </view>
 
   <view class="safe-bottom"></view>

@@ -443,6 +443,19 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click($('#screen .sheet-confirm'));
   await sleep(20);
   ok($('#screen .car-card').textContent.indexOf('城市SUV') >= 0, '已选车型展示在用车卡片');
+  const editPage = window.__preview.getStack().slice(-1)[0].inst;
+  editPage.setData({
+    isStaff: true,
+    internalQuote: { hotel: 1, ticket: 0, people: 2, total: 1, breakdown: [], missing: [] }
+  });
+  await sleep(30);
+  const quoteText = $('#screen').textContent;
+  const notePos = quoteText.indexOf('当日备注');
+  const guestPos = quoteText.indexOf('对客报价');
+  const innerPos = quoteText.indexOf('内部核算价');
+  ok(notePos >= 0 && guestPos > notePos && innerPos > guestPos, '对客报价和内部核算在当天备注之后');
+  editPage.setData({ isStaff: false, internalQuote: null });
+  await sleep(20);
 
   // 14. 天数切换
   click($$('#screen .chip').find(e => e.textContent.trim() === '5天'));
