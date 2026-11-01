@@ -53,7 +53,8 @@ Page({
     plans: buildPlans(3),
     curScenics: [],
     curHotel: null,
-    altHotels: [],
+    altPicked: [],
+    altCanPick: false,
     curNote: '',
     totalScenic: 0,
     totalHotel: 0,
@@ -393,10 +394,26 @@ Page({
     const plan = this.planAt(this.data.activeDay);
     const curScenics = (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean);
     const curHotel = plan.hotelId ? this.hotelById(plan.hotelId) : null;
-    const altIds = Array.isArray(plan.altHotelIds) ? plan.altHotelIds : [];
-    const altHotels = curHotel ? this.hotelsOf()
-      .filter(h => h.id !== curHotel.id && h.stars === curHotel.stars)
-      .map(h => ({ id: h.id, name: h.name, sel: altIds.indexOf(h.id) > -1 })) : [];
+    const hotels = this.hotelsOf();
+    let altDirty = false;
+    plans.forEach(p => {
+      if (!p || !p.hotelId || !Array.isArray(p.altHotelIds) || !p.altHotelIds.length) return;
+      const dayHotel = hotels.filter(h => h.id === p.hotelId)[0];
+      if (!dayHotel) return;
+      const nextIds = p.altHotelIds.filter(id => catalog.sameGradeAlt(dayHotel, hotels.filter(h => h.id === id)[0]));
+      if (nextIds.length !== p.altHotelIds.length) {
+        p.altHotelIds = nextIds;
+        altDirty = true;
+      }
+    });
+    if (altDirty) this.setData({ plans: normalizePlans(this.data.plans, this.data.days) });
+    const pool = curHotel ? hotels.filter(h => catalog.sameGradeAlt(curHotel, h)) : [];
+    const kept = (plan.altHotelIds || []).slice();
+    const altPicked = kept.map(id => {
+      const h = this.hotelById(id);
+      if (!h) return null;
+      return { id: h.id, name: h.name, stars: h.stars || '', area: h.area || '', image: h.image || '' };
+    }).filter(Boolean);
     let totalScenic = 0;
     let totalHotel = 0;
     plans.forEach(p => {
@@ -414,7 +431,8 @@ Page({
     this.setData({
       curScenics,
       curHotel,
-      altHotels,
+      altPicked,
+      altCanPick: pool.length > 0,
       curNote: plan.note || '',
       curPromo: gallery.clipPromo(plan.promoImgs),
       totalScenic,
@@ -456,6 +474,17 @@ Page({
     return { fac, list: fac.list.map(h => Object.assign({}, h, { sel: h.id === plan.hotelId })) };
   },
 
+  /* 备选只列出与主酒店同钻级、同一二级大区的酒店，不提供跨区筛选 */
+  altOptions() {
+    const plan = this.planAt(this.data.activeDay);
+    const cur = plan.hotelId ? this.hotelById(plan.hotelId) : null;
+    const ids = (plan && plan.altHotelIds) || [];
+    if (!cur) return [];
+    return this.hotelsOf()
+      .filter(h => catalog.sameGradeAlt(cur, h))
+      .map(h => Object.assign({}, h, { sel: ids.indexOf(h.id) > -1 }));
+  },
+
   refreshSheet() {
     const type = this.data.sheet && this.data.sheet.type;
     if (type === 'scenic') {
@@ -480,6 +509,10 @@ Page({
         sheetRegion: pack.fac.region,
         sheetPlace: pack.fac.place
       });
+      return;
+    }
+    if (type === 'alt') {
+      this.setData({ sheetHotels: this.altOptions() });
     }
   },
 
@@ -559,16 +592,26 @@ Page({
     this.refreshSheet();
   },
 
+  openAlt() {
+    if (!this.planAt(this.data.activeDay).hotelId) return;
+    this.setData({ sheet: { type: 'alt' } });
+    this.refreshSheet();
+  },
+
   toggleAlt(e) {
     const id = e.currentTarget.dataset.id;
+    if (!id) return;
     const idx = this.data.activeDay;
     const plans = normalizePlans(this.data.plans, this.data.days);
+    const cur = plans[idx].hotelId ? this.hotelById(plans[idx].hotelId) : null;
+    const hotel = this.hotelById(id);
     const ids = plans[idx].altHotelIds;
     const pos = ids.indexOf(id);
     if (pos > -1) ids.splice(pos, 1);
-    else ids.push(id);
+    else if (cur && hotel && catalog.sameGradeAlt(cur, hotel)) ids.push(id);
     this.setData({ plans });
     this.syncPlan();
+    this.refreshSheet();
   },
 
   clearHotel() {

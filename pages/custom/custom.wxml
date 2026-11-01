@@ -178,15 +178,17 @@
       </view>
     </view>
 
-    <!-- 同级备选酒店（纯文字多选） -->
-    <view class="alt-block" wx:if="{{curHotel && altHotels.length > 0}}">
+    <!-- 同级备选：与「选择酒店」相同的底部面板，候选已锁在主酒店的二级大区 -->
+    <view class="alt-block" wx:if="{{curHotel && altCanPick}}">
       <view class="alt-title">{{c.hotelAltTitle}}</view>
-      <view class="alt-list">
-        <view class="alt-item {{item.sel ? 'on' : ''}}" wx:for="{{altHotels}}" wx:key="id"
-          catchtap="toggleAlt" data-id="{{item.id}}">
-          <text class="alt-name">{{item.name}}</text>
-          <view class="alt-check">{{item.sel ? '✓' : ''}}</view>
+      <view class="add-btn" bindtap="openAlt">+ {{c.addHotel}}</view>
+      <view class="hotel-sel alt-sel" wx:for="{{altPicked}}" wx:key="id">
+        <image class="hotel-cover" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="sel-body">
+          <view class="sel-name">{{item.name}}</view>
+          <view class="sel-sub">{{item.stars}} · {{item.area}}</view>
         </view>
+        <view class="op-btn del" catchtap="toggleAlt" data-id="{{item.id}}">{{c.remove}}</view>
       </view>
     </view>
   </view>
@@ -302,6 +304,26 @@
       <scroll-view scroll-y="{{true}}" class="sheet-list">
         <view class="sel-empty" wx:if="{{sheetHotels.length === 0}}">该分类下暂无酒店</view>
         <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleHotel" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 同等级备选酒店：面板样式与主酒店一致，列表不含其他二级大区 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'alt'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetAltTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetHotels.length === 0}}">{{c.altEmpty}}</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleAlt" data-id="{{item.id}}">
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>
             <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>

@@ -352,7 +352,7 @@
   background: #EDE5D6;
 }
 
-/* 同级备选酒店（纯文字多选） */
+/* 同级备选：按钮打开选择面板，已选酒店用与主酒店相同的卡片 */
 .alt-block {
   margin-top: 18rpx;
 }
@@ -363,38 +363,12 @@
   margin-bottom: 10rpx;
 }
 
-.alt-list {
-  display: flex;
-  flex-wrap: wrap;
+.alt-block .add-btn {
+  margin-bottom: 14rpx;
 }
 
-.alt-item {
-  display: flex;
-  align-items: center;
-  background: #F3EDDF;
-  border-radius: 30rpx;
-  padding: 10rpx 18rpx 10rpx 24rpx;
-  margin: 0 14rpx 14rpx 0;
-}
-
-.alt-item.on {
-  background: #8A7152;
-}
-
-.alt-name {
-  font-size: 24rpx;
-  color: #6E6555;
-}
-
-.alt-item.on .alt-name {
-  color: #FCF9F1;
-}
-
-.alt-check {
-  width: 30rpx;
-  text-align: right;
-  font-size: 22rpx;
-  color: #FCF9F1;
+.alt-sel {
+  margin-bottom: 14rpx;
 }
 
 .tip-line {

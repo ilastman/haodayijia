@@ -99,4 +99,30 @@ function facet(kind, items, tree, filter, fallbackRegions) {
   return { regions, subs, places, region, sub, place, list };
 }
 
-module.exports = { ALL, typeHit, facet };
+/* 同等级：沿用钻级/stars 全等，不放宽到「同星级跨区」 */
+function sameGrade(primary, hotel) {
+  return !!(primary && hotel) && primary.stars === hotel.stars;
+}
+
+/* 二级大区：双方都有 areaCatId 时只认分类 id；否则用地点名 area，并在双方都有一级大区时要求一级也一致，避免同名地点串区。 */
+function sameLevel2Area(primary, hotel) {
+  if (!primary || !hotel) return false;
+  const pid = String(primary.areaCatId || '').trim();
+  const hid = String(hotel.areaCatId || '').trim();
+  if (pid && hid) return pid === hid;
+  const pa = String(primary.area || '').trim();
+  const ha = String(hotel.area || '').trim();
+  if (!pa || pa !== ha) return false;
+  const pr = String(primary.regionLevel1 || '').trim();
+  const hr = String(hotel.regionLevel1 || '').trim();
+  if (pr && hr && pr !== hr) return false;
+  return true;
+}
+
+/* 备选酒店：排除主酒店本身，钻级与主酒店相同，且锁在同一个二级大区。 */
+function sameGradeAlt(primary, hotel) {
+  if (!primary || !hotel || !hotel.id || hotel.id === primary.id) return false;
+  return sameGrade(primary, hotel) && sameLevel2Area(primary, hotel);
+}
+
+module.exports = { ALL, typeHit, facet, sameGrade, sameLevel2Area, sameGradeAlt };

@@ -240,6 +240,8 @@ const copy = {
     addHotel: '选择酒店',
     hotelEmpty: '还未选择酒店',
     hotelAltTitle: '或以下同等级酒店：',
+    sheetAltTitle: '选择同等级酒店',
+    altEmpty: '该地点暂无其他同等级酒店',
     noteTitle: '当日备注',
     notePlaceholder: '写下当天的特殊需求，如想看日落、想体验骑马、想品尝特色餐…',
     summaryScenic: '已选景区',

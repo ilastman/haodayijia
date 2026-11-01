@@ -491,6 +491,73 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   const sum1 = $('#screen .summary').textContent;
   ok(/已选酒店\s*1/.test(sum1), '汇总酒店计数: ' + sum1.trim());
 
+  // 18b. 同等级备选锁在主酒店的二级大区，交互与「选择酒店」相同（按钮 → 面板）
+  ok(!$('#screen .alt-item'), '本地数据无同区同级时不铺备选芯片');
+  const customPage = window.__preview.getStack().slice(-1)[0].inst;
+  const baseHotels = customPage.hotelsOf().map(h => Object.assign({}, h));
+  const primaryHotel = baseHotels.filter(h => h.id === customPage.data.curHotel.id)[0];
+  ok(!!primaryHotel, '主酒店在目录中');
+  baseHotels.forEach(h => {
+    if (!h.areaCatId) h.areaCatId = 'cat-' + (h.area || h.id);
+  });
+  const otherHotel = baseHotels.filter(h => h.id !== primaryHotel.id && h.stars === primaryHotel.stars && h.area !== primaryHotel.area)[0];
+  const samePeer = {
+    id: 'peer-same-area', name: '同区同级备选', stars: primaryHotel.stars,
+    area: primaryHotel.area, areaCatId: primaryHotel.areaCatId,
+    regionLevel1: primaryHotel.regionLevel1 || '', image: primaryHotel.image || ''
+  };
+  const otherPeer = otherHotel ? {
+    id: 'peer-other-area', name: '新区同级备选', stars: otherHotel.stars,
+    area: otherHotel.area, areaCatId: otherHotel.areaCatId,
+    regionLevel1: otherHotel.regionLevel1 || '', image: otherHotel.image || ''
+  } : null;
+  customPage._hotels = baseHotels.concat([samePeer].concat(otherPeer ? [otherPeer] : []));
+  customPage.syncPlan();
+  await sleep(30);
+  ok(!!$('#screen .alt-block') && $('#screen .alt-block').textContent.indexOf('或以下同等级酒店') >= 0, '同等级备选入口出现');
+  ok(!$('#screen .alt-item'), '备选不是芯片平铺');
+  click($('#screen .alt-block .add-btn'));
+  await sleep(40);
+  ok($('#screen .sheet-title').textContent.trim() === '选择同等级酒店', '备选打开选择面板: ' + ($('#screen .sheet-title') && $('#screen .sheet-title').textContent));
+  ok(!$('#screen .sheet-chip'), '备选面板不能改选其他大区');
+  let altNames = $$('#screen .sheet .opt-name').map(e => e.textContent.trim());
+  ok(altNames.indexOf('同区同级备选') >= 0, '面板含同二级大区同钻级');
+  ok(altNames.indexOf(primaryHotel.name) < 0, '面板不含主酒店');
+  if (otherHotel) ok(altNames.indexOf(otherHotel.name) < 0 && altNames.indexOf('新区同级备选') < 0, '面板不含其他二级大区: ' + altNames.join(','));
+  click($$('#screen .sheet .opt').find(e => e.textContent.indexOf('同区同级备选') >= 0));
+  await sleep(30);
+  click($('#screen .sheet-confirm'));
+  await sleep(30);
+  ok(!$('#screen .sheet'), '备选面板点完成关闭');
+  const altCards = $$('#screen .alt-sel').map(e => e.textContent);
+  ok(altCards.length === 1 && altCards[0].indexOf('同区同级备选') >= 0 && altCards[0].indexOf(primaryHotel.area) >= 0, '已选备选用酒店卡片展示');
+  if (otherHotel) {
+    customPage.toggleHotel({ currentTarget: { dataset: { id: otherHotel.id } } });
+    await sleep(40);
+    ok(!$('#screen .alt-sel'), '更换主酒店后原备选被清掉');
+    ok(!!$('#screen .alt-block'), '新区仍有同级可备选');
+    click($('#screen .alt-block .add-btn'));
+    await sleep(40);
+    altNames = $$('#screen .sheet .opt-name').map(e => e.textContent.trim());
+    ok(altNames.indexOf('同区同级备选') < 0 && altNames.indexOf('新区同级备选') >= 0, '备选池换成新二级大区: ' + altNames.join(','));
+    ok(altNames.every(n => {
+      const h = customPage.hotelsOf().filter(x => x.name === n)[0];
+      return h && h.area === otherHotel.area && h.stars === otherHotel.stars && h.id !== otherHotel.id;
+    }), '新面板全部是新区同钻级');
+    click($('#screen .sheet-confirm'));
+    await sleep(30);
+    customPage.toggleHotel({ currentTarget: { dataset: { id: primaryHotel.id } } });
+    await sleep(30);
+  } else if ($('#screen .alt-sel .op-btn')) {
+    click($('#screen .alt-sel .op-btn'));
+    await sleep(20);
+  }
+  customPage._hotels = null;
+  customPage.syncPlan();
+  await sleep(20);
+  ok($('#screen .hotel-sel').textContent.indexOf(primaryHotel.name) >= 0, '恢复目录后主酒店仍在');
+  ok(!$('#screen .alt-item'), '恢复后没有备选芯片');
+
   // 19. 备注 + 日期
   const note = $('#screen textarea.note');
   input(note, '想看日落');
