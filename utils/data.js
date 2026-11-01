@@ -3,7 +3,7 @@
  * 图片均为本地占位图（utils.util.ph），后期替换真实图片地址即可
  */
 
-const { ph, ICONS } = require('./util');
+const { ph } = require('./util');
 
 const destList = ['呼伦贝尔', '阿尔山', '满洲里', '额尔古纳', '黑山头', '莫尔道嘎'];
 const typeList = ['私家团', '拼团'];
@@ -11,12 +11,12 @@ const typeList = ['私家团', '拼团'];
 /* ---------------- 首页 ---------------- */
 
 const navIcons = [
-  { key: 'private', label: '私家团', icon: ICONS.privateGroup, url: 'tab:routes?type=私家团' },
-  { key: 'group', label: '拼团', icon: ICONS.group, url: 'tab:routes?type=拼团' },
-  { key: 'scenic', label: '景区', icon: ICONS.scenic, url: '/pages/scenic/scenic' },
-  { key: 'hotel', label: '酒店', icon: ICONS.bed, url: '/pages/hotels/hotels' },
-  { key: 'guide', label: '旅行攻略', icon: ICONS.book, url: '/pages/strategy/strategy' },
-  { key: 'custom', label: '私人定制', icon: ICONS.custom, url: '/pages/custom/custom' }
+  { key: 'private', label: '私家团', icon: '/images/nav/nav-sijiatuan.png', url: 'tab:routes?type=私家团' },
+  { key: 'group', label: '拼团', icon: '/images/nav/nav-pintuan.png', url: 'tab:routes?type=拼团' },
+  { key: 'scenic', label: '景区', icon: '/images/nav/nav-jingqu.png', url: '/pages/scenic/scenic' },
+  { key: 'hotel', label: '酒店', icon: '/images/nav/nav-jiudian.png', url: '/pages/hotels/hotels' },
+  { key: 'guide', label: '旅行攻略', icon: '/images/nav/nav-gonglue.png', url: '/pages/strategy/strategy' },
+  { key: 'custom', label: '私人定制', icon: '/images/nav/nav-dingzhi.png', url: '/pages/custom/custom' }
 ];
 
 const banners = [
