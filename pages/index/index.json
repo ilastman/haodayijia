@@ -1,5 +1,10 @@
 {
+  "navigationStyle": "custom",
   "navigationBarTitleText": "你的旅行社名称",
+  "navigationBarTextStyle": "white",
+  "backgroundColor": "#F6F1E7",
+  "backgroundColorTop": "#1C1814",
+  "backgroundColorBottom": "#F6F1E7",
   "enablePullDownRefresh": false,
   "usingComponents": {
     "consult-modal": "/components/consult-modal/consult-modal",

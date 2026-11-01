@@ -1,57 +1,201 @@
-.page {
+.home-page {
   padding-bottom: 20rpx;
 }
 
-/* Banner */
-.banner {
+/*
+ * 首屏：封面高度由 JS 写成可视窗口 px（约 100vh，已扣 tabBar）。
+ * 顶栏 position:sticky，用负 margin 压在封面上。scrollTop≈0 时底透明、搜索是深色玻璃条；
+ * 下滑后顶栏收成米色实底，封面跟着页面滚走，金刚区和线路从下方露出来。
+ * 后台封面仍按 750×880 竖幅裁，这里用 aspectFill 铺满更高的框，不留白边。
+ */
+.top-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(246, 241, 231, 0);
+  transition: background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.top-chrome.is-solid {
+  background: rgba(246, 241, 231, 0.94);
+  box-shadow: 0 1rpx 0 rgba(74, 63, 50, 0.08);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.chrome-row {
+  display: flex;
+  align-items: center;
+  padding-left: 24rpx;
+  box-sizing: border-box;
+}
+
+.search-pill {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  background: rgba(20, 16, 12, 0.38);
+  border: 1rpx solid rgba(255, 255, 255, 0.32);
+  color: #FBF7F0;
+  box-sizing: border-box;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.search-pill-on {
+  opacity: 0.72;
+}
+
+.top-chrome.is-solid .search-pill {
+  background: #FFFFFF;
+  border-color: transparent;
+  color: #4A3F32;
+  box-shadow: 0 6rpx 18rpx rgba(48, 38, 28, 0.06);
+}
+
+.search-ico {
+  width: 26rpx;
+  height: 26rpx;
+  border: 3rpx solid currentColor;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.search-ico::after {
+  content: "";
+  position: absolute;
+  width: 12rpx;
+  height: 3rpx;
+  right: -8rpx;
+  bottom: -2rpx;
+  background: currentColor;
+  border-radius: 3rpx;
+  transform: rotate(42deg);
+}
+
+.search-ph {
+  margin-left: 16rpx;
+  font-size: 26rpx;
+  line-height: 1;
+  color: inherit;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.home-hero {
+  position: relative;
+  z-index: 1;
   width: 100%;
-  height: 400rpx;
+  height: 100vh;
+  background: #1C1814;
+  overflow: hidden;
+}
+
+.banner,
+.banner-img {
+  width: 100%;
+  height: 100%;
 }
 
 .banner-img {
-  width: 100%;
-  height: 400rpx;
   display: block;
-  background: #EDE5D6;
+  background: #1C1814;
 }
 
-/* 图标导航 */
+.banner-shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 220rpx;
+  background: linear-gradient(180deg, rgba(20, 16, 12, 0.42) 0%, rgba(20, 16, 12, 0) 100%);
+  pointer-events: none;
+}
+
+.banner-scrim {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 220rpx;
+  background: linear-gradient(180deg, rgba(36, 28, 20, 0) 0%, rgba(36, 28, 20, 0.18) 55%, rgba(36, 28, 20, 0.34) 100%);
+  pointer-events: none;
+}
+
+/* 指示点留在圆角面板上方（面板上叠 36rpx） */
+.banner .wx-swiper-dots,
+.banner .wx-swiper-dots-horizontal {
+  bottom: 64rpx;
+}
+
+.banner .wx-swiper-dot {
+  width: 10rpx !important;
+  height: 10rpx !important;
+  margin: 0 6rpx !important;
+  border-radius: 10rpx !important;
+}
+
+.banner .wx-swiper-dot-active {
+  width: 28rpx !important;
+  border-radius: 10rpx !important;
+}
+
+/* 图标导航：无底色块，线稿落在米色圆角面板上。面板只叠住封面最下沿，首屏仍是整幅照片。 */
 .nav-bar {
   display: flex;
-  background: #FCF9F1;
-  margin: -40rpx 24rpx 0;
-  border-radius: 24rpx;
-  padding: 26rpx 8rpx;
-  box-shadow: 0 8rpx 30rpx rgba(90, 82, 66, 0.05);
+  align-items: flex-start;
   position: relative;
+  z-index: 3;
+  margin: -36rpx 0 0;
+  padding: 28rpx 4rpx 8rpx;
+  background: #F6F1E7;
+  border-radius: 36rpx 36rpx 0 0;
 }
 
 .nav-item {
   flex: 1;
+  min-width: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
 }
 
+.nav-item-on {
+  opacity: 0.55;
+}
+
 .nav-icon {
-  width: 84rpx;
-  height: 84rpx;
-  border-radius: 24rpx;
-  background: #EDE4D2;
+  width: 52rpx;
+  height: 52rpx;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: transparent;
 }
 
 .nav-icon-img {
-  width: 48rpx;
-  height: 48rpx;
+  width: 44rpx;
+  height: 44rpx;
 }
 
 .nav-label {
-  margin-top: 12rpx;
+  margin-top: 10rpx;
+  max-width: 100%;
   font-size: 22rpx;
-  color: #4A4A4A;
+  line-height: 1.2;
+  font-weight: 500;
+  color: #4A3F32;
+  white-space: nowrap;
+}
+
+.nav-bar + .section {
+  margin-top: 28rpx;
 }
 
 /* 热门线路横滑 */
@@ -215,6 +359,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   height: 88rpx;
   padding: 0 56rpx;
   border-radius: 44rpx;

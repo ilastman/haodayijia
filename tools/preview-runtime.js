@@ -47,8 +47,12 @@
       '.pv-swiper{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;scrollbar-width:none}',
       '.pv-slide{flex:0 0 100%;height:100%;scroll-snap-align:start}',
       '.pv-swiper-wrap,.pv-swiper,.pv-slide{height:100%}',
-      '.pv-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;z-index:5;pointer-events:none}',
+      '.pv-dots{position:absolute;left:0;right:0;bottom:8px;display:flex;justify-content:center;align-items:center;z-index:5;pointer-events:none}',
       '.pv-dots i{width:6px;height:6px;border-radius:3px;background:rgba(255,255,255,.5);margin:0 3px;transition:width .2s}',
+      '.pv-swiper-wrap.banner .pv-dots{bottom:28px}',
+      '.pv-swiper-wrap.banner .pv-dots i{width:5px;height:5px;border-radius:5px;box-shadow:0 1px 2px rgba(36,28,20,.28)}',
+      '.pv-swiper-wrap.banner .pv-dots i.on{width:14px}',
+      '.pv-slide{position:relative}',
       '.pv-comp{display:contents}',
       '.pv-date-input{position:absolute;left:0;top:0;width:100%;height:100%;opacity:0;border:none;padding:0;background:transparent}',
       '.pv-toast{position:absolute;left:50%;top:42%;transform:translate(-50%,-50%);background:rgba(0,0,0,.78);color:#fff;font-size:14px;line-height:1.5;padding:14px 18px;border-radius:10px;max-width:80%;text-align:center;z-index:2000}',
@@ -236,6 +240,41 @@
     previewImage: previewImage,
     showActionSheet: function (o) {
       openSheet(o.itemList || [], function (i) { o.success && o.success({ tapIndex: i }); }, function () { o.fail && o.fail(); });
+    },
+    /* app.js / 首页 onLoad 会调用；预览环境没有真云开发 */
+    cloud: { init: function () {}, callFunction: function () { return Promise.resolve({ result: null }); } },
+    showShareMenu: function () {},
+    getWindowInfo: function () {
+      var device = document.querySelector('.device');
+      var tab = document.getElementById('tabbar');
+      var status = document.querySelector('.statusbar');
+      var w = device && device.clientWidth ? device.clientWidth : 390;
+      var screenH = device && device.clientHeight ? device.clientHeight : 780;
+      var tabH = 56;
+      if (tab) tabH = tab.style.display === 'none' ? 0 : (tab.offsetHeight || 56);
+      var statusH = status && status.offsetHeight ? status.offsetHeight : 34;
+      return {
+        windowWidth: w,
+        windowHeight: Math.max(480, screenH - tabH),
+        screenWidth: w,
+        screenHeight: screenH,
+        statusBarHeight: statusH,
+        safeArea: { top: statusH, bottom: screenH, left: 0, right: w, width: w, height: Math.max(0, screenH - statusH) }
+      };
+    },
+    getSystemInfoSync: function () { return wx.getWindowInfo(); },
+    getMenuButtonBoundingClientRect: function () {
+      var info = wx.getWindowInfo();
+      var top = info.statusBarHeight + 6;
+      var height = 32;
+      var width = 87;
+      var right = info.windowWidth - 7;
+      return { width: width, height: height, top: top, bottom: top + height, left: right - width, right: right };
+    },
+    setNavigationBarColor: function (o) {
+      var sb = document.querySelector('.statusbar');
+      if (sb) sb.classList.toggle('is-dark', !!(o && o.frontColor === '#000000'));
+      if (o && o.success) o.success();
     }
   };
 
@@ -489,6 +528,14 @@
     el.className = [typeof c === 'string' ? c : '', extra || ''].join(' ').trim();
   }
 
+  function applyInlineStyle(el, node, env) {
+    var raw = node.attrs && node.attrs.style;
+    if (raw === undefined) return;
+    var s = interp(raw, env.scope);
+    if (!s) return;
+    el.style.cssText = (el.style.cssText ? el.style.cssText.replace(/;?\s*$/, '') + ';' : '') + s;
+  }
+
   function bindCommon(el, node, env) {
     var attrs = node.attrs;
     // data-*
@@ -590,11 +637,12 @@
             };
             document.addEventListener('mouseup', document.__pvMouseUpFn);
           }
-          dispatch(env.ctx, tStart, mkEvent(el, 'touchstart', {}, null,
-            [{ clientX: ev.clientX, clientY: ev.clientY }]));
+        dispatch(env.ctx, tStart, mkEvent(el, 'touchstart', {}, null,
+          [{ clientX: ev.clientX, clientY: ev.clientY }]));
         });
       }
     }
+    applyInlineStyle(el, node, env);
   }
 
   function bindPicker(el, node, env) {
@@ -641,6 +689,7 @@
       for (var i = 0; i < slides.length; i++) {
         var d = document.createElement('i');
         d.style.background = i === 0 ? activeColor : idleColor;
+        d.className = i === 0 ? 'on' : '';
         dotsBox.appendChild(d);
       }
       wrap.appendChild(dotsBox);
@@ -656,6 +705,7 @@
       var idx = activeIndex();
       Array.prototype.forEach.call(dotsBox.children, function (d, i) {
         d.style.background = i === idx ? active : idle;
+        d.className = i === idx ? 'on' : '';
       });
     }
     var lastTouch = 0;
@@ -697,6 +747,7 @@
     if (tag === 'swiper') {
       var wrap = document.createElement('div');
       setClass(wrap, node, env, 'pv-swiper-wrap');
+      applyInlineStyle(wrap, node, env);
       var sc = document.createElement('div');
       sc.className = 'pv-swiper';
       wrap.appendChild(sc);
@@ -894,6 +945,12 @@
     var entry = topEntry();
     titleEl.textContent = entry.title != null ? entry.title : (entry.json.navigationBarTitleText || '');
 
+    var device = document.querySelector('.device');
+    var navbar = document.querySelector('.navbar');
+    var customNav = !!(entry.json && entry.json.navigationStyle === 'custom');
+    if (device) device.classList.toggle('nav-custom', customNav);
+    if (navbar) navbar.style.display = customNav ? 'none' : '';
+
     var isTab = TAB_PAGES.indexOf(entry.path) > -1;
     backEl.style.visibility = stack.length > 1 ? 'visible' : 'hidden';
     tabbarEl.style.display = isTab ? 'flex' : 'none';
@@ -961,6 +1018,10 @@
 
     var rbLock = false;
     screenEl.addEventListener('scroll', function () {
+      var top = topEntry();
+      if (top && top.cfg.onPageScroll) {
+        try { top.cfg.onPageScroll.call(top.inst, { scrollTop: screenEl.scrollTop }); } catch (err) { console.warn(err); }
+      }
       if (rbLock) return;
       if (screenEl.scrollTop + screenEl.clientHeight >= screenEl.scrollHeight - 30) {
         var e = topEntry();

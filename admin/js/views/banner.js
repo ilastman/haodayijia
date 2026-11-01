@@ -49,7 +49,7 @@ window.VIEWS.banner = {
         <li v-for="b in list" :key="b.id" draggable="true" :style="{opacity: b.enable ? 1 : .55}">
           <div class="drag-handle">⠿</div>
           <el-checkbox :model-value="selected.includes(b.id)" @change="v => (v ? selected.push(b.id) : (selected.splice(selected.indexOf(b.id), 1)))" @click.stop />
-          <div class="img-wrap" style="width:120px;height:58px;flex:0 0 120px"><img :src="img(b.img)" style="height:100%;object-fit:cover" alt="" @click="previewImg(b.img)" /></div>
+          <div class="img-wrap" style="width:72px;height:84px;flex:0 0 72px"><img :src="img(b.img)" style="height:100%;object-fit:cover" alt="" @click="previewImg(b.img)" /></div>
           <div style="flex:1;min-width:0">
             <div style="font-weight:600">{{b.title}}</div>
             <div class="faint ellipsis" style="margin-top:3px;font-family:monospace">跳转：{{jumpLabel(b)}}</div>
@@ -68,7 +68,7 @@ window.VIEWS.banner = {
         <div class="dlg-body">
           <el-form label-width="90px">
             <el-form-item label="轮播图片" required>
-              <ImgPicker v-model="form.img" :ratio="750/360" :target-w="1600" title="上传轮播图（750×360）" />
+              <ImgPicker v-model="form.img" :ratio="750/880" :target-w="1500" title="上传轮播图（750×880）" />
             </el-form-item>
             <el-form-item label="标题"><el-input v-model="form.title" placeholder="如：秋季首发专线" /></el-form-item>
             <el-form-item label="跳转页面">

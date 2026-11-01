@@ -1,16 +1,30 @@
-<view class="page">
+<view class="home-page">
 
-  <!-- 1. 顶部轮播 banner -->
-  <swiper class="banner" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,.5)" indicator-active-color="#FFFFFF"
-    autoplay="{{true}}" circular="{{true}}" interval="4000" duration="400">
-    <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="onBanner" data-id="{{item.routeId}}" data-jump="{{item.jumpRoute}}">
-      <image class="banner-img" src="{{item.image}}" mode="aspectFill" />
-    </swiper-item>
-  </swiper>
+  <!-- 顶栏：首屏透在封面上，下滑后粘在顶部并收成实底搜索条。胶囊按钮是系统的，这里只留出位置。 -->
+  <view class="top-chrome {{chromeSolid ? 'is-solid' : ''}}" style="height: {{chromeHeight}}px; padding-top: {{menuTop}}px;">
+    <view class="chrome-row" style="height: {{navRowHeight}}px; padding-right: {{capsuleGap}}px;">
+      <view class="search-pill" hover-class="search-pill-on" bindtap="onSearch">
+        <view class="search-ico"></view>
+        <text class="search-ph">{{home.searchPlaceholder}}</text>
+      </view>
+    </view>
+  </view>
 
-  <!-- 2. 横向图标导航 -->
+  <!-- 1. 首屏封面：高度=可视窗口，图用 aspectFill 铺满，不留边 -->
+  <view class="home-hero" style="height: {{heroHeight}}px; margin-top: -{{chromeHeight}}px;">
+    <swiper wx:if="{{banners.length}}" class="banner" style="height: {{heroHeight}}px;" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,.55)" indicator-active-color="#FFFFFF"
+      autoplay="{{true}}" circular="{{true}}" interval="4000" duration="480">
+      <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="onBanner" data-id="{{item.routeId}}" data-jump="{{item.jumpRoute}}">
+        <image class="banner-img" src="{{item.image}}" mode="aspectFill" style="height: {{heroHeight}}px;" />
+        <view class="banner-shade"></view>
+        <view class="banner-scrim"></view>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <!-- 2. 图标导航：在首屏之下，圆角面板微微叠上封面下沿 -->
   <view class="nav-bar">
-    <view class="nav-item" wx:for="{{navIcons}}" wx:key="key" bindtap="onNav" data-url="{{item.url}}">
+    <view class="nav-item" hover-class="nav-item-on" wx:for="{{navIcons}}" wx:key="key" bindtap="onNav" data-url="{{item.url}}">
       <view class="nav-icon">
         <image class="nav-icon-img" src="{{item.icon}}" mode="aspectFit" />
       </view>

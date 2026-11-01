@@ -1,9 +1,10 @@
 /**
  * 演示数据：线路 / 攻略 / 酒店 / 租车 / 首页板块
- * 图片均为本地占位图（utils.util.ph），后期替换真实图片地址即可
+ * 图片多为本地占位图（utils.util.ph）。六个导航图标在 images/nav/。
+ * 首页封面不放本地图，避免云端 banner 返回前闪一下占位画。
  */
 
-const { ph, ICONS } = require('./util');
+const { ph } = require('./util');
 
 const destList = ['呼伦贝尔', '阿尔山', '满洲里', '额尔古纳', '黑山头', '莫尔道嘎'];
 const typeList = ['私家团', '拼团'];
@@ -11,19 +12,15 @@ const typeList = ['私家团', '拼团'];
 /* ---------------- 首页 ---------------- */
 
 const navIcons = [
-  { key: 'private', label: '私家团', icon: ICONS.privateGroup, url: 'tab:routes?type=私家团' },
-  { key: 'group', label: '拼团', icon: ICONS.group, url: 'tab:routes?type=拼团' },
-  { key: 'scenic', label: '景区', icon: ICONS.scenic, url: '/pages/scenic/scenic' },
-  { key: 'hotel', label: '酒店', icon: ICONS.bed, url: '/pages/hotels/hotels' },
-  { key: 'guide', label: '旅行攻略', icon: ICONS.book, url: '/pages/strategy/strategy' },
-  { key: 'custom', label: '私人定制', icon: ICONS.custom, url: '/pages/custom/custom' }
+  { key: 'private', label: '私家团', icon: '/images/nav/private.svg', url: 'tab:routes?type=私家团' },
+  { key: 'group', label: '拼团', icon: '/images/nav/group.svg', url: 'tab:routes?type=拼团' },
+  { key: 'scenic', label: '景区', icon: '/images/nav/scenic.svg', url: '/pages/scenic/scenic' },
+  { key: 'hotel', label: '酒店', icon: '/images/nav/hotel.svg', url: '/pages/hotels/hotels' },
+  { key: 'guide', label: '旅行攻略', icon: '/images/nav/guide.svg', url: '/pages/strategy/strategy' },
+  { key: 'custom', label: '私人定制', icon: '/images/nav/custom.svg', url: '/pages/custom/custom' }
 ];
 
-const banners = [
-  { id: 'b1', image: ph('banner 1 · 草原全景', 750, 420), routeId: 'r001' },
-  { id: 'b2', image: ph('banner 2 · 阿尔山秋色', 750, 420), routeId: 'r002' },
-  { id: 'b3', image: ph('banner 3 · 满洲里夜色', 750, 420), routeId: 'r003' }
-];
+const banners = [];
 
 const destinations = [
   { name: '阿尔山', image: ph('阿尔山', 340, 240) },
