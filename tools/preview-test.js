@@ -421,6 +421,16 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click(customNav);
   await sleep(80);
   ok($('#screen').textContent.includes('私人定制行程'), '进入私人定制页');
+  const genPage = window.__preview.getStack().slice(-1)[0].inst;
+  const stackBefore = window.__preview.getStack().length;
+  genPage.setData({ cover: 'cover-once' });
+  genPage.goGenerate();
+  genPage.goGenerate();
+  ok(window.__preview.getStack().length === stackBefore + 1, '连点生成只打开一次预览');
+  window.__preview.goBack();
+  await sleep(40);
+  genPage.setData({ cover: '', generating: false });
+  genPage._generating = false;
   ok($$('#screen .day-chip').length === 3, '默认 3 天标签');
   const coverUp = $('#screen .cover-upload');
   const coverPick = $('#screen .cover-pick');
@@ -680,9 +690,10 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   ok(!!saveBtn, '预览页含【保存到我的行程】按钮');
   ok(!$$('#screen .cp-btn').find(e => /和顾问聊聊细节/.test(e.textContent)), '预览页已无【和顾问聊聊细节】按钮');
   click(saveBtn);
+  click(saveBtn);
   await sleep(60);
   const myTrips = window.__preview.wx.getStorageSync('myTrips') || [];
-  ok(myTrips.length === 1, 'myTrips 保存 1 条');
+  ok(myTrips.length === 1, '连点保存只留下 1 条行程');
   ok(myTrips[0].title === '4天3晚的海拉尔行程', '保存行程标题: ' + myTrips[0].title);
   ok(myTrips[0].plans.length === 4, '保存行程 4 天');
   ok(myTrips[0].plans[1].scenicIds.length === 2 && myTrips[0].plans[1].hotelId === 'h1' && myTrips[0].plans[1].note === '想看日落',

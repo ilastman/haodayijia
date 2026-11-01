@@ -497,6 +497,10 @@
   padding: 20rpx 44rpx;
 }
 
+.submit-btn.is-busy {
+  opacity: 0.55;
+}
+
 .submit-btn.full {
   width: 100%;
   text-align: center;

@@ -373,11 +373,15 @@ Page({
   },
 
   saveToMine() {
+    if (this._saving) return;
+    this._saving = true;
+    try {
     const days = this.data.days;
     const title = this.data.heroTitle || quote.shareTitle({ days, guestName: this.data.guestName });
     let cover = this.data.cover || (this.data.heroTiles[0] && this.data.heroTiles[0].img);
     if (!cover) cover = ph('我的专属呼伦贝尔 ' + days + '日行程', 640, 420);
     const id = this.data.editingId || ('trip' + Date.now());
+    if (!this.data.editingId) this.setData({ editingId: id });
     const trip = {
       id,
       title,
@@ -419,5 +423,8 @@ Page({
     wx.setStorageSync('myTrips', trips);
     api.saveTrip(trip);
     wx.showToast({ title: copy.customPreview.saveSuccess, icon: 'none' });
+    } finally {
+      this._saving = false;
+    }
   }
 });

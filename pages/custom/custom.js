@@ -71,6 +71,7 @@ Page({
     form: { name: '', phone: '', wechat: '' },
     formError: '',
     editingTripId: '',
+    generating: false,
     cover: '',
     coverLib: [],
     promoLib: [],
@@ -132,6 +133,8 @@ Page({
   },
 
   onShow() {
+    this._generating = false;
+    if (this.data.generating) this.setData({ generating: false });
     this.loadGallery();
     this.loadCatalog();
   },
@@ -297,19 +300,32 @@ Page({
   },
 
   goGenerate() {
+    if (this._generating) return;
     if (!this.data.cover) {
       wx.showToast({ title: this.data.c.coverMiss, icon: 'none' });
       return;
     }
+    this._generating = true;
+    let editingTripId = this.data.editingTripId;
+    if (!editingTripId) editingTripId = 'trip' + Date.now();
+    this.setData({ generating: true, editingTripId });
     this.savePlan();
     const q = [
       'days=' + this.data.days,
       'date=' + encodeURIComponent(this.data.date || ''),
       'adults=' + this.data.adults,
-      'children=' + this.data.children
+      'children=' + this.data.children,
+      'edit=' + encodeURIComponent(editingTripId)
     ];
-    if (this.data.editingTripId) q.push('edit=' + encodeURIComponent(this.data.editingTripId));
-    wx.navigateTo({ url: '/pages/custom-preview/custom-preview?' + q.join('&') });
+    const unlock = () => {
+      this._generating = false;
+      if (this.data.generating) this.setData({ generating: false });
+    };
+    wx.navigateTo({
+      url: '/pages/custom-preview/custom-preview?' + q.join('&'),
+      success: unlock,
+      fail: unlock
+    });
   },
 
   onHide() {

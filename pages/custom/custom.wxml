@@ -256,7 +256,7 @@
       <text class="sum-item">{{c.summaryScenic}} {{totalScenic}}</text>
       <text class="sum-item">{{c.summaryHotel}} {{totalHotel}}</text>
     </view>
-    <view class="submit-btn" bindtap="goGenerate">{{c.generateBtn}}</view>
+    <view class="submit-btn {{generating ? 'is-busy' : ''}}" bindtap="goGenerate">{{generating ? '正在生成…' : c.generateBtn}}</view>
   </view>
 
   <!-- 私人定制封面 -->
