@@ -67,6 +67,8 @@ exports.main = async (event) => {
         children: isNaN(parseInt(d.children, 10)) ? 0 : Math.max(0, parseInt(d.children, 10)),
         guestName: String(d.guestName || '').trim().slice(0, 20),
         guestQuote: Math.max(0, Number(d.guestQuote) || 0),
+        audience: String(d.audience || '').trim().slice(0, 24),
+        pace: String(d.pace || '').trim().slice(0, 24),
         quote: (d.quote && typeof d.quote === 'object') ? {
           hotel: Number(d.quote.hotel) || 0,
           ticket: Number(d.quote.ticket) || 0,

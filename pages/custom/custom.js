@@ -73,6 +73,9 @@ Page({
     editingTripId: '',
     generating: false,
     cover: '',
+    audience: copy.custom.metaAudienceDefault,
+    pace: copy.custom.metaPaceDefault,
+    seasonText: '冬季雪原',
     coverLib: [],
     promoLib: [],
     carId: '',
@@ -252,6 +255,8 @@ Page({
       customDays: preset ? '' : String(max),
       editingTripId: t.id || '',
       cover: t.cover || '',
+      audience: t.audience || copy.custom.metaAudienceDefault,
+      pace: t.pace || copy.custom.metaPaceDefault,
       carId: t.carId || '',
       guestName: t.guestName || '',
       guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : ''
@@ -292,6 +297,8 @@ Page({
       adults: this.data.adults,
       children: this.data.children,
       cover: this.data.cover || '',
+      audience: this.data.audience || '',
+      pace: this.data.pace || '',
       carId: this.data.carId || '',
       guestName: this.data.guestName || '',
       guestQuote: this.data.guestQuote || '',
@@ -374,8 +381,16 @@ Page({
   },
 
   onDateChange(e) {
-    this.setData({ date: e.detail.value });
+    this.setData({ date: e.detail.value, seasonText: quote.seasonOf(quote.monthOf(e.detail.value)) });
     this.syncPlan();
+  },
+
+  onAudience(e) {
+    this.setData({ audience: e.detail.value });
+  },
+
+  onPace(e) {
+    this.setData({ pace: e.detail.value });
   },
 
   onAdult(e) {
@@ -463,7 +478,8 @@ Page({
       curPromo: gallery.clipPromo(plan.promoImgs),
       totalScenic,
       totalHotel,
-      curRoomTypes
+      curRoomTypes,
+      seasonText: quote.seasonOf(quote.monthOf(this.data.date))
     });
     this.calcInternal();
   },

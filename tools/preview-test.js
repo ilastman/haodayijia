@@ -432,6 +432,11 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   genPage.setData({ cover: '', generating: false });
   genPage._generating = false;
   ok($$('#screen .day-chip').length === 3, '默认 3 天标签');
+  const meta = $('#screen .info-bar');
+  ok(!!meta && meta.textContent.indexOf('总天数') >= 0 && meta.textContent.indexOf('3天') >= 0, '封面上方面板下有总天数');
+  const metaInputs = $$('#screen .info-bar .info-input').map(el => el.value);
+  ok(metaInputs.indexOf('大众休闲 · 全家皆宜') >= 0 && metaInputs.indexOf('节奏轻快') >= 0, '适宜人群和行程节奏可编辑并带默认值: ' + metaInputs.join('|'));
+  ok(meta.textContent.indexOf('冬季雪原') >= 0, '未选日期时出行季节为雪季');
   const coverUp = $('#screen .cover-upload');
   const coverPick = $('#screen .cover-pick');
   ok(!!coverUp && coverUp.textContent.indexOf('行程封面') >= 0 && coverUp.textContent.indexOf('客人看到的第一张') >= 0, '封面上传槽说明上传什么');
@@ -631,7 +636,9 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '进入专属行程预览页: ' + $('#nav-title').textContent);
   const heroTitle = $('#screen .cp-hero-title').textContent;
-  ok(heroTitle.indexOf('4天3晚的海拉尔行程') > -1, '分享页标题: ' + heroTitle);
+  ok(heroTitle.indexOf('呼伦贝尔行程') > -1 && heroTitle.indexOf('天') === -1 && heroTitle.indexOf('晚') === -1, '分享页标题不含天数: ' + heroTitle);
+  ok(!$('#screen .cp-hero-quote'), '封面上不展示每人价格');
+  ok($('#screen .cp-hero-slogan').textContent.indexOf('雪落北疆') >= 0, '宣传语改为雪季');
   ok($('#screen .cp-hero-slogan').textContent.trim().length > 0, '首屏 slogan 存在');
   ok($$('#screen .cp-hero-img').length >= 1, '首屏拼合景区图 >= 1');
   ok($$('#screen .cp-day').length === 4, '预览按天 4 天模块');
@@ -661,7 +668,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   const infoVals = $$('#screen .info-item').map(e => e.textContent.trim());
   ok(infoVals[0].indexOf('总天数') > -1 && infoVals[1].indexOf('适宜人群') > -1 && infoVals[2].indexOf('行程节奏') > -1 && infoVals[3].indexOf('出行季节') > -1, '标签四项名称: ' + infoVals.join('|'));
   const infoV = $$('#screen .info-v').map(e => e.textContent.trim());
-  ok(infoV[0] === '4天' && infoV[1].indexOf('亲子家庭') > -1 && infoV[2].indexOf('松紧有度') > -1 && infoV[3] === '盛夏草原',
+  ok(infoV[0] === '4天' && infoV[1].indexOf('大众休闲') > -1 && infoV[2].indexOf('节奏轻快') > -1 && infoV[3] === '盛夏草原',
     '标签内容自动匹配: ' + infoV.join('|'));
 
   // 20.2. 总体温馨提示 + 出行说明
@@ -695,7 +702,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(60);
   const myTrips = window.__preview.wx.getStorageSync('myTrips') || [];
   ok(myTrips.length === 1, '连点保存只留下 1 条行程');
-  ok(myTrips[0].title === '4天3晚的海拉尔行程', '保存行程标题: ' + myTrips[0].title);
+  ok(myTrips[0].title === '呼伦贝尔行程', '保存行程标题: ' + myTrips[0].title);
   ok(myTrips[0].plans.length === 4, '保存行程 4 天');
   ok(myTrips[0].plans[1].scenicIds.length === 2 && myTrips[0].plans[1].hotelId === 'h1' && myTrips[0].plans[1].note === '想看日落',
     '第2天景区/酒店/备注已保存');
@@ -758,13 +765,13 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(80);
   ok($$('#screen .mt-card').length === 1, '我的行程列表 1 条');
   const mtName = $$('#screen .mt-card .mt-name').map(e => e.textContent);
-  ok(mtName.indexOf('4天3晚的海拉尔行程') > -1, '行程卡片标题正确');
+  ok(mtName.indexOf('呼伦贝尔行程') > -1, '行程卡片标题正确');
   ok($$('#screen .mt-card img').length >= 1, '行程卡片大图在上');
   ok($$('#screen .mt-card .mt-days')[0].textContent.includes('4天'), '卡片天数展示');
   click($('#screen .mt-card'));
   await sleep(120);
   const prevId = window.__preview.wx.getStorageSync('myTrips')[0].id;
-  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '卡片重新打开专属预览');
+  ok($('#screen .cp-hero-title').textContent.indexOf('呼伦贝尔行程') > -1, '卡片重新打开专属预览');
   ok($$('#screen .cp-day').length === 4, '预览恢复 4 天模块');
   const rDay = $$('#screen .cp-day')[1].textContent;
   ok(rDay.indexOf('呼伦贝尔大草原') > -1 && rDay.indexOf('想看日落') > -1, '预览恢复第2天景区与备注');
@@ -803,7 +810,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click($('#screen .bottom-bar .submit-btn'));
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '编辑后重新生成进入预览');
-  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '重新生成预览标题');
+  ok($('#screen .cp-hero-title').textContent.indexOf('呼伦贝尔行程') > -1, '重新生成预览标题');
   const eDay = $$('#screen .cp-day')[1].textContent;
   ok(eDay.indexOf('想看日落·再改一下') > -1, '编辑后预览第2天备注更新');
   ok(!!$$('#screen .cp-btn').find(e => /保存到我的行程/.test(e.textContent)), '重新生成预览含【保存到我的行程】');
@@ -814,7 +821,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   ok(trips2.length === 1, '覆盖保存不新增条目(仍 1 条)');
   ok(trips2[0].id === prevId, '覆盖后行程 id 不变: ' + trips2[0].id);
   ok(trips2[0].days === 4 && trips2[0].plans[1].note.indexOf('再改一下') > -1, '覆盖保存内容为修改后行程');
-  ok($('#screen').textContent.indexOf('4天3晚的海拉尔行程') > -1, '保存后仍停留预览页');
+  ok($('#screen').textContent.indexOf('呼伦贝尔行程') > -1, '保存后仍停留预览页');
 
   // 22c. 返回我的行程 -> 左滑删除（二次确认）-> 灵感广场已发布内容不受影响
   click($('#nav-back')); await sleep(60);

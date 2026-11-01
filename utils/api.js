@@ -345,6 +345,8 @@ const api = {
       quote: t.quote || null,
       guestName: t.guestName || '',
       guestQuote: t.guestQuote || 0,
+      audience: t.audience || '',
+      pace: t.pace || '',
       cover: t.cover || '',
       carId: t.carId || '',
       plans: (Array.isArray(t.plans) && t.plans.length)

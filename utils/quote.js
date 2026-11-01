@@ -30,6 +30,16 @@ function monthOf(dateStr) {
   return isNaN(d.getTime()) ? 0 : (d.getMonth() + 1);
 }
 
+/* 没有出行月份时用雪季，有月份则按月份。 */
+function seasonOf(month) {
+  const m = parseInt(month, 10) || 0;
+  if (m >= 5 && m <= 6) return '初夏草原';
+  if (m >= 7 && m <= 8) return '盛夏草原';
+  if (m >= 9 && m <= 10) return '金秋草原';
+  if (m >= 11 || (m >= 1 && m <= 4)) return '冬季雪原';
+  return '冬季雪原';
+}
+
 /* 在出发日基础上加 n 天，返回 yyyy-MM-dd（无法解析出发日则返回 ''） */
 function addDays(dateStr, n) {
   const base = normDate(dateStr);
@@ -234,30 +244,38 @@ function publicHotelQuote(plans, hotelsById) {
   return { hotel, ticket: 0, car: 0, total: hotel };
 }
 
-/* 分享页标题：张先生的5天4晚的海拉尔行程。没有称呼时省略人名。 */
-function shareTitle(opts) {
-  const o = opts || {};
-  const days = Math.max(1, parseInt(o.days, 10) || 1);
-  const nights = Math.max(0, days - 1);
-  const who = String(o.guestName || '').trim();
-  const place = String(o.place || '').trim() || '呼伦贝尔';
-  return (who ? who + '的' : '') + days + '天' + nights + '晚的' + place + '行程';
+const LEVEL1_REGIONS = ['哈尔滨', '呼伦贝尔', '新疆'];
+const AREA_TO_LEVEL1 = {
+  海拉尔: '呼伦贝尔', 额尔古纳: '呼伦贝尔', 满洲里: '呼伦贝尔', 黑山头: '呼伦贝尔',
+  室韦: '呼伦贝尔', 阿尔山: '呼伦贝尔', 恩和: '呼伦贝尔', 根河: '呼伦贝尔', 莫尔道嘎: '呼伦贝尔',
+  哈尔滨: '哈尔滨',
+  喀拉峻: '新疆', 那拉提: '新疆', 伊犁: '新疆', 乌鲁木齐: '新疆', 独库: '新疆'
+};
+
+/* 酒店一级大区。只接受哈尔滨 / 呼伦贝尔 / 新疆，不用海拉尔这类地点名。 */
+function level1Place(hotel) {
+  if (!hotel) return '';
+  const region = String(hotel.regionLevel1 || '').trim();
+  if (LEVEL1_REGIONS.indexOf(region) >= 0) return region;
+  if (region) return '';
+  return AREA_TO_LEVEL1[String(hotel.area || '').trim()] || '';
 }
 
-/* 标题里的地点：优先第一个景区所在地，其次酒店地点 */
+/* 分享页标题：赵先生的呼伦贝尔行程。不含天数晚数，没有称呼时省略人名。 */
+function shareTitle(opts) {
+  const o = opts || {};
+  const who = String(o.guestName || '').trim();
+  const place = String(o.place || '').trim() || '呼伦贝尔';
+  return (who ? who + '的' : '') + place + '行程';
+}
+
+/* 标题里的地点：第一晚酒店的一级大区。 */
 function tripPlace(plans, scenicsById, hotelsById) {
   const list = Array.isArray(plans) ? plans : [];
   for (let i = 0; i < list.length; i++) {
-    const ids = (list[i] && list[i].scenicIds) || [];
-    for (let j = 0; j < ids.length; j++) {
-      const s = scenicsById && scenicsById[ids[j]];
-      const name = s && (s.dest || s.area);
-      if (name) return name;
-    }
-  }
-  for (let i = 0; i < list.length; i++) {
     const h = hotelsById && list[i] && hotelsById[list[i].hotelId];
-    if (h && h.area) return h.area;
+    const place = level1Place(h);
+    if (place) return place;
   }
   return '';
 }
@@ -318,7 +336,7 @@ function annotateQuote(q, adults, children) {
 }
 
 module.exports = {
-  num, parseTicketPrice, normDate, monthOf, addDays,
+  num, parseTicketPrice, normDate, monthOf, seasonOf, addDays,
   periodHasDate, periodHasMonth,
   periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, matchHotelPrice,
   deriveDays, calcQuote, publicHotelQuote, annotateQuote,

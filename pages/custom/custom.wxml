@@ -81,6 +81,25 @@
     </view>
   </view>
 
+  <view class="info-bar">
+    <view class="info-item">
+      <text class="info-k">{{c.metaDays}}</text>
+      <text class="info-v">{{days}}天</text>
+    </view>
+    <view class="info-item">
+      <text class="info-k">{{c.metaPeople}}</text>
+      <input class="info-input" value="{{audience}}" bindinput="onAudience" maxlength="24" />
+    </view>
+    <view class="info-item">
+      <text class="info-k">{{c.metaPace}}</text>
+      <input class="info-input" value="{{pace}}" bindinput="onPace" maxlength="24" />
+    </view>
+    <view class="info-item">
+      <text class="info-k">{{c.metaSeason}}</text>
+      <text class="info-v">{{seasonText}}</text>
+    </view>
+  </view>
+
   <!-- ② 每日行程标签 -->
   <scroll-view scroll-x="{{true}}" enhanced="{{true}}" show-scrollbar="{{false}}" class="day-scroll">
     <view class="day-chip {{activeDay === index ? 'on' : ''}}" wx:for="{{dayTabs}}" wx:key="index"

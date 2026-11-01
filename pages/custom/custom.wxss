@@ -251,6 +251,48 @@
   margin: 0 16rpx 8rpx 0;
 }
 
+.info-bar {
+  display: flex;
+  margin: 0 24rpx 20rpx;
+  padding: 8rpx 0 4rpx;
+  background: #FCF9F1;
+  border-radius: 16rpx;
+}
+
+.info-item {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  padding: 12rpx 6rpx;
+}
+
+.info-item:not(:last-child) {
+  border-right: 1rpx solid #E9E0CE;
+}
+
+.info-k {
+  display: block;
+  font-size: 20rpx;
+  color: #B0A997;
+  letter-spacing: 1rpx;
+}
+
+.info-v,
+.info-input {
+  display: block;
+  width: 100%;
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: #5F4B33;
+  text-align: center;
+  background: transparent;
+}
+
+.info-input {
+  height: 40rpx;
+  line-height: 40rpx;
+}
+
 .cover-row, .promo-row {
   display: flex;
   flex-wrap: wrap;
