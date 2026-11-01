@@ -1,6 +1,7 @@
 /**
  * 演示数据：线路 / 攻略 / 酒店 / 租车 / 首页板块
- * 图片多为本地占位图（utils.util.ph）。首页封面与六个导航图标在 images/ 下。
+ * 图片多为本地占位图（utils.util.ph）。六个导航图标在 images/nav/。
+ * 首页封面不放本地图，避免云端 banner 返回前闪一下占位画。
  */
 
 const { ph } = require('./util');
@@ -19,11 +20,7 @@ const navIcons = [
   { key: 'custom', label: '私人定制', icon: '/images/nav/custom.svg', url: '/pages/custom/custom' }
 ];
 
-const banners = [
-  { id: 'b1', image: '/images/banner/cover-grass.svg', routeId: 'r001' },
-  { id: 'b2', image: '/images/banner/cover-autumn.svg', routeId: 'r002' },
-  { id: 'b3', image: '/images/banner/cover-night.svg', routeId: 'r003' }
-];
+const banners = [];
 
 const destinations = [
   { name: '阿尔山', image: ph('阿尔山', 340, 240) },

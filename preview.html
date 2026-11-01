@@ -69,6 +69,37 @@
       background: #fff;
       border-bottom: 1px solid #F0EDE6;
     }
+    .pv-capsule {
+      display: none;
+      position: absolute;
+      top: 40px; right: 7px;
+      width: 87px; height: 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(255,255,255,.55);
+      background: rgba(20,16,12,.22);
+      z-index: 48;
+      pointer-events: none;
+      align-items: center;
+      justify-content: space-evenly;
+    }
+    .pv-capsule b, .pv-capsule i { display: block; background: #fff; }
+    .pv-capsule b { width: 16px; height: 5px; border-radius: 3px; box-shadow: -5px 0 0 #fff, 5px 0 0 #fff; }
+    .pv-capsule i { width: 14px; height: 14px; border-radius: 50%; border: 1.5px solid #fff; background: transparent; }
+    .device.nav-custom .pv-capsule { display: flex; }
+    .device.nav-custom .navbar { display: none !important; }
+    .device.nav-custom .statusbar {
+      position: absolute; top: 0; left: 0; right: 0;
+      z-index: 47; background: transparent; color: #fff;
+      pointer-events: none;
+    }
+    .device.nav-custom .statusbar.is-dark { color: #141414; }
+    .device.nav-custom .statusbar.is-dark ~ .pv-capsule {
+      border-color: rgba(60,50,40,.28);
+      background: rgba(255,255,255,.72);
+    }
+    .device.nav-custom .statusbar.is-dark ~ .pv-capsule b { background: #1c1814; box-shadow: -5px 0 0 #1c1814, 5px 0 0 #1c1814; }
+    .device.nav-custom .statusbar.is-dark ~ .pv-capsule i { border-color: #1c1814; }
+    .device.nav-custom .screen-frame { z-index: 1; }
     .nav-back {
       width: 44px; text-align: center;
       font-size: 26px; line-height: 1; color: #141414;
@@ -138,10 +169,11 @@
     </div>
 
     <div class="device">
-      <div class="statusbar">
+      <div class="statusbar" id="statusbar">
         <span>9:41</span>
         <span class="sb-right">●●●●● ▾</span>
       </div>
+      <div class="pv-capsule" id="pv-capsule" aria-hidden="true"><b></b><i></i></div>
       <div class="navbar">
         <div class="nav-back" id="nav-back">‹</div>
         <div class="nav-title" id="nav-title"></div>

@@ -29,6 +29,7 @@ const copy = {
     more: '查看全部',
     consult: '立即咨询',
     introTitle: '关于我们',
+    searchPlaceholder: '搜索行程、目的地',
     nav: ['私家团', '拼团', '景区', '酒店', '旅行攻略', '私人定制']
   },
 

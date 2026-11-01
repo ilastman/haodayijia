@@ -20,13 +20,17 @@ window.PhoneScreen = {
   },
   template: `
   <div class="phone">
-    <div class="phead">{{gc.slogan || '好大一家旅行社'}}</div>
-    <div class="phnotice">{{gc.notice}}</div>
+    <div class="phscroll">
     <div class="phbanner">
       <img v-if="bannerImg" :src="img(bannerImg)" alt="banner" />
-      <div v-else style="height:100%;display:flex;align-items:center;justify-content:center;color:#fff">暂无启用轮播</div>
-      <div class="dot"><i :class="{on: i===0}" v-for="(b,i) in banners" :key="b.id"></i></div>
+      <div v-else class="phbanner-empty">暂无启用轮播</div>
+      <div class="phchrome">
+        <span class="phpill">搜索行程、目的地</span>
+        <span class="phcap"></span>
+      </div>
+      <div class="dot" v-if="banners.length"><i :class="{on: i===0}" v-for="(b,i) in banners" :key="b.id"></i></div>
     </div>
+    <div class="phnotice" v-if="gc.notice">{{gc.notice}}</div>
     <div class="phnav">
       <div class="it" v-for="m in mods" :key="m.id">
         <div class="ico"><img v-if="m.icon" :src="img(m.icon)" alt="icon" /><span v-else>✦</span></div>
@@ -66,6 +70,7 @@ window.PhoneScreen = {
       <div class="hd"><b>{{copy.introTitle || '关于我们'}}</b></div>
       <div class="soft" style="padding:4px;line-height:1.7">{{gc.companyIntro}}</div>
       <div class="soft" style="padding:4px">客服电话：{{(gc.contact && gc.contact.phone) || ''}}</div>
+    </div>
     </div>
     <div class="phtabbar">
       <div class="tab" :class="{on: t.page.indexOf('/pages/index') > -1}" v-for="t in tabs" :key="t.id">

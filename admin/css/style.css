@@ -213,12 +213,29 @@ body {
   border: 10px solid #241f18; background: #f6f1e6; position: relative; overflow: hidden;
   box-shadow: 0 24px 50px rgba(40, 32, 20, .28);
 }
-.phone .phead {
-  height: 34px; border-radius: 0 0 14px 14px; background: var(--accent); color: #fff;
-  display: flex; align-items: center; justify-content: center; font-size: 15px; letter-spacing: 1px;
+.phone .phscroll {
+  position: absolute; left: 0; right: 0; top: 0; bottom: 46px; overflow-y: auto;
+  scrollbar-width: none;
 }
-.phone .phbanner { height: 248px; overflow: hidden; position: relative; background: #c4b49a; }
+.phone .phscroll::-webkit-scrollbar { display: none; }
+.phone .phbanner { height: 100%; min-height: 100%; overflow: hidden; position: relative; background: #1c1814; }
 .phone .phbanner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.phone .phbanner-empty {
+  height: 100%; min-height: 480px; display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,.7);
+}
+.phone .phchrome {
+  position: absolute; z-index: 2; top: 16px; left: 12px; right: 12px;
+  display: flex; align-items: center; gap: 8px;
+}
+.phone .phpill {
+  flex: 1; height: 28px; border-radius: 14px; padding: 0 12px;
+  background: rgba(20,16,12,.38); border: 1px solid rgba(255,255,255,.32);
+  color: #fbf7f0; font-size: 12px; line-height: 28px;
+}
+.phone .phcap {
+  width: 64px; height: 28px; border-radius: 14px; flex: 0 0 64px;
+  border: 1px solid rgba(255,255,255,.45); background: rgba(255,255,255,.16);
+}
 .phone .phbanner::after {
   content: "";
   position: absolute; left: 0; right: 0; bottom: 0; height: 72px;

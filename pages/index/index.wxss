@@ -1,25 +1,121 @@
-.page {
+.home-page {
   padding-bottom: 20rpx;
 }
 
 /*
- * 封面轮播
- * 高 880rpx：约首屏内容区 65%（宽 750 稿，扣除状态栏+导航栏+tabBar 后可视高度约 1290rpx）。
- * 导航以 -80rpx 叠在封面下沿，圆角与页面底色连成一块，指示点留在照片上。
+ * 首屏：封面高度由 JS 写成可视窗口 px（约 100vh，已扣 tabBar）。
+ * 顶栏 position:sticky，用负 margin 压在封面上。scrollTop≈0 时底透明、搜索是深色玻璃条；
+ * 下滑后顶栏收成米色实底，封面跟着页面滚走，金刚区和线路从下方露出来。
+ * 后台封面仍按 750×880 竖幅裁，这里用 aspectFill 铺满更高的框，不留白边。
  */
+.top-chrome {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  background: rgba(246, 241, 231, 0);
+  transition: background 0.22s ease, box-shadow 0.22s ease;
+}
+
+.top-chrome.is-solid {
+  background: rgba(246, 241, 231, 0.94);
+  box-shadow: 0 1rpx 0 rgba(74, 63, 50, 0.08);
+  -webkit-backdrop-filter: blur(18px);
+  backdrop-filter: blur(18px);
+}
+
+.chrome-row {
+  display: flex;
+  align-items: center;
+  padding-left: 24rpx;
+  box-sizing: border-box;
+}
+
+.search-pill {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 24rpx;
+  border-radius: 999rpx;
+  background: rgba(20, 16, 12, 0.38);
+  border: 1rpx solid rgba(255, 255, 255, 0.32);
+  color: #FBF7F0;
+  box-sizing: border-box;
+  transition: background 0.22s ease, color 0.22s ease, border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+.search-pill-on {
+  opacity: 0.72;
+}
+
+.top-chrome.is-solid .search-pill {
+  background: #FFFFFF;
+  border-color: transparent;
+  color: #4A3F32;
+  box-shadow: 0 6rpx 18rpx rgba(48, 38, 28, 0.06);
+}
+
+.search-ico {
+  width: 26rpx;
+  height: 26rpx;
+  border: 3rpx solid currentColor;
+  border-radius: 50%;
+  position: relative;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.search-ico::after {
+  content: "";
+  position: absolute;
+  width: 12rpx;
+  height: 3rpx;
+  right: -8rpx;
+  bottom: -2rpx;
+  background: currentColor;
+  border-radius: 3rpx;
+  transform: rotate(42deg);
+}
+
+.search-ph {
+  margin-left: 16rpx;
+  font-size: 26rpx;
+  line-height: 1;
+  color: inherit;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
 .home-hero {
   position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100vh;
+  background: #1C1814;
+  overflow: hidden;
 }
 
 .banner,
 .banner-img {
   width: 100%;
-  height: 880rpx;
+  height: 100%;
 }
 
 .banner-img {
   display: block;
-  background: #C4B49A;
+  background: #1C1814;
+}
+
+.banner-shade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 220rpx;
+  background: linear-gradient(180deg, rgba(20, 16, 12, 0.42) 0%, rgba(20, 16, 12, 0) 100%);
+  pointer-events: none;
 }
 
 .banner-scrim {
@@ -27,15 +123,15 @@
   left: 0;
   right: 0;
   bottom: 0;
-  height: 280rpx;
-  background: linear-gradient(180deg, rgba(36, 28, 20, 0) 0%, rgba(36, 28, 20, 0.16) 48%, rgba(36, 28, 20, 0.38) 100%);
+  height: 220rpx;
+  background: linear-gradient(180deg, rgba(36, 28, 20, 0) 0%, rgba(36, 28, 20, 0.18) 55%, rgba(36, 28, 20, 0.34) 100%);
   pointer-events: none;
 }
 
-/* 指示点抬到圆角面板之上（面板上叠 80rpx，点底边再留约 36rpx） */
+/* 指示点留在圆角面板上方（面板上叠 36rpx） */
 .banner .wx-swiper-dots,
 .banner .wx-swiper-dots-horizontal {
-  bottom: 116rpx;
+  bottom: 64rpx;
 }
 
 .banner .wx-swiper-dot {
@@ -50,17 +146,16 @@
   border-radius: 10rpx !important;
 }
 
-/* 图标导航：无底色块，单色线稿直接落在封面交界的浅底上 */
+/* 图标导航：无底色块，线稿落在米色圆角面板上。面板只叠住封面最下沿，首屏仍是整幅照片。 */
 .nav-bar {
   display: flex;
   align-items: flex-start;
   position: relative;
   z-index: 3;
-  margin: -80rpx 0 0;
-  padding: 32rpx 4rpx 8rpx;
+  margin: -36rpx 0 0;
+  padding: 28rpx 4rpx 8rpx;
   background: #F6F1E7;
-  border-radius: 40rpx 40rpx 0 0;
-  box-shadow: 0 -14rpx 32rpx rgba(48, 38, 28, 0.08);
+  border-radius: 36rpx 36rpx 0 0;
 }
 
 .nav-item {
@@ -99,7 +194,7 @@
   white-space: nowrap;
 }
 
-.home-hero + .section {
+.nav-bar + .section {
   margin-top: 28rpx;
 }
 
@@ -264,6 +359,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  white-space: nowrap;
   height: 88rpx;
   padding: 0 56rpx;
   border-radius: 44rpx;

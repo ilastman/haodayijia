@@ -279,9 +279,16 @@
       const css = computed(() => {
         const w = 168;
         if (!props.ratio) return { width: w + 'px', height: '96px' };
-        return { width: '168px', height: '84px' };
+        const h = Math.round(w / props.ratio);
+        return { width: w + 'px', height: Math.min(Math.max(h, 72), 210) + 'px' };
       });
-      function getRatioLabel() { return props.ratio === 1 ? '1:1 方形' : '16:9 横图'; }
+      function getRatioLabel() {
+        const r = props.ratio;
+        if (Math.abs(r - 1) < 0.02) return '1:1 方形';
+        if (Math.abs(r - 750 / 880) < 0.02) return '750×880 竖幅';
+        if (Math.abs(r - 16 / 9) < 0.05) return '16:9 横图';
+        return r > 1 ? '横图' : '竖图';
+      }
       async function acceptData(url) {
         if (props.ratio) {
           window.UIz.openCrop(url, { ratio: props.ratio, width: props.targetW }, async done => {
