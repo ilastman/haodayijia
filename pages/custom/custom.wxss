@@ -203,6 +203,44 @@
   margin-top: 16rpx;
 }
 
+.upload-slots {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16rpx;
+}
+
+.upload-slot {
+  width: 240rpx;
+  margin: 0 24rpx 12rpx 0;
+}
+
+.upload-plus {
+  width: 120rpx;
+  height: 120rpx;
+  line-height: 112rpx;
+  text-align: center;
+  font-size: 48rpx;
+  color: #8A7152;
+  background: #EDE4D2;
+  border-radius: 16rpx;
+}
+
+.upload-hint {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #3D362A;
+}
+
+.upload-sub {
+  display: block;
+  margin-top: 4rpx;
+  font-size: 22rpx;
+  line-height: 1.4;
+  color: #8A7152;
+}
+
 .img-btn {
   display: inline-block;
   font-size: 26rpx;

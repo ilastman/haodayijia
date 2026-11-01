@@ -66,9 +66,17 @@
       <view class="op-btn del" bindtap="clearCover">{{c.remove}}</view>
     </view>
     <view class="sel-empty" wx:else>{{c.coverEmpty}}</view>
-    <view class="img-actions">
-      <view class="img-btn cover-upload" bindtap="uploadCover">+ {{c.coverUpload}}</view>
-      <view class="img-btn cover-pick" bindtap="openCoverLib">+ {{c.coverPick}}</view>
+    <view class="upload-slots">
+      <view class="upload-slot cover-upload" bindtap="uploadCover">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.coverSlotHint}}</text>
+        <text class="upload-sub">{{c.coverSlotUpload}}</text>
+      </view>
+      <view class="upload-slot cover-pick" bindtap="openCoverLib">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.coverSlotHint}}</text>
+        <text class="upload-sub">{{c.coverSlotPick}}</text>
+      </view>
     </view>
   </view>
 
@@ -193,6 +201,20 @@
     </view>
   </view>
 
+  <view class="card car-card">
+    <view class="card-title">{{c.carTitle}}</view>
+    <view class="add-btn" bindtap="openCar">+ {{c.addCar}}</view>
+    <view class="hotel-sel" wx:if="{{curCar}}">
+      <image class="hotel-cover" src="{{curCar.image}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="sel-body">
+        <view class="sel-name">{{curCar.name}}</view>
+        <view class="sel-sub">{{curCar.type}} · {{curCar.seats}}座</view>
+      </view>
+      <view class="op-btn del" bindtap="clearCar">{{c.remove}}</view>
+    </view>
+    <view class="sel-empty" wx:else>{{c.carEmpty}}</view>
+  </view>
+
   <view class="card">
     <view class="card-title">{{c.promoTitle}}</view>
     <view class="tip-line">{{c.promoHint}}</view>
@@ -202,9 +224,17 @@
         <view class="op-btn del" catchtap="removePromo" data-index="{{index}}">{{c.remove}}</view>
       </view>
     </view>
-    <view class="img-actions">
-      <view class="img-btn promo-upload" bindtap="uploadPromo">+ {{c.promoUpload}}</view>
-      <view class="img-btn promo-pick" bindtap="openPromoLib">+ {{c.promoAdd}}</view>
+    <view class="upload-slots">
+      <view class="upload-slot promo-upload" bindtap="uploadPromo">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.promoSlotHint}}</text>
+        <text class="upload-sub">{{c.promoSlotUpload}}</text>
+      </view>
+      <view class="upload-slot promo-pick" bindtap="openPromoLib">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.promoSlotHint}}</text>
+        <text class="upload-sub">{{c.promoSlotPick}}</text>
+      </view>
     </view>
   </view>
 
@@ -307,6 +337,26 @@
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>
             <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 用车车型 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'car'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetCarTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetCars.length === 0}}">暂无车型</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetCars}}" wx:key="id" catchtap="toggleCar" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.type}} · {{item.seats}}座</view>
           </view>
           <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
         </view>

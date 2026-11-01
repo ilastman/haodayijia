@@ -70,6 +70,9 @@ Page({
     cover: '',
     coverLib: [],
     promoLib: [],
+    carId: '',
+    curCar: null,
+    sheetCars: [],
     curPromo: [],
 
     /* 员工内部核价（仅员工可见） */
@@ -242,6 +245,7 @@ Page({
       customDays: preset ? '' : String(max),
       editingTripId: t.id || '',
       cover: t.cover || '',
+      carId: t.carId || '',
       guestName: t.guestName || '',
       guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : ''
     });
@@ -281,6 +285,7 @@ Page({
       adults: this.data.adults,
       children: this.data.children,
       cover: this.data.cover || '',
+      carId: this.data.carId || '',
       guestName: this.data.guestName || '',
       guestQuote: this.data.guestQuote || '',
       quote: this.quoteSnapshot()
@@ -433,6 +438,7 @@ Page({
       curHotel,
       altPicked,
       altCanPick: pool.length > 0,
+      curCar: (data.cars || []).filter(c => c.id === this.data.carId)[0] || null,
       curNote: plan.note || '',
       curPromo: gallery.clipPromo(plan.promoImgs),
       totalScenic,
@@ -513,6 +519,13 @@ Page({
     }
     if (type === 'alt') {
       this.setData({ sheetHotels: this.altOptions() });
+      return;
+    }
+    if (type === 'car') {
+      const id = this.data.carId || '';
+      this.setData({
+        sheetCars: (data.cars || []).map(c => Object.assign({}, c, { sel: c.id === id }))
+      });
     }
   },
 
@@ -590,6 +603,24 @@ Page({
     this.setData({ plans });
     this.syncPlan();
     this.refreshSheet();
+  },
+
+  openCar() {
+    this.setData({ sheet: { type: 'car' } });
+    this.refreshSheet();
+  },
+
+  toggleCar(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    this.setData({ carId: this.data.carId === id ? '' : id });
+    this.syncPlan();
+    this.refreshSheet();
+  },
+
+  clearCar() {
+    this.setData({ carId: '' });
+    this.syncPlan();
   },
 
   openAlt() {

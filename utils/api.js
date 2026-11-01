@@ -346,6 +346,7 @@ const api = {
       guestName: t.guestName || '',
       guestQuote: t.guestQuote || 0,
       cover: t.cover || '',
+      carId: t.carId || '',
       plans: (Array.isArray(t.plans) && t.plans.length)
         ? t.plans.map(p => ({
           scenicIds: p.scenicIds || [],

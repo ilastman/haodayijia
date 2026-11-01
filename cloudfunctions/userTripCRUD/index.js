@@ -60,6 +60,7 @@ exports.main = async (event) => {
         title: d.title || '我的专属行程',
         days: d.days || (plans ? plans.length : 0),
         cover: d.cover || '',
+        carId: d.carId || '',
         plan,
         date: d.date || '',
         adults: isNaN(parseInt(d.adults, 10)) ? 2 : Math.max(1, parseInt(d.adults, 10)),

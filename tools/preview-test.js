@@ -422,6 +422,27 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(80);
   ok($('#screen').textContent.includes('私人定制行程'), '进入私人定制页');
   ok($$('#screen .day-chip').length === 3, '默认 3 天标签');
+  const coverUp = $('#screen .cover-upload');
+  const coverPick = $('#screen .cover-pick');
+  ok(!!coverUp && coverUp.textContent.indexOf('行程封面') >= 0 && coverUp.textContent.indexOf('客人看到的第一张') >= 0, '封面上传槽说明上传什么');
+  ok(!!coverPick && coverPick.textContent.indexOf('行程封面') >= 0 && coverPick.textContent.indexOf('封面库') >= 0, '封面库槽同一类图片');
+  const promoUp = $('#screen .promo-upload');
+  const promoPick = $('#screen .promo-pick');
+  ok(!!promoUp && promoUp.textContent.indexOf('当日宣传图') >= 0 && promoUp.textContent.indexOf('当天行程配图') >= 0, '宣传图上传槽说明');
+  ok(!!promoPick && promoPick.textContent.indexOf('当日宣传图') >= 0 && promoPick.textContent.indexOf('图库') >= 0, '宣传图图库槽同一类图片');
+  const pageText = $('#screen').textContent;
+  const hotelAt = pageText.indexOf('当日酒店');
+  const carAt = pageText.indexOf('用车车型');
+  const noteAt = pageText.indexOf('当日备注');
+  ok(hotelAt >= 0 && carAt > hotelAt && noteAt > carAt, '用车车型紧跟当日酒店、在备注之前');
+  click($('#screen .car-card .add-btn'));
+  await sleep(40);
+  ok($('#screen .sheet-title') && $('#screen .sheet-title').textContent.trim() === '选择车型', '车型仍走选择面板');
+  click($$('#screen .sheet .opt')[0]);
+  await sleep(20);
+  click($('#screen .sheet-confirm'));
+  await sleep(20);
+  ok($('#screen .car-card').textContent.indexOf('城市SUV') >= 0, '已选车型展示在用车卡片');
 
   // 14. 天数切换
   click($$('#screen .chip').find(e => e.textContent.trim() === '5天'));
