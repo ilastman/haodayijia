@@ -330,10 +330,14 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(80);
   ok($('#screen').textContent.includes('热门'), '切回首页');
 
-  // 11. 首页导航 6 项顺序
+  // 11. 首页导航：名片在功能栏上方，功能栏不再含私人定制
   const navLabels = $$('#screen .nav-item .nav-label').map(e => e.textContent.trim());
-  ok(navLabels.length === 6, '首页导航 6 项: got ' + navLabels.join(','));
-  ok(navLabels.join(',') === '私家团,拼团,景区,酒店,旅行攻略,私人定制', '导航顺序正确');
+  ok(navLabels.length === 5, '首页导航 5 项: got ' + navLabels.join(','));
+  ok(navLabels.join(',') === '私家团,拼团,景区,酒店,旅行攻略', '导航顺序正确');
+  ok(!navLabels.some(t => t === '私人定制'), '功能栏已无私人定制');
+  const customCardHome = $('#screen .custom-card');
+  const navBarHome = $('#screen .nav-bar');
+  ok(!!customCardHome && !!navBarHome && (customCardHome.compareDocumentPosition(navBarHome) & 4), '定制名片在功能栏之上');
 
   // 12. 景区列表 -> 筛选 -> 详情
   const scenicNav = $$('#screen .nav-item').find(e => /景区/.test(e.textContent));
@@ -410,9 +414,10 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(50);
   ok($('#screen').textContent.includes('热门'), '返回首页');
 
-  // 13. 私人定制导航
-  const customNav = $$('#screen .nav-item').find(e => /私人定制/.test(e.textContent));
-  ok(!!customNav, '私人定制导航存在');
+  // 13. 私人定制名片
+  const customNav = $('#screen .custom-card');
+  ok(!!customNav, '私人定制名片存在');
+  ok(!$$('#screen .nav-item').find(e => /私人定制/.test(e.textContent)), '功能栏无私人定制项');
   click(customNav);
   await sleep(80);
   ok($('#screen').textContent.includes('私人定制行程'), '进入私人定制页');
@@ -571,8 +576,8 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   // 20d. 定制页发布灵感 -> 发布 -> 广场顶部展示
   click($$('.pv-tab')[0]);
   await sleep(80);
-  const customNav2 = $$('#screen .nav-item').find(e => /私人定制/.test(e.textContent));
-  ok(!!customNav2, '首页私人定制入口再次存在');
+  const customNav2 = $('#screen .custom-card');
+  ok(!!customNav2, '首页私人定制名片再次存在');
   click(customNav2);
   await sleep(80);
   ok($('#screen').textContent.includes('私人定制行程'), '再次进入私人定制页');
