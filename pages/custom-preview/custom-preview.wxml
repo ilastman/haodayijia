@@ -107,27 +107,27 @@
 
     <view class="sec">
       <view class="sec-title">{{d.feeInclude}}</view>
-      <view class="sec-item" wx:for="{{c.travel.include}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.include}}" wx:key="*this">{{item}}</view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.feeExclude}}</view>
-      <view class="sec-item" wx:for="{{c.travel.exclude}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.exclude}}" wx:key="*this">{{item}}</view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.notice}}</view>
       <view class="sec-sub">{{d.noticeItems[0]}}</view>
-      <view class="sec-item" wx:for="{{c.travel.tips}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.tips}}" wx:key="*this">{{item}}</view>
       <view class="sec-sub">{{d.noticeItems[1]}}</view>
       <view class="sec-chips">
-        <text class="chip" wx:for="{{c.travel.gear}}" wx:key="*this">{{item}}</text>
+        <text class="chip" wx:for="{{travelView.gear}}" wx:key="*this">{{item}}</text>
       </view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.refund}}</view>
-      <view class="sec-item" wx:for="{{c.travel.refund}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.refund}}" wx:key="*this">{{item}}</view>
     </view>
   </view>
 

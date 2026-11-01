@@ -3,6 +3,7 @@ const data = require('../../utils/data');
 const api = require('../../utils/api');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
+const clause = require('../../utils/clause');
 const cloud = require('../../utils/cloud');
 const wb = require('../../utils/workbench');
 const { ph } = require('../../utils/util');
@@ -95,7 +96,9 @@ Page({
     guestTotalText: '',
     guestTotalNote: '',
     isStaff: false,
-    internalView: null
+    internalView: null,
+    clauses: clause.emptyClauses(),
+    travelView: clause.view()
   },
 
   onLoad(query) {
@@ -130,6 +133,7 @@ Page({
     const scenicMap = {};
     const hotelMap = hotelsByIdFrom(data.hotels);
     (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
+    const clauses = clause.normalizeClauses((base && base.clauses) || (!fromList && saved.clauses) || null);
     const audience = (base && base.audience) || (!fromList && saved.audience) || '';
     const pace = (base && base.pace) || (!fromList && saved.pace) || '';
     const heroTitle = quote.shareTitle({
@@ -157,6 +161,8 @@ Page({
       editingId: fromList ? (query.trip || '') : editingId,
       audience,
       pace,
+      clauses,
+      travelView: clause.view(clauses),
       infoTags: buildInfo(days, monthFromDate(date), audience, pace),
       overallTips: buildOverallTips(plans),
       isStaff: false,
@@ -199,6 +205,8 @@ Page({
       editingId: trip.id,
       audience: trip.audience || '',
       pace: trip.pace || '',
+      clauses: clause.normalizeClauses(trip.clauses),
+      travelView: clause.view(trip.clauses),
       infoTags: buildInfo(days, monthFromDate(trip.date || ''), trip.audience, trip.pace),
       overallTips: buildOverallTips(this._plans),
       isStaff: false,
@@ -228,6 +236,7 @@ Page({
       guestQuote: this.data.guestQuote || '',
       audience: this.data.audience || '',
       pace: this.data.pace || '',
+      clauses: clause.normalizeClauses(this.data.clauses),
       plans: this._plans,
       quote: (this.data.isStaff && this.data.internalView) ? {
         hotel: this.data.internalView.hotel || 0,
@@ -390,6 +399,7 @@ Page({
       guestQuote: Number(this.data.guestQuote) || 0,
       audience: this.data.audience || '',
       pace: this.data.pace || '',
+      clauses: clause.normalizeClauses(this.data.clauses),
       cover,
       carId: this.data.carId || '',
       quote: (this.data.isStaff && this.data.internalView) ? {

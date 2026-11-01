@@ -223,6 +223,12 @@
       bindinput="onNote" maxlength="200" auto-height />
   </view>
 
+  <view class="card" wx:for="{{clauseCards}}" wx:key="kind">
+    <view class="card-title">{{item.title}}</view>
+    <view class="add-btn" bindtap="openClause" data-kind="{{item.kind}}">{{item.name}}</view>
+    <view class="tip-line" wx:for="{{item.preview}}" wx:for-item="line" wx:key="*this">{{line}}</view>
+  </view>
+
   <!-- 对客报价 + 内部核算（仅员工；客人看不到内部核算）。放在当天内容之后。 -->
   <view class="card quote-card" wx:if="{{isStaff}}">
     <view class="card-title">对客报价</view>
@@ -360,6 +366,26 @@
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>
             <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 行程条款模板 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'clause'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">选择模板</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetClauses.length === 0}}">这一类还没有模板</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetClauses}}" wx:key="id" catchtap="pickClause" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.kind === 'notice' ? item.tips[0] : item.lines[0]}}</view>
           </view>
           <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
         </view>

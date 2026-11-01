@@ -470,6 +470,14 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   const guestPos = quoteText.indexOf('对客报价');
   const innerPos = quoteText.indexOf('内部核算价');
   ok(notePos >= 0 && guestPos > notePos && innerPos > guestPos, '对客报价和内部核算在当天备注之后');
+  const clauseText = $('#screen').textContent;
+  const noteAt2 = clauseText.indexOf('当日备注');
+  const incAt = clauseText.indexOf('费用包含');
+  const excAt = clauseText.indexOf('费用不含');
+  const noticeAt = clauseText.indexOf('出行须知');
+  const refundAt = clauseText.indexOf('退改政策');
+  ok(noteAt2 >= 0 && incAt > noteAt2 && excAt > incAt && noticeAt > excAt && refundAt > noticeAt && guestPos > refundAt,
+    '四段条款在当日备注之后、报价之前');
   editPage.setData({ isStaff: false, internalQuote: null });
   await sleep(20);
 

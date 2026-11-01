@@ -23,7 +23,8 @@
       "opLog": { "read": false, "write": false },
       "user": { "read": false, "write": false },
       "category": { "read": false, "write": false },
-      "gallery": { "read": false, "write": false }
+      "gallery": { "read": false, "write": false },
+      "clauseTemplate": { "read": false, "write": false }
     },
     "remarks": {
       "homeModule": "首页板块：读写由 homeModuleCRUD 云函数完成",
@@ -42,7 +43,8 @@
       "opLog": "全局操作日志：只增，由各业务云函数内部写入；仅 opLogCRUD 管理员 token 可读取",
       "user": "小程序游客档案（头像/昵称）：本人 me/saveProfile 按 openid，管理员 list 按 token，均经 userCRUD",
       "category": "景区三级分类与酒店两级分类：读写经 categoryCRUD；查询公开，增删改需管理员 token",
-      "gallery": "分类图库：酒店两级 / 景区三级节点上的宣传图，以及私人定制封面层。查询经 galleryCRUD 公开；新增与删除需管理员 token。封面不能写入酒店或景区节点"
+      "gallery": "分类图库：酒店两级 / 景区三级节点上的宣传图，以及私人定制封面层。查询经 galleryCRUD 公开；新增与删除需管理员 token。封面不能写入酒店或景区节点",
+      "clauseTemplate": "专属行程四段条款模板。查询经 clauseCRUD 公开（仅启用项）；增改删需管理员 token。行程保存的是快照，不随模板事后修改而变"
     }
   }
 }

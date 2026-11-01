@@ -6,6 +6,7 @@ const wb = require('../../utils/workbench');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
 const catalog = require('../../utils/catalog');
+const clause = require('../../utils/clause');
 const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -73,6 +74,10 @@ Page({
     editingTripId: '',
     generating: false,
     cover: '',
+    clauses: clause.emptyClauses(),
+    clauseCards: clause.cards(),
+    sheetClauses: [],
+    clauseKind: '',
     audience: copy.custom.metaAudienceDefault,
     pace: copy.custom.metaPaceDefault,
     seasonText: '冬季雪原',
@@ -133,6 +138,7 @@ Page({
     this.initStaff();
     this.loadGallery();
     this.loadCatalog();
+    this.loadClauses();
   },
 
   onShow() {
@@ -140,6 +146,22 @@ Page({
     if (this.data.generating) this.setData({ generating: false });
     this.loadGallery();
     this.loadCatalog();
+    this.loadClauses();
+  },
+
+  async loadClauses() {
+    let remote = null;
+    try {
+      const res = await cloud.callFunction('clauseCRUD', { action: 'list' });
+      if (res && res.code === 200 && Array.isArray(res.data) && res.data.length) remote = res.data;
+    } catch (e) { remote = null; }
+    const all = remote || clause.defaults();
+    const lists = {};
+    clause.KINDS.forEach(k => { lists[k.kind] = all.filter(t => t.kind === k.kind && t.enabled !== false); });
+    this._clauseLists = lists;
+    const clauses = clause.normalizeClauses(this.data.clauses);
+    this.setData({ clauses, clauseCards: clause.cards(clauses) });
+    if (this.data.sheet && this.data.sheet.type === 'clause') this.refreshClauseSheet();
   },
 
   async loadCatalog() {
@@ -257,6 +279,8 @@ Page({
       cover: t.cover || '',
       audience: t.audience || copy.custom.metaAudienceDefault,
       pace: t.pace || copy.custom.metaPaceDefault,
+      clauses: clause.normalizeClauses(t.clauses),
+      clauseCards: clause.cards(t.clauses),
       carId: t.carId || '',
       guestName: t.guestName || '',
       guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : ''
@@ -299,6 +323,7 @@ Page({
       cover: this.data.cover || '',
       audience: this.data.audience || '',
       pace: this.data.pace || '',
+      clauses: clause.normalizeClauses(this.data.clauses),
       carId: this.data.carId || '',
       guestName: this.data.guestName || '',
       guestQuote: this.data.guestQuote || '',
@@ -639,6 +664,31 @@ Page({
     this.setData({ plans });
     this.syncPlan();
     this.refreshSheet();
+  },
+
+  openClause(e) {
+    const kind = e.currentTarget.dataset.kind;
+    this.setData({ sheet: { type: 'clause' }, clauseKind: kind });
+    this.refreshClauseSheet();
+  },
+
+  refreshClauseSheet() {
+    const kind = this.data.clauseKind;
+    const lists = this._clauseLists || {};
+    const rows = lists[kind] || clause.defaults().filter(t => t.kind === kind);
+    const cur = (this.data.clauses && this.data.clauses[kind]) || {};
+    this.setData({
+      sheetClauses: rows.map(t => Object.assign({}, t, { sel: t.id === cur.templateId }))
+    });
+  },
+
+  pickClause(e) {
+    const id = e.currentTarget.dataset.id;
+    const row = (this.data.sheetClauses || []).filter(t => t.id === id)[0];
+    if (!row) return;
+    const clauses = clause.normalizeClauses(this.data.clauses);
+    clauses[row.kind] = clause.snapshot(row);
+    this.setData({ clauses, clauseCards: clause.cards(clauses), sheet: null });
   },
 
   openCar() {

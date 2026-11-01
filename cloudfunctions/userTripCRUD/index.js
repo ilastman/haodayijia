@@ -69,6 +69,7 @@ exports.main = async (event) => {
         guestQuote: Math.max(0, Number(d.guestQuote) || 0),
         audience: String(d.audience || '').trim().slice(0, 24),
         pace: String(d.pace || '').trim().slice(0, 24),
+        clauses: (d.clauses && typeof d.clauses === 'object') ? d.clauses : null,
         quote: (d.quote && typeof d.quote === 'object') ? {
           hotel: Number(d.quote.hotel) || 0,
           ticket: Number(d.quote.ticket) || 0,
