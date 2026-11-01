@@ -302,12 +302,35 @@
   align-items: center;
   height: 116rpx;
   border-bottom: 1rpx solid #F0EADB;
+  position: relative;
+  background: #FCF9F1;
 }
 
-.sel-item.dragging {
-  background: #EDE4D2;
+.sel-list.live .sel-item {
+  transition: transform 0.12s ease;
+}
+
+.sel-list.live .sel-item.dragging {
+  transition: none;
+  z-index: 5;
+  background: #F6F1E6;
   border-radius: 14rpx;
-  opacity: 0.85;
+  box-shadow: 0 10rpx 28rpx rgba(61, 54, 42, 0.16);
+}
+
+.sel-item.drop-on {
+  background: #F3EDDF;
+}
+
+.drag-handle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 116rpx;
+  margin-left: -8rpx;
+  touch-action: none;
 }
 
 .sel-order {

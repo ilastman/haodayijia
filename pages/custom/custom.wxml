@@ -1,3 +1,4 @@
+<page-meta page-style="{{dragIndex >= 0 ? 'overflow: hidden;' : ''}}" />
 <view class="page">
 
   <!-- 头部 -->
@@ -135,11 +136,14 @@
     <view class="card-title">{{c.scenicTitle}}</view>
     <view class="add-btn" bindtap="openScenic">+ {{c.addScenic}}</view>
 
-    <view class="sel-list" wx:if="{{curScenics.length > 0}}">
-      <view class="sel-item {{dragging === index ? 'dragging' : ''}}" wx:for="{{curScenics}}" wx:key="id"
-        data-index="{{index}}"
-        bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
-        <text class="sel-order">{{index + 1}}</text>
+    <view class="sel-list {{dragIndex >= 0 ? 'live' : ''}}" wx:if="{{curScenics.length > 0}}">
+      <view class="sel-item {{dragIndex === index ? 'dragging' : ''}} {{dropIndex === index && dragIndex !== index ? 'drop-on' : ''}}"
+        wx:for="{{curScenics}}" wx:key="id"
+        style="transform: translateY({{rowShift[index] || 0}}px);">
+        <view class="drag-handle" data-index="{{index}}"
+          catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" catchtouchcancel="dragEnd">
+          <text class="sel-order">{{index + 1}}</text>
+        </view>
         <view class="sel-body">
           <view class="sel-name">{{item.name}}</view>
           <view class="sel-sub">{{item.dest}}</view>

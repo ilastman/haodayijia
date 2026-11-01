@@ -478,9 +478,16 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   // 16. 拖动排序（鼠标模拟：mousedown+mousemove+mouseup）
   let selItems = $$('#screen .sel-item');
   const name0 = selItems[0].querySelector('.sel-name').textContent;
-  selItems[0].dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true, clientX: 10, clientY: 10 }));
+  const handle = selItems[0].querySelector('.drag-handle');
+  ok(!!handle, '景区序号是拖动把手');
+  ok($('#screen').textContent.indexOf('按住序号拖动') >= 0, '排序提示指向把手');
+  handle.dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true, clientX: 10, clientY: 10 }));
   doc.dispatchEvent(new window.MouseEvent('mousemove', { bubbles: true, clientX: 10, clientY: 72 }));
   await sleep(30);
+  const dragging = $$('#screen .sel-item.dragging');
+  const dropOn = $$('#screen .sel-item.drop-on');
+  ok(dragging.length === 1, '拖动中原项抬起跟随手指');
+  ok(dropOn.length === 1, '目标位置有落点提示');
   doc.dispatchEvent(new window.MouseEvent('mouseup', { bubbles: true, clientX: 10, clientY: 72 }));
   await sleep(40);
   selItems = $$('#screen .sel-item');

@@ -58,7 +58,11 @@ Page({
     curNote: '',
     totalScenic: 0,
     totalHotel: 0,
-    dragging: -1,
+    dragIndex: -1,
+    dropIndex: -1,
+    dragDy: 0,
+    itemH: ITEM_H,
+    rowShift: [],
     sheet: null,
     sheetScenics: [],
     sheetHotels: [],
@@ -702,37 +706,86 @@ Page({
     this.syncPlan();
   },
 
+  /* 把手拖动：手指跟着走，松手才改顺序。不在移动过程中重排数据，避免和页面滚动抢手势。 */
+  rowShifts(n, from, drop, dy, h) {
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      if (from < 0) out.push(0);
+      else if (i === from) out.push(dy);
+      else if (drop > from && i > from && i <= drop) out.push(-h);
+      else if (drop < from && i >= drop && i < from) out.push(h);
+      else out.push(0);
+    }
+    return out;
+  },
+
+  measureRow() {
+    if (typeof wx === 'undefined' || typeof wx.createSelectorQuery !== 'function') return;
+    try {
+      const q = wx.createSelectorQuery();
+      const scoped = q && q.in ? q.in(this) : q;
+      if (!scoped || !scoped.select) return;
+      scoped.select('.sel-item').boundingClientRect(rect => {
+        if (!rect || !(rect.height > 20)) return;
+        this._itemH = rect.height;
+        if (this.data.itemH !== rect.height) this.setData({ itemH: rect.height });
+      }).exec();
+    } catch (err) { /* 预览环境没有节点查询时用固定行高 */ }
+  },
+
   dragStart(e) {
     const idx = Number(e.currentTarget.dataset.index);
     const t = (e.touches && e.touches[0]) || {};
-    this._drag = { idx, startY: t.clientY || 0 };
-    this.setData({ dragging: idx });
+    const n = (this.data.curScenics || []).length;
+    if (!n || idx < 0 || idx >= n) return;
+    this._drag = { from: idx, startY: t.clientY || 0 };
+    const h = this._itemH || this.data.itemH || ITEM_H;
+    this.setData({
+      dragIndex: idx,
+      dropIndex: idx,
+      dragDy: 0,
+      rowShift: this.rowShifts(n, idx, idx, 0, h)
+    });
+    this.measureRow();
   },
 
   dragMove(e) {
     const d = this._drag;
     if (!d) return;
     const t = (e.touches && e.touches[0]) || {};
-    const y = t.clientY;
-    const plans = normalizePlans(this.data.plans, this.data.days);
-    const ids = plans[this.data.activeDay].scenicIds;
-    const newIdx = Math.max(0, Math.min(ids.length - 1, d.idx + Math.round((y - d.startY) / ITEM_H)));
-    if (newIdx !== d.idx) {
-      const moved = ids.splice(d.idx, 1)[0];
-      ids.splice(newIdx, 0, moved);
-      d.idx = newIdx;
-      d.startY = y;
-      this.setData({
-        plans,
-        dragging: newIdx
-      });
-      this.syncPlan();
-    }
+    const y = t.clientY || 0;
+    const n = (this.data.curScenics || []).length;
+    const h = this._itemH || this.data.itemH || ITEM_H;
+    const dy = y - d.startY;
+    let drop = d.from + Math.round(dy / h);
+    if (drop < 0) drop = 0;
+    if (drop > n - 1) drop = n - 1;
+    this.setData({
+      dragDy: dy,
+      dropIndex: drop,
+      rowShift: this.rowShifts(n, d.from, drop, dy, h)
+    });
   },
 
   dragEnd() {
+    const d = this._drag;
     this._drag = null;
-    this.setData({ dragging: -1 });
+    const from = d ? d.from : -1;
+    const drop = this.data.dropIndex;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    const ids = plans[this.data.activeDay].scenicIds;
+    if (d && from >= 0 && drop >= 0 && drop !== from && drop < ids.length) {
+      const moved = ids.splice(from, 1)[0];
+      ids.splice(drop, 0, moved);
+    }
+    this.setData({
+      plans,
+      dragIndex: -1,
+      dropIndex: -1,
+      dragDy: 0,
+      rowShift: []
+    });
+    if (d && from !== drop) this.syncPlan();
   },
 
   /* ---------- 封面 / 每日宣传图 ---------- */

@@ -232,7 +232,7 @@ const copy = {
     adult: '成人',
     child: '儿童',
     dayPlanLabel: '每日行程安排',
-    tips: '长按拖动或使用箭头调整景区顺序',
+    tips: '按住序号拖动排序，或用上移 / 下移调整',
     scenicTitle: '当日景区',
     addScenic: '选择景区',
     scenicEmpty: '还没有选择景区，点击添加',
