@@ -24,6 +24,8 @@ add('utils/cloud.js');
 add('utils/api.js');
 add('utils/days.js');
 add('utils/route-extra.js');
+add('utils/workbench.js');
+add('utils/quote.js');
 add('app.js');
 add('app.wxss');
 

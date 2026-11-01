@@ -1,20 +1,21 @@
 <view class="page">
 
-  <!-- 1. 顶部轮播 banner -->
-  <swiper class="banner" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,.5)" indicator-active-color="#FFFFFF"
-    autoplay="{{true}}" circular="{{true}}" interval="4000" duration="400">
-    <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="onBanner" data-id="{{item.routeId}}" data-jump="{{item.jumpRoute}}">
-      <image class="banner-img" src="{{item.image}}" mode="aspectFill" />
-    </swiper-item>
-  </swiper>
-
-  <!-- 2. 横向图标导航 -->
-  <view class="nav-bar">
-    <view class="nav-item" wx:for="{{navIcons}}" wx:key="key" bindtap="onNav" data-url="{{item.url}}">
-      <view class="nav-icon">
-        <image class="nav-icon-img" src="{{item.icon}}" mode="aspectFit" />
+  <!-- 1. 封面轮播 + 2. 图标导航（导航叠在封面下沿） -->
+  <view class="home-hero">
+    <swiper class="banner" indicator-dots="{{true}}" indicator-color="rgba(255,255,255,.55)" indicator-active-color="#FFFFFF"
+      autoplay="{{true}}" circular="{{true}}" interval="4000" duration="480">
+      <swiper-item wx:for="{{banners}}" wx:key="id" bindtap="onBanner" data-id="{{item.routeId}}" data-jump="{{item.jumpRoute}}">
+        <image class="banner-img" src="{{item.image}}" mode="aspectFill" />
+        <view class="banner-scrim"></view>
+      </swiper-item>
+    </swiper>
+    <view class="nav-bar">
+      <view class="nav-item" hover-class="nav-item-on" wx:for="{{navIcons}}" wx:key="key" bindtap="onNav" data-url="{{item.url}}">
+        <view class="nav-icon">
+          <image class="nav-icon-img" src="{{item.icon}}" mode="aspectFit" />
+        </view>
+        <text class="nav-label">{{item.label}}</text>
       </view>
-      <text class="nav-label">{{item.label}}</text>
     </view>
   </view>
 
