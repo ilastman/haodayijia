@@ -6,6 +6,7 @@ const wb = require('../../utils/workbench');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
 const catalog = require('../../utils/catalog');
+const clause = require('../../utils/clause');
 const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
 
 const MAX_DAYS = 15;
@@ -53,11 +54,16 @@ Page({
     plans: buildPlans(3),
     curScenics: [],
     curHotel: null,
-    altHotels: [],
+    altPicked: [],
+    altCanPick: false,
     curNote: '',
     totalScenic: 0,
     totalHotel: 0,
-    dragging: -1,
+    dragIndex: -1,
+    dropIndex: -1,
+    dragDy: 0,
+    itemH: ITEM_H,
+    rowShift: [],
     sheet: null,
     sheetScenics: [],
     sheetHotels: [],
@@ -66,9 +72,20 @@ Page({
     form: { name: '', phone: '', wechat: '' },
     formError: '',
     editingTripId: '',
+    generating: false,
     cover: '',
+    clauses: clause.emptyClauses(),
+    clauseCards: clause.cards(),
+    sheetClauses: [],
+    clauseKind: '',
+    audience: copy.custom.metaAudienceDefault,
+    pace: copy.custom.metaPaceDefault,
+    seasonText: '冬季雪原',
     coverLib: [],
     promoLib: [],
+    carId: '',
+    curCar: null,
+    sheetCars: [],
     curPromo: [],
 
     /* 员工内部核价（仅员工可见） */
@@ -121,11 +138,30 @@ Page({
     this.initStaff();
     this.loadGallery();
     this.loadCatalog();
+    this.loadClauses();
   },
 
   onShow() {
+    this._generating = false;
+    if (this.data.generating) this.setData({ generating: false });
     this.loadGallery();
     this.loadCatalog();
+    this.loadClauses();
+  },
+
+  async loadClauses() {
+    let remote = null;
+    try {
+      const res = await cloud.callFunction('clauseCRUD', { action: 'list' });
+      if (res && res.code === 200 && Array.isArray(res.data) && res.data.length) remote = res.data;
+    } catch (e) { remote = null; }
+    const all = remote || clause.defaults();
+    const lists = {};
+    clause.KINDS.forEach(k => { lists[k.kind] = all.filter(t => t.kind === k.kind && t.enabled !== false); });
+    this._clauseLists = lists;
+    const clauses = clause.normalizeClauses(this.data.clauses);
+    this.setData({ clauses, clauseCards: clause.cards(clauses) });
+    if (this.data.sheet && this.data.sheet.type === 'clause') this.refreshClauseSheet();
   },
 
   async loadCatalog() {
@@ -241,6 +277,11 @@ Page({
       customDays: preset ? '' : String(max),
       editingTripId: t.id || '',
       cover: t.cover || '',
+      audience: t.audience || copy.custom.metaAudienceDefault,
+      pace: t.pace || copy.custom.metaPaceDefault,
+      clauses: clause.normalizeClauses(t.clauses),
+      clauseCards: clause.cards(t.clauses),
+      carId: t.carId || '',
       guestName: t.guestName || '',
       guestQuote: (t.guestQuote != null && t.guestQuote !== '' && Number(t.guestQuote) > 0) ? String(t.guestQuote) : ''
     });
@@ -280,6 +321,10 @@ Page({
       adults: this.data.adults,
       children: this.data.children,
       cover: this.data.cover || '',
+      audience: this.data.audience || '',
+      pace: this.data.pace || '',
+      clauses: clause.normalizeClauses(this.data.clauses),
+      carId: this.data.carId || '',
       guestName: this.data.guestName || '',
       guestQuote: this.data.guestQuote || '',
       quote: this.quoteSnapshot()
@@ -287,19 +332,32 @@ Page({
   },
 
   goGenerate() {
+    if (this._generating) return;
     if (!this.data.cover) {
       wx.showToast({ title: this.data.c.coverMiss, icon: 'none' });
       return;
     }
+    this._generating = true;
+    let editingTripId = this.data.editingTripId;
+    if (!editingTripId) editingTripId = 'trip' + Date.now();
+    this.setData({ generating: true, editingTripId });
     this.savePlan();
     const q = [
       'days=' + this.data.days,
       'date=' + encodeURIComponent(this.data.date || ''),
       'adults=' + this.data.adults,
-      'children=' + this.data.children
+      'children=' + this.data.children,
+      'edit=' + encodeURIComponent(editingTripId)
     ];
-    if (this.data.editingTripId) q.push('edit=' + encodeURIComponent(this.data.editingTripId));
-    wx.navigateTo({ url: '/pages/custom-preview/custom-preview?' + q.join('&') });
+    const unlock = () => {
+      this._generating = false;
+      if (this.data.generating) this.setData({ generating: false });
+    };
+    wx.navigateTo({
+      url: '/pages/custom-preview/custom-preview?' + q.join('&'),
+      success: unlock,
+      fail: unlock
+    });
   },
 
   onHide() {
@@ -348,8 +406,16 @@ Page({
   },
 
   onDateChange(e) {
-    this.setData({ date: e.detail.value });
+    this.setData({ date: e.detail.value, seasonText: quote.seasonOf(quote.monthOf(e.detail.value)) });
     this.syncPlan();
+  },
+
+  onAudience(e) {
+    this.setData({ audience: e.detail.value });
+  },
+
+  onPace(e) {
+    this.setData({ pace: e.detail.value });
   },
 
   onAdult(e) {
@@ -393,10 +459,26 @@ Page({
     const plan = this.planAt(this.data.activeDay);
     const curScenics = (plan.scenicIds || []).map(id => this.scenicById(id)).filter(Boolean);
     const curHotel = plan.hotelId ? this.hotelById(plan.hotelId) : null;
-    const altIds = Array.isArray(plan.altHotelIds) ? plan.altHotelIds : [];
-    const altHotels = curHotel ? this.hotelsOf()
-      .filter(h => h.id !== curHotel.id && h.stars === curHotel.stars)
-      .map(h => ({ id: h.id, name: h.name, sel: altIds.indexOf(h.id) > -1 })) : [];
+    const hotels = this.hotelsOf();
+    let altDirty = false;
+    plans.forEach(p => {
+      if (!p || !p.hotelId || !Array.isArray(p.altHotelIds) || !p.altHotelIds.length) return;
+      const dayHotel = hotels.filter(h => h.id === p.hotelId)[0];
+      if (!dayHotel) return;
+      const nextIds = p.altHotelIds.filter(id => catalog.sameGradeAlt(dayHotel, hotels.filter(h => h.id === id)[0]));
+      if (nextIds.length !== p.altHotelIds.length) {
+        p.altHotelIds = nextIds;
+        altDirty = true;
+      }
+    });
+    if (altDirty) this.setData({ plans: normalizePlans(this.data.plans, this.data.days) });
+    const pool = curHotel ? hotels.filter(h => catalog.sameGradeAlt(curHotel, h)) : [];
+    const kept = (plan.altHotelIds || []).slice();
+    const altPicked = kept.map(id => {
+      const h = this.hotelById(id);
+      if (!h) return null;
+      return { id: h.id, name: h.name, stars: h.stars || '', area: h.area || '', image: h.image || '' };
+    }).filter(Boolean);
     let totalScenic = 0;
     let totalHotel = 0;
     plans.forEach(p => {
@@ -414,12 +496,15 @@ Page({
     this.setData({
       curScenics,
       curHotel,
-      altHotels,
+      altPicked,
+      altCanPick: pool.length > 0,
+      curCar: (data.cars || []).filter(c => c.id === this.data.carId)[0] || null,
       curNote: plan.note || '',
       curPromo: gallery.clipPromo(plan.promoImgs),
       totalScenic,
       totalHotel,
-      curRoomTypes
+      curRoomTypes,
+      seasonText: quote.seasonOf(quote.monthOf(this.data.date))
     });
     this.calcInternal();
   },
@@ -456,6 +541,17 @@ Page({
     return { fac, list: fac.list.map(h => Object.assign({}, h, { sel: h.id === plan.hotelId })) };
   },
 
+  /* 备选只列出与主酒店同钻级、同一二级大区的酒店，不提供跨区筛选 */
+  altOptions() {
+    const plan = this.planAt(this.data.activeDay);
+    const cur = plan.hotelId ? this.hotelById(plan.hotelId) : null;
+    const ids = (plan && plan.altHotelIds) || [];
+    if (!cur) return [];
+    return this.hotelsOf()
+      .filter(h => catalog.sameGradeAlt(cur, h))
+      .map(h => Object.assign({}, h, { sel: ids.indexOf(h.id) > -1 }));
+  },
+
   refreshSheet() {
     const type = this.data.sheet && this.data.sheet.type;
     if (type === 'scenic') {
@@ -479,6 +575,17 @@ Page({
         sheetPlaces: pack.fac.places,
         sheetRegion: pack.fac.region,
         sheetPlace: pack.fac.place
+      });
+      return;
+    }
+    if (type === 'alt') {
+      this.setData({ sheetHotels: this.altOptions() });
+      return;
+    }
+    if (type === 'car') {
+      const id = this.data.carId || '';
+      this.setData({
+        sheetCars: (data.cars || []).map(c => Object.assign({}, c, { sel: c.id === id }))
       });
     }
   },
@@ -559,16 +666,69 @@ Page({
     this.refreshSheet();
   },
 
+  openClause(e) {
+    const kind = e.currentTarget.dataset.kind;
+    this.setData({ sheet: { type: 'clause' }, clauseKind: kind });
+    this.refreshClauseSheet();
+  },
+
+  refreshClauseSheet() {
+    const kind = this.data.clauseKind;
+    const lists = this._clauseLists || {};
+    const rows = lists[kind] || clause.defaults().filter(t => t.kind === kind);
+    const cur = (this.data.clauses && this.data.clauses[kind]) || {};
+    this.setData({
+      sheetClauses: rows.map(t => Object.assign({}, t, { sel: t.id === cur.templateId }))
+    });
+  },
+
+  pickClause(e) {
+    const id = e.currentTarget.dataset.id;
+    const row = (this.data.sheetClauses || []).filter(t => t.id === id)[0];
+    if (!row) return;
+    const clauses = clause.normalizeClauses(this.data.clauses);
+    clauses[row.kind] = clause.snapshot(row);
+    this.setData({ clauses, clauseCards: clause.cards(clauses), sheet: null });
+  },
+
+  openCar() {
+    this.setData({ sheet: { type: 'car' } });
+    this.refreshSheet();
+  },
+
+  toggleCar(e) {
+    const id = e.currentTarget.dataset.id;
+    if (!id) return;
+    this.setData({ carId: this.data.carId === id ? '' : id });
+    this.syncPlan();
+    this.refreshSheet();
+  },
+
+  clearCar() {
+    this.setData({ carId: '' });
+    this.syncPlan();
+  },
+
+  openAlt() {
+    if (!this.planAt(this.data.activeDay).hotelId) return;
+    this.setData({ sheet: { type: 'alt' } });
+    this.refreshSheet();
+  },
+
   toggleAlt(e) {
     const id = e.currentTarget.dataset.id;
+    if (!id) return;
     const idx = this.data.activeDay;
     const plans = normalizePlans(this.data.plans, this.data.days);
+    const cur = plans[idx].hotelId ? this.hotelById(plans[idx].hotelId) : null;
+    const hotel = this.hotelById(id);
     const ids = plans[idx].altHotelIds;
     const pos = ids.indexOf(id);
     if (pos > -1) ids.splice(pos, 1);
-    else ids.push(id);
+    else if (cur && hotel && catalog.sameGradeAlt(cur, hotel)) ids.push(id);
     this.setData({ plans });
     this.syncPlan();
+    this.refreshSheet();
   },
 
   clearHotel() {
@@ -628,37 +788,86 @@ Page({
     this.syncPlan();
   },
 
+  /* 把手拖动：手指跟着走，松手才改顺序。不在移动过程中重排数据，避免和页面滚动抢手势。 */
+  rowShifts(n, from, drop, dy, h) {
+    const out = [];
+    for (let i = 0; i < n; i++) {
+      if (from < 0) out.push(0);
+      else if (i === from) out.push(dy);
+      else if (drop > from && i > from && i <= drop) out.push(-h);
+      else if (drop < from && i >= drop && i < from) out.push(h);
+      else out.push(0);
+    }
+    return out;
+  },
+
+  measureRow() {
+    if (typeof wx === 'undefined' || typeof wx.createSelectorQuery !== 'function') return;
+    try {
+      const q = wx.createSelectorQuery();
+      const scoped = q && q.in ? q.in(this) : q;
+      if (!scoped || !scoped.select) return;
+      scoped.select('.sel-item').boundingClientRect(rect => {
+        if (!rect || !(rect.height > 20)) return;
+        this._itemH = rect.height;
+        if (this.data.itemH !== rect.height) this.setData({ itemH: rect.height });
+      }).exec();
+    } catch (err) { /* 预览环境没有节点查询时用固定行高 */ }
+  },
+
   dragStart(e) {
     const idx = Number(e.currentTarget.dataset.index);
     const t = (e.touches && e.touches[0]) || {};
-    this._drag = { idx, startY: t.clientY || 0 };
-    this.setData({ dragging: idx });
+    const n = (this.data.curScenics || []).length;
+    if (!n || idx < 0 || idx >= n) return;
+    this._drag = { from: idx, startY: t.clientY || 0 };
+    const h = this._itemH || this.data.itemH || ITEM_H;
+    this.setData({
+      dragIndex: idx,
+      dropIndex: idx,
+      dragDy: 0,
+      rowShift: this.rowShifts(n, idx, idx, 0, h)
+    });
+    this.measureRow();
   },
 
   dragMove(e) {
     const d = this._drag;
     if (!d) return;
     const t = (e.touches && e.touches[0]) || {};
-    const y = t.clientY;
-    const plans = normalizePlans(this.data.plans, this.data.days);
-    const ids = plans[this.data.activeDay].scenicIds;
-    const newIdx = Math.max(0, Math.min(ids.length - 1, d.idx + Math.round((y - d.startY) / ITEM_H)));
-    if (newIdx !== d.idx) {
-      const moved = ids.splice(d.idx, 1)[0];
-      ids.splice(newIdx, 0, moved);
-      d.idx = newIdx;
-      d.startY = y;
-      this.setData({
-        plans,
-        dragging: newIdx
-      });
-      this.syncPlan();
-    }
+    const y = t.clientY || 0;
+    const n = (this.data.curScenics || []).length;
+    const h = this._itemH || this.data.itemH || ITEM_H;
+    const dy = y - d.startY;
+    let drop = d.from + Math.round(dy / h);
+    if (drop < 0) drop = 0;
+    if (drop > n - 1) drop = n - 1;
+    this.setData({
+      dragDy: dy,
+      dropIndex: drop,
+      rowShift: this.rowShifts(n, d.from, drop, dy, h)
+    });
   },
 
   dragEnd() {
+    const d = this._drag;
     this._drag = null;
-    this.setData({ dragging: -1 });
+    const from = d ? d.from : -1;
+    const drop = this.data.dropIndex;
+    const plans = normalizePlans(this.data.plans, this.data.days);
+    const ids = plans[this.data.activeDay].scenicIds;
+    if (d && from >= 0 && drop >= 0 && drop !== from && drop < ids.length) {
+      const moved = ids.splice(from, 1)[0];
+      ids.splice(drop, 0, moved);
+    }
+    this.setData({
+      plans,
+      dragIndex: -1,
+      dropIndex: -1,
+      dragDy: 0,
+      rowShift: []
+    });
+    if (d && from !== drop) this.syncPlan();
   },
 
   /* ---------- 封面 / 每日宣传图 ---------- */

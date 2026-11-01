@@ -37,7 +37,8 @@ const ALLOWED = [
   'userCRUD',
   'categoryCRUD',
   'adminUserCRUD',
-  'galleryCRUD'
+  'galleryCRUD',
+  'clauseCRUD'
 ];
 
 const CORS = {

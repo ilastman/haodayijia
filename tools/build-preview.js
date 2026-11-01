@@ -26,6 +26,7 @@ add('utils/quote.js');
 add('utils/workbench.js');
 add('utils/gallery.js');
 add('utils/catalog.js');
+add('utils/clause.js');
 add('utils/user.js');
 add('utils/days.js');
 add('utils/route-extra.js');

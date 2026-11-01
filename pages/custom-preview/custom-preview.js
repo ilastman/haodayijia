@@ -3,6 +3,7 @@ const data = require('../../utils/data');
 const api = require('../../utils/api');
 const quote = require('../../utils/quote');
 const gallery = require('../../utils/gallery');
+const clause = require('../../utils/clause');
 const cloud = require('../../utils/cloud');
 const wb = require('../../utils/workbench');
 const { ph } = require('../../utils/util');
@@ -34,23 +35,14 @@ function monthFromDate(str) {
   return isFinite(m) ? m : 0;
 }
 
-function buildInfo(days, month) {
-  let people;
-  let pace;
-  if (days <= 3) { people = '大众休闲 · 全家皆宜'; pace = '节奏轻快'; }
-  else if (days <= 6) { people = '亲子家庭 · 结伴同游'; pace = '松紧有度'; }
-  else if (days <= 9) { people = '深度漫游 · 摄影旅友'; pace = '从容慢游'; }
-  else { people = '长假深玩 · 户外爱好者'; pace = '逐日漫游'; }
-  let season = '夏季草原';
-  if (month >= 5 && month <= 6) season = '初夏草原';
-  else if (month >= 7 && month <= 8) season = '盛夏草原';
-  else if (month >= 9 && month <= 10) season = '金秋草原';
-  else if (month >= 11 || (month >= 1 && month <= 4)) season = '冬季雪原';
+function buildInfo(days, month, audience, pace) {
+  const people = String(audience || '').trim() || copy.custom.metaAudienceDefault;
+  const rhythm = String(pace || '').trim() || copy.custom.metaPaceDefault;
   return [
     { k: copy.detail.baseInfo[0], v: days + '天' },
     { k: copy.detail.baseInfo[1], v: people },
-    { k: copy.detail.baseInfo[2], v: pace },
-    { k: copy.detail.baseInfo[3], v: season }
+    { k: copy.detail.baseInfo[2], v: rhythm },
+    { k: copy.detail.baseInfo[3], v: quote.seasonOf(month) }
   ];
 }
 
@@ -104,7 +96,9 @@ Page({
     guestTotalText: '',
     guestTotalNote: '',
     isStaff: false,
-    internalView: null
+    internalView: null,
+    clauses: clause.emptyClauses(),
+    travelView: clause.view()
   },
 
   onLoad(query) {
@@ -139,6 +133,9 @@ Page({
     const scenicMap = {};
     const hotelMap = hotelsByIdFrom(data.hotels);
     (data.scenics || []).forEach(s => { if (s && s.id) scenicMap[s.id] = s; });
+    const clauses = clause.normalizeClauses((base && base.clauses) || (!fromList && saved.clauses) || null);
+    const audience = (base && base.audience) || (!fromList && saved.audience) || '';
+    const pace = (base && base.pace) || (!fromList && saved.pace) || '';
     const heroTitle = quote.shareTitle({
       days,
       guestName,
@@ -151,6 +148,7 @@ Page({
       adults,
       children,
       cover,
+      carId: (base && base.carId) || (!fromList && saved.carId) || '',
       guestName,
       guestQuote,
       guestQuoteText: quote.guestQuoteText(guestQuote),
@@ -161,7 +159,11 @@ Page({
       heroTitle,
       fromList,
       editingId: fromList ? (query.trip || '') : editingId,
-      infoTags: buildInfo(days, monthFromDate(date)),
+      audience,
+      pace,
+      clauses,
+      travelView: clause.view(clauses),
+      infoTags: buildInfo(days, monthFromDate(date), audience, pace),
       overallTips: buildOverallTips(plans),
       isStaff: false,
       internalView: null
@@ -190,6 +192,7 @@ Page({
       adults: trip.adults != null ? trip.adults : 2,
       children: trip.children != null ? trip.children : 0,
       cover: trip.cover || '',
+      carId: trip.carId || '',
       guestName,
       guestQuote: trip.guestQuote || '',
       guestQuoteText: quote.guestQuoteText(trip.guestQuote),
@@ -200,7 +203,11 @@ Page({
       dayList: this._plans.map((p, i) => this.buildDay(p, i, days)),
       fromList: true,
       editingId: trip.id,
-      infoTags: buildInfo(days, monthFromDate(trip.date || '')),
+      audience: trip.audience || '',
+      pace: trip.pace || '',
+      clauses: clause.normalizeClauses(trip.clauses),
+      travelView: clause.view(trip.clauses),
+      infoTags: buildInfo(days, monthFromDate(trip.date || ''), trip.audience, trip.pace),
       overallTips: buildOverallTips(this._plans),
       isStaff: false,
       internalView: null
@@ -208,9 +215,7 @@ Page({
   },
 
   onShareAppMessage() {
-    const title = this.data.guestQuoteText
-      ? (this.data.heroTitle + ' ' + this.data.guestQuoteText)
-      : this.data.heroTitle;
+    const title = this.data.heroTitle;
     const id = this.data.editingId || '';
     return {
       title,
@@ -226,8 +231,12 @@ Page({
       adults: this.data.adults,
       children: this.data.children,
       cover: this.data.cover,
+      carId: this.data.carId || '',
       guestName: this.data.guestName || '',
       guestQuote: this.data.guestQuote || '',
+      audience: this.data.audience || '',
+      pace: this.data.pace || '',
+      clauses: clause.normalizeClauses(this.data.clauses),
       plans: this._plans,
       quote: (this.data.isStaff && this.data.internalView) ? {
         hotel: this.data.internalView.hotel || 0,
@@ -370,11 +379,15 @@ Page({
   },
 
   saveToMine() {
+    if (this._saving) return;
+    this._saving = true;
+    try {
     const days = this.data.days;
     const title = this.data.heroTitle || quote.shareTitle({ days, guestName: this.data.guestName });
     let cover = this.data.cover || (this.data.heroTiles[0] && this.data.heroTiles[0].img);
     if (!cover) cover = ph('我的专属呼伦贝尔 ' + days + '日行程', 640, 420);
     const id = this.data.editingId || ('trip' + Date.now());
+    if (!this.data.editingId) this.setData({ editingId: id });
     const trip = {
       id,
       title,
@@ -384,7 +397,11 @@ Page({
       children: this.data.children,
       guestName: this.data.guestName || '',
       guestQuote: Number(this.data.guestQuote) || 0,
+      audience: this.data.audience || '',
+      pace: this.data.pace || '',
+      clauses: clause.normalizeClauses(this.data.clauses),
       cover,
+      carId: this.data.carId || '',
       quote: (this.data.isStaff && this.data.internalView) ? {
         hotel: this.data.internalView.hotel || 0,
         ticket: this.data.internalView.ticket || 0,
@@ -415,5 +432,8 @@ Page({
     wx.setStorageSync('myTrips', trips);
     api.saveTrip(trip);
     wx.showToast({ title: copy.customPreview.saveSuccess, icon: 'none' });
+    } finally {
+      this._saving = false;
+    }
   }
 });

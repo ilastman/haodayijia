@@ -27,7 +27,8 @@
     user: 'userCRUD',
     category: 'categoryCRUD',
     adminUser: 'adminUserCRUD',
-    gallery: 'galleryCRUD'
+    gallery: 'galleryCRUD',
+    clauseTemplate: 'clauseCRUD'
   };
 
   function enabled() {

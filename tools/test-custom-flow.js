@@ -95,8 +95,8 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click($('#screen .bottom-bar .submit-btn'));
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '生成进入详情');
-  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '分享标题在首屏');
-  ok($('#screen .cp-hero-quote').textContent.trim() === '¥1280/人', '标题旁是每人报价');
+  ok($('#screen .cp-hero-title').textContent.indexOf('呼伦贝尔行程') > -1 && $('#screen .cp-hero-title').textContent.indexOf('天') === -1, '分享标题不含天数: ' + $('#screen .cp-hero-title').textContent);
+  ok(!$('#screen .cp-hero-quote'), '分享封面上没有每人价格');
   ok($('#screen .cp-price-k').textContent.trim() === '总价', '详情页突出总价');
   ok($('#screen .cp-price-v').textContent.trim() === '¥5120', '总价=1280×4人: ' + $('#screen .cp-price-v').textContent);
   ok($('#screen .cp-price-note').textContent.indexOf('¥1280/人') > -1 && $('#screen .cp-price-note').textContent.indexOf('3 成人') > -1 && $('#screen .cp-price-note').textContent.indexOf('1 儿童') > -1, '总价标注每人与人数');

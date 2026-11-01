@@ -7,7 +7,6 @@
     <view class="cp-hero-cap">
       <view class="cp-hero-title-row">
         <view class="cp-hero-title">{{heroTitle}}</view>
-        <view class="cp-hero-quote" wx:if="{{guestQuoteText}}">{{guestQuoteText}}</view>
       </view>
       <view class="cp-hero-slogan">{{c.slogan}}</view>
     </view>
@@ -20,9 +19,16 @@
     <view class="cp-hero-cap">
       <view class="cp-hero-title-row">
         <view class="cp-hero-title">{{heroTitle}}</view>
-        <view class="cp-hero-quote" wx:if="{{guestQuoteText}}">{{guestQuoteText}}</view>
       </view>
       <view class="cp-hero-slogan">{{c.slogan}}</view>
+    </view>
+  </view>
+
+  <!-- 四项信息在首图下面，不压在封面上 -->
+  <view class="info-bar">
+    <view class="info-item" wx:for="{{infoTags}}" wx:key="k">
+      <text class="info-k">{{item.k}}</text>
+      <text class="info-v">{{item.v}}</text>
     </view>
   </view>
 
@@ -31,21 +37,6 @@
     <view class="cp-price-k">{{c.guestTotalLabel}}</view>
     <view class="cp-price-v">{{guestTotalText}}</view>
     <view class="cp-price-note">{{guestTotalNote}}</view>
-  </view>
-
-  <!-- 内部核算只给员工，客人分享页不渲染这块 -->
-  <view class="cp-price" wx:if="{{isStaff && internalView}}">
-    <view class="cp-price-k">内部核算</view>
-    <view class="cp-price-v">¥{{internalView.total}}</view>
-    <view class="cp-price-note">{{internalView.note}}</view>
-  </view>
-
-  <!-- 基础信息标签区（自动匹配天数与出行月份） -->
-  <view class="info-bar">
-    <view class="info-item" wx:for="{{infoTags}}" wx:key="k">
-      <text class="info-k">{{item.k}}</text>
-      <text class="info-v">{{item.v}}</text>
-    </view>
   </view>
 
   <!-- 按天行程 -->
@@ -116,28 +107,35 @@
 
     <view class="sec">
       <view class="sec-title">{{d.feeInclude}}</view>
-      <view class="sec-item" wx:for="{{c.travel.include}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.include}}" wx:key="*this">{{item}}</view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.feeExclude}}</view>
-      <view class="sec-item" wx:for="{{c.travel.exclude}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.exclude}}" wx:key="*this">{{item}}</view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.notice}}</view>
       <view class="sec-sub">{{d.noticeItems[0]}}</view>
-      <view class="sec-item" wx:for="{{c.travel.tips}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.tips}}" wx:key="*this">{{item}}</view>
       <view class="sec-sub">{{d.noticeItems[1]}}</view>
       <view class="sec-chips">
-        <text class="chip" wx:for="{{c.travel.gear}}" wx:key="*this">{{item}}</text>
+        <text class="chip" wx:for="{{travelView.gear}}" wx:key="*this">{{item}}</text>
       </view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.refund}}</view>
-      <view class="sec-item" wx:for="{{c.travel.refund}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.refund}}" wx:key="*this">{{item}}</view>
     </view>
+  </view>
+
+  <!-- 内部核算只给员工，放在全部行程内容之后 -->
+  <view class="cp-price" wx:if="{{isStaff && internalView}}">
+    <view class="cp-price-k">内部核算</view>
+    <view class="cp-price-v">¥{{internalView.total}}</view>
+    <view class="cp-price-note">{{internalView.note}}</view>
   </view>
 
   <!-- 底部：有对客报价时总价留在操作栏旁，生成后仍可修改 -->

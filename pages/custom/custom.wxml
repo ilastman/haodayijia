@@ -1,3 +1,4 @@
+<page-meta page-style="{{dragIndex >= 0 ? 'overflow: hidden;' : ''}}" />
 <view class="page">
 
   <!-- 头部 -->
@@ -66,54 +67,37 @@
       <view class="op-btn del" bindtap="clearCover">{{c.remove}}</view>
     </view>
     <view class="sel-empty" wx:else>{{c.coverEmpty}}</view>
-    <view class="img-actions">
-      <view class="img-btn cover-upload" bindtap="uploadCover">+ {{c.coverUpload}}</view>
-      <view class="img-btn cover-pick" bindtap="openCoverLib">+ {{c.coverPick}}</view>
+    <view class="upload-slots">
+      <view class="upload-slot cover-upload" bindtap="uploadCover">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.coverSlotHint}}</text>
+        <text class="upload-sub">{{c.coverSlotUpload}}</text>
+      </view>
+      <view class="upload-slot cover-pick" bindtap="openCoverLib">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.coverSlotHint}}</text>
+        <text class="upload-sub">{{c.coverSlotPick}}</text>
+      </view>
     </view>
   </view>
 
-  <!-- 对客报价 + 内部核算（仅员工；客人看不到内部核算） -->
-  <view class="card quote-card" wx:if="{{isStaff}}">
-    <view class="card-title">对客报价</view>
-    <view class="row">
-      <view class="row-label">客人称呼</view>
-      <input class="guest-input" placeholder="如：张先生" placeholder-class="ph" value="{{guestName}}" bindinput="onGuestName" maxlength="20" />
+  <view class="info-bar">
+    <view class="info-item">
+      <text class="info-k">{{c.metaDays}}</text>
+      <text class="info-v">{{days}}天</text>
     </view>
-    <view class="row">
-      <view class="row-label">每人报价</view>
-      <input class="guest-input" type="digit" placeholder="填写给客人的每人价格" placeholder-class="ph" value="{{guestQuote}}" bindinput="onGuestQuote" maxlength="8" />
-      <text class="days-unit">元/人</text>
+    <view class="info-item">
+      <text class="info-k">{{c.metaPeople}}</text>
+      <input class="info-input" value="{{audience}}" bindinput="onAudience" maxlength="24" />
     </view>
-    <view class="tip-line">客人页面标题旁显示每人报价，首屏下面标出总价（每人报价 × 成人和儿童）。内部核算不会出现在客人看到的页面上。</view>
-    <view class="quote-sum quote-total" wx:if="{{guestTotalText}}">
-      <text class="quote-sum-label">客人看到的总价</text>
-      <text class="quote-sum-val total">{{guestTotalText}}</text>
+    <view class="info-item">
+      <text class="info-k">{{c.metaPace}}</text>
+      <input class="info-input" value="{{pace}}" bindinput="onPace" maxlength="24" />
     </view>
-    <view class="tip-line" wx:if="{{guestTotalNote}}">{{guestTotalNote}}</view>
-    <block wx:if="{{internalQuote}}">
-    <view class="card-title quote-inner-title">内部核算价</view>
-    <view class="quote-sum">
-      <text class="quote-sum-label">酒店（逐日房型 × 间数）</text>
-      <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
+    <view class="info-item">
+      <text class="info-k">{{c.metaSeason}}</text>
+      <text class="info-v">{{seasonText}}</text>
     </view>
-    <view class="quote-sum">
-      <text class="quote-sum-label">门票（{{internalQuote.people}}人）</text>
-      <text class="quote-sum-val">¥{{internalQuote.ticket}}</text>
-    </view>
-    <view class="quote-sum quote-total">
-      <text class="quote-sum-label">内部核算合计</text>
-      <text class="quote-sum-val total">¥{{internalQuote.total}}</text>
-    </view>
-    <view class="quote-bd" wx:if="{{internalQuote.breakdown.length}}">
-      <view class="quote-bd-row" wx:for="{{internalQuote.breakdown}}" wx:key="index">
-        <text class="quote-bd-day">{{item.day}}</text>
-        <text class="quote-bd-name">{{item.name}}</text>
-        <text class="quote-bd-unit">¥{{item.unit}} × {{item.qty}}</text>
-        <text class="quote-bd-sub">¥{{item.subtotal}}</text>
-      </view>
-    </view>
-    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
-    </block>
   </view>
 
   <!-- ② 每日行程标签 -->
@@ -127,11 +111,14 @@
     <view class="card-title">{{c.scenicTitle}}</view>
     <view class="add-btn" bindtap="openScenic">+ {{c.addScenic}}</view>
 
-    <view class="sel-list" wx:if="{{curScenics.length > 0}}">
-      <view class="sel-item {{dragging === index ? 'dragging' : ''}}" wx:for="{{curScenics}}" wx:key="id"
-        data-index="{{index}}"
-        bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
-        <text class="sel-order">{{index + 1}}</text>
+    <view class="sel-list {{dragIndex >= 0 ? 'live' : ''}}" wx:if="{{curScenics.length > 0}}">
+      <view class="sel-item {{dragIndex === index ? 'dragging' : ''}} {{dropIndex === index && dragIndex !== index ? 'drop-on' : ''}}"
+        wx:for="{{curScenics}}" wx:key="id"
+        style="transform: translateY({{rowShift[index] || 0}}px);">
+        <view class="drag-handle" data-index="{{index}}"
+          catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" catchtouchcancel="dragEnd">
+          <text class="sel-order">{{index + 1}}</text>
+        </view>
         <view class="sel-body">
           <view class="sel-name">{{item.name}}</view>
           <view class="sel-sub">{{item.dest}}</view>
@@ -178,15 +165,17 @@
       </view>
     </view>
 
-    <!-- 同级备选酒店（纯文字多选） -->
-    <view class="alt-block" wx:if="{{curHotel && altHotels.length > 0}}">
+    <!-- 同级备选：与「选择酒店」相同的底部面板，候选已锁在主酒店的二级大区 -->
+    <view class="alt-block" wx:if="{{curHotel && altCanPick}}">
       <view class="alt-title">{{c.hotelAltTitle}}</view>
-      <view class="alt-list">
-        <view class="alt-item {{item.sel ? 'on' : ''}}" wx:for="{{altHotels}}" wx:key="id"
-          catchtap="toggleAlt" data-id="{{item.id}}">
-          <text class="alt-name">{{item.name}}</text>
-          <view class="alt-check">{{item.sel ? '✓' : ''}}</view>
+      <view class="add-btn" bindtap="openAlt">+ {{c.addHotel}}</view>
+      <view class="hotel-sel alt-sel" wx:for="{{altPicked}}" wx:key="id">
+        <image class="hotel-cover" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="sel-body">
+          <view class="sel-name">{{item.name}}</view>
+          <view class="sel-sub">{{item.stars}} · {{item.area}}</view>
         </view>
+        <view class="op-btn del" catchtap="toggleAlt" data-id="{{item.id}}">{{c.remove}}</view>
       </view>
     </view>
   </view>
@@ -200,16 +189,88 @@
         <view class="op-btn del" catchtap="removePromo" data-index="{{index}}">{{c.remove}}</view>
       </view>
     </view>
-    <view class="img-actions">
-      <view class="img-btn promo-upload" bindtap="uploadPromo">+ {{c.promoUpload}}</view>
-      <view class="img-btn promo-pick" bindtap="openPromoLib">+ {{c.promoAdd}}</view>
+    <view class="upload-slots">
+      <view class="upload-slot promo-upload" bindtap="uploadPromo">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.promoSlotHint}}</text>
+        <text class="upload-sub">{{c.promoSlotUpload}}</text>
+      </view>
+      <view class="upload-slot promo-pick" bindtap="openPromoLib">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.promoSlotHint}}</text>
+        <text class="upload-sub">{{c.promoSlotPick}}</text>
+      </view>
     </view>
+  </view>
+
+  <view class="card car-card">
+    <view class="card-title">{{c.carTitle}}</view>
+    <view class="add-btn" bindtap="openCar">+ {{c.addCar}}</view>
+    <view class="hotel-sel" wx:if="{{curCar}}">
+      <image class="hotel-cover" src="{{curCar.image}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="sel-body">
+        <view class="sel-name">{{curCar.name}}</view>
+        <view class="sel-sub">{{curCar.type}} · {{curCar.seats}}座</view>
+      </view>
+      <view class="op-btn del" bindtap="clearCar">{{c.remove}}</view>
+    </view>
+    <view class="sel-empty" wx:else>{{c.carEmpty}}</view>
   </view>
 
   <view class="card">
     <view class="card-title">{{c.noteTitle}}</view>
     <textarea class="note" placeholder="{{c.notePlaceholder}}" placeholder-class="ph" value="{{curNote}}"
       bindinput="onNote" maxlength="200" auto-height />
+  </view>
+
+  <view class="card" wx:for="{{clauseCards}}" wx:key="kind">
+    <view class="card-title">{{item.title}}</view>
+    <view class="add-btn" bindtap="openClause" data-kind="{{item.kind}}">{{item.name}}</view>
+    <view class="tip-line" wx:for="{{item.preview}}" wx:for-item="line" wx:key="*this">{{line}}</view>
+  </view>
+
+  <!-- 对客报价 + 内部核算（仅员工；客人看不到内部核算）。放在当天内容之后。 -->
+  <view class="card quote-card" wx:if="{{isStaff}}">
+    <view class="card-title">对客报价</view>
+    <view class="row">
+      <view class="row-label">客人称呼</view>
+      <input class="guest-input" placeholder="如：张先生" placeholder-class="ph" value="{{guestName}}" bindinput="onGuestName" maxlength="20" />
+    </view>
+    <view class="row">
+      <view class="row-label">每人报价</view>
+      <input class="guest-input" type="digit" placeholder="填写给客人的每人价格" placeholder-class="ph" value="{{guestQuote}}" bindinput="onGuestQuote" maxlength="8" />
+      <text class="days-unit">元/人</text>
+    </view>
+    <view class="tip-line">客人页面标题旁显示每人报价，首屏下面标出总价（每人报价 × 成人和儿童）。内部核算不会出现在客人看到的页面上。</view>
+    <view class="quote-sum quote-total" wx:if="{{guestTotalText}}">
+      <text class="quote-sum-label">客人看到的总价</text>
+      <text class="quote-sum-val total">{{guestTotalText}}</text>
+    </view>
+    <view class="tip-line" wx:if="{{guestTotalNote}}">{{guestTotalNote}}</view>
+    <block wx:if="{{internalQuote}}">
+    <view class="card-title quote-inner-title">内部核算价</view>
+    <view class="quote-sum">
+      <text class="quote-sum-label">酒店（逐日房型 × 间数）</text>
+      <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
+    </view>
+    <view class="quote-sum">
+      <text class="quote-sum-label">门票（{{internalQuote.people}}人）</text>
+      <text class="quote-sum-val">¥{{internalQuote.ticket}}</text>
+    </view>
+    <view class="quote-sum quote-total">
+      <text class="quote-sum-label">内部核算合计</text>
+      <text class="quote-sum-val total">¥{{internalQuote.total}}</text>
+    </view>
+    <view class="quote-bd" wx:if="{{internalQuote.breakdown.length}}">
+      <view class="quote-bd-row" wx:for="{{internalQuote.breakdown}}" wx:key="index">
+        <text class="quote-bd-day">{{item.day}}</text>
+        <text class="quote-bd-name">{{item.name}}</text>
+        <text class="quote-bd-unit">¥{{item.unit}} × {{item.qty}}</text>
+        <text class="quote-bd-sub">¥{{item.subtotal}}</text>
+      </view>
+    </view>
+    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
+    </block>
   </view>
 
   <view class="safe-bottom"></view>
@@ -220,7 +281,7 @@
       <text class="sum-item">{{c.summaryScenic}} {{totalScenic}}</text>
       <text class="sum-item">{{c.summaryHotel}} {{totalHotel}}</text>
     </view>
-    <view class="submit-btn" bindtap="goGenerate">{{c.generateBtn}}</view>
+    <view class="submit-btn {{generating ? 'is-busy' : ''}}" bindtap="goGenerate">{{generating ? '正在生成…' : c.generateBtn}}</view>
   </view>
 
   <!-- 私人定制封面 -->
@@ -302,6 +363,66 @@
       <scroll-view scroll-y="{{true}}" class="sheet-list">
         <view class="sel-empty" wx:if="{{sheetHotels.length === 0}}">该分类下暂无酒店</view>
         <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleHotel" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 行程条款模板 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'clause'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">选择模板</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetClauses.length === 0}}">这一类还没有模板</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetClauses}}" wx:key="id" catchtap="pickClause" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.kind === 'notice' ? item.tips[0] : item.lines[0]}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 用车车型 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'car'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetCarTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetCars.length === 0}}">暂无车型</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetCars}}" wx:key="id" catchtap="toggleCar" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.type}} · {{item.seats}}座</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 同等级备选酒店：面板样式与主酒店一致，列表不含其他二级大区 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'alt'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetAltTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetHotels.length === 0}}">{{c.altEmpty}}</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleAlt" data-id="{{item.id}}">
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>
             <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>

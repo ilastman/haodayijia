@@ -532,14 +532,20 @@
         dispatch(env.ctx, hAv, mkEvent(el, 'chooseavatar', { avatarURL: DEMO_AVATAR }, ev));
       });
     }
-    // touch 事件（移动端原生 / 桌面鼠标模拟）
-    var tStart = attrs.bindtouchstart, tMove = attrs.bindtouchmove,
-        tEnd = attrs.bindtouchend, tCancel = attrs.bindtouchcancel;
+    // touch 事件（移动端原生 / 桌面鼠标模拟）。catchtouch* 与 bindtouch* 一样派发，并拦住滚动。
+    var tStart = attrs.catchtouchstart || attrs.bindtouchstart;
+    var tMove = attrs.catchtouchmove || attrs.bindtouchmove;
+    var tEnd = attrs.catchtouchend || attrs.bindtouchend;
+    var tCancel = attrs.catchtouchcancel || attrs.bindtouchcancel;
+    function touchHit(node, ev) {
+      var t = ev && ev.target;
+      return t === node || (node.contains && t && node.contains(t));
+    }
     if (tStart || tMove || tEnd) {
       var TOUCH_ONLY = typeof navigator.maxTouchPoints === 'number' && navigator.maxTouchPoints > 0;
       if (tStart) {
         el.addEventListener('touchstart', function (ev) {
-          if (ev.target !== el) return;
+          if (!touchHit(el, ev)) return;
           if (ev.cancelable) ev.preventDefault();
           dispatch(env.ctx, tStart, mkEvent(el, 'touchstart', {}, ev));
         }, { passive: false });
@@ -547,6 +553,7 @@
       if (tMove) {
         el.addEventListener('touchmove', function (ev) {
           if (ev.cancelable) ev.preventDefault();
+          ev.stopPropagation();
           dispatch(env.ctx, tMove, mkEvent(el, 'touchmove', {}, ev));
         }, { passive: false });
       }
@@ -564,8 +571,9 @@
       // 避免首个绑定元素独占后续页面的滑动事件
       if (!TOUCH_ONLY && tStart) {
         el.addEventListener('mousedown', function (ev) {
-          if (ev.target !== el) return;
+          if (!touchHit(el, ev)) return;
           ev.preventDefault();
+          ev.stopPropagation();
           if (document.__pvMouseMoveFn) {
             document.removeEventListener('mousemove', document.__pvMouseMoveFn);
             document.__pvMouseMoveFn = null;

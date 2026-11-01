@@ -421,7 +421,65 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click(customNav);
   await sleep(80);
   ok($('#screen').textContent.includes('私人定制行程'), '进入私人定制页');
+  const genPage = window.__preview.getStack().slice(-1)[0].inst;
+  const stackBefore = window.__preview.getStack().length;
+  genPage.setData({ cover: 'cover-once' });
+  genPage.goGenerate();
+  genPage.goGenerate();
+  ok(window.__preview.getStack().length === stackBefore + 1, '连点生成只打开一次预览');
+  window.__preview.goBack();
+  await sleep(40);
+  genPage.setData({ cover: '', generating: false });
+  genPage._generating = false;
   ok($$('#screen .day-chip').length === 3, '默认 3 天标签');
+  const meta = $('#screen .info-bar');
+  ok(!!meta && meta.textContent.indexOf('总天数') >= 0 && meta.textContent.indexOf('3天') >= 0, '封面上方面板下有总天数');
+  const metaInputs = $$('#screen .info-bar .info-input').map(el => el.value);
+  ok(metaInputs.indexOf('大众休闲 · 全家皆宜') >= 0 && metaInputs.indexOf('节奏轻快') >= 0, '适宜人群和行程节奏可编辑并带默认值: ' + metaInputs.join('|'));
+  ok(meta.textContent.indexOf('冬季雪原') >= 0, '未选日期时出行季节为雪季');
+  const coverUp = $('#screen .cover-upload');
+  const coverPick = $('#screen .cover-pick');
+  ok(!!coverUp && coverUp.textContent.indexOf('行程封面') >= 0 && coverUp.textContent.indexOf('客人看到的第一张') >= 0, '封面上传槽说明上传什么');
+  ok(!!coverPick && coverPick.textContent.indexOf('行程封面') >= 0 && coverPick.textContent.indexOf('封面库') >= 0, '封面库槽同一类图片');
+  const promoUp = $('#screen .promo-upload');
+  const promoPick = $('#screen .promo-pick');
+  ok(!!promoUp && promoUp.textContent.indexOf('当日宣传图') >= 0 && promoUp.textContent.indexOf('当天行程配图') >= 0, '宣传图上传槽说明');
+  ok(!!promoPick && promoPick.textContent.indexOf('当日宣传图') >= 0 && promoPick.textContent.indexOf('图库') >= 0, '宣传图图库槽同一类图片');
+  const pageText = $('#screen').textContent;
+  const hotelAt = pageText.indexOf('当日酒店');
+  const promoAt = pageText.indexOf('当日宣传图');
+  const carAt = pageText.indexOf('用车车型');
+  const noteAt = pageText.indexOf('当日备注');
+  ok(hotelAt >= 0 && promoAt > hotelAt && carAt > promoAt && noteAt > carAt, '酒店之后是宣传图，再用车，然后备注');
+  click($('#screen .car-card .add-btn'));
+  await sleep(40);
+  ok($('#screen .sheet-title') && $('#screen .sheet-title').textContent.trim() === '选择车型', '车型仍走选择面板');
+  click($$('#screen .sheet .opt')[0]);
+  await sleep(20);
+  click($('#screen .sheet-confirm'));
+  await sleep(20);
+  ok($('#screen .car-card').textContent.indexOf('城市SUV') >= 0, '已选车型展示在用车卡片');
+  const editPage = window.__preview.getStack().slice(-1)[0].inst;
+  editPage.setData({
+    isStaff: true,
+    internalQuote: { hotel: 1, ticket: 0, people: 2, total: 1, breakdown: [], missing: [] }
+  });
+  await sleep(30);
+  const quoteText = $('#screen').textContent;
+  const notePos = quoteText.indexOf('当日备注');
+  const guestPos = quoteText.indexOf('对客报价');
+  const innerPos = quoteText.indexOf('内部核算价');
+  ok(notePos >= 0 && guestPos > notePos && innerPos > guestPos, '对客报价和内部核算在当天备注之后');
+  const clauseText = $('#screen').textContent;
+  const noteAt2 = clauseText.indexOf('当日备注');
+  const incAt = clauseText.indexOf('费用包含');
+  const excAt = clauseText.indexOf('费用不含');
+  const noticeAt = clauseText.indexOf('出行须知');
+  const refundAt = clauseText.indexOf('退改政策');
+  ok(noteAt2 >= 0 && incAt > noteAt2 && excAt > incAt && noticeAt > excAt && refundAt > noticeAt && guestPos > refundAt,
+    '四段条款在当日备注之后、报价之前');
+  editPage.setData({ isStaff: false, internalQuote: null });
+  await sleep(20);
 
   // 14. 天数切换
   click($$('#screen .chip').find(e => e.textContent.trim() === '5天'));
@@ -457,9 +515,16 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   // 16. 拖动排序（鼠标模拟：mousedown+mousemove+mouseup）
   let selItems = $$('#screen .sel-item');
   const name0 = selItems[0].querySelector('.sel-name').textContent;
-  selItems[0].dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true, clientX: 10, clientY: 10 }));
+  const handle = selItems[0].querySelector('.drag-handle');
+  ok(!!handle, '景区序号是拖动把手');
+  ok($('#screen').textContent.indexOf('按住序号拖动') >= 0, '排序提示指向把手');
+  handle.dispatchEvent(new window.MouseEvent('mousedown', { bubbles: true, cancelable: true, clientX: 10, clientY: 10 }));
   doc.dispatchEvent(new window.MouseEvent('mousemove', { bubbles: true, clientX: 10, clientY: 72 }));
   await sleep(30);
+  const dragging = $$('#screen .sel-item.dragging');
+  const dropOn = $$('#screen .sel-item.drop-on');
+  ok(dragging.length === 1, '拖动中原项抬起跟随手指');
+  ok(dropOn.length === 1, '目标位置有落点提示');
   doc.dispatchEvent(new window.MouseEvent('mouseup', { bubbles: true, clientX: 10, clientY: 72 }));
   await sleep(40);
   selItems = $$('#screen .sel-item');
@@ -491,6 +556,73 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   const sum1 = $('#screen .summary').textContent;
   ok(/已选酒店\s*1/.test(sum1), '汇总酒店计数: ' + sum1.trim());
 
+  // 18b. 同等级备选锁在主酒店的二级大区，交互与「选择酒店」相同（按钮 → 面板）
+  ok(!$('#screen .alt-item'), '本地数据无同区同级时不铺备选芯片');
+  const customPage = window.__preview.getStack().slice(-1)[0].inst;
+  const baseHotels = customPage.hotelsOf().map(h => Object.assign({}, h));
+  const primaryHotel = baseHotels.filter(h => h.id === customPage.data.curHotel.id)[0];
+  ok(!!primaryHotel, '主酒店在目录中');
+  baseHotels.forEach(h => {
+    if (!h.areaCatId) h.areaCatId = 'cat-' + (h.area || h.id);
+  });
+  const otherHotel = baseHotels.filter(h => h.id !== primaryHotel.id && h.stars === primaryHotel.stars && h.area !== primaryHotel.area)[0];
+  const samePeer = {
+    id: 'peer-same-area', name: '同区同级备选', stars: primaryHotel.stars,
+    area: primaryHotel.area, areaCatId: primaryHotel.areaCatId,
+    regionLevel1: primaryHotel.regionLevel1 || '', image: primaryHotel.image || ''
+  };
+  const otherPeer = otherHotel ? {
+    id: 'peer-other-area', name: '新区同级备选', stars: otherHotel.stars,
+    area: otherHotel.area, areaCatId: otherHotel.areaCatId,
+    regionLevel1: otherHotel.regionLevel1 || '', image: otherHotel.image || ''
+  } : null;
+  customPage._hotels = baseHotels.concat([samePeer].concat(otherPeer ? [otherPeer] : []));
+  customPage.syncPlan();
+  await sleep(30);
+  ok(!!$('#screen .alt-block') && $('#screen .alt-block').textContent.indexOf('或以下同等级酒店') >= 0, '同等级备选入口出现');
+  ok(!$('#screen .alt-item'), '备选不是芯片平铺');
+  click($('#screen .alt-block .add-btn'));
+  await sleep(40);
+  ok($('#screen .sheet-title').textContent.trim() === '选择同等级酒店', '备选打开选择面板: ' + ($('#screen .sheet-title') && $('#screen .sheet-title').textContent));
+  ok(!$('#screen .sheet-chip'), '备选面板不能改选其他大区');
+  let altNames = $$('#screen .sheet .opt-name').map(e => e.textContent.trim());
+  ok(altNames.indexOf('同区同级备选') >= 0, '面板含同二级大区同钻级');
+  ok(altNames.indexOf(primaryHotel.name) < 0, '面板不含主酒店');
+  if (otherHotel) ok(altNames.indexOf(otherHotel.name) < 0 && altNames.indexOf('新区同级备选') < 0, '面板不含其他二级大区: ' + altNames.join(','));
+  click($$('#screen .sheet .opt').find(e => e.textContent.indexOf('同区同级备选') >= 0));
+  await sleep(30);
+  click($('#screen .sheet-confirm'));
+  await sleep(30);
+  ok(!$('#screen .sheet'), '备选面板点完成关闭');
+  const altCards = $$('#screen .alt-sel').map(e => e.textContent);
+  ok(altCards.length === 1 && altCards[0].indexOf('同区同级备选') >= 0 && altCards[0].indexOf(primaryHotel.area) >= 0, '已选备选用酒店卡片展示');
+  if (otherHotel) {
+    customPage.toggleHotel({ currentTarget: { dataset: { id: otherHotel.id } } });
+    await sleep(40);
+    ok(!$('#screen .alt-sel'), '更换主酒店后原备选被清掉');
+    ok(!!$('#screen .alt-block'), '新区仍有同级可备选');
+    click($('#screen .alt-block .add-btn'));
+    await sleep(40);
+    altNames = $$('#screen .sheet .opt-name').map(e => e.textContent.trim());
+    ok(altNames.indexOf('同区同级备选') < 0 && altNames.indexOf('新区同级备选') >= 0, '备选池换成新二级大区: ' + altNames.join(','));
+    ok(altNames.every(n => {
+      const h = customPage.hotelsOf().filter(x => x.name === n)[0];
+      return h && h.area === otherHotel.area && h.stars === otherHotel.stars && h.id !== otherHotel.id;
+    }), '新面板全部是新区同钻级');
+    click($('#screen .sheet-confirm'));
+    await sleep(30);
+    customPage.toggleHotel({ currentTarget: { dataset: { id: primaryHotel.id } } });
+    await sleep(30);
+  } else if ($('#screen .alt-sel .op-btn')) {
+    click($('#screen .alt-sel .op-btn'));
+    await sleep(20);
+  }
+  customPage._hotels = null;
+  customPage.syncPlan();
+  await sleep(20);
+  ok($('#screen .hotel-sel').textContent.indexOf(primaryHotel.name) >= 0, '恢复目录后主酒店仍在');
+  ok(!$('#screen .alt-item'), '恢复后没有备选芯片');
+
   // 19. 备注 + 日期
   const note = $('#screen textarea.note');
   input(note, '想看日落');
@@ -512,7 +644,9 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '进入专属行程预览页: ' + $('#nav-title').textContent);
   const heroTitle = $('#screen .cp-hero-title').textContent;
-  ok(heroTitle.indexOf('4天3晚的海拉尔行程') > -1, '分享页标题: ' + heroTitle);
+  ok(heroTitle.indexOf('呼伦贝尔行程') > -1 && heroTitle.indexOf('天') === -1 && heroTitle.indexOf('晚') === -1, '分享页标题不含天数: ' + heroTitle);
+  ok(!$('#screen .cp-hero-quote'), '封面上不展示每人价格');
+  ok($('#screen .cp-hero-slogan').textContent.indexOf('雪落北疆') >= 0, '宣传语改为雪季');
   ok($('#screen .cp-hero-slogan').textContent.trim().length > 0, '首屏 slogan 存在');
   ok($$('#screen .cp-hero-img').length >= 1, '首屏拼合景区图 >= 1');
   ok($$('#screen .cp-day').length === 4, '预览按天 4 天模块');
@@ -542,7 +676,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   const infoVals = $$('#screen .info-item').map(e => e.textContent.trim());
   ok(infoVals[0].indexOf('总天数') > -1 && infoVals[1].indexOf('适宜人群') > -1 && infoVals[2].indexOf('行程节奏') > -1 && infoVals[3].indexOf('出行季节') > -1, '标签四项名称: ' + infoVals.join('|'));
   const infoV = $$('#screen .info-v').map(e => e.textContent.trim());
-  ok(infoV[0] === '4天' && infoV[1].indexOf('亲子家庭') > -1 && infoV[2].indexOf('松紧有度') > -1 && infoV[3] === '盛夏草原',
+  ok(infoV[0] === '4天' && infoV[1].indexOf('大众休闲') > -1 && infoV[2].indexOf('节奏轻快') > -1 && infoV[3] === '盛夏草原',
     '标签内容自动匹配: ' + infoV.join('|'));
 
   // 20.2. 总体温馨提示 + 出行说明
@@ -572,10 +706,11 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   ok(!!saveBtn, '预览页含【保存到我的行程】按钮');
   ok(!$$('#screen .cp-btn').find(e => /和顾问聊聊细节/.test(e.textContent)), '预览页已无【和顾问聊聊细节】按钮');
   click(saveBtn);
+  click(saveBtn);
   await sleep(60);
   const myTrips = window.__preview.wx.getStorageSync('myTrips') || [];
-  ok(myTrips.length === 1, 'myTrips 保存 1 条');
-  ok(myTrips[0].title === '4天3晚的海拉尔行程', '保存行程标题: ' + myTrips[0].title);
+  ok(myTrips.length === 1, '连点保存只留下 1 条行程');
+  ok(myTrips[0].title === '呼伦贝尔行程', '保存行程标题: ' + myTrips[0].title);
   ok(myTrips[0].plans.length === 4, '保存行程 4 天');
   ok(myTrips[0].plans[1].scenicIds.length === 2 && myTrips[0].plans[1].hotelId === 'h1' && myTrips[0].plans[1].note === '想看日落',
     '第2天景区/酒店/备注已保存');
@@ -638,13 +773,13 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   await sleep(80);
   ok($$('#screen .mt-card').length === 1, '我的行程列表 1 条');
   const mtName = $$('#screen .mt-card .mt-name').map(e => e.textContent);
-  ok(mtName.indexOf('4天3晚的海拉尔行程') > -1, '行程卡片标题正确');
+  ok(mtName.indexOf('呼伦贝尔行程') > -1, '行程卡片标题正确');
   ok($$('#screen .mt-card img').length >= 1, '行程卡片大图在上');
   ok($$('#screen .mt-card .mt-days')[0].textContent.includes('4天'), '卡片天数展示');
   click($('#screen .mt-card'));
   await sleep(120);
   const prevId = window.__preview.wx.getStorageSync('myTrips')[0].id;
-  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '卡片重新打开专属预览');
+  ok($('#screen .cp-hero-title').textContent.indexOf('呼伦贝尔行程') > -1, '卡片重新打开专属预览');
   ok($$('#screen .cp-day').length === 4, '预览恢复 4 天模块');
   const rDay = $$('#screen .cp-day')[1].textContent;
   ok(rDay.indexOf('呼伦贝尔大草原') > -1 && rDay.indexOf('想看日落') > -1, '预览恢复第2天景区与备注');
@@ -683,7 +818,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   click($('#screen .bottom-bar .submit-btn'));
   await sleep(120);
   ok($('#nav-title').textContent.includes('你的专属行程'), '编辑后重新生成进入预览');
-  ok($('#screen .cp-hero-title').textContent.indexOf('4天3晚的海拉尔行程') > -1, '重新生成预览标题');
+  ok($('#screen .cp-hero-title').textContent.indexOf('呼伦贝尔行程') > -1, '重新生成预览标题');
   const eDay = $$('#screen .cp-day')[1].textContent;
   ok(eDay.indexOf('想看日落·再改一下') > -1, '编辑后预览第2天备注更新');
   ok(!!$$('#screen .cp-btn').find(e => /保存到我的行程/.test(e.textContent)), '重新生成预览含【保存到我的行程】');
@@ -694,7 +829,7 @@ function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
   ok(trips2.length === 1, '覆盖保存不新增条目(仍 1 条)');
   ok(trips2[0].id === prevId, '覆盖后行程 id 不变: ' + trips2[0].id);
   ok(trips2[0].days === 4 && trips2[0].plans[1].note.indexOf('再改一下') > -1, '覆盖保存内容为修改后行程');
-  ok($('#screen').textContent.indexOf('4天3晚的海拉尔行程') > -1, '保存后仍停留预览页');
+  ok($('#screen').textContent.indexOf('呼伦贝尔行程') > -1, '保存后仍停留预览页');
 
   // 22c. 返回我的行程 -> 左滑删除（二次确认）-> 灵感广场已发布内容不受影响
   click($('#nav-back')); await sleep(60);

@@ -203,6 +203,44 @@
   margin-top: 16rpx;
 }
 
+.upload-slots {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 16rpx;
+}
+
+.upload-slot {
+  width: 240rpx;
+  margin: 0 24rpx 12rpx 0;
+}
+
+.upload-plus {
+  width: 120rpx;
+  height: 120rpx;
+  line-height: 112rpx;
+  text-align: center;
+  font-size: 48rpx;
+  color: #8A7152;
+  background: #EDE4D2;
+  border-radius: 16rpx;
+}
+
+.upload-hint {
+  display: block;
+  margin-top: 10rpx;
+  font-size: 24rpx;
+  font-weight: 500;
+  color: #3D362A;
+}
+
+.upload-sub {
+  display: block;
+  margin-top: 4rpx;
+  font-size: 22rpx;
+  line-height: 1.4;
+  color: #8A7152;
+}
+
 .img-btn {
   display: inline-block;
   font-size: 26rpx;
@@ -211,6 +249,48 @@
   border-radius: 14rpx;
   padding: 14rpx 30rpx;
   margin: 0 16rpx 8rpx 0;
+}
+
+.info-bar {
+  display: flex;
+  margin: 0 24rpx 20rpx;
+  padding: 8rpx 0 4rpx;
+  background: #FCF9F1;
+  border-radius: 16rpx;
+}
+
+.info-item {
+  flex: 1;
+  min-width: 0;
+  text-align: center;
+  padding: 12rpx 6rpx;
+}
+
+.info-item:not(:last-child) {
+  border-right: 1rpx solid #E9E0CE;
+}
+
+.info-k {
+  display: block;
+  font-size: 20rpx;
+  color: #B0A997;
+  letter-spacing: 1rpx;
+}
+
+.info-v,
+.info-input {
+  display: block;
+  width: 100%;
+  margin-top: 12rpx;
+  font-size: 22rpx;
+  color: #5F4B33;
+  text-align: center;
+  background: transparent;
+}
+
+.info-input {
+  height: 40rpx;
+  line-height: 40rpx;
 }
 
 .cover-row, .promo-row {
@@ -264,12 +344,35 @@
   align-items: center;
   height: 116rpx;
   border-bottom: 1rpx solid #F0EADB;
+  position: relative;
+  background: #FCF9F1;
 }
 
-.sel-item.dragging {
-  background: #EDE4D2;
+.sel-list.live .sel-item {
+  transition: transform 0.12s ease;
+}
+
+.sel-list.live .sel-item.dragging {
+  transition: none;
+  z-index: 5;
+  background: #F6F1E6;
   border-radius: 14rpx;
-  opacity: 0.85;
+  box-shadow: 0 10rpx 28rpx rgba(61, 54, 42, 0.16);
+}
+
+.sel-item.drop-on {
+  background: #F3EDDF;
+}
+
+.drag-handle {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 72rpx;
+  height: 116rpx;
+  margin-left: -8rpx;
+  touch-action: none;
 }
 
 .sel-order {
@@ -352,7 +455,7 @@
   background: #EDE5D6;
 }
 
-/* 同级备选酒店（纯文字多选） */
+/* 同级备选：按钮打开选择面板，已选酒店用与主酒店相同的卡片 */
 .alt-block {
   margin-top: 18rpx;
 }
@@ -363,38 +466,12 @@
   margin-bottom: 10rpx;
 }
 
-.alt-list {
-  display: flex;
-  flex-wrap: wrap;
+.alt-block .add-btn {
+  margin-bottom: 14rpx;
 }
 
-.alt-item {
-  display: flex;
-  align-items: center;
-  background: #F3EDDF;
-  border-radius: 30rpx;
-  padding: 10rpx 18rpx 10rpx 24rpx;
-  margin: 0 14rpx 14rpx 0;
-}
-
-.alt-item.on {
-  background: #8A7152;
-}
-
-.alt-name {
-  font-size: 24rpx;
-  color: #6E6555;
-}
-
-.alt-item.on .alt-name {
-  color: #FCF9F1;
-}
-
-.alt-check {
-  width: 30rpx;
-  text-align: right;
-  font-size: 22rpx;
-  color: #FCF9F1;
+.alt-sel {
+  margin-bottom: 14rpx;
 }
 
 .tip-line {
@@ -460,6 +537,10 @@
   font-weight: 500;
   border-radius: 42rpx;
   padding: 20rpx 44rpx;
+}
+
+.submit-btn.is-busy {
+  opacity: 0.55;
 }
 
 .submit-btn.full {
