@@ -20,7 +20,7 @@
     </view>
 
     <view class="wb-list" wx:if="{{list.length}}">
-      <view class="wb-card {{item.level==='overdue'?'ov':(item.level==='near'?'nr':'')}}"
+      <view class="wb-card {{item.level==='overdue'||item.level==='ticket'?'ov':(item.level==='near'?'nr':'')}}"
             wx:for="{{list}}" wx:key="id" data-id="{{item.id}}" bindtap="goDetail">
         <view class="wb-card-top">
           <view class="wb-cust ellipsis">{{item.name}}</view>
@@ -36,7 +36,7 @@
           <text class="wb-st {{item.statusClass}}">{{item.status}}</text>
         </view>
         <view class="wb-tags" wx:if="{{item.tags.length}}">
-          <text class="wb-tag {{item.level}}" wx:for="{{item.tags}}" wx:for-item="t" wx:key="*this">{{t}}</text>
+          <text class="wb-tag {{t.tone}}" wx:for="{{item.tags}}" wx:for-item="t" wx:key="text">{{t.text}}</text>
         </view>
       </view>
     </view>

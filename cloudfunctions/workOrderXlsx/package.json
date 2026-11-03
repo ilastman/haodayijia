@@ -1,0 +1,9 @@
+{
+  "name": "workOrderXlsx",
+  "version": "1.0.0",
+  "description": "导出员工工作台对账明细 xlsx（v3）",
+  "main": "index.js",
+  "dependencies": {
+    "wx-server-sdk": "~2.6.3"
+  }
+}

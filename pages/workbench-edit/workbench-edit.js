@@ -1,4 +1,9 @@
 const wb = require('../../utils/workbench');
+const reconLib = require('../../utils/recon');
+
+function blankRecon() {
+  return { tripTitle: '', adults: '', children: '', vehicle: '', pickupTime: '', dropoffTime: '', pickupPlace: '', dropoffPlace: '' };
+}
 
 Page({
   data: {
@@ -9,6 +14,7 @@ Page({
       customer: { name: '', phone: '', wechat: '', source: '', remark: '' },
       people: '', dest: '', departDate: '', returnDate: '',
       status: '意向客户', urgency: false,
+      recon: blankRecon(),
       costs: { hotel: '', car: '', guide: '', ticket: '', meal: '', misc: '' },
       pricing: { quote: '', estProfit: '' }
     },
@@ -29,15 +35,22 @@ Page({
     const costs = Object.assign({ hotel: '', car: '', guide: '', ticket: '', meal: '', misc: '' }, o.costs || {});
     Object.keys(costs).forEach(k => { costs[k] = costs[k] ? String(costs[k]) : ''; });
     const pricing = o.pricing || {};
+    const stored = reconLib.sanitizeRecon(o.recon, null);
+    const recon = blankRecon();
+    Object.keys(recon).forEach(k => { recon[k] = stored[k] || ''; });
+    let people = o.people ? String(o.people) : '';
+    if (recon.adults !== '' || recon.children !== '') people = String(wb.num(recon.adults) + wb.num(recon.children));
     this.setData({
       form: {
         customer: Object.assign({ name: '', phone: '', wechat: '', source: '', remark: '' }, o.customer || {}),
-        people: o.people ? String(o.people) : '',
+        people,
         dest: o.dest || '',
         departDate: o.departDate || '',
         returnDate: o.returnDate || '',
         status: o.status || '意向客户',
         urgency: !!o.urgency,
+        recon,
+        legacyPeopleOnly: !recon.adults && !recon.children && !!o.people,
         costs,
         pricing: { quote: pricing.quote ? String(pricing.quote) : '', estProfit: (pricing.estProfit || pricing.estProfit === 0) ? String(pricing.estProfit) : '' }
       },
@@ -46,6 +59,16 @@ Page({
   },
 
   onCust(e) { const k = e.currentTarget.dataset.k; this.setData({ ['form.customer.' + k]: e.detail.value }); },
+  onRecon(e) {
+    const k = e.currentTarget.dataset.k;
+    const recon = Object.assign({}, this.data.form.recon, { [k]: e.detail.value });
+    const patch = { 'form.recon': recon };
+    if ((k === 'adults' || k === 'children') && (String(recon.adults) !== '' || String(recon.children) !== '')) {
+      patch['form.people'] = String(wb.num(recon.adults) + wb.num(recon.children));
+      patch['form.legacyPeopleOnly'] = false;
+    }
+    this.setData(patch);
+  },
   onField(e) { const k = e.currentTarget.dataset.k; this.setData({ ['form.' + k]: e.detail.value }); },
   onCost(e) { const k = e.currentTarget.dataset.k; this.setData({ ['form.costs.' + k]: e.detail.value }); },
   onPrice(e) { const k = e.currentTarget.dataset.k; this.setData({ ['form.pricing.' + k]: e.detail.value }); },
@@ -58,12 +81,24 @@ Page({
     this.setData({ saving: true });
     const payload = {
       customer: f.customer,
-      people: wb.num(f.people),
+      people: (String(f.recon.adults) !== '' || String(f.recon.children) !== '')
+        ? wb.num(f.recon.adults) + wb.num(f.recon.children)
+        : wb.num(f.people),
       dest: f.dest,
       departDate: f.departDate,
       returnDate: f.returnDate,
       status: f.status,
       urgency: !!f.urgency,
+      recon: {
+        tripTitle: f.recon.tripTitle,
+        adults: f.recon.adults,
+        children: f.recon.children,
+        vehicle: f.recon.vehicle,
+        pickupTime: f.recon.pickupTime,
+        dropoffTime: f.recon.dropoffTime,
+        pickupPlace: f.recon.pickupPlace,
+        dropoffPlace: f.recon.dropoffPlace
+      },
       costs: {
         hotel: wb.num(f.costs.hotel), car: wb.num(f.costs.car), guide: wb.num(f.costs.guide),
         ticket: wb.num(f.costs.ticket), meal: wb.num(f.costs.meal), misc: wb.num(f.costs.misc)

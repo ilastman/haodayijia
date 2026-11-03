@@ -36,6 +36,12 @@ window.VIEWS.orders = {
     methods: {
       cloudOn() { return window.Cloud && Cloud.enabled(); },
       n(v) { return Number(v) || 0; },
+      reconDayTotal(d) {
+        const n = v => Number(v) || 0;
+        const sum = arr => (arr || []).reduce((s, x) => s + n(x && x.amount), 0);
+        if (!d) return 0;
+        return sum(d.scenics) + sum(d.plays) + n(d.hotelCost && d.hotelCost.amount) + n(d.vehicleCost && d.vehicleCost.amount) + n(d.mealCost && d.mealCost.amount) + sum(d.extras) + n(d.driverClaim && d.driverClaim.amount);
+      },
       staffName(id) { const s = (Store.db.staff || []).find(x => x.id === id); return (s && s.name) || id || '—'; },
       open(o) { this.cur = o; this.tab = 'base'; this.dlg = true; },
       async setArchived(o, val) {
@@ -170,6 +176,22 @@ window.VIEWS.orders = {
                 <el-table-column prop="dueDate" label="应付截止" width="110" />
                 <el-table-column prop="remark" label="备注" />
               </el-table>
+            </el-tab-pane>
+            <el-tab-pane :label="'对账(' + (((cur.recon && cur.recon.days) || []).length) + ')'" name="recon">
+              <el-descriptions :column="1" border size="small">
+                <el-descriptions-item label="行程名称">{{(cur.recon && cur.recon.tripTitle) || '—'}}</el-descriptions-item>
+                <el-descriptions-item label="成人 / 儿童">{{(cur.recon && cur.recon.adults) || '—'}} / {{(cur.recon && cur.recon.children) || '—'}}</el-descriptions-item>
+                <el-descriptions-item label="用车">{{(cur.recon && cur.recon.vehicle) || '—'}}</el-descriptions-item>
+                <el-descriptions-item label="接机">{{(cur.recon && cur.recon.pickupTime) || '—'}} {{(cur.recon && cur.recon.pickupPlace) || ''}}</el-descriptions-item>
+                <el-descriptions-item label="送机">{{(cur.recon && cur.recon.dropoffTime) || '—'}} {{(cur.recon && cur.recon.dropoffPlace) || ''}}</el-descriptions-item>
+              </el-descriptions>
+              <div v-for="d in (cur.recon && cur.recon.days) || []" :key="d.dayNum" class="card" style="margin:10px 0;padding:10px 12px">
+                <div style="font-weight:600">第{{d.dayNum}}天 · {{d.date || '日期未定'}} · {{d.from || '—'}} → {{d.to || '—'}}</div>
+                <div style="white-space:pre-wrap">{{d.itinerary}}</div>
+                <div v-if="d.tickets" class="soft" style="font-size:12px">{{d.tickets}}</div>
+                <div class="faint" style="font-size:12px">当日花费约 ¥{{reconDayTotal(d)}}</div>
+              </div>
+              <div v-if="!(cur.recon && cur.recon.days && cur.recon.days.length)" class="faint">尚未填写对账天数。员工在小程序客户详情编辑司机行程和财务后，会显示在这里。</div>
             </el-tab-pane>
             <el-tab-pane label="成本 / 毛利" name="profit">
               <el-descriptions :column="2" border size="small">

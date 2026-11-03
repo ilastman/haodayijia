@@ -67,6 +67,11 @@
           "default": { "quote": 0, "estProfit": 0, "actualProfit": 0 },
           "description": "毛利 {quote成交价, estProfit预估毛利, actualProfit实际毛利}，服务端计算"
         },
+        "recon": {
+          "type": "object",
+          "default": { "tripTitle": "", "adults": "", "children": "", "vehicle": "", "pickupTime": "", "dropoffTime": "", "pickupPlace": "", "dropoffPlace": "", "days": [] },
+          "description": "对账表v3。客人栏 tripTitle/adults/children/vehicle/pickupTime/dropoffTime/pickupPlace/dropoffPlace；days[] 为司机栏+财务栏（景区1-3、游玩1-3、酒店/用车/餐饮、保险其他1-3、司机报账）。团费与已收仍取 pricing.quote 与 payments，不在此重复存储。"
+        },
         "createTime": { "type": "number", "description": "创建时间戳" },
         "updatedAt": { "type": "number", "description": "更新时间戳" }
       },

@@ -4,5 +4,6 @@
 .ed-l { width: 200rpx; font-size: 28rpx; color: #6E6656; flex: 0 0 200rpx; }
 .ed-i { flex: 1; font-size: 28rpx; color: #3D362A; }
 .ed-pick { flex: 1; font-size: 28rpx; color: #3D362A; }
+.ed-hint { font-size: 22rpx; color: #B08A3E; line-height: 1.6; padding: 0 0 12rpx; }
 .ed-actions { margin: 40rpx 28rpx 0; }
 .ed-actions .disabled { opacity: .6; }

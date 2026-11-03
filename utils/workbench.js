@@ -1,11 +1,20 @@
 /**
  * 员工销售工作台数据服务层
  * - 身份：服务端按 WX openid 解析 staff（客户端不传 staffId，杜绝越权）
- * - 工作台数据经 orderCRUD 云函数；导出经 workOrderPdf
- * - 提醒：页面端由 alertConfig + scenic.ticketLeadDays 计算标红
+ * - 工作台数据经 orderCRUD 云函数；对账明细导出经 workOrderXlsx
+ * - 提醒：页面端由 alertConfig + scenic.ticketLeadDays + 对账红名单计算标红
  */
 
 const cloud = require('./cloud');
+
+/* recon 只在算买票预警时加载。「我的」页会 require 本文件，但不能因此依赖对账模块。 */
+function ticketSummaryOf(order) {
+  try {
+    return require('./recon').ticketSummary(order);
+  } catch (e) {
+    return { hits: [] };
+  }
+}
 
 async function call(name, data) {
   const res = await cloud.callFunction(name, data);
@@ -21,8 +30,10 @@ function num(v) { const n = Number(v); return isNaN(n) ? 0 : n; }
 
 /* ---------- 身份 ---------- */
 async function identity() {
-  const res = await cloud.callFunction('staffCRUD', { action: 'me' });
-  if (res && res.code === 200 && res.data) return res.data;
+  try {
+    const res = await cloud.callFunction('staffCRUD', { action: 'me' });
+    if (res && res.code === 200 && res.data) return res.data;
+  } catch (e) { /* 身份接口异常时按非员工处理，避免调用页白屏 */ }
   return { isStaff: false };
 }
 async function bind(code) {
@@ -46,6 +57,7 @@ async function removePayment(id, paymentId) { return callRaw('orderCRUD', { acti
 async function addCost(id, costs) { return callRaw('orderCRUD', { action: 'addCost', id, data: { costs } }); }
 async function savePricing(id, pricing) { return callRaw('orderCRUD', { action: 'savePricing', id, data: { pricing } }); }
 async function saveItinerary(id, itinerary) { return callRaw('orderCRUD', { action: 'saveItinerary', id, data: { itinerary } }); }
+async function saveRecon(id, reconDoc) { return callRaw('orderCRUD', { action: 'saveRecon', id, data: { recon: reconDoc } }); }
 async function fromTemplate(id, templateId) { return callRaw('orderCRUD', { action: 'fromTemplate', id, data: { templateId } }); }
 async function applyMyTrip(id, payload) { return callRaw('orderCRUD', { action: 'applyMyTrip', id, data: payload }); }
 
@@ -71,9 +83,9 @@ async function scenicLeadMap() {
   return map;
 }
 
-/* ---------- PDF 导出 ---------- */
-async function exportPdf(id) {
-  const res = await cloud.callFunction('workOrderPdf', { action: 'export', id });
+/* ---------- 对账明细 xlsx ---------- */
+async function exportRecon(id) {
+  const res = await cloud.callFunction('workOrderXlsx', { action: 'export', id });
   return res || { code: 500, msg: '导出失败' };
 }
 
@@ -114,12 +126,12 @@ function warnOf(order, alert, scenicMap) {
   const overdueDays = num(alert && alert.payOverdueDays) || 0;
 
   const dd = daysUntil(order.departDate);
-  if (dd != null && dd >= 0 && dd <= dw) { tags.push('临近出团'); level = 'near'; }
+  if (dd != null && dd >= 0 && dd <= dw) { tags.push({ text: '临近出团', tone: 'near' }); level = 'near'; }
 
   (order.payments || []).forEach(p => {
     const od = daysUntil(p.dueDate);
-    if (od != null && od < -overdueDays) { tags.push((p.type || '款项') + '逾期'); level = 'overdue'; }
-    else if (od != null && od <= 0) { tags.push((p.type || '款项') + '到期'); if (level !== 'overdue') level = 'near'; }
+    if (od != null && od < -overdueDays) { tags.push({ text: (p.type || '款项') + '逾期', tone: 'overdue' }); level = 'overdue'; }
+    else if (od != null && od <= 0) { tags.push({ text: (p.type || '款项') + '到期', tone: 'near' }); if (level !== 'overdue') level = 'near'; }
   });
 
   const scenicMapV = scenicMap || {};
@@ -129,8 +141,15 @@ function warnOf(order, alert, scenicMap) {
     if (!d.scenicId || seen[d.scenicId]) return;
     seen[d.scenicId] = 1;
     const lead = scenicMapV[d.scenicId];
-    if (lead && dd != null && dd >= 0 && dd <= lead) { tags.push('订票临近'); if (level !== 'overdue') level = 'near'; }
+    if (lead && dd != null && dd >= 0 && dd <= lead) { tags.push({ text: '订票临近', tone: 'near' }); if (level !== 'overdue') level = 'near'; }
   });
+
+  const ticket = ticketSummaryOf(order);
+  if (ticket.hits.length) {
+    const lead = ticket.hits.reduce((m, h) => Math.min(m, h.lead), 99);
+    tags.push({ text: '提前' + lead + '天购票', tone: 'ticket' });
+    if (level !== 'overdue') level = 'ticket';
+  }
 
   return { level, tags };
 }
@@ -139,6 +158,6 @@ module.exports = {
   num, fmtDate, today, STATUS, STATUS_CLASS,
   identity, bind,
   listOrders, getOrder, createOrder, updateOrder, archiveOrder,
-  addFollow, addPayment, removePayment, addCost, savePricing, saveItinerary, fromTemplate, applyMyTrip,
-  templates, alertConfig, scenicLeadMap, exportPdf, requestSubscribe, warnOf, daysUntil
+  addFollow, addPayment, removePayment, addCost, savePricing, saveItinerary, saveRecon, fromTemplate, applyMyTrip,
+  templates, alertConfig, scenicLeadMap, exportRecon, requestSubscribe, warnOf, daysUntil
 };

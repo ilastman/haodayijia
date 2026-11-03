@@ -1,7 +1,12 @@
 const copy = require('../../utils/copy');
 const { ICONS } = require('../../utils/util');
-const wb = require('../../utils/workbench');
 const user = require('../../utils/user');
+let wb = null;
+try {
+  wb = require('../../utils/workbench');
+} catch (e) {
+  wb = null;
+}
 
 const BASE_MENU = [
   { key: 'trips', label: copy.mine.menu.myTrips, url: '/pages/my-trips/my-trips' },
@@ -56,15 +61,21 @@ Page({
   },
 
   async loadIdentity() {
-    const id = await wb.identity();
-    const isStaff = !!(id && id.isStaff);
+    let id = { isStaff: false };
+    try {
+      if (wb && wb.identity) id = await wb.identity();
+    } catch (e) {
+      id = { isStaff: false };
+    }
+    if (!id || typeof id !== 'object') id = { isStaff: false };
+    const isStaff = !!id.isStaff;
     const menu = BASE_MENU.slice();
     if (isStaff) {
       menu.unshift({ key: 'workbench', label: copy.mine.menu.workbench, url: '/pages/workbench/workbench' });
     } else {
       menu.push({ key: 'staffBind', label: copy.mine.menu.staffBind, url: '/pages/workbench-bind/workbench-bind' });
     }
-    this.setData({ isStaff, staffName: (id && id.staff && id.staff.name) || '', menu });
+    this.setData({ isStaff, staffName: (id.staff && id.staff.name) || '', menu });
   },
 
   /* ---------- 头像设置 ---------- */

@@ -14,6 +14,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const { verifyAdminToken, resolveStaff } = require('./auth');
+const { sanitizeRecon } = require('./recon');
 
 const COLL = 'order';
 const STAFF = 'staff';
@@ -57,6 +58,7 @@ function initStructure(order) {
   order.itinerary.notices = Object.assign({ tips: [], gear: [], refund: [] }, order.itinerary.notices || {});
   if (!Array.isArray(order.itinerary.versions)) order.itinerary.versions = [];
   if (!Array.isArray(order.payments)) order.payments = [];
+  order.recon = sanitizeRecon(order.recon || {}, {});
   if (STATUSES.indexOf(order.status) < 0) order.status = '意向客户';
   order.urgency = !!order.urgency;
   order.archived = !!order.archived;
@@ -157,7 +159,8 @@ exports.main = async (event) => {
       const d = clean(data);
       delete d.id; delete d.staffId; delete d.staffName; delete d.createTime;
       delete d.archived; delete d.archivedAt; delete d.followUps; delete d.payments;
-      // 合并基础字段
+      // 客人栏可以单独提交；省略 days 时保留已有司机/财务天数
+      if (d.recon) d.recon = sanitizeRecon(d.recon, order.recon || {});
       Object.keys(d).forEach(k => { order[k] = d[k]; });
       initStructure(order);
       computeDerived(order);
@@ -250,6 +253,17 @@ exports.main = async (event) => {
       await db.collection(COLL).doc(order._id).update({ data: { pricing: order.pricing, updatedAt: Date.now() } });
       await log(ctx.actor, 'savePricing', order.id, '更新报价/毛利');
       return { code: 200, msg: '已保存', data: { pricing: order.pricing, totalCost: order.totalCost } };
+    }
+
+    /* ---------- 对账明细（司机行程 + 财务） ---------- */
+    if (action === 'saveRecon') {
+      const { order, err } = await loadOwned(id, ctx, true);
+      if (err) return err;
+      const patch = (data && data.recon) || {};
+      order.recon = sanitizeRecon(patch, order.recon || {});
+      await db.collection(COLL).doc(order._id).update({ data: { recon: order.recon, updatedAt: Date.now() } });
+      await log(ctx.actor, 'saveRecon', order.id, '保存对账明细：' + (order.customer && order.customer.name || '') + '（' + order.recon.days.length + '天）');
+      return { code: 200, msg: '已保存', data: { recon: order.recon } };
     }
 
     /* ---------- 内部行程单 ---------- */
