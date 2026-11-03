@@ -22,7 +22,14 @@ const MAX_DAYS = 31;
 function num(v) { const n = Number(v); return isNaN(n) ? 0 : n; }
 
 function str(v, max) {
-  return String(v == null ? '' : v).replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, '').slice(0, max || 500);
+  const raw = String(v == null ? '' : v);
+  let out = '';
+  for (let i = 0; i < raw.length; i++) {
+    const c = raw.charCodeAt(i);
+    /* 保留制表符、换行；去掉其余 C0 控制符。不用控制字符正则，避免开发者工具编译该文件失败。 */
+    if (c === 9 || c === 10 || c === 13 || c >= 32) out += raw.charAt(i);
+  }
+  return out.slice(0, max || 500);
 }
 
 function payStatus(v) { return PAY_STATUSES.indexOf(v) >= 0 ? v : '未付'; }

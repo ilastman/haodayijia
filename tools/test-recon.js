@@ -239,4 +239,49 @@ function assertNoOverlap(merges) {
   }
 }
 
+eq(recon.str('a\u0000b\nc\u000bd', 20), 'ab\ncd', 'control chars stripped, newline kept');
+
+const wbSrc = fs.readFileSync(path.join(root, 'utils/workbench.js'), 'utf8');
+assert.ok(!/^const recon = require\('\.\/recon'\)/m.test(wbSrc), 'workbench must not load recon at startup');
+assert.ok(wbSrc.indexOf("require('./recon')") > wbSrc.indexOf('function ticketSummaryOf'), 'recon require stays inside ticketSummaryOf');
+
+const Module = require('module');
+const origRequire = Module.prototype.require;
+let reconLoads = 0;
+Module.prototype.require = function (id) {
+  if (String(id).indexOf('recon') >= 0) reconLoads += 1;
+  return origRequire.apply(this, arguments);
+};
+const wbPath = require.resolve(path.join(root, 'utils/workbench.js'));
+delete require.cache[wbPath];
+const wb = require(wbPath);
+eq(reconLoads, 0, 'requiring workbench does not load recon');
+wb.warnOf({ departDate: '2099-01-01', payments: [], itinerary: { days: [] }, recon: { days: [] } }, {}, {});
+assert.ok(reconLoads >= 1, 'warnOf loads recon');
+Module.prototype.require = origRequire;
+
+function wxmlBalance(file) {
+  let text = fs.readFileSync(file, 'utf8');
+  text = text.replace(/<!--[\s\S]*?-->/g, '');
+  text = text.replace(/\{\{[\s\S]*?\}\}/g, function (m) { return ' '.repeat(m.length); });
+  const stack = [];
+  const re = /<\/?\s*([A-Za-z][\w:-]*)[^>]*?>/g;
+  let m;
+  while ((m = re.exec(text))) {
+    const raw = m[0];
+    const name = m[1];
+    if (raw.charAt(1) === '/') {
+      const top = stack.pop();
+      if (!top || top !== name) throw new Error(file + ' mismatch </' + name + '> top ' + top);
+    } else if (!/\/\s*>$/.test(raw)) {
+      stack.push(name);
+    }
+  }
+  if (stack.length) throw new Error(file + ' unclosed ' + stack.join(','));
+}
+wxmlBalance(path.join(root, 'pages/workbench-detail/workbench-detail.wxml'));
+wxmlBalance(path.join(root, 'pages/mine/mine.wxml'));
+assert.ok(fs.readFileSync(path.join(root, 'pages/workbench-detail/workbench-detail.wxml'), 'utf8').indexOf('<textarea') >= 0);
+assert.ok(!/<textarea\b[^>]*\/>/.test(fs.readFileSync(path.join(root, 'pages/workbench-detail/workbench-detail.wxml'), 'utf8')));
+
 console.log('test-recon ok');

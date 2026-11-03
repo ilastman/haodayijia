@@ -6,7 +6,15 @@
  */
 
 const cloud = require('./cloud');
-const recon = require('./recon');
+
+/* recon 只在算买票预警时加载。「我的」页会 require 本文件，但不能因此依赖对账模块。 */
+function ticketSummaryOf(order) {
+  try {
+    return require('./recon').ticketSummary(order);
+  } catch (e) {
+    return { hits: [] };
+  }
+}
 
 async function call(name, data) {
   const res = await cloud.callFunction(name, data);
@@ -22,8 +30,10 @@ function num(v) { const n = Number(v); return isNaN(n) ? 0 : n; }
 
 /* ---------- 身份 ---------- */
 async function identity() {
-  const res = await cloud.callFunction('staffCRUD', { action: 'me' });
-  if (res && res.code === 200 && res.data) return res.data;
+  try {
+    const res = await cloud.callFunction('staffCRUD', { action: 'me' });
+    if (res && res.code === 200 && res.data) return res.data;
+  } catch (e) { /* 身份接口异常时按非员工处理，避免调用页白屏 */ }
   return { isStaff: false };
 }
 async function bind(code) {
@@ -134,7 +144,7 @@ function warnOf(order, alert, scenicMap) {
     if (lead && dd != null && dd >= 0 && dd <= lead) { tags.push({ text: '订票临近', tone: 'near' }); if (level !== 'overdue') level = 'near'; }
   });
 
-  const ticket = recon.ticketSummary(order);
+  const ticket = ticketSummaryOf(order);
   if (ticket.hits.length) {
     const lead = ticket.hits.reduce((m, h) => Math.min(m, h.lead), 99);
     tags.push({ text: '提前' + lead + '天购票', tone: 'ticket' });

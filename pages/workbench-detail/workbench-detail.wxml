@@ -94,7 +94,7 @@
               <text class="dt-dayedit-del" data-i="{{index}}" bindtap="delDay">删除</text>
             </view>
             <input class="dt-input" placeholder="当天标题" value="{{item.title}}" data-i="{{index}}" data-k="title" bindinput="onDayInput" />
-            <textarea class="dt-textarea" placeholder="行程安排" value="{{item.content}}" data-i="{{index}}" data-k="content" bindinput="onDayInput" auto-height />
+            <textarea class="dt-textarea" placeholder="行程安排" value="{{item.content}}" data-i="{{index}}" data-k="content" bindinput="onDayInput" auto-height></textarea>
             <input class="dt-input" placeholder="用餐" value="{{item.meals}}" data-i="{{index}}" data-k="meals" bindinput="onDayInput" />
             <input class="dt-input" placeholder="住宿" value="{{item.hotel}}" data-i="{{index}}" data-k="hotel" bindinput="onDayInput" />
           </view>
@@ -266,7 +266,7 @@
     <view class="dt-mask" wx:if="{{followVisible}}" bindtap="closeFollow">
       <view class="dt-sheet" catchtap="noop">
         <view class="dt-sheet-t">新增跟进</view>
-        <textarea class="dt-textarea" placeholder="本次沟通内容" value="{{followForm.content}}" data-k="content" bindinput="onFollowInput" auto-height />
+        <textarea class="dt-textarea" placeholder="本次沟通内容" value="{{followForm.content}}" data-k="content" bindinput="onFollowInput" auto-height></textarea>
         <view class="dt-frow"><text class="dt-fl">下次跟进</text>
           <picker mode="date" value="{{followForm.nextTime}}" data-k="nextTime" bindchange="onFollowInput"><view class="dt-fv">{{followForm.nextTime || '选填'}}</view></picker>
         </view>
@@ -327,7 +327,7 @@
         <view class="dt-sheet-t">第{{driverIndex + 1}}天 · 司机行程</view>
         <block wx:for="{{driverFields}}" wx:key="k">
           <view class="dt-subh">{{item.label}}</view>
-          <textarea wx:if="{{item.type==='textarea'}}" class="dt-textarea" value="{{item.val}}" data-i="{{index}}" bindinput="onDriverInput" auto-height />
+          <textarea wx:if="{{item.type==='textarea'}}" class="dt-textarea" value="{{item.val}}" data-i="{{index}}" bindinput="onDriverInput" auto-height></textarea>
           <picker wx:elif="{{item.type==='date'}}" mode="date" data-i="{{index}}" value="{{item.val}}" bindchange="onDriverDate">
             <view class="dt-input">{{item.val || '请选择日期'}}</view>
           </picker>
