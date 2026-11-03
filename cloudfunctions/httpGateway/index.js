@@ -33,6 +33,7 @@ const ALLOWED = [
   'orderCRUD',
   'opLogCRUD',
   'workOrderPdf',
+  'workOrderXlsx',
   'workbenchInit',
   'userCRUD',
   'categoryCRUD',

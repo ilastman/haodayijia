@@ -2,6 +2,7 @@
 
 .dt-hero { margin: 24rpx 28rpx 0; background: #FCF9F1; border-radius: 24rpx; padding: 30rpx; box-shadow: 0 6rpx 22rpx rgba(90, 82, 66, 0.06); border-left: 8rpx solid transparent; }
 .dt-hero.overdue { border-left-color: #C0504D; }
+.dt-hero.ticket { border-left-color: #C62828; }
 .dt-hero.near { border-left-color: #D9A441; }
 .dt-hero-top { display: flex; align-items: center; justify-content: space-between; }
 .dt-name { font-size: 40rpx; font-weight: 600; color: #3D362A; }
@@ -22,6 +23,7 @@
 .wb-tag { font-size: 20rpx; border-radius: 6rpx; padding: 3rpx 12rpx; }
 .wb-tag.overdue { background: #FBEAEA; color: #C0504D; }
 .wb-tag.near { background: #FBF3E1; color: #B08A3E; }
+.wb-tag.ticket { background: #FDECEC; color: #C62828; }
 
 .dt-sec { margin: 22rpx 28rpx 0; background: #FCF9F1; border-radius: 20rpx; box-shadow: 0 4rpx 20rpx rgba(90, 82, 66, 0.05); overflow: hidden; }
 .dt-sec-h { display: flex; align-items: center; justify-content: space-between; padding: 28rpx 30rpx; font-size: 30rpx; font-weight: 600; color: #443A2C; }
@@ -84,3 +86,11 @@
 .dt-mt-check { color: #B89D67; font-size: 32rpx; }
 .dt-voucher { width: 130rpx; height: 130rpx; border-radius: 12rpx; background: #F6F1E7; display: flex; align-items: center; justify-content: center; font-size: 24rpx; color: #A59E8D; overflow: hidden; }
 .dt-voucher-img { width: 130rpx; height: 130rpx; }
+.dt-day.alert { border-left: 6rpx solid #C62828; padding-left: 12rpx; }
+.dt-alert { margin-top: 8rpx; font-size: 24rpx; color: #C62828; background: #FDECEC; border-radius: 8rpx; padding: 10rpx 14rpx; line-height: 1.6; }
+.dt-alert-row { margin-top: 10rpx; font-size: 26rpx; color: #C62828; background: #FDECEC; border-radius: 8rpx; padding: 12rpx 14rpx; }
+.dt-note { margin-top: 14rpx; font-size: 22rpx; color: #8A8478; line-height: 1.6; }
+.dt-subh { margin-top: 16rpx; font-size: 26rpx; font-weight: 600; color: #5F4B33; }
+.dt-fin-line { font-size: 26rpx; color: #3D362A; padding: 6rpx 0; }
+.dt-fin-block { padding-bottom: 8rpx; border-bottom: 1rpx solid #F2ECDD; }
+.dt-del-line { text-align: center; margin-top: 18rpx; }

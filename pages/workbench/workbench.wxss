@@ -40,6 +40,7 @@
 .wb-tag { font-size: 20rpx; border-radius: 6rpx; padding: 3rpx 12rpx; }
 .wb-tag.overdue { background: #FBEAEA; color: #C0504D; }
 .wb-tag.near { background: #FBF3E1; color: #B08A3E; }
+.wb-tag.ticket { background: #FDECEC; color: #C62828; }
 
 .wb-fab {
   position: fixed; right: 44rpx; bottom: 80rpx; width: 104rpx; height: 104rpx; border-radius: 50%;
