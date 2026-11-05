@@ -19,8 +19,15 @@
         <view class="mt-del-btn" catchtap="onDeleteTap" data-id="{{item.id}}">{{c.del}}</view>
         <view class="mt-body">
           <view class="mt-days">{{item.daysText}}</view>
-          <view class="mt-name ellipsis">{{item.name}}</view>
+          <view class="mt-name-row">
+            <view class="mt-name ellipsis">{{item.name}}</view>
+            <view class="mt-quote" wx:if="{{item.guestQuoteText}}">{{item.guestQuoteText}}</view>
+          </view>
           <view class="mt-brief ellipsis">{{item.brief}}</view>
+          <view class="mt-remark" wx:if="{{isStaff}}" catchtap="noop" catchlongpress="noop">
+            <view class="mt-remark-label">{{c.remarkLabel}}</view>
+            <textarea class="mt-remark-input" value="{{item.staffRemark}}" data-id="{{item.id}}" placeholder="{{c.remarkPlaceholder}}" placeholder-class="mt-remark-ph" maxlength="500" auto-height="{{true}}" show-confirm-bar="{{true}}" confirm-type="done" bindinput="onRemarkInput" bindblur="onRemarkSave" bindconfirm="onRemarkSave" />
+          </view>
         </view>
       </view>
     </view>

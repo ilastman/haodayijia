@@ -1,23 +1,43 @@
 <view class="cp-page">
 
-  <!-- 首屏：16:9 拼合大图 + 标题 -->
-  <view class="cp-hero">
+  <!-- 首屏：有封面时用封面，否则用景区拼图 -->
+  <view class="cp-hero" wx:if="{{cover}}">
+    <image class="cp-hero-img cp-hero-cover" src="{{cover}}" mode="aspectFill" />
+    <view class="cp-hero-shade"></view>
+    <view class="cp-hero-cap">
+      <view class="cp-hero-title-row">
+        <view class="cp-hero-title">{{heroTitle}}</view>
+      </view>
+      <view class="cp-hero-slogan">{{c.slogan}}</view>
+    </view>
+  </view>
+  <view class="cp-hero" wx:else>
     <view class="cp-hero-tile" wx:for="{{heroTiles}}" wx:key="id">
       <image wx:if="{{item.img}}" class="cp-hero-img" src="{{item.img}}" mode="aspectFill" />
     </view>
     <view class="cp-hero-shade"></view>
     <view class="cp-hero-cap">
-      <view class="cp-hero-title">{{heroTitle}}</view>
+      <view class="cp-hero-title-row">
+        <view class="cp-hero-title">{{heroTitle}}</view>
+      </view>
       <view class="cp-hero-slogan">{{c.slogan}}</view>
     </view>
   </view>
 
-  <!-- 基础信息标签区（自动匹配天数与出行月份） -->
+  <!-- 四项信息在首图下面，不压在封面上 -->
   <view class="info-bar">
     <view class="info-item" wx:for="{{infoTags}}" wx:key="k">
       <text class="info-k">{{item.k}}</text>
       <text class="info-v">{{item.v}}</text>
     </view>
+  </view>
+
+  <!-- 对客报价：成人价 / 儿童价 / 总价。内部核算不在这里。 -->
+  <view class="cp-price" wx:if="{{guestTotalText || guestQuoteText}}">
+    <view class="cp-price-k">{{c.guestTotalLabel}}</view>
+    <view class="cp-price-v" wx:if="{{guestTotalText}}">{{guestTotalText}}</view>
+    <view class="cp-price-note" wx:if="{{guestQuoteText}}">{{guestQuoteText}}</view>
+    <view class="cp-price-note" wx:if="{{guestTotalNote}}">{{guestTotalNote}}</view>
   </view>
 
   <!-- 按天行程 -->
@@ -50,7 +70,10 @@
         <view class="cp-spot-body">
           <view class="cp-spot-name">{{c.hotelLabel}} · {{day.hotel.name}}</view>
           <view class="cp-spot-sub">{{day.hotel.meta}}</view>
-          <view class="cp-spot-sub" wx:if="{{day.hotel.roomType}}">房型：{{day.hotel.roomType}} · {{day.hotel.qty}} 间</view>
+          <block wx:if="{{day.hotel.bookings.length}}">
+            <view class="cp-spot-sub" wx:for="{{day.hotel.bookings}}" wx:for-item="bk" wx:key="index">{{bk.name}} · {{bk.roomType}} · {{bk.qty}} 间</view>
+          </block>
+          <view class="cp-spot-sub" wx:elif="{{day.hotel.roomType}}">房型：{{day.hotel.roomType}} · {{day.hotel.qty}} 间</view>
           <view class="cp-spot-sub" wx:elif="{{day.hotel.qty}}">{{day.hotel.qty}} 间</view>
         </view>
         <view class="cp-arrow">›</view>
@@ -61,6 +84,10 @@
         <view class="cp-alt-list">
           <text class="cp-alt-name" wx:for="{{day.hotel.alts}}" wx:key="*this">{{item}}</text>
         </view>
+      </view>
+
+      <view class="cp-promo" wx:if="{{day.promos.length}}">
+        <image class="cp-promo-img" wx:for="{{day.promos}}" wx:for-item="pic" wx:key="*this" src="{{pic}}" mode="aspectFill" />
       </view>
 
       <view class="cp-note" wx:if="{{day.note}}">
@@ -84,33 +111,45 @@
 
     <view class="sec">
       <view class="sec-title">{{d.feeInclude}}</view>
-      <view class="sec-item" wx:for="{{c.travel.include}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.include}}" wx:key="*this">{{item}}</view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.feeExclude}}</view>
-      <view class="sec-item" wx:for="{{c.travel.exclude}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.exclude}}" wx:key="*this">{{item}}</view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.notice}}</view>
       <view class="sec-sub">{{d.noticeItems[0]}}</view>
-      <view class="sec-item" wx:for="{{c.travel.tips}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.tips}}" wx:key="*this">{{item}}</view>
       <view class="sec-sub">{{d.noticeItems[1]}}</view>
       <view class="sec-chips">
-        <text class="chip" wx:for="{{c.travel.gear}}" wx:key="*this">{{item}}</text>
+        <text class="chip" wx:for="{{travelView.gear}}" wx:key="*this">{{item}}</text>
       </view>
     </view>
 
     <view class="sec">
       <view class="sec-title">{{d.refund}}</view>
-      <view class="sec-item" wx:for="{{c.travel.refund}}" wx:key="*this">{{item}}</view>
+      <view class="sec-item" wx:for="{{travelView.refund}}" wx:key="*this">{{item}}</view>
     </view>
   </view>
 
-  <!-- 底部按钮 -->
+  <!-- 内部核算只给员工，放在全部行程内容之后 -->
+  <view class="cp-price" wx:if="{{isStaff && internalView}}">
+    <view class="cp-price-k">内部核算</view>
+    <view class="cp-price-v">¥{{internalView.total}}</view>
+    <view class="cp-price-note">{{internalView.note}}</view>
+  </view>
+
+  <!-- 底部：有对客报价时总价留在操作栏旁，生成后仍可修改 -->
   <view class="cp-bottom">
-    <view class="cp-btn cp-btn-outline" bindtap="onRight">{{fromList ? c.editBtn : c.saveBtn}}</view>
+    <view class="cp-price-side" wx:if="{{guestTotalText}}">
+      <text class="cp-price-side-k">{{c.guestTotalLabel}}</text>
+      <text class="cp-price-side-v">{{guestTotalText}}</text>
+    </view>
+    <view class="cp-btn cp-btn-outline" bindtap="goEdit">{{c.editBtn}}</view>
+    <view class="cp-btn cp-btn-outline" wx:if="{{!fromList}}" bindtap="saveToMine">{{c.saveBtn}}</view>
   </view>
   <view class="cp-safe"></view>
 </view>

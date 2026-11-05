@@ -400,6 +400,15 @@ function pickCarUse(src) {
   return { carUseCustom: true, carUseOffsets: sanitizeCarOffsets(s.carUseOffsets) };
 }
 
+/* 本地缓存没有计费日、云端有时才补上。已有本地选择不被云端盖掉。 */
+function carryMissingCarUse(localTrip, cloudTrip) {
+  if (!localTrip || hasCarUseField(localTrip) || !hasCarUseField(cloudTrip)) return false;
+  const packed = pickCarUse(cloudTrip);
+  localTrip.carUseCustom = packed.carUseCustom;
+  localTrip.carUseOffsets = packed.carUseOffsets;
+  return true;
+}
+
 /* 当前生效的计费偏移。未自定义时为 0..tripDays-1。 */
 function readCarUse(src, tripDays) {
   const picked = pickCarUse(src);
@@ -866,7 +875,7 @@ module.exports = {
   periodHasDate, periodHasMonth,
   bookingsOf, periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, priceInfoOfRoom, matchHotelPrice,
   priceInfoOfVehicle, vehiclePackagesOf, vehicleCaption, vehicleHasImage, carPackageAmount, vehicleDaysAmount, vehicleDaysByOffsets,
-  sanitizeCarOffsets, hasCarUseField, packCarUse, pickCarUse, readCarUse, stepCarUse, toggleCarUseOffset,
+  sanitizeCarOffsets, hasCarUseField, packCarUse, pickCarUse, carryMissingCarUse, readCarUse, stepCarUse, toggleCarUseOffset,
   carUseAfterToggle, droppedCarDays,
   carUseDayViews, publicSharePayload, resolveCarOffsets,
   deriveDays, calcQuote, publicHotelQuote, annotateQuote,
