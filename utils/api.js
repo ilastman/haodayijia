@@ -6,6 +6,7 @@
  */
 
 const cloud = require('./cloud');
+const quote = require('./quote');
 
 async function call(name, data) {
   const res = await cloud.callFunction(name, data);
@@ -105,7 +106,10 @@ function toScenic(s) {
     description: stripHtml(s.detailHtml),
     duration: s.duration || '',
     bestSeason: s.bestSeason || '',
-    tips: s.tags || []
+    tips: s.tags || [],
+    packages: Array.isArray(s.packages) ? s.packages : [],
+    packageIntro: s.packageIntro || '',
+    noTicket: s.noTicket === true
   };
 }
 
@@ -251,6 +255,12 @@ const api = {
     };
   },
 
+  // 分类图库。tree 为空返回全部（含私人定制封面层）
+  async gallery(tree) {
+    const list = await call('galleryCRUD', { action: 'list', tree: tree || '' });
+    return Array.isArray(list) ? list : [];
+  },
+
   // 分类树（scenic 三级 / hotel 两级）。空库时云函数会写入默认分类。
   async categories(tree) {
     const list = await call('categoryCRUD', { action: 'list', tree: tree || '' });
@@ -273,6 +283,25 @@ const api = {
   },
 
   // 酒店列表（仅上架）
+  // 车型（三级：regionLevel1 / category / lineType；日期档期 prices；车套票 packages）
+  async vehicles() {
+    const list = await call('vehicleCRUD', { action: 'list', onlineOnly: true });
+    if (!list || !list.length) return null;
+    return list.filter(v => v && v.online !== false).map(v => ({
+      id: v.id, name: v.name || '', regionLevel1: v.regionLevel1 || '', category: v.category || '', lineType: v.lineType || '',
+      type: v.category || '', seats: v.seats || '', image: v.cover || '', cover: v.cover || '', intro: v.intro || '', remark: v.remark || '',
+      price: Number(v.price) || 0, prices: Array.isArray(v.prices) ? v.prices : [],
+      packages: Array.isArray(v.packages) ? v.packages : [], packageIntro: v.packageIntro || ''
+    }));
+  },
+
+  // 车型三级元数据（regions/vehicleTypes/lineTypes），失败返回 null 由前端常量兜底
+  async vehicleMeta() {
+    const res = await cloud.callFunction('vehicleCRUD', { action: 'categories' });
+    if (!res || res.code !== 200) return null;
+    return { regions: res.regions || [], vehicleTypes: res.vehicleTypes || [], lineTypes: res.lineTypes || [] };
+  },
+
   async hotels() {
     const list = await call('hotelCRUD', { action: 'list' });
     if (!list || !list.length) return null;
@@ -329,18 +358,76 @@ const api = {
   async myTrips() {
     const list = await call('userTripCRUD', { action: 'myTrips' });
     if (!list) return null;
-    return list.map(t => ({
+    return list.map(t => Object.assign({
       id: t.id,
       title: t.title || '我的专属行程',
       days: t.days || 0,
       date: t.date || String(t.createTime || '').slice(0, 10),
+      adults: t.adults,
+      children: t.children,
+      quote: t.quote || null,
+      guestName: t.guestName || '',
+      guestQuote: t.guestQuote || 0,
+      audience: t.audience || '',
+      pace: t.pace || '',
+      clauses: t.clauses || null,
       cover: t.cover || '',
+      carId: t.carId || '',
+      carPackageSelections: Array.isArray(t.carPackageSelections) ? t.carPackageSelections : [],
+      carCostOverride: t.carCostOverride || '',
+      staffRemark: t.staffRemark || '',
       plans: (Array.isArray(t.plans) && t.plans.length)
-        ? t.plans.map(p => ({ scenicIds: p.scenicIds || [], hotelId: p.hotelId || '', altHotelIds: p.altHotelIds || [], note: p.note || '' }))
-        : (t.plan ? [{ scenicIds: [], hotelId: '', altHotelIds: [], note: t.plan }] : []),
+        ? t.plans.map(p => ({
+          scenicIds: p.scenicIds || [],
+          hotelId: p.hotelId || '',
+          altHotelIds: p.altHotelIds || [],
+          note: p.note || '',
+          roomType: p.roomType || '',
+          roomQty: p.roomQty || 1,
+          hotelBookings: Array.isArray(p.hotelBookings) ? p.hotelBookings : [],
+          promoImgs: Array.isArray(p.promoImgs) ? p.promoImgs.slice(0, 2) : [],
+          scenicSnaps: (Array.isArray(p.scenicSnaps) ? p.scenicSnaps : []).filter(x => x && x.id).slice(0, 20),
+          packageSelections: Array.isArray(p.packageSelections) ? p.packageSelections : [],
+          hotelSnaps: (Array.isArray(p.hotelSnaps) ? p.hotelSnaps : []).filter(x => x && x.id).slice(0, 10)
+        }))
+        : (t.plan ? [{ scenicIds: [], hotelId: '', altHotelIds: [], note: t.plan, roomType: '', roomQty: 1, promoImgs: [], scenicSnaps: [], hotelSnaps: [] }] : []),
       savedAt: t.createTime || '',
       isPublish: t.status === 'published'
-    }));
+    }, quote.hasCarUseField(t) ? quote.pickCarUse(t) : {}));
+  },
+
+  // delete my trip in cloud (openid scoped); returns true on success
+  async removeTrip(id) {
+    if (!id) return false;
+    try {
+      const res = await cloud.callFunction('userTripCRUD', { action: 'removeMine', id });
+      return !!(res && res.code === 200);
+    } catch (e) { return false; }
+  },
+
+  // 分享打开的行程。不含内部核算 quote。
+  async getPublicTrip(id) {
+    if (!id) return null;
+    const t = await call('userTripCRUD', { action: 'getPublic', id });
+    if (!t || !t.id) return null;
+    if (t.quote) delete t.quote;
+    if (t.internalQuote) delete t.internalQuote;
+    delete t.carCostOverride;
+    /* 计费日选择不是报价金额，分享载入要保留；没有该字段则不补 false */
+    if (quote.hasCarUseField(t)) {
+      const carUse = quote.pickCarUse(t);
+      t.carUseCustom = carUse.carUseCustom;
+      t.carUseOffsets = carUse.carUseOffsets;
+    }
+    return t;
+  },
+
+  // 员工备注（仅员工；返回 code：200 成功 / 404 云端无此行程）
+  async setTripRemark(id, staffRemark) {
+    try {
+      const res = await cloud.callFunction('userTripCRUD', { action: 'setRemark', id, data: { staffRemark } });
+      return (res && res.code) || 0;
+    } catch (e) { return 0; }
   },
 
   // 保存/更新我的行程（尽力而为，失败不影响本地保存）

@@ -1,3 +1,4 @@
+<page-meta page-style="{{(dragIndex >= 0 || sheet) ? 'overflow: hidden;' : ''}}" />
 <view class="page">
 
   <!-- 头部 -->
@@ -54,32 +55,49 @@
         </view>
       </view>
     </view>
+    <view class="tip-line">{{c.editHint}}</view>
   </view>
 
-  <!-- 员工内部核算价（仅员工可见） -->
-  <view class="card quote-card" wx:if="{{isStaff && internalQuote}}">
-    <view class="card-title">内部核算价</view>
-    <view class="quote-sum">
-      <text class="quote-sum-label">酒店（逐日房型 × 间数）</text>
-      <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
+  <!-- 封面：私人定制封面层，必填 -->
+  <view class="card">
+    <view class="card-title">{{c.coverTitle}}<text class="req">*</text></view>
+    <view class="tip-line">{{c.coverRequired}}</view>
+    <view class="cover-row" wx:if="{{cover}}">
+      <image class="cover-preview" src="{{cover}}" mode="aspectFill" />
+      <view class="op-btn del" bindtap="clearCover">{{c.remove}}</view>
     </view>
-    <view class="quote-sum">
-      <text class="quote-sum-label">门票（{{internalQuote.people}}人）</text>
-      <text class="quote-sum-val">¥{{internalQuote.ticket}}</text>
-    </view>
-    <view class="quote-sum quote-total">
-      <text class="quote-sum-label">内部核算合计</text>
-      <text class="quote-sum-val total">¥{{internalQuote.total}}</text>
-    </view>
-    <view class="quote-bd" wx:if="{{internalQuote.breakdown.length}}">
-      <view class="quote-bd-row" wx:for="{{internalQuote.breakdown}}" wx:key="index">
-        <text class="quote-bd-day">{{item.day}}</text>
-        <text class="quote-bd-name">{{item.name}}</text>
-        <text class="quote-bd-unit">¥{{item.unit}} × {{item.qty}}</text>
-        <text class="quote-bd-sub">¥{{item.subtotal}}</text>
+    <view class="sel-empty" wx:else>{{c.coverEmpty}}</view>
+    <view class="upload-slots">
+      <view class="upload-slot cover-upload" bindtap="uploadCover">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.coverSlotHint}}</text>
+        <text class="upload-sub">{{c.coverSlotUpload}}</text>
+      </view>
+      <view class="upload-slot cover-pick" bindtap="openCoverLib">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.coverSlotHint}}</text>
+        <text class="upload-sub">{{c.coverSlotPick}}</text>
       </view>
     </view>
-    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
+  </view>
+
+  <view class="info-bar">
+    <view class="info-item">
+      <text class="info-k">{{c.metaDays}}</text>
+      <text class="info-v">{{days}}天</text>
+    </view>
+    <view class="info-item">
+      <text class="info-k">{{c.metaPeople}}</text>
+      <input class="info-input" value="{{audience}}" bindinput="onAudience" maxlength="24" />
+    </view>
+    <view class="info-item">
+      <text class="info-k">{{c.metaPace}}</text>
+      <input class="info-input" value="{{pace}}" bindinput="onPace" maxlength="24" />
+    </view>
+    <view class="info-item">
+      <text class="info-k">{{c.metaSeason}}</text>
+      <text class="info-v">{{seasonText}}</text>
+    </view>
   </view>
 
   <!-- ② 每日行程标签 -->
@@ -93,19 +111,35 @@
     <view class="card-title">{{c.scenicTitle}}</view>
     <view class="add-btn" bindtap="openScenic">+ {{c.addScenic}}</view>
 
-    <view class="sel-list" wx:if="{{curScenics.length > 0}}">
-      <view class="sel-item {{dragging === index ? 'dragging' : ''}}" wx:for="{{curScenics}}" wx:key="id"
-        data-index="{{index}}"
-        bindtouchstart="dragStart" bindtouchmove="dragMove" bindtouchend="dragEnd" bindtouchcancel="dragEnd">
-        <text class="sel-order">{{index + 1}}</text>
-        <view class="sel-body">
-          <view class="sel-name">{{item.name}}</view>
-          <view class="sel-sub">{{item.dest}}</view>
+        <view class="sel-list {{dragIndex >= 0 ? 'live' : ''}}" wx:if="{{curScenics.length > 0}}">
+      <view class="sel-item {{dragIndex === index ? 'dragging' : ''}} {{dropIndex === index && dragIndex !== index ? 'drop-on' : ''}}"
+        wx:for="{{curScenics}}" wx:key="id"
+        style="transform: translateY({{rowShift[index] || 0}}px);">
+        <view class="sel-row">
+          <view class="drag-handle" data-index="{{index}}"
+            catchtouchstart="dragStart" catchtouchmove="dragMove" catchtouchend="dragEnd" catchtouchcancel="dragEnd">
+            <text class="sel-order">{{index + 1}}</text>
+          </view>
+          <view class="sel-body">
+            <view class="sel-name">{{item.name}}</view>
+            <view class="sel-sub">{{item.dest}}</view>
+          </view>
+          <view class="sel-ops">
+            <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="-1">{{c.up}}</view>
+            <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="1">{{c.down}}</view>
+            <view class="op-btn del" bindtap="removeScenic" data-index="{{index}}">{{c.remove}}</view>
+          </view>
         </view>
-        <view class="sel-ops">
-          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="-1">{{c.up}}</view>
-          <view class="op-btn" bindtap="moveSel" data-index="{{index}}" data-dir="1">{{c.down}}</view>
-          <view class="op-btn del" bindtap="removeScenic" data-index="{{index}}">{{c.remove}}</view>
+        <view class="pkg-box" wx:if="{{item.packages.length}}">
+          <view class="pkg-intro" wx:if="{{item.packageIntro}}">{{item.packageIntro}}</view>
+          <view class="pkg-title">可选套票</view>
+          <view class="pkg-item {{pi.sel ? 'on' : ''}}" wx:for="{{item.packages}}" wx:for-item="pi" wx:for-index="pidx" wx:key="id"
+            hover-class="pkg-item-hover" hover-stay-time="80"
+            bindtap="togglePackage" data-sid="{{item.id}}" data-iid="{{pi.id}}" data-pidx="{{pidx}}">
+            <view class="pkg-check {{pi.sel ? 'on' : ''}}" catchtap="togglePackage" data-sid="{{item.id}}" data-iid="{{pi.id}}" data-pidx="{{pidx}}">{{pi.sel ? '☑' : '☐'}}</view>
+            <text class="pkg-name">{{pi.name}}</text>
+            <text class="pkg-price" wx:if="{{isStaff && pi.priceLabel}}">{{pi.priceLabel}}</text>
+          </view>
         </view>
       </view>
     </view>
@@ -144,14 +178,112 @@
       </view>
     </view>
 
-    <!-- 同级备选酒店（纯文字多选） -->
-    <view class="alt-block" wx:if="{{curHotel && altHotels.length > 0}}">
-      <view class="alt-title">{{c.hotelAltTitle}}</view>
-      <view class="alt-list">
-        <view class="alt-item {{item.sel ? 'on' : ''}}" wx:for="{{altHotels}}" wx:key="id"
-          catchtap="toggleAlt" data-id="{{item.id}}">
-          <text class="alt-name">{{item.name}}</text>
-          <view class="alt-check">{{item.sel ? '✓' : ''}}</view>
+    <!-- 追加住宿预订：每条独立选酒店+房型+间数（可同店：一间大床 + 一间标间），均计价 -->
+    <view class="book-row" wx:for="{{curExtraBookings}}" wx:key="bi">
+      <view class="book-head">
+        <picker mode="selector" range="{{bookHotelNames}}" bindchange="onBookHotel" data-bi="{{item.bi}}">
+          <view class="book-name">{{item.name}} ▾</view>
+        </picker>
+        <view class="op-btn del" catchtap="removeBooking" data-bi="{{item.bi}}">{{c.remove}}</view>
+      </view>
+      <view class="room-row">
+        <view class="room-item">
+          <text class="room-label">房型</text>
+          <picker mode="selector" range="{{item.types}}" bindchange="onBookRoomType" data-bi="{{item.bi}}">
+            <view class="room-pick">{{item.roomType}} ▾</view>
+          </picker>
+        </view>
+        <view class="room-item room-qty">
+          <text class="room-label">间数</text>
+          <view class="stepper">
+            <view class="stepper-btn" bindtap="onBookQty" data-bi="{{item.bi}}" data-d="-">−</view>
+            <text class="stepper-num">{{item.qty}}</text>
+            <view class="stepper-btn" bindtap="onBookQty" data-bi="{{item.bi}}" data-d="+">+</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="add-btn book-add" wx:if="{{curHotel}}" bindtap="addBooking">+ 再加一间房（可同店选不同房型，计价）</view>
+
+    <!-- 同级备选：与「选择酒店」相同的底部面板，候选已锁在主酒店的二级大区 -->
+    <view class="alt-block" wx:if="{{curHotel && altCanPick}}">
+      <view class="alt-title">{{c.hotelAltTitle}}（仅备选参考，不计价）</view>
+      <view class="add-btn" bindtap="openAlt">+ {{c.addHotel}}</view>
+      <view class="hotel-sel alt-sel" wx:for="{{altPicked}}" wx:key="id">
+        <image class="hotel-cover" src="{{item.image}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="sel-body">
+          <view class="sel-name">{{item.name}}</view>
+          <view class="sel-sub">{{item.stars}} · {{item.area}}</view>
+        </view>
+        <view class="op-btn del" catchtap="toggleAlt" data-id="{{item.id}}">{{c.remove}}</view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-title">{{c.promoTitle}}</view>
+    <view class="tip-line">{{c.promoHint}}</view>
+    <view class="promo-row" wx:if="{{curPromo.length}}">
+      <view class="promo-cell" wx:for="{{curPromo}}" wx:key="*this">
+        <image class="promo-img" src="{{item}}" mode="aspectFill" />
+        <view class="op-btn del" catchtap="removePromo" data-index="{{index}}">{{c.remove}}</view>
+      </view>
+    </view>
+    <view class="upload-slots">
+      <view class="upload-slot promo-upload" bindtap="uploadPromo">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.promoSlotHint}}</text>
+        <text class="upload-sub">{{c.promoSlotUpload}}</text>
+      </view>
+      <view class="upload-slot promo-pick" bindtap="openPromoLib">
+        <view class="upload-plus">+</view>
+        <text class="upload-hint">{{c.promoSlotHint}}</text>
+        <text class="upload-sub">{{c.promoSlotPick}}</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="card car-card">
+    <view class="card-title">{{c.carTitle}}</view>
+    <view class="add-btn" bindtap="openCar">+ {{c.addCar}}</view>
+    <view class="hotel-sel" wx:if="{{curCar}}">
+      <image class="hotel-cover" src="{{curCar.image}}" mode="aspectFill" lazy-load="{{true}}" />
+      <view class="sel-body">
+        <view class="sel-name">{{curCar.name}}</view>
+        <view class="sel-sub">{{curCar.regionLevel1 ? curCar.regionLevel1 + ' · ' : ''}}{{curCar.category || curCar.type}}{{curCar.lineType ? ' · ' + curCar.lineType : ''}} · {{curCar.seats}}座</view>
+      </view>
+      <view class="op-btn del" bindtap="clearCar">{{c.remove}}</view>
+    </view>
+    <view class="sel-empty" wx:else>{{c.carEmpty}}</view>
+    <view class="pkg-box" wx:if="{{curCar && curCarPackages.length}}">
+      <view class="pkg-intro" wx:if="{{curCar.packageIntro}}">{{curCar.packageIntro}}</view>
+      <view class="pkg-title">用车套票（接送机/市游等）</view>
+      <view class="pkg-item {{pi.sel ? 'on' : ''}}" wx:for="{{curCarPackages}}" wx:for-item="pi" wx:key="id"
+        hover-class="pkg-item-hover" hover-stay-time="80" bindtap="toggleCarPackage" data-iid="{{pi.id}}">
+        <view class="pkg-check {{pi.sel ? 'on' : ''}}">{{pi.sel ? '☑' : '☐'}}</view>
+        <text class="pkg-name">{{pi.name}}</text>
+        <text class="pkg-price" wx:if="{{isStaff && pi.priceLabel}}">{{pi.priceLabel}}</text>
+      </view>
+    </view>
+    <view class="quote-sum" wx:if="{{isStaff && curCar}}">
+      <text class="quote-sum-label">用车费手填覆盖（留空按档期自动）</text>
+      <input class="quote-sum-val" type="digit" value="{{carCostOverride}}" placeholder="自动" bindinput="onCarCostInput" />
+    </view>
+    <view class="car-use" wx:if="{{isStaff && curCar}}">
+      <view class="car-use-head">
+        <text class="car-use-label">计费用车天数</text>
+        <view class="car-use-step">
+          <view class="stepper-btn" catchtap="onCarUseStep" data-d="-">−</view>
+          <text class="stepper-num">{{carUseCount}}天</text>
+          <view class="stepper-btn" catchtap="onCarUseStep" data-d="+">+</view>
+          <text class="car-use-reset" catchtap="resetCarUse">跟行程</text>
+        </view>
+      </view>
+      <view class="car-use-hint">点某一天可取消或加回。只改计费天数，不改行程天数、景区和酒店。每天按实际日期对车辆档期；接送机/市游套票按次另计，不随天数重复。</view>
+      <view class="car-use-days">
+        <view class="car-use-chip {{item.on ? 'on' : ''}}" wx:for="{{carUseDays}}" wx:key="offset" catchtap="toggleCarUseDay" data-offset="{{item.offset}}">
+          <view class="car-use-d1">{{item.label}}{{item.extra ? ' · 加' : ''}}</view>
+          <view class="car-use-d2">{{item.dateText}} {{item.priceText}}</view>
         </view>
       </view>
     </view>
@@ -163,6 +295,94 @@
       bindinput="onNote" maxlength="200" auto-height />
   </view>
 
+  <view class="card" wx:for="{{clauseCards}}" wx:key="kind">
+    <view class="card-title">{{item.title}}</view>
+    <view class="add-btn" bindtap="openClause" data-kind="{{item.kind}}">{{item.name}}</view>
+    <view class="tip-line" wx:for="{{item.preview}}" wx:for-item="line" wx:key="*this">{{line}}</view>
+  </view>
+
+  <!-- 对客报价 + 内部核算（仅员工；客人看不到内部核算）。放在当天内容之后。 -->
+  <view class="card quote-card" wx:if="{{isStaff}}">
+    <view class="card-title">对客报价</view>
+    <view class="row">
+      <view class="row-label">客人称呼</view>
+      <input class="guest-input" placeholder="如：张先生" placeholder-class="ph" value="{{guestName}}" bindinput="onGuestName" maxlength="20" />
+    </view>
+    <view class="row">
+      <view class="row-label">成人价格</view>
+      <input class="guest-input" type="digit" placeholder="成人单价" placeholder-class="ph" value="{{guestAdultPrice}}" bindinput="onGuestAdultPrice" maxlength="8" />
+      <text class="days-unit">元/人</text>
+    </view>
+    <view class="row">
+      <view class="row-label">儿童价格</view>
+      <input class="guest-input" type="digit" placeholder="儿童单价" placeholder-class="ph" value="{{guestChildPrice}}" bindinput="onGuestChildPrice" maxlength="8" />
+      <text class="days-unit">元/人</text>
+    </view>
+    <view class="row">
+      <view class="row-label">总价格</view>
+      <input class="guest-input" type="digit" placeholder="可自动算，也可手改" placeholder-class="ph" value="{{guestQuote}}" bindinput="onGuestQuote" maxlength="10" />
+      <text class="days-unit">元</text>
+    </view>
+    <view class="tip-line">总价默认 = 成人价 × 成人数 + 儿童价 × 儿童数，可手改；改单价或人数后会按公式重算。客人页可见成人价/儿童价/总价，内部核算不对客人展示。</view>
+    <view class="quote-sum quote-total" wx:if="{{guestTotalText}}">
+      <text class="quote-sum-label">客人看到的总价</text>
+      <text class="quote-sum-val total">{{guestTotalText}}</text>
+    </view>
+    <view class="tip-line" wx:if="{{guestTotalNote}}">{{guestTotalNote}}</view>
+    <block wx:if="{{internalQuote}}">
+    <view class="card-title quote-inner-title">内部核算价</view>
+    <view class="quote-sum">
+      <text class="quote-sum-label">酒店（逐日房型 × 间数）</text>
+      <text class="quote-sum-val">¥{{internalQuote.hotel}}</text>
+    </view>
+    <view class="quote-sum">
+      <text class="quote-sum-label">门票（{{internalQuote.people}}人）</text>
+      <text class="quote-sum-val">¥{{internalQuote.ticket}}</text>
+    </view>
+    <view class="quote-sum" wx:if="{{internalQuote.package}}">
+      <text class="quote-sum-label">套票（勾选 × {{internalQuote.people}}人）</text>
+      <text class="quote-sum-val">¥{{internalQuote.package}}</text>
+    </view>
+    <view class="quote-sum" wx:if="{{internalQuote.carDays || carId}}">
+      <text class="quote-sum-label">用车（{{internalQuote.carManual ? '手填覆盖' : '按日期档期'}} · {{carUseCount}}天）</text>
+      <text class="quote-sum-val">¥{{internalQuote.carDays}}</text>
+    </view>
+    <view class="quote-sum" wx:if="{{internalQuote.carPackage}}">
+      <text class="quote-sum-label">用车套票（按次）</text>
+      <text class="quote-sum-val">¥{{internalQuote.carPackage}}</text>
+    </view>
+    <view class="quote-warn" wx:if="{{internalQuote.carFuzzy}}" style="color:#e5484d;font-weight:600;">⚠ 用车价格模糊：{{internalQuote.carFuzzy}} 天无精确档期价，未计入，请确认后报价</view>
+    <view class="quote-sum quote-total">
+      <text class="quote-sum-label">内部核算合计</text>
+      <text class="quote-sum-val total">¥{{internalQuote.total}}</text>
+    </view>
+    <view class="quote-bd" wx:if="{{internalQuote.breakdown.length}}">
+      <view class="quote-bd-row" wx:for="{{internalQuote.breakdown}}" wx:key="index">
+        <text class="quote-bd-day">{{item.day}}</text>
+        <text class="quote-bd-name">{{item.name}}</text>
+        <text class="quote-bd-unit" wx:if="{{item.type === 'hotel' && item.fuzzy}}" style="color:#e5484d;">待确认 × {{item.qty}}</text>
+        <text class="quote-bd-unit" wx:elif="{{item.type !== 'scenic'}}">¥{{item.unit}} × {{item.qty}}</text>
+        <text class="quote-bd-unit" wx:else>{{item.qty}}人</text>
+        <text class="quote-bd-sub">¥{{item.subtotal}}</text>
+        <view class="quote-bd-alert" wx:if="{{item.fuzzy}}" style="color:#e5484d;font-size:24rpx;width:100%;font-weight:600;">⚠ {{item.fuzzyText}}</view>
+        <view class="quote-bd-alert" wx:if="{{item.ticketAlert}}" style="color:#e5484d;font-size:24rpx;width:100%;">⚠ {{item.ticketAlert}}</view>
+        <!-- 按人门票明细：仅定制师内部核算可见 -->
+        <view class="quote-bd-persons" wx:if="{{item.type === 'scenic' && item.persons.length}}">
+          <view class="quote-bd-person" wx:for="{{item.persons}}" wx:for-item="pp" wx:for-index="pi" wx:key="pi">
+            <text class="qp-who">{{pp.who}}</text>
+            <picker class="qp-kind qp-pick" mode="selector" range="{{pp.options}}" value="{{pp.pickIndex}}" data-key="{{item.pickKey}}" data-pi="{{pi}}" bindchange="onTicketPick">
+              <text>{{pp.kind}} ▾</text>
+            </picker>
+            <text class="qp-reason">单价 ¥{{pp.price}} · 金额 ¥{{pp.amount}}</text>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="quote-warn" wx:if="{{internalQuote.hotelFuzzy}}" style="color:#e5484d;font-weight:600;">⚠ 价格模糊：{{internalQuote.hotelFuzzy}} 晚酒店无精确报价，未计入酒店合计，请与酒店确认后再报价（仅定制师可见）</view>
+    <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>
+    </block>
+  </view>
+
   <view class="safe-bottom"></view>
 
   <!-- ④ 底部固定提交栏 -->
@@ -171,7 +391,41 @@
       <text class="sum-item">{{c.summaryScenic}} {{totalScenic}}</text>
       <text class="sum-item">{{c.summaryHotel}} {{totalHotel}}</text>
     </view>
-    <view class="submit-btn" bindtap="goGenerate">{{c.generateBtn}}</view>
+    <view class="submit-btn {{generating ? 'is-busy' : ''}}" bindtap="goGenerate">{{generating ? '正在生成…' : c.generateBtn}}</view>
+  </view>
+
+  <!-- 私人定制封面 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'cover'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.coverSheet}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="opt" wx:for="{{coverLib}}" wx:key="id" catchtap="pickCoverLib" data-url="{{item.url}}">
+          <image class="opt-thumb" src="{{item.url}}" mode="aspectFill" />
+          <view class="opt-body"><view class="opt-name">{{item.name}}</view></view>
+        </view>
+        <view class="sel-empty" wx:if="{{coverLib.length === 0}}">封面图库还是空的，可先上传，或在后台「图库管理 · 私人定制封面」添加</view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 当日宣传图 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'promo'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.promoSheet}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="opt" wx:for="{{promoLib}}" wx:key="id" catchtap="pickPromoLib" data-url="{{item.url}}">
+          <image class="opt-thumb" src="{{item.url}}" mode="aspectFill" />
+          <view class="opt-body"><view class="opt-name">{{item.name}}</view></view>
+        </view>
+        <view class="sel-empty" wx:if="{{promoLib.length === 0}}">宣传图库还是空的，可直接上传，或在后台按酒店 / 景区分类添加</view>
+      </scroll-view>
+    </view>
   </view>
 
   <!-- 景区选择面板 -->
@@ -179,9 +433,23 @@
     <view class="sheet" catchtap="noop">
       <view class="sheet-head">
         <text class="sheet-title">{{c.sheetScenicTitle}}</text>
+        <view class="sheet-search-wrap">
+          <input class="sheet-search" type="text" confirm-type="search" placeholder="搜索景区名称" value="{{sheetKeyword}}" bindinput="onSheetKeyword" />
+          <view class="sheet-search-clear" wx:if="{{sheetKeyword}}" catchtap="clearSheetKeyword">×</view>
+        </view>
         <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
       </view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetRegion === item ? 'on' : ''}}" wx:for="{{sheetRegions}}" wx:key="*this" bindtap="onSheetRegion" data-region="{{item}}">{{item}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetSub === item.key ? 'on' : ''}}" wx:for="{{sheetSubs}}" wx:key="key" bindtap="onSheetSub" data-sub="{{item.key}}">{{item.label}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetPlace === item ? 'on' : ''}}" wx:for="{{sheetPlaces}}" wx:key="*this" bindtap="onSheetPlace" data-place="{{item}}">{{item}}</view>
+      </scroll-view>
       <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetScenics.length === 0}}">{{sheetKeyword ? '未找到匹配的景区' : '该分类下暂无景区'}}</view>
         <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetScenics}}" wx:key="id" catchtap="toggleScenic" data-id="{{item.id}}">
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>
@@ -198,10 +466,97 @@
     <view class="sheet" catchtap="noop">
       <view class="sheet-head">
         <text class="sheet-title">{{c.sheetHotelTitle}}</text>
+        <view class="sheet-search-wrap">
+          <input class="sheet-search" type="text" confirm-type="search" placeholder="搜索酒店名称" value="{{sheetKeyword}}" bindinput="onSheetKeyword" />
+          <view class="sheet-search-clear" wx:if="{{sheetKeyword}}" catchtap="clearSheetKeyword">×</view>
+        </view>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetRegion === item ? 'on' : ''}}" wx:for="{{sheetRegions}}" wx:key="*this" bindtap="onSheetRegion" data-region="{{item}}">{{item}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetPlace === item ? 'on' : ''}}" wx:for="{{sheetPlaces}}" wx:key="*this" bindtap="onSheetPlace" data-place="{{item}}">{{item}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}" wx:if="{{sheetLevels.length > 1}}">
+        <view class="sheet-chip {{sheetLevel === item.key ? 'on' : ''}}" wx:for="{{sheetLevels}}" wx:key="key" bindtap="onSheetLevel" data-level="{{item.key}}">{{item.label}}</view>
+      </scroll-view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetHotels.length === 0}}">{{sheetKeyword ? '未找到匹配的酒店' : '该分类下暂无酒店'}}</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleHotel" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 行程条款模板 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'clause'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">选择模板</text>
         <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
       </view>
       <scroll-view scroll-y="{{true}}" class="sheet-list">
-        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleHotel" data-id="{{item.id}}">
+        <view class="sel-empty" wx:if="{{sheetClauses.length === 0}}">这一类还没有模板</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetClauses}}" wx:key="id" catchtap="pickClause" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.kind === 'notice' ? item.tips[0] : item.lines[0]}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 用车车型 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'car'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetCarTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <!-- 与「选择酒店」同款：三行横向 chips，每行首项「全部」，无小标题 -->
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{carFilter.region === item ? 'on' : ''}}" wx:for="{{carFilterOpts.regions}}" wx:key="*this" data-k="region" data-v="{{item}}" bindtap="onCarFilter">{{item === carNoneRegion ? '未填地点' : item}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}" wx:if="{{carFilterOpts.categories.length}}">
+        <view class="sheet-chip {{carFilter.category === item ? 'on' : ''}}" wx:for="{{carFilterOpts.categories}}" wx:key="*this" data-k="category" data-v="{{item}}" bindtap="onCarFilter">{{item}}</view>
+      </scroll-view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}" wx:if="{{carFilterOpts.lines.length}}">
+        <view class="sheet-chip {{carFilter.line === item ? 'on' : ''}}" wx:for="{{carFilterOpts.lines}}" wx:key="*this" data-k="line" data-v="{{item}}" bindtap="onCarFilter">{{item}}</view>
+      </scroll-view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list">
+        <view class="sel-empty" wx:if="{{sheetCars.length === 0}}" style="white-space:pre-line">{{carEmptyText || '暂无车型'}}</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetCars}}" wx:key="id" catchtap="toggleCar" data-id="{{item.id}}">
+          <view class="opt-body">
+            <view class="opt-name">{{item.name}}</view>
+            <view class="opt-sub ellipsis">{{item.regionLevel1 ? item.regionLevel1 + ' · ' : ''}}{{item.category || item.type}}{{item.lineType ? ' · ' + item.lineType : ''}} · {{item.seats}}座{{item.price ? ' · ¥' + item.price + '起/天' : ''}}</view>
+          </view>
+          <view class="opt-check">{{item.sel ? '✓' : ''}}</view>
+        </view>
+      </scroll-view>
+    </view>
+  </view>
+
+  <!-- 同区域备选酒店：可按级别筛选，不跨二级大区 -->
+  <view class="sheet-mask" wx:if="{{sheet && sheet.type === 'alt'}}" bindtap="closeSheet">
+    <view class="sheet" catchtap="noop">
+      <view class="sheet-head">
+        <text class="sheet-title">{{c.sheetAltTitle}}</text>
+        <view class="sheet-confirm" bindtap="closeSheet">{{c.sheetConfirm}}</view>
+      </view>
+      <scroll-view scroll-x="{{true}}" class="sheet-cats" enhanced="{{true}}" show-scrollbar="{{false}}">
+        <view class="sheet-chip {{sheetAltLevel === item.key ? 'on' : ''}}" wx:for="{{sheetAltLevels}}" wx:key="key" bindtap="onSheetAltLevel" data-level="{{item.key}}">{{item.label}}</view>
+      </scroll-view>
+      <scroll-view scroll-y="{{true}}" class="sheet-list" enhanced="{{true}}" bounces="{{false}}">
+        <view class="sel-empty" wx:if="{{sheetHotels.length === 0}}">{{c.altEmpty}}</view>
+        <view class="opt {{item.sel ? 'on' : ''}}" wx:for="{{sheetHotels}}" wx:key="id" catchtap="toggleAlt" data-id="{{item.id}}">
           <view class="opt-body">
             <view class="opt-name">{{item.name}}</view>
             <view class="opt-sub ellipsis">{{item.stars}} · {{item.area}}</view>
