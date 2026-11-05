@@ -439,6 +439,32 @@ function toggleCarUseOffset(offsets, offset) {
   return sanitizeCarOffsets(cur);
 }
 
+/* 删掉或恢复某一天。若结果正好是行程里的每一天，回到未自定义，方便旧行程继续跟天数。 */
+function carUseAfterToggle(offsets, tripDays, offset) {
+  const next = toggleCarUseOffset(offsets, offset);
+  const days = Math.max(0, parseInt(tripDays, 10) || 0);
+  if (next.length === days) {
+    let same = true;
+    for (let i = 0; i < days; i++) if (next[i] !== i) same = false;
+    if (same) return { custom: false, offsets: null };
+  }
+  return { custom: true, offsets: next };
+}
+
+/* 行程里被去掉的计费日，供一行「恢复」。不含行程外多出来的天。 */
+function droppedCarDays(tripDays, use) {
+  const u = use || {};
+  if (!u.custom) return [];
+  const on = {};
+  (u.offsets || []).forEach(i => { on[i] = 1; });
+  const n = Math.max(0, parseInt(tripDays, 10) || 0);
+  const out = [];
+  for (let i = 0; i < n; i++) {
+    if (!on[i]) out.push({ offset: i, label: '第' + (i + 1) + '天' });
+  }
+  return out;
+}
+
 /* 分享载入只带计费日选择和套票勾选，不带内部核算金额、手填覆盖。 */
 function publicSharePayload(src) {
   const s = src || {};
@@ -470,7 +496,7 @@ function vehicleDaysByOffsets(v, departDate, offsets) {
     if (!info.exact) fuzzy.push({ type: 'carPrice', id: v && v.id, day: off + 1, date: d, reason: info.reason, ref: info.ref });
     rows.push({
       day: '第' + (off + 1) + '天', type: 'car', name: (v && v.name) || '用车', date: d, offset: off,
-      unit, qty: 1, subtotal: unit,
+      unit, qty: 1, subtotal: unit, canDrop: true,
       fuzzy: !info.exact,
       fuzzyText: info.exact ? '' : ('用车价格模糊：' + (d || '未填日期') + ' ' + info.reason + (info.ref ? '；参考 ' + info.ref : '') + '，待确认')
     });
@@ -841,6 +867,7 @@ module.exports = {
   bookingsOf, periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, priceInfoOfRoom, matchHotelPrice,
   priceInfoOfVehicle, vehiclePackagesOf, vehicleCaption, vehicleHasImage, carPackageAmount, vehicleDaysAmount, vehicleDaysByOffsets,
   sanitizeCarOffsets, hasCarUseField, packCarUse, pickCarUse, readCarUse, stepCarUse, toggleCarUseOffset,
+  carUseAfterToggle, droppedCarDays,
   carUseDayViews, publicSharePayload, resolveCarOffsets,
   deriveDays, calcQuote, publicHotelQuote, annotateQuote,
   shareTitle, tripPlace, guestQuoteText, guestTotalView, calcGuestTotal

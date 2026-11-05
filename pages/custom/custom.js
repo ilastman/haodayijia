@@ -120,8 +120,7 @@ Page({
     /* 计费用车：false/null = 跟行程每一天（旧行程）。自定义后可取消某天或加天，不改行程。 */
     carUseCustom: false,
     carUseOffsets: null,
-    carUseDays: [],
-    carUseCount: 0,
+    carDropped: [],
     carFilter: carFilter.defaultFilter(),
     carFilterOpts: carFilter.buildOpts([], {}, carFilter.defaultFilter()),
     carNoneRegion: carFilter.NONE_REGION,
@@ -354,27 +353,22 @@ Page({
     return [].concat.apply([], list);
   },
 
-  /* 当前计费日（未自定义时跟行程天数），并给出按天 chips。不改 plans。 */
+  /* 当前计费日。未自定义时跟行程每一天。不改 plans。 */
   carUseNow() {
     const tripDays = (this.data.plans || []).length || this.data.days || 0;
     const use = quote.readCarUse({
       carUseCustom: this.data.carUseCustom,
       carUseOffsets: this.data.carUseOffsets
     }, tripDays);
-    const car = this.carsOf().filter(c => c.id === this.data.carId)[0] || null;
-    return {
-      tripDays,
-      use,
-      carUseDays: quote.carUseDayViews(car, this.data.date, tripDays, use.offsets),
-      carUseCount: use.offsets.length
-    };
+    return { tripDays, use };
   },
 
   /* 计算内部核算价（仅员工）；每晚按入住日期匹配价格档期。用车按计费日逐日档期，与行程天数分开。 */
   calcInternal() {
     const view = this.carUseNow();
+    const carDropped = quote.droppedCarDays(view.tripDays, view.use);
     if (!this.data.isStaff) {
-      this.setData({ carUseDays: [], carUseCount: view.carUseCount });
+      this.setData({ carDropped: [] });
       return;
     }
     const plans = normalizePlans(this.data.plans, this.data.days).map((p, i) => Object.assign({}, p, {
@@ -398,7 +392,7 @@ Page({
       vehiclesById: this.data.vehiclesById || {},
       carPackageSelections: this.data.carPackageSelections || []
     });
-    this.setData({ internalQuote, carUseDays: view.carUseDays, carUseCount: view.carUseCount });
+    this.setData({ internalQuote, carDropped });
   },
 
   /* 定制师为某景区某出行人点选优惠类别，立即重算内部核算 */
@@ -1178,28 +1172,24 @@ Page({
     this.calcInternal();
   },
 
-  /* 计费天数增减 / 按天开关。只改 carUseOffsets，不调用 setDays，景区和酒店不动。 */
-  onCarUseStep(e) {
+  /* 内部报价某一天用车行上的删除/恢复。不改行程天数。 */
+  applyCarUseToggle(offset) {
     if (!this.data.isStaff) return;
     const view = this.carUseNow();
-    const dir = String((e.currentTarget.dataset || {}).d) === '+' ? 1 : -1;
-    const next = quote.stepCarUse(view.use.offsets, view.tripDays, dir);
-    this.setData({ carUseCustom: true, carUseOffsets: next });
+    const next = quote.carUseAfterToggle(view.use.offsets, view.tripDays, offset);
+    this.setData({
+      carUseCustom: next.custom,
+      carUseOffsets: next.custom ? next.offsets : null
+    });
     this.syncPlan();
   },
 
-  toggleCarUseDay(e) {
-    if (!this.data.isStaff) return;
-    const view = this.carUseNow();
-    const next = quote.toggleCarUseOffset(view.use.offsets, (e.currentTarget.dataset || {}).offset);
-    this.setData({ carUseCustom: true, carUseOffsets: next });
-    this.syncPlan();
+  dropCarUseDay(e) {
+    this.applyCarUseToggle((e.currentTarget.dataset || {}).offset);
   },
 
-  resetCarUse() {
-    if (!this.data.isStaff) return;
-    this.setData({ carUseCustom: false, carUseOffsets: null });
-    this.syncPlan();
+  restoreCarUseDay(e) {
+    this.applyCarUseToggle((e.currentTarget.dataset || {}).offset);
   },
 
   toggleCar(e) {

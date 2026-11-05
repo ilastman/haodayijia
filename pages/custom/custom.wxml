@@ -272,24 +272,6 @@
       <text class="quote-sum-label">用车费手填覆盖（留空按档期自动）</text>
       <input class="quote-sum-val" type="digit" value="{{carCostOverride}}" placeholder="自动" bindinput="onCarCostInput" />
     </view>
-    <view class="car-use" wx:if="{{isStaff && curCar}}">
-      <view class="car-use-head">
-        <text class="car-use-label">计费用车天数</text>
-        <view class="car-use-step">
-          <view class="stepper-btn" catchtap="onCarUseStep" data-d="-">−</view>
-          <text class="stepper-num">{{carUseCount}}天</text>
-          <view class="stepper-btn" catchtap="onCarUseStep" data-d="+">+</view>
-          <text class="car-use-reset" catchtap="resetCarUse">跟行程</text>
-        </view>
-      </view>
-      <view class="car-use-hint">点某一天可取消或加回。只改计费天数，不改行程天数、景区和酒店。每天按实际日期对车辆档期；接送机/市游套票按次另计，不随天数重复。</view>
-      <view class="car-use-days">
-        <view class="car-use-chip {{item.on ? 'on' : ''}}" wx:for="{{carUseDays}}" wx:key="offset" catchtap="toggleCarUseDay" data-offset="{{item.offset}}">
-          <view class="car-use-d1">{{item.label}}{{item.extra ? ' · 加' : ''}}</view>
-          <view class="car-use-d2">{{item.dateText}} {{item.priceText}}</view>
-        </view>
-      </view>
-    </view>
   </view>
 
   <view class="card">
@@ -347,7 +329,7 @@
       <text class="quote-sum-val">¥{{internalQuote.package}}</text>
     </view>
     <view class="quote-sum" wx:if="{{internalQuote.carDays || carId}}">
-      <text class="quote-sum-label">用车（{{internalQuote.carManual ? '手填覆盖' : '按日期档期'}} · {{carUseCount}}天）</text>
+      <text class="quote-sum-label">用车（{{internalQuote.carManual ? '手填覆盖' : '按日期档期'}}）</text>
       <text class="quote-sum-val">¥{{internalQuote.carDays}}</text>
     </view>
     <view class="quote-sum" wx:if="{{internalQuote.carPackage}}">
@@ -367,6 +349,7 @@
         <text class="quote-bd-unit" wx:elif="{{item.type !== 'scenic'}}">¥{{item.unit}} × {{item.qty}}</text>
         <text class="quote-bd-unit" wx:else>{{item.qty}}人</text>
         <text class="quote-bd-sub">¥{{item.subtotal}}</text>
+        <text class="quote-bd-del" wx:if="{{item.canDrop}}" catchtap="dropCarUseDay" data-offset="{{item.offset}}">删</text>
         <view class="quote-bd-alert" wx:if="{{item.fuzzy}}" style="color:#e5484d;font-size:24rpx;width:100%;font-weight:600;">⚠ {{item.fuzzyText}}</view>
         <view class="quote-bd-alert" wx:if="{{item.ticketAlert}}" style="color:#e5484d;font-size:24rpx;width:100%;">⚠ {{item.ticketAlert}}</view>
         <!-- 按人门票明细：仅定制师内部核算可见 -->
@@ -380,6 +363,10 @@
           </view>
         </view>
       </view>
+    </view>
+    <view class="car-restore" wx:if="{{carDropped.length}}">
+      <text>已去掉用车</text>
+      <text class="car-restore-item" wx:for="{{carDropped}}" wx:key="offset" catchtap="restoreCarUseDay" data-offset="{{item.offset}}">{{item.label}} 恢复</text>
     </view>
     <view class="quote-warn" wx:if="{{internalQuote.hotelFuzzy}}" style="color:#e5484d;font-weight:600;">⚠ 价格模糊：{{internalQuote.hotelFuzzy}} 晚酒店无精确报价，未计入酒店合计，请与酒店确认后再报价（仅定制师可见）</view>
     <view class="quote-warn" wx:if="{{internalQuote.missing.length}}">部分选择未匹配到后台价（景区未设票价 / 酒店该入住日无价格档期），请核对</view>

@@ -236,12 +236,24 @@ const root = path.join(__dirname, '..');
 const wxml = fs.readFileSync(path.join(root, 'pages/custom/custom.wxml'), 'utf8');
 const page = fs.readFileSync(path.join(root, 'pages/custom/custom.js'), 'utf8');
 ok(wxml.indexOf('class="card quote-card" wx:if="{{isStaff}}"') >= 0, '内部核算卡片仅员工');
-ok(wxml.indexOf('class="car-use" wx:if="{{isStaff && curCar}}"') >= 0, '计费用车入口仅员工且已选车');
+ok(wxml.indexOf('class="car-use"') < 0, '没有独立的计费用车天数区');
+ok(wxml.indexOf('计费用车天数') < 0, '没有天数步进标题');
+ok(wxml.indexOf('用车费手填覆盖（留空按档期自动）') >= 0, '手填覆盖仍在');
+ok(wxml.indexOf('用车套票（接送机/市游等）') >= 0, '套票区仍在');
+ok(wxml.indexOf('class="quote-bd-del" wx:if="{{item.canDrop}}"') >= 0, '逐日用车行上有删除');
+ok(wxml.indexOf('restoreCarUseDay') >= 0, '误删可以恢复');
 ok(page.indexOf('carDays: plans.length') < 0, '页面不再把行程天数直接当成计费天数');
-ok(/onCarUseStep\(e\) \{\s*if \(!this\.data\.isStaff\) return;/.test(page), '增减天数函数拒绝非员工');
-ok(/toggleCarUseDay\(e\) \{\s*if \(!this\.data\.isStaff\) return;/.test(page), '按天开关拒绝非员工');
-ok(page.indexOf('this.setDays(') >= 0 && page.indexOf('onCarUseStep') >= 0, '行程天数入口还在，和用车分开');
+ok(/applyCarUseToggle\(offset\) \{\s*if \(!this\.data\.isStaff\) return;/.test(page), '删减计费拒绝非员工');
+ok(page.indexOf('this.setDays(') >= 0 && page.indexOf('onCarUseStep') < 0, '行程天数入口还在，不再有用车步进器');
 ok(page.indexOf('carUseOffsets: carPacked.carUseOffsets') >= 0, 'savePlan 写入计费日');
+const day2 = quote.carUseAfterToggle([0, 1, 2], 3, 1);
+eq(day2, { custom: true, offsets: [0, 2] }, '删第2天只去掉这一天');
+eq(quote.droppedCarDays(3, { custom: true, offsets: [0, 2] }).map(d => d.label), ['第2天'], '恢复入口只列出被删的天');
+const back = quote.carUseAfterToggle(day2.offsets, 3, 1);
+eq(back, { custom: false, offsets: null }, '恢复后回到每天用车');
+eq(carRows(cancelled).map(r => r.canDrop), [true, true], '留下的用车行仍可单独删');
+eq(carRows(cancelled).map(r => r.day), ['第1天', '第3天'], '明细仍是逐日一行，不并成总天数');
+ok(!pkgRows(cancelled)[0].canDrop, '套票行不能当一天删掉');
 
 console.log('== 车辆 intro：原样映射，有图才补示意声明且不重复 ==');
 const rawCar = {

@@ -994,62 +994,22 @@
 .pkg-name { flex: 1; min-width: 0; pointer-events: none; }
 .pkg-price { flex: 0 0 auto; color: #B07A2A; margin-left: 12rpx; pointer-events: none; }
 
-/* 员工计费用车：按天 chips，客人侧不渲染 */
-.car-use {
-  margin-top: 16rpx;
-  padding-top: 8rpx;
-  border-top: 1rpx solid #F0E6CE;
-}
-.car-use-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-.car-use-label {
-  font-size: 26rpx;
-  color: #6E6555;
-}
-.car-use-step {
-  display: flex;
-  align-items: center;
-}
-.car-use-reset {
-  margin-left: 16rpx;
+.quote-bd-del {
+  margin-left: 12rpx;
   font-size: 22rpx;
+  color: #C25A3A;
+  flex: 0 0 auto;
+}
+.car-restore {
+  margin-top: 8rpx;
+  font-size: 22rpx;
+  line-height: 1.7;
+  color: #8A8070;
+}
+.car-restore-item {
+  margin-left: 16rpx;
   color: #8A7152;
   text-decoration: underline;
-}
-.car-use-hint {
-  margin-top: 10rpx;
-  font-size: 22rpx;
-  line-height: 1.5;
-  color: #9E9886;
-}
-.car-use-days {
-  display: flex;
-  flex-wrap: wrap;
-  margin-top: 12rpx;
-}
-.car-use-chip {
-  min-width: 148rpx;
-  margin: 0 12rpx 12rpx 0;
-  padding: 12rpx 16rpx;
-  border-radius: 16rpx;
-  background: #F2ECDF;
-  color: #817A6A;
-  box-sizing: border-box;
-}
-.car-use-chip.on {
-  background: #8A7152;
-  color: #FCF9F1;
-}
-.car-use-d1 {
-  font-size: 24rpx;
-  font-weight: 500;
-}
-.car-use-d2 {
-  margin-top: 4rpx;
-  font-size: 20rpx;
 }
 
 /* 追加住宿预订行 */
