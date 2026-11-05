@@ -822,6 +822,7 @@ Page({
       const types = h ? this.roomTypesFor(h) : ['标准间'];
       return { bi: k + 1, hotelId: b.hotelId, name: h ? h.name : b.hotelId, types, roomType: b.roomType || types[0], qty: b.roomQty || 1 };
     }) : [];
+    const rawCar = this.carsOf().filter(c => c.id === this.data.carId)[0] || null;
     this.setData({
       bookHotelOpts: bookHotelOpts.map(h => ({ id: h.id, name: h.name })),
       bookHotelNames: bookHotelOpts.map(h => h.name),
@@ -830,8 +831,8 @@ Page({
       curHotel,
       altPicked,
       altCanPick: pool.length > 0,
-      curCar: this.carsOf().filter(c => c.id === this.data.carId)[0] || null,
-      curCarPackages: this.carViewPackages(this.carsOf().filter(c => c.id === this.data.carId)[0] || null),
+      curCar: rawCar ? Object.assign({}, rawCar, { caption: quote.vehicleCaption(rawCar) }) : null,
+      curCarPackages: this.carViewPackages(rawCar),
       curNote: plan.note || '',
       curPromo: gallery.clipPromo(plan.promoImgs),
       totalScenic,

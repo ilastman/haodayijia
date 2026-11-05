@@ -330,6 +330,20 @@ function vehiclePackagesOf(v) {
     priceText: (x.price == null || x.price === '') ? '' : String(x.price).trim()
   }));
 }
+/* 车图旁的说明。intro 原文保留；已含示意声明时不重复追加。没有图就不声明「示意图」。 */
+const CAR_ILLUS_NOTE = '车型示意图，实际以安排为准';
+function vehicleHasImage(car) {
+  return !!(car && String(car.image || car.cover || '').trim());
+}
+function vehicleCaption(car) {
+  if (!car) return '';
+  const intro = String(car.intro || '').replace(/\s+/g, ' ').trim();
+  const stated = intro.indexOf('实际以安排为准') >= 0;
+  if (!vehicleHasImage(car)) return intro;
+  if (!intro) return CAR_ILLUS_NOTE;
+  if (stated) return intro;
+  return intro + '（' + CAR_ILLUS_NOTE + '）';
+}
 /* 车套票合计：按次计价（不乘人数）；carPackageSelections=[{vehicleId, items:[{id,name,price}]}] */
 function carPackageAmount(vehiclesById, sels) {
   let total = 0; const rows = [];
@@ -825,7 +839,7 @@ module.exports = {
   num, parseTicketPrice, ticketUnits, ticketPersons, ticketCategoriesOf, defaultTicketCat, isNoTicket, packagesOf, packageSelectionsAmount, normDate, monthOf, seasonOf, addDays,
   periodHasDate, periodHasMonth,
   bookingsOf, periodsOnDate, roomTypesOnDate, roomTypesOf, priceOfRoom, priceInfoOfRoom, matchHotelPrice,
-  priceInfoOfVehicle, vehiclePackagesOf, carPackageAmount, vehicleDaysAmount, vehicleDaysByOffsets,
+  priceInfoOfVehicle, vehiclePackagesOf, vehicleCaption, vehicleHasImage, carPackageAmount, vehicleDaysAmount, vehicleDaysByOffsets,
   sanitizeCarOffsets, hasCarUseField, packCarUse, pickCarUse, readCarUse, stepCarUse, toggleCarUseOffset,
   carUseDayViews, publicSharePayload, resolveCarOffsets,
   deriveDays, calcQuote, publicHotelQuote, annotateQuote,

@@ -246,14 +246,17 @@
   <view class="card car-card">
     <view class="card-title">{{c.carTitle}}</view>
     <view class="add-btn" bindtap="openCar">+ {{c.addCar}}</view>
-    <view class="hotel-sel" wx:if="{{curCar}}">
-      <image class="hotel-cover" src="{{curCar.image}}" mode="aspectFill" lazy-load="{{true}}" />
-      <view class="sel-body">
-        <view class="sel-name">{{curCar.name}}</view>
-        <view class="sel-sub">{{curCar.regionLevel1 ? curCar.regionLevel1 + ' · ' : ''}}{{curCar.category || curCar.type}}{{curCar.lineType ? ' · ' + curCar.lineType : ''}} · {{curCar.seats}}座</view>
+    <block wx:if="{{curCar}}">
+      <view class="hotel-sel">
+        <image class="hotel-cover" src="{{curCar.image}}" mode="aspectFill" lazy-load="{{true}}" />
+        <view class="sel-body">
+          <view class="sel-name">{{curCar.name}}</view>
+          <view class="sel-sub">{{curCar.regionLevel1 ? curCar.regionLevel1 + ' · ' : ''}}{{curCar.category || curCar.type}}{{curCar.lineType ? ' · ' + curCar.lineType : ''}} · {{curCar.seats}}座</view>
+        </view>
+        <view class="op-btn del" bindtap="clearCar">{{c.remove}}</view>
       </view>
-      <view class="op-btn del" bindtap="clearCar">{{c.remove}}</view>
-    </view>
+      <view class="car-note" wx:if="{{curCar.caption}}">{{curCar.caption}}</view>
+    </block>
     <view class="sel-empty" wx:else>{{c.carEmpty}}</view>
     <view class="pkg-box" wx:if="{{curCar && curCarPackages.length}}">
       <view class="pkg-intro" wx:if="{{curCar.packageIntro}}">{{curCar.packageIntro}}</view>

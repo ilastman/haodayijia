@@ -5,6 +5,7 @@
 const fs = require('fs');
 const path = require('path');
 const quote = require('../utils/quote.js');
+const api = require('../utils/api.js');
 
 let pass = 0, fail = 0;
 function eq(actual, expected, label) {
@@ -241,6 +242,38 @@ ok(/onCarUseStep\(e\) \{\s*if \(!this\.data\.isStaff\) return;/.test(page), '增
 ok(/toggleCarUseDay\(e\) \{\s*if \(!this\.data\.isStaff\) return;/.test(page), '按天开关拒绝非员工');
 ok(page.indexOf('this.setDays(') >= 0 && page.indexOf('onCarUseStep') >= 0, '行程天数入口还在，和用车分开');
 ok(page.indexOf('carUseOffsets: carPacked.carUseOffsets') >= 0, 'savePlan 写入计费日');
+
+console.log('== 车辆 intro：原样映射，有图才补示意声明且不重复 ==');
+const rawCar = {
+  id: 'v1', name: '哈尔滨·城市SUV·长线', regionLevel1: '哈尔滨', category: '城市SUV', lineType: '长线',
+  seats: 5, cover: 'cloud://cover.jpg', album: ['cloud://album.jpg'],
+  intro: '代表车型。车型示意图，实际以安排为准',
+  remark: '内部备注', price: 550,
+  prices: [{ start: '2026-12-01', end: '2026-12-02', price: '550' }],
+  packages: [{ id: 'p', name: '接机', price: '150' }], packageIntro: '套票说明'
+};
+const mapped = api.mapVehicle(rawCar);
+eq(mapped.intro, rawCar.intro, 'intro 原样保留');
+eq(mapped.image, 'cloud://cover.jpg', '选中车图用 cover');
+eq(mapped.cover, 'cloud://cover.jpg', 'cover 字段仍在');
+eq(mapped.price, 550, '标价不被展示逻辑改写');
+eq(mapped.prices[0].price, '550', '档期价不被展示逻辑改写');
+eq(mapped.packageIntro, '套票说明', '套票简介仍是 packageIntro');
+eq(quote.vehicleCaption(mapped), rawCar.intro, '已含示意声明时不再追加');
+eq((quote.vehicleCaption(mapped).match(/实际以安排为准/g) || []).length, 1, '声明只出现一次');
+const withPhoto = api.mapVehicle(Object.assign({}, rawCar, { intro: '7座商务，适合市区接送' }));
+eq(withPhoto.intro, '7座商务，适合市区接送', '原简介不被改掉');
+eq(quote.vehicleCaption(withPhoto), '7座商务，适合市区接送（车型示意图，实际以安排为准）', '有图且简介未声明时补一句');
+const noAsset = api.mapVehicle({ id: 'lux', name: '豪华大9座', price: 1200, intro: '' });
+eq(noAsset.image, '', '没挂 cover 就不显示车图');
+eq(noAsset.price, 1200, '缺素材的车价保持原值');
+eq(quote.vehicleCaption(noAsset), '', '没图不写示意图声明');
+const textOnly = api.mapVehicle({ id: 'lux2', name: '豪华大9座B', intro: '暂无示意图', price: 1300 });
+eq(quote.vehicleCaption(textOnly), '暂无示意图', '没图时只显示原简介');
+const noteAt = wxml.indexOf('class="car-note"');
+ok(noteAt > 0, '选中车卡有说明节点');
+ok(wxml.indexOf('curCar.caption') >= 0, '说明绑定 caption');
+ok(wxml.slice(Math.max(0, noteAt - 60), noteAt + 40).indexOf('isStaff') < 0, '车图说明对客可见，不包在员工条件里');
 
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);

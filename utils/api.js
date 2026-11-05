@@ -205,6 +205,16 @@ function toShare(p) {
   };
 }
 
+/* 车型列表映射。intro 原样保留；封面用 cover。价格字段不在这里改写。 */
+function mapVehicle(v) {
+  return {
+    id: v.id, name: v.name || '', regionLevel1: v.regionLevel1 || '', category: v.category || '', lineType: v.lineType || '',
+    type: v.category || '', seats: v.seats || '', image: v.cover || '', cover: v.cover || '', intro: v.intro || '', remark: v.remark || '',
+    price: Number(v.price) || 0, prices: Array.isArray(v.prices) ? v.prices : [],
+    packages: Array.isArray(v.packages) ? v.packages : [], packageIntro: v.packageIntro || ''
+  };
+}
+
 const api = {
   // 首页轮播 banner -> { id, image, routeId, jumpRoute }
   async banners() {
@@ -287,12 +297,7 @@ const api = {
   async vehicles() {
     const list = await call('vehicleCRUD', { action: 'list', onlineOnly: true });
     if (!list || !list.length) return null;
-    return list.filter(v => v && v.online !== false).map(v => ({
-      id: v.id, name: v.name || '', regionLevel1: v.regionLevel1 || '', category: v.category || '', lineType: v.lineType || '',
-      type: v.category || '', seats: v.seats || '', image: v.cover || '', cover: v.cover || '', intro: v.intro || '', remark: v.remark || '',
-      price: Number(v.price) || 0, prices: Array.isArray(v.prices) ? v.prices : [],
-      packages: Array.isArray(v.packages) ? v.packages : [], packageIntro: v.packageIntro || ''
-    }));
+    return list.filter(v => v && v.online !== false).map(mapVehicle);
   },
 
   // 车型三级元数据（regions/vehicleTypes/lineTypes），失败返回 null 由前端常量兜底
@@ -449,4 +454,5 @@ const api = {
   }
 };
 
+api.mapVehicle = mapVehicle;
 module.exports = api;

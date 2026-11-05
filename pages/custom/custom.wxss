@@ -470,6 +470,13 @@
   background: #EDE5D6;
 }
 
+.car-note {
+  margin-top: 10rpx;
+  font-size: 22rpx;
+  line-height: 1.5;
+  color: #8A8070;
+}
+
 /* 同级备选：按钮打开选择面板，已选酒店用与主酒店相同的卡片 */
 .alt-block {
   margin-top: 18rpx;
