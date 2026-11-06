@@ -94,12 +94,27 @@
   letter-spacing: 3rpx;
 }
 
-.mt-name {
+.mt-name-row {
+  display: flex;
+  align-items: baseline;
   margin-top: 14rpx;
+}
+
+.mt-name {
+  flex: 1;
+  min-width: 0;
   font-size: 30rpx;
   font-weight: 400;
   color: #3D362A;
   line-height: 1.45;
+}
+
+.mt-quote {
+  flex: 0 0 auto;
+  margin-left: 16rpx;
+  font-size: 28rpx;
+  font-weight: 600;
+  color: #A4653A;
 }
 
 .mt-brief {
@@ -204,4 +219,26 @@
   margin-left: 22rpx;
   color: #A85C50;
   background: #F3E4DE;
+}
+/* 员工行程备注 */
+.mt-remark {
+  margin-top: 14rpx;
+  padding: 14rpx 16rpx;
+  background: #F7F2E8;
+  border-radius: 12rpx;
+}
+.mt-remark-label {
+  font-size: 22rpx;
+  color: #A08F6E;
+  margin-bottom: 6rpx;
+}
+.mt-remark-input {
+  width: 100%;
+  min-height: 44rpx;
+  font-size: 26rpx;
+  line-height: 1.5;
+  color: #4A4336;
+}
+.mt-remark-ph {
+  color: #BDB29C;
 }

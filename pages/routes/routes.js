@@ -1,6 +1,7 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const share = require('../../utils/share');
 
 const CATS = copy.routes.cats;
 const ALL = CATS[0];
@@ -71,7 +72,7 @@ function decorate(route) {
   };
 }
 
-Page({
+Page(share.install({
   data: {
     copy: copy.routes,
     regions: ['全部'].concat(data.REGIONS || []),
@@ -186,4 +187,4 @@ Page({
       showEmpty: list.length === 0
     }, () => { if (done) done(); });
   }
-});
+}));

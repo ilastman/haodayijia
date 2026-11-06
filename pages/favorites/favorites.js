@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const { getFavorites } = require('../../utils/util');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     title: copy.favorites.title,
     emptyText: copy.favorites.empty,
@@ -17,4 +18,4 @@ Page({
   goDetail(e) {
     wx.navigateTo({ url: '/pages/route-detail/route-detail?id=' + e.currentTarget.dataset.id });
   }
-});
+}));

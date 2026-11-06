@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     c: copy.noteDetail,
     note: null,
@@ -47,4 +48,4 @@ Page({
     this.setData({ faved });
     wx.showToast({ title: faved ? c.faved : c.fav, icon: 'none' });
   }
-});
+}));

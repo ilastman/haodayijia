@@ -1,7 +1,9 @@
 const copy = require('../../utils/copy');
 const { ICONS } = require('../../utils/util');
+const siteConfig = require('../../utils/site-config');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     brand: copy.brand,
     slogan: copy.slogan,
@@ -15,6 +17,12 @@ Page({
     phoneIcon: ICONS.phone
   },
 
+  onShow() {
+    const pick = () => ({ servicePhone: copy.servicePhone, wechatId: copy.wechatId, address: copy.address, email: copy.email || '', companyIntro: copy.companyIntro, slogan: copy.slogan });
+    this.setData(pick());
+    siteConfig.load().then(() => this.setData(pick()));
+  },
+
   callService() {
     wx.makePhoneCall({ phoneNumber: this.data.servicePhone.replace(/-/g, '') });
   },
@@ -24,5 +32,10 @@ Page({
       data: this.data.wechatId,
       success: () => wx.showToast({ title: copy.about.copied, icon: 'none' })
     });
+  },
+
+  openLegal(e) {
+    const kind = (e.currentTarget.dataset || {}).kind === 'agreement' ? 'agreement' : 'privacy';
+    wx.navigateTo({ url: '/pages/legal/legal?kind=' + kind });
   }
-});
+}));

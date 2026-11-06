@@ -33,6 +33,16 @@
       <textarea class="textarea" placeholder="{{ph.remark}}" placeholder-class="ph" value="{{form.remark}}" data-k="remark" bindinput="onInput" maxlength="200" auto-height />
     </view>
 
+    <view class="agree-row" catchtap="toggleAgree">
+      <view class="agree-box">{{agreed ? '☑' : '☐'}}</view>
+      <view class="agree-text">
+        <text>我已阅读并同意</text>
+        <text class="agree-link" catchtap="openDoc" data-kind="agreement">《用户服务协议》</text>
+        <text>和</text>
+        <text class="agree-link" catchtap="openDoc" data-kind="privacy">《隐私政策》</text>
+      </view>
+    </view>
+
     <view class="error" wx:if="{{error}}">{{error}}</view>
 
     <button class="btn-primary submit" bindtap="submit">{{labels.submit}}</button>

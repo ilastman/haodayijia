@@ -1,6 +1,7 @@
 const wb = require('../../utils/workbench');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     id: '',
     statusList: wb.STATUS,
@@ -85,4 +86,4 @@ Page({
       wx.showToast({ title: (res && res.msg) || '保存失败', icon: 'none' });
     }
   }
-});
+}));

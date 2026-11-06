@@ -26,10 +26,10 @@ eq(quote.priceOfRoom(hotel, '2026-11-15', '标准间'), 880, '开始日 11-15 �
 eq(quote.priceOfRoom(hotel, '2026-12-15', '标准间'), 880, '结束日 12-15 命中第一档 880（闭区间）');
 eq(quote.priceOfRoom(hotel, '2026-12-16', '标准间'), 980, '12-16 命中第二档 980');
 eq(quote.priceOfRoom(hotel, '2027-01-15', '标准间'), 980, '01-15 命中第二档 980（闭区间）');
-eq(quote.priceOfRoom(hotel, '2027-01-16', '标准间'), 500, '01-16 无命中回退参考价 500');
+eq(quote.priceOfRoom(hotel, '2027-01-16', '标准间'), 0, '01-16 无精确档期不计价（不再回退参考价 500）');
 eq(quote.priceOfRoom(hotel, '2026-11-20', '大床房'), 1080, '大床房 11-20 = 1080');
 eq(quote.priceOfRoom(hotel, '2026-12-20', '大床房'), 1180, '大床房 12-20 = 1180');
-eq(quote.priceOfRoom(hotel, '2026-11-20', '未知房型'), 880, '未知房型回退当日最低 880');
+eq(quote.priceOfRoom(hotel, '2026-11-20', '未知房型'), 0, '未知房型无精确价，不计当日最低价');
 
 console.log('== 房型列表 ==');
 eq(quote.roomTypesOf(hotel, '2026-11-20'), ['标准间', '大床房'], '当日房型 [标准间,大床房]');
@@ -64,6 +64,10 @@ const r3 = quote.calcQuote({
 eq(r3.ticket, 120 * 3 * 2, '同景区重复累加：120×3×2 = 720');
 eq(quote.parseTicketPrice('免费'), 0, '免费 -> 0');
 eq(quote.parseTicketPrice(''), 0, '空 -> 0');
+
+console.log('== 分享标题（不含天数晚数）==');
+eq(quote.shareTitle({ days: 5, guestName: '张先生', place: '海拉尔' }), '张先生的海拉尔行程', '有称呼的分享标题');
+eq(quote.shareTitle({ days: 4, place: '海拉尔' }), '海拉尔行程', '无称呼的分享标题');
 
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);

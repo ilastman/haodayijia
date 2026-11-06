@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const { ph, ICONS } = require('../../utils/util');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     title: copy.order.title,
     tabs: copy.order.tabs,
@@ -58,4 +59,4 @@ Page({
   callService() {
     wx.makePhoneCall({ phoneNumber: copy.servicePhone.replace(/-/g, '') });
   }
-});
+}));

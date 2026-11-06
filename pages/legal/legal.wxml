@@ -1,0 +1,7 @@
+<view class="page">
+  <view class="title">{{title}}</view>
+  <view class="block" wx:for="{{blocks}}" wx:key="heading">
+    <view class="heading">{{item.heading}}</view>
+    <view class="line" wx:for="{{item.lines}}" wx:for-item="line" wx:key="*this">{{line}}</view>
+  </view>
+</view>

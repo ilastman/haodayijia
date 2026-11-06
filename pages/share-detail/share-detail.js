@@ -1,20 +1,15 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     c: copy.shareDetail,
     share: null,
     days: [],
     liked: false,
     faved: false
-  },
-  onShareAppMessage() {
-    return {
-      title: '呼伦贝尔轻奢定制旅行',
-      path: '/pages/share-details/share-details'
-    }
   },
 
   async onLoad(query) {
@@ -63,4 +58,4 @@ Page({
   goCustom() {
     wx.navigateTo({ url: '/pages/custom/custom?shareId=' + this.data.share.id });
   }
-});
+}));

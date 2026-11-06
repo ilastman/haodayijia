@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const { ICONS } = require('../../utils/util');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     title: copy.strategy.title,
     searchPh: copy.strategy.searchPlaceholder,
@@ -43,4 +44,4 @@ Page({
   goDetail(e) {
     wx.navigateTo({ url: '/pages/strategy-detail/strategy-detail?id=' + e.currentTarget.dataset.id });
   }
-});
+}));

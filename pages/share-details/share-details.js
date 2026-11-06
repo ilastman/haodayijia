@@ -1,5 +1,6 @@
+const share = require('../../utils/share');
 // pages/share-details/share-details.js
-Page({
+Page(share.install({
 
   /**
    * 页面的初始数据
@@ -73,4 +74,4 @@ Page({
   onShareAppMessage() {
 
   }
-})
+}))

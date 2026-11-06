@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     d: copy.hotelDetail,
     hotel: null,
@@ -41,4 +42,4 @@ Page({
   onConsultClose() {
     this.setData({ consultVisible: false });
   }
-});
+}));

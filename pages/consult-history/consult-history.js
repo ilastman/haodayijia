@@ -1,6 +1,7 @@
 const copy = require('../../utils/copy');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     title: copy.consults.title,
     emptyText: copy.consults.empty,
@@ -17,4 +18,4 @@ Page({
       wx.makePhoneCall({ phoneNumber: phone });
     }
   }
-});
+}));

@@ -2,6 +2,7 @@ const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
 const { ph } = require('../../utils/util');
+const share = require('../../utils/share');
 
 const PRESETS = [ph('封面 夏日草原', 640, 420), ph('封面 阿尔山秋色', 640, 420), ph('封面 冬季雪原', 640, 420)];
 const NOTE_PRESETS = [ph('随拍 草原夕阳', 640, 480), ph('随拍 湿地栈道', 640, 480), ph('随拍 套娃广场', 640, 480), ph('随拍 木刻楞小屋', 640, 480), ph('随拍 马场日落', 640, 480), ph('随拍 秋色白桦', 640, 480)];
@@ -12,7 +13,7 @@ function emptyPlan() {
   return { scenicIds: [], hotelId: '', note: '' };
 }
 
-Page({
+Page(share.install({
   data: {
     c: copy.sharePublish,
     mode: 'plan',
@@ -362,4 +363,4 @@ Page({
     wx.setStorageSync('pendingToast', c.success);
     wx.switchTab({ url: '/pages/square/square' });
   }
-});
+}));

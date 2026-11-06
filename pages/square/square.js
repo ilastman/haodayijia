@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     c: copy.square,
     cats: copy.square.cats,
@@ -84,4 +85,4 @@ Page({
     }
     wx.navigateTo({ url: '/pages/share-detail/share-detail?id=' + e.currentTarget.dataset.id });
   }
-});
+}));

@@ -1,6 +1,7 @@
 const wb = require('../../utils/workbench');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: { code: '', loading: false },
 
   onInput(e) { this.setData({ code: e.detail.value }); },
@@ -18,4 +19,4 @@ Page({
       wx.showToast({ title: (res && res.msg) || '绑定失败', icon: 'none' });
     }
   }
-});
+}));
