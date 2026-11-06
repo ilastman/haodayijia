@@ -188,6 +188,11 @@ Page(share.install({
     this.openUrl(e.currentTarget.dataset.url);
   },
 
+  /* 首页定制名片。WXML 为 bindtap="goCustom"。分包根是 pages/custom 时，注册路由仍是 pages/custom/custom。 */
+  goCustom() {
+    wx.navigateTo({ url: '/pages/custom/custom' });
+  },
+
   openUrl(url) {
     if (!url) return;
     if (url.indexOf('tab:') === 0) {

@@ -1,0 +1,249 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/routes/routes",
+    "pages/square/square",
+    "pages/mine/mine"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#FCF9F1",
+    "navigationBarTitleText": "你的旅行社名称",
+    "navigationBarTextStyle": "black",
+    "backgroundColor": "#FAF7F0",
+    "backgroundTextStyle": "dark"
+  },
+  "tabBar": {
+    "color": "#9A9285",
+    "selectedColor": "#8A7152",
+    "backgroundColor": "#FCF9F1",
+    "borderStyle": "black",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "images/tab/home-gray.png",
+        "selectedIconPath": "images/tab/home-green.png"
+      },
+      {
+        "pagePath": "pages/routes/routes",
+        "text": "线路",
+        "iconPath": "images/tab/route-gray.png",
+        "selectedIconPath": "images/tab/route-green.png"
+      },
+      {
+        "pagePath": "pages/square/square",
+        "text": "灵感广场",
+        "iconPath": "images/tab/inspiration-gray.png",
+        "selectedIconPath": "images/tab/inspiration-green.png"
+      },
+      {
+        "pagePath": "pages/mine/mine",
+        "text": "我的",
+        "iconPath": "images/tab/mine-gray.png",
+        "selectedIconPath": "images/tab/mine-green.png"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents",
+  "subPackages": [
+    {
+      "root": "pages/strategy",
+      "name": "strategy",
+      "pages": [
+        "strategy"
+      ]
+    },
+    {
+      "root": "pages/profile-edit",
+      "name": "profile-edit",
+      "pages": [
+        "profile-edit"
+      ]
+    },
+    {
+      "root": "pages/avatar-crop",
+      "name": "avatar-crop",
+      "pages": [
+        "avatar-crop"
+      ]
+    },
+    {
+      "root": "pages/route-detail",
+      "name": "route-detail",
+      "pages": [
+        "route-detail"
+      ]
+    },
+    {
+      "root": "pages/strategy-detail",
+      "name": "strategy-detail",
+      "pages": [
+        "strategy-detail"
+      ]
+    },
+    {
+      "root": "pages/hotels",
+      "name": "hotels",
+      "pages": [
+        "hotels"
+      ]
+    },
+    {
+      "root": "pages/hotel-detail",
+      "name": "hotel-detail",
+      "pages": [
+        "hotel-detail"
+      ]
+    },
+    {
+      "root": "pages/cars",
+      "name": "cars",
+      "pages": [
+        "cars"
+      ]
+    },
+    {
+      "root": "pages/orders",
+      "name": "orders",
+      "pages": [
+        "orders"
+      ]
+    },
+    {
+      "root": "pages/favorites",
+      "name": "favorites",
+      "pages": [
+        "favorites"
+      ]
+    },
+    {
+      "root": "pages/consult-history",
+      "name": "consult-history",
+      "pages": [
+        "consult-history"
+      ]
+    },
+    {
+      "root": "pages/about",
+      "name": "about",
+      "pages": [
+        "about"
+      ]
+    },
+    {
+      "root": "pages/scenic",
+      "name": "scenic",
+      "pages": [
+        "scenic"
+      ]
+    },
+    {
+      "root": "pages/scenic-detail",
+      "name": "scenic-detail",
+      "pages": [
+        "scenic-detail"
+      ]
+    },
+    {
+      "root": "pages/custom",
+      "name": "custom",
+      "pages": [
+        "custom"
+      ]
+    },
+    {
+      "root": "pages/custom-preview",
+      "name": "custom-preview",
+      "pages": [
+        "custom-preview"
+      ]
+    },
+    {
+      "root": "pages/my-trips",
+      "name": "my-trips",
+      "pages": [
+        "my-trips"
+      ]
+    },
+    {
+      "root": "pages/note-detail",
+      "name": "note-detail",
+      "pages": [
+        "note-detail"
+      ]
+    },
+    {
+      "root": "pages/workbench",
+      "name": "workbench",
+      "pages": [
+        "workbench"
+      ]
+    },
+    {
+      "root": "pages/workbench-detail",
+      "name": "workbench-detail",
+      "pages": [
+        "workbench-detail"
+      ]
+    },
+    {
+      "root": "pages/workbench-edit",
+      "name": "workbench-edit",
+      "pages": [
+        "workbench-edit"
+      ]
+    },
+    {
+      "root": "pages/workbench-bind",
+      "name": "workbench-bind",
+      "pages": [
+        "workbench-bind"
+      ]
+    },
+    {
+      "root": "pages/share-detail",
+      "name": "share-detail",
+      "pages": [
+        "share-detail"
+      ]
+    }
+  ],
+  "preloadRule": {
+    "pages/mine/mine": {
+      "network": "wifi",
+      "packages": [
+        "workbench",
+        "workbench-detail",
+        "my-trips",
+        "profile-edit"
+      ]
+    },
+    "pages/routes/routes": {
+      "network": "wifi",
+      "packages": [
+        "route-detail",
+        "hotels",
+        "hotel-detail",
+        "cars"
+      ]
+    },
+    "pages/index/index": {
+      "network": "wifi",
+      "packages": [
+        "custom",
+        "custom-preview",
+        "scenic",
+        "strategy"
+      ]
+    },
+    "pages/square/square": {
+      "network": "wifi",
+      "packages": [
+        "share-detail",
+        "note-detail"
+      ]
+    }
+  }
+}
