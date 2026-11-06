@@ -579,6 +579,15 @@
         <input class="input" placeholder="{{c.wechatPlaceholder}}" placeholder-class="ph" value="{{form.wechat}}"
           data-k="wechat" bindinput="onFormInput" maxlength="30" />
       </view>
+      <view class="agree-row" catchtap="toggleFormAgree">
+        <view class="agree-box">{{formAgreed ? '☑' : '☐'}}</view>
+        <view class="agree-text">
+          <text>我已阅读并同意</text>
+          <text class="agree-link" catchtap="openLegal" data-kind="agreement">《用户服务协议》</text>
+          <text>和</text>
+          <text class="agree-link" catchtap="openLegal" data-kind="privacy">《隐私政策》</text>
+        </view>
+      </view>
       <view class="error" wx:if="{{formError}}">{{formError}}</view>
       <view class="submit-btn full" bindtap="doSubmit">{{c.submitBtn}}</view>
     </view>

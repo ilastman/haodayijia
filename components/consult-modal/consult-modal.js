@@ -1,5 +1,6 @@
 const copy = require('../../utils/copy');
 const { isValidPhone, addConsultRecord } = require('../../utils/util');
+const { allowCollect } = require('../../utils/consent');
 
 Component({
   properties: {
@@ -28,7 +29,14 @@ Component({
     },
     form: { name: '', phone: '', people: '', date: '', remark: '' },
     error: '',
-    minDate: ''
+    minDate: '',
+    agreed: false
+  },
+
+  observers: {
+    visible(v) {
+      if (!v) this.setData({ agreed: false });
+    }
   },
 
   lifetimes: {
@@ -54,8 +62,21 @@ Component({
       this.setData({ 'form.date': e.detail.value, error: '' });
     },
 
+    toggleAgree() {
+      this.setData({ agreed: !this.data.agreed, error: '' });
+    },
+
+    openDoc(e) {
+      const kind = (e.currentTarget.dataset || {}).kind === 'agreement' ? 'agreement' : 'privacy';
+      wx.navigateTo({ url: '/pages/legal/legal?kind=' + kind });
+    },
+
     submit() {
       const { form } = this.data;
+      if (!allowCollect(this.data.agreed)) {
+        this.setData({ error: '请先阅读并同意《用户服务协议》和《隐私政策》' });
+        return;
+      }
       if (!form.name.trim()) {
         this.setData({ error: copy.modal.nameError });
         return;

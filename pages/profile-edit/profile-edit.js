@@ -1,6 +1,7 @@
 const copy = require('../../utils/copy');
 const user = require('../../utils/user');
 const share = require('../../utils/share');
+const { allowCollect } = require('../../utils/consent');
 
 function todayStr() {
   const d = new Date();
@@ -18,6 +19,7 @@ Page(share.install({
     genderOptions: ['男', '女', '保密'],
     birthday: '',
     phone: '',
+    agreed: false,
     email: '',
     today: todayStr(),
     saving: false,
@@ -47,9 +49,20 @@ Page(share.install({
 
   onNickInput(e) { this.setData({ nickname: e.detail.value }); },
   onPhoneInput(e) { this.setData({ phone: e.detail.value }); },
+  ensureAgreed() {
+    if (allowCollect(this.data.agreed)) return true;
+    wx.showToast({ title: '请先阅读并同意协议和隐私政策', icon: 'none' });
+    return false;
+  },
+  toggleAgree() { this.setData({ agreed: !this.data.agreed }); },
+  openLegal(e) {
+    const kind = (e.currentTarget.dataset || {}).kind === 'agreement' ? 'agreement' : 'privacy';
+    wx.navigateTo({ url: '/pages/legal/legal?kind=' + kind });
+  },
   onEmailInput(e) { this.setData({ email: e.detail.value }); },
 
   async onGenderChange(e) {
+    if (!this.ensureAgreed()) return;
     const i = Number(e.detail.value) || 0;
     const gender = this.data.genderOptions[i];
     const patch = { genderIndex: i, gender };
@@ -69,10 +82,12 @@ Page(share.install({
   },
 
   onBirthdayChange(e) {
+    if (!this.ensureAgreed()) return;
     this.setData({ birthday: e.detail.value || '' });
   },
 
   onAvatarTap() {
+    if (!this.ensureAgreed()) return;
     wx.showActionSheet({
       itemList: ['从相册选择', '使用默认头像'],
       success: res => {
@@ -153,6 +168,7 @@ Page(share.install({
 
   async onSave() {
     if (this.data.saving) return;
+    if (!this.ensureAgreed()) return;
     const openid = (user.local() && user.local().openid) || '';
     const nickname = (this.data.nickname || '').trim() || user.defaultNickname(openid || Date.now());
     const avatar = this.data.avatar || user.defaultAvatar(openid || nickname, this.data.gender);

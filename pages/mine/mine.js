@@ -10,6 +10,8 @@ const BASE_MENU = [
   { key: 'consults', label: copy.mine.menu.consults, url: '/pages/consult-history/consult-history' },
   { key: 'orders', label: copy.mine.menu.orders, url: '/pages/orders/orders' },
   { key: 'contact', label: copy.mine.menu.contact, url: 'contact' },
+  { key: 'agreement', label: '用户服务协议', url: '/pages/legal/legal?kind=agreement' },
+  { key: 'privacy', label: '隐私政策', url: '/pages/legal/legal?kind=privacy' },
   { key: 'about', label: copy.mine.menu.about, url: '/pages/about/about' }
 ];
 

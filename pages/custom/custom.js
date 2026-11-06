@@ -9,6 +9,7 @@ const catalog = require('../../utils/catalog');
 const clause = require('../../utils/clause');
 const carFilter = require('../../utils/carFilter');
 const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
+const { allowCollect } = require('../../utils/consent');
 const share = require('../../utils/share');
 
 const MAX_DAYS = 15;
@@ -98,6 +99,7 @@ Page(share.install({
     submitShow: false,
     successShow: false,
     form: { name: '', phone: '', wechat: '' },
+    formAgreed: false,
     formError: '',
     editingTripId: '',
     generating: false,
@@ -1574,7 +1576,16 @@ Page(share.install({
   },
 
   openSubmit() {
-    this.setData({ submitShow: true, formError: '' });
+    this.setData({ submitShow: true, formError: '', formAgreed: false });
+  },
+
+  toggleFormAgree() {
+    this.setData({ formAgreed: !this.data.formAgreed, formError: '' });
+  },
+
+  openLegal(e) {
+    const kind = (e.currentTarget.dataset || {}).kind === 'agreement' ? 'agreement' : 'privacy';
+    wx.navigateTo({ url: '/pages/legal/legal?kind=' + kind });
   },
 
   onFormInput(e) {
@@ -1589,6 +1600,10 @@ Page(share.install({
   doSubmit() {
     const { form, date, adults, children, customActive, days, c } = this.data;
     const plans = normalizePlans(this.data.plans, days);
+    if (!allowCollect(this.data.formAgreed)) {
+      this.setData({ formError: '请先阅读并同意《用户服务协议》和《隐私政策》' });
+      return;
+    }
     if (!form.name.trim()) {
       this.setData({ formError: c.nameError });
       return;
@@ -1633,6 +1648,7 @@ Page(share.install({
       submitShow: false,
       successShow: true,
       form: { name: '', phone: '', wechat: '' },
+      formAgreed: false,
       formError: ''
     });
     setTimeout(() => { this.setData({ successShow: false }); }, 2500);

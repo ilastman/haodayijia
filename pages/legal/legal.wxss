@@ -1,0 +1,25 @@
+.page {
+  padding: 32rpx 32rpx 80rpx;
+  background: #F6F1E7;
+  min-height: 100%;
+  box-sizing: border-box;
+}
+.title {
+  font-size: 40rpx;
+  font-weight: 600;
+  color: #3D362A;
+  margin-bottom: 28rpx;
+}
+.block { margin-bottom: 28rpx; }
+.heading {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #3D362A;
+  margin-bottom: 10rpx;
+}
+.line {
+  font-size: 26rpx;
+  line-height: 1.7;
+  color: #5C5346;
+  margin-bottom: 8rpx;
+}

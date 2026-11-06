@@ -18,6 +18,7 @@ const POLICIES = {
   'pages/square/square': { type: 'public', title: '灵感广场' },
   'pages/cars/cars': { type: 'public', title: '用车' },
   'pages/about/about': { type: 'public', title: '关于我们' },
+  'pages/legal/legal': { type: 'public', title: '用户服务协议与隐私政策' },
   'pages/share-details/share-details': { type: 'public', title: BRAND_TITLE, path: HOME },
   'pages/route-detail/route-detail': { type: 'detail', titleKeys: ['route.title', 'route.name'], imageKeys: ['route.cover', 'route.image'] },
   'pages/scenic-detail/scenic-detail': { type: 'detail', titleKeys: ['scenic.name'], imageKeys: ['scenic.cover', 'scenic.image'] },

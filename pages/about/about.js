@@ -32,5 +32,10 @@ Page(share.install({
       data: this.data.wechatId,
       success: () => wx.showToast({ title: copy.about.copied, icon: 'none' })
     });
+  },
+
+  openLegal(e) {
+    const kind = (e.currentTarget.dataset || {}).kind === 'agreement' ? 'agreement' : 'privacy';
+    wx.navigateTo({ url: '/pages/legal/legal?kind=' + kind });
   }
 }));

@@ -42,6 +42,16 @@
     </view>
   </view>
 
+  <view class="block">
+    <view class="block-title">协议与隐私</view>
+    <view class="c-line" bindtap="openLegal" data-kind="agreement">
+      <view class="c-label">用户服务协议</view>
+    </view>
+    <view class="c-line" bindtap="openLegal" data-kind="privacy">
+      <view class="c-label">隐私政策</view>
+    </view>
+  </view>
+
   <view class="copyright">© {{brand}}</view>
 
   <view class="safe-bottom"></view>
