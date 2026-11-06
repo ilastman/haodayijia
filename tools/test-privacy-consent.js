@@ -99,8 +99,9 @@ const fixture = 'tools/fixtures/windows-home/app.json';
 if (fs.existsSync(path.join(root, fixture))) {
   const win = JSON.parse(read(fixture));
   const next = consent.withLegalSubpackage(win);
+  const hadLegal = (win.subPackages || []).some(p => p && p.root === 'pages/legal');
   eq(next.pages, win.pages, '主包 4 页不变');
-  eq(next.subPackages.length, win.subPackages.length + 1, '分包加 1');
+  eq(next.subPackages.length, win.subPackages.length + (hadLegal ? 0 : 1), hadLegal ? '夹具已有协议分包时不再加 1' : '分包加 1');
   ok(next.subPackages.some(p => p.root === 'pages/legal' && p.pages[0] === 'legal'), '协议页在 pages/legal 分包');
   ok(next.pages.indexOf('pages/custom/custom') < 0, '不把定制页挪进主包');
 } else {

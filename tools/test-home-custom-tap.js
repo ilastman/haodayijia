@@ -53,10 +53,12 @@ ok(go && go[0].indexOf('switchTab') < 0, '定制页不是 tab，不用 switchTab
 ok(js.indexOf('share.install(') >= 0, '分享安装仍在');
 ok(js.indexOf('onNav') >= 0 && js.indexOf('openUrl') >= 0, '金刚区 onNav 仍在');
 
-console.log('== 4 主包 + 23 分包，路由不改写 ==');
+console.log('== 4 主包，协议页只多一个分包 ==');
 const routes = registered(app);
+const subCount = (app.subPackages || []).length;
+const hasLegal = (app.subPackages || []).some(p => p && p.root === 'pages/legal');
 eq(app.pages.length, 4, '主包 4 页');
-eq((app.subPackages || []).length, 23, '分包 23 个');
+ok(subCount === 23 || (subCount === 24 && hasLegal), '分包是补丁前 23 个，或已含 pages/legal 的 24 个');
 ok(routes.indexOf('pages/custom/custom') >= 0, '定制仍注册为 pages/custom/custom');
 ok(routes.indexOf('pages/custom-preview/custom-preview') >= 0, '预览仍注册为 pages/custom-preview/custom-preview');
 ok(app.pages.indexOf('pages/custom/custom') < 0, '定制在分包，不在主包 pages 数组');

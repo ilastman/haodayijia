@@ -65,5 +65,9 @@ eq(r3.ticket, 120 * 3 * 2, '同景区重复累加：120×3×2 = 720');
 eq(quote.parseTicketPrice('免费'), 0, '免费 -> 0');
 eq(quote.parseTicketPrice(''), 0, '空 -> 0');
 
+console.log('== 分享标题（不含天数晚数）==');
+eq(quote.shareTitle({ days: 5, guestName: '张先生', place: '海拉尔' }), '张先生的海拉尔行程', '有称呼的分享标题');
+eq(quote.shareTitle({ days: 4, place: '海拉尔' }), '海拉尔行程', '无称呼的分享标题');
+
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);
