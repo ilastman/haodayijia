@@ -1,6 +1,7 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const share = require('../../utils/share');
 
 const ALL = '全部';
 const SUB_TABS = [
@@ -9,7 +10,7 @@ const SUB_TABS = [
   { key: 'entertainment', label: '原野体验' }
 ];
 
-Page({
+Page(share.install({
   data: {
     title: copy.scenic.title,
     subtitle: copy.scenic.subtitle,
@@ -122,4 +123,4 @@ Page({
   goDetail(e) {
     wx.navigateTo({ url: '/pages/scenic-detail/scenic-detail?id=' + e.currentTarget.dataset.id });
   }
-});
+}));

@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const { ph } = require('../../utils/util');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     publishLabel: copy.strategy.publishLabel,
     article: null
@@ -28,4 +29,4 @@ Page({
       wx.previewImage({ current: urls[0], urls });
     }
   }
-});
+}));

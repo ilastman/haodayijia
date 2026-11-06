@@ -2,14 +2,25 @@ const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
 const { ICONS } = require('../../utils/util');
+const share = require('../../utils/share');
 
 const ALL = '全部';
 
-Page({
+/* 原价位只展示地点：优先表格「地区」area，没有再回退一级大区 regionLevel1 */
+function placeOf(h) {
+  const area = String((h && h.area) || '').trim();
+  if (area) return area;
+  return String((h && h.regionLevel1) || '').trim();
+}
+
+function decorate(list) {
+  return (list || []).map(h => Object.assign({}, h, { placeLabel: placeOf(h) }));
+}
+
+Page(share.install({
   data: {
     title: copy.hotels.title,
     subtitle: copy.hotels.subtitle,
-    perNight: copy.hotels.perNight,
     scoreLabel: copy.hotels.score,
     bookLabel: copy.hotels.book,
     emptyText: copy.hotels.empty,
@@ -18,9 +29,7 @@ Page({
     activeRegion: ALL,
     places: [ALL],
     activePlace: ALL,
-    list: data.hotels,
-    consultVisible: false,
-    currentName: ''
+    list: decorate(data.hotels)
   },
 
   onLoad() {
@@ -78,26 +87,15 @@ Page({
       regions,
       places,
       activePlace,
-      list: all.filter(h => {
+      list: decorate(all.filter(h => {
         if (region !== ALL && h.regionLevel1 !== region) return false;
         if (activePlace !== ALL && h.area !== activePlace) return false;
         return true;
-      })
-    });
-  },
-
-  book(e) {
-    this.setData({
-      currentName: '酒店：' + e.currentTarget.dataset.name,
-      consultVisible: true
+      }))
     });
   },
 
   goDetail(e) {
     wx.navigateTo({ url: '/pages/hotel-detail/hotel-detail?id=' + e.currentTarget.dataset.id });
-  },
-
-  onConsultClose() {
-    this.setData({ consultVisible: false });
   }
-});
+}));

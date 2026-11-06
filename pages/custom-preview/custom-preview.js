@@ -7,6 +7,7 @@ const clause = require('../../utils/clause');
 const cloud = require('../../utils/cloud');
 const wb = require('../../utils/workbench');
 const { ph } = require('../../utils/util');
+const share = require('../../utils/share');
 
 const MAX_DAYS = 15;
 const MAX_TILES = 4;
@@ -132,7 +133,7 @@ function normalizeGuestPriceFields(src, adults, children) {
   return { guestAdultPrice: ap, guestChildPrice: cp, guestQuote: total };
 }
 
-Page({
+Page(share.install({
   data: {
     c: copy.customPreview,
     d: copy.detail,
@@ -246,7 +247,6 @@ Page({
       isStaff: false,
       internalView: null
     });
-    if (typeof wx.showShareMenu === 'function') wx.showShareMenu({ menus: ['shareAppMessage'] });
     this.refreshQuote();
     if (query.trip && !base) this.loadShared(query.trip);
     else this.fillMissingSnaps(this._plans).then(ps => {
@@ -261,6 +261,7 @@ Page({
     let trip = null;
     try { trip = await api.getPublicTrip(id); } catch (e) { trip = null; }
     if (!trip || !trip.id) return;
+    this._shareReadyId = trip.id;
     const plans = (Array.isArray(trip.plans) ? trip.plans : []).slice();
     const days = Math.min(MAX_DAYS, Math.max(1, parseInt(trip.days, 10) || plans.length || 1));
     while (plans.length < days) plans.push({ scenicIds: [], hotelId: '', altHotelIds: [], note: '', roomType: '', roomQty: 1, promoImgs: [] });
@@ -330,15 +331,6 @@ Page({
       [p.hotelId].concat((p.hotelBookings || []).map(b => b && b.hotelId), p.altHotelIds || []).filter(Boolean).forEach(id => { if (!snapHotel(p, id) && hById[id] && !hs.some(x => x && x.id === id)) { const h = hById[id]; hs.push({ id, name: h.name || '', image: h.image || h.cover || h.img || '', stars: h.stars || '', area: h.area || '' }); } });
       return Object.assign({}, p, { scenicSnaps: ss, hotelSnaps: hs });
     });
-  },
-
-  onShareAppMessage() {
-    const title = this.data.heroTitle;
-    const id = this.data.editingId || '';
-    return {
-      title,
-      path: '/pages/custom-preview/custom-preview?trip=' + encodeURIComponent(id)
-    };
   },
 
   draftBody() {
@@ -566,19 +558,17 @@ Page({
     }
     const trips = wx.getStorageSync('myTrips') || [];
     const idx = trips.findIndex(t => t.id === trip.id);
-    if (idx > -1) {
-      trips[idx] = trip;
-      wx.setStorageSync('myTrips', trips);
-      api.saveTrip(trip);
-      if (!silent) wx.showToast({ title: copy.customPreview.saveUpdated, icon: 'none' });
-      return;
-    }
-    trips.unshift(trip);
+    const existed = idx > -1;
+    if (existed) trips[idx] = trip;
+    else trips.unshift(trip);
     wx.setStorageSync('myTrips', trips);
-    api.saveTrip(trip);
-    if (!silent) wx.showToast({ title: copy.customPreview.saveSuccess, icon: 'none' });
+    const savedId = trip.id;
+    api.saveTrip(trip).then(ok => {
+      if (ok && savedId) this._shareReadyId = savedId;
+    }).catch(() => {});
+    if (!silent) wx.showToast({ title: existed ? copy.customPreview.saveUpdated : copy.customPreview.saveSuccess, icon: 'none' });
     } finally {
       this._saving = false;
     }
   }
-});
+}));

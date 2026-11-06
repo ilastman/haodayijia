@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const api = require('../../utils/api');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     d: copy.scenicDetail,
     scenic: null
@@ -32,4 +33,4 @@ Page({
       urls: this.data.scenic.images
     });
   }
-});
+}));

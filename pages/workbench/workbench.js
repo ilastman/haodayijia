@@ -1,6 +1,7 @@
 const wb = require('../../utils/workbench');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     ready: false,
     isStaff: false,
@@ -72,4 +73,4 @@ Page({
   goBind() { wx.navigateTo({ url: '/pages/workbench-bind/workbench-bind' }); },
 
   onPullDownRefresh() { this.reload().then(() => wx.stopPullDownRefresh()); }
-});
+}));

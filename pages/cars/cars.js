@@ -1,8 +1,9 @@
 const copy = require('../../utils/copy');
 const data = require('../../utils/data');
 const { ICONS } = require('../../utils/util');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     title: copy.cars.title,
     subtitle: copy.cars.subtitle,
@@ -26,4 +27,4 @@ Page({
   onConsultClose() {
     this.setData({ consultVisible: false });
   }
-});
+}));

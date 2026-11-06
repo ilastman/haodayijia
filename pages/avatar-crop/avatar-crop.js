@@ -1,4 +1,5 @@
-Page({
+const share = require('../../utils/share');
+Page(share.install({
   data: {
     ready: false,
     size: 0
@@ -142,4 +143,4 @@ Page({
   cancel() {
     wx.navigateBack();
   }
-});
+}));

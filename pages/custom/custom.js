@@ -9,6 +9,7 @@ const catalog = require('../../utils/catalog');
 const clause = require('../../utils/clause');
 const carFilter = require('../../utils/carFilter');
 const { isValidPhone, addConsultRecord, ph } = require('../../utils/util');
+const share = require('../../utils/share');
 
 const MAX_DAYS = 15;
 const MIN_DAYS = 1;
@@ -66,7 +67,7 @@ function normalizePackageSelections(v, scenicIds) {
 }
 
 
-Page({
+Page(share.install({
   data: {
     c: copy.custom,
     days: 3,
@@ -1640,4 +1641,4 @@ Page({
   closeSuccess() {
     this.setData({ successShow: false });
   }
-});
+}));

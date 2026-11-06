@@ -1,11 +1,12 @@
 const wb = require('../../utils/workbench');
 const api = require('../../utils/api');
 const data = require('../../utils/data');
+const share = require('../../utils/share');
 
 const PAY_TYPES = ['定金', '中期款', '尾款', '其他'];
 const COST_LABELS = { hotel: '酒店', car: '车辆', guide: '导游', ticket: '门票', meal: '餐费', misc: '杂费' };
 
-Page({
+Page(share.install({
   data: {
     id: '',
     loading: true,
@@ -285,4 +286,4 @@ Page({
   },
 
   noop() {}
-});
+}));

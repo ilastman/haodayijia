@@ -3,8 +3,9 @@ const api = require('../../utils/api');
 const quote = require('../../utils/quote');
 const { ph } = require('../../utils/util');
 const workbench = require('../../utils/workbench');
+const share = require('../../utils/share');
 
-Page({
+Page(share.install({
   data: {
     c: copy.myTrips,
     list: [],
@@ -204,4 +205,4 @@ Page({
       wx.setStorageSync('myTripsDeleted', d);
     }
   }
-});
+}));

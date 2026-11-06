@@ -5,6 +5,7 @@ const daysMap = require('../../utils/days');
 const routeExtra = require('../../utils/route-extra');
 const { ph } = require('../../utils/util');
 const { isFavorite, toggleFavorite } = require('../../utils/util');
+const share = require('../../utils/share');
 
 const DAY_TAGS = ['车程约2.5h', '游玩约3h', '轻度徒步', '老少皆宜'];
 
@@ -87,7 +88,7 @@ function cloudDays(route) {
   });
 }
 
-Page({
+Page(share.install({
   data: {
     d: copy.detail,
     route: null,
@@ -98,34 +99,9 @@ Page({
     swCls: '',
     faved: false,
     consultVisible: false
-    ,
-    onShareAppMessage() {
-      console.log('route详情页分享触发');
-      return {
-        title: '呼伦贝尔轻奢定制旅行',
-        path: '/pages/route-detail/route-detail'
-      }
-    },
-    onShareTimeline() {
-      return {
-        title: '呼伦贝尔轻奢定制旅行',
-        path: '/pages/route-detail/route-detail'
-      }
-    }
-  
   },
 
   async onLoad(options) {
-      wx.showShareMenu({
-        withShareTicket: true,
-        menus: ["shareAppMessage","shareTimeline"],
-        success(res) {
-          console.log("分享菜单开启成功",res)
-        },
-        fail(err) {
-          console.log("分享菜单开启失败",err)
-        }
-      })
       const id = options.id || '';
       let route = null;
     try {
@@ -216,4 +192,4 @@ Page({
     const current = e.currentTarget.dataset.src;
     wx.previewImage({ current, urls: this.data.route.images });
   }
-});
+}));
