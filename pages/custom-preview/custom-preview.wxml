@@ -1,15 +1,16 @@
 <view class="cp-page">
 
-  <!-- 首屏：16:9 拼合大图 + 标题 -->
+  <!-- 首屏：16:9 拼合大图 -->
   <view class="cp-hero">
     <view class="cp-hero-tile" wx:for="{{heroTiles}}" wx:key="id">
       <image wx:if="{{item.img}}" class="cp-hero-img" src="{{item.img}}" mode="aspectFill" />
     </view>
-    <view class="cp-hero-shade"></view>
-    <view class="cp-hero-cap">
-      <view class="cp-hero-title">{{heroTitle}}</view>
-      <view class="cp-hero-slogan">{{c.slogan}}</view>
-    </view>
+  </view>
+
+  <!-- 标题与副标题：封面下方、信息栏上方 -->
+  <view class="cp-hero-cap">
+    <view class="cp-hero-title">{{heroTitle}}</view>
+    <view class="cp-hero-slogan">{{c.slogan}}</view>
   </view>
 
   <!-- 基础信息标签区（自动匹配天数与出行月份） -->
