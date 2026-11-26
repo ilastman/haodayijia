@@ -3,9 +3,12 @@
 /**
  * 云函数：scenicCRUD
  * 功能：景区增删改查（字段与本地 admin SEED 完全对齐）
- * 字段：{ id, name, cover, album, intro, detailHtml, tags, dest, duration, bestSeason, lon, lat, weight, online }
+ * 字段：{ id, name, cover, album, intro, detailHtml, tags, dest, duration, bestSeason, lon, lat, weight, online, price }
+ * price：独立价格（元），大于 0 的数字；未填则不写该字段。门票说明仍在 ticketPrice。
  * 权限：查询公开；增删改需管理员 token
  */
+
+const { applyScenicPrice } = require('./price');
 
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
@@ -184,6 +187,8 @@ exports.main = async (event) => {
 
     if (action === 'add') {
       const doc = clean(data);
+      const priceErr = applyScenicPrice(doc, null, db);
+      if (priceErr) return { code: 400, msg: priceErr };
       if (!doc.id) doc.id = genId();
       if (!Array.isArray(doc.album)) doc.album = [];
       if (doc.online === undefined) doc.online = true;
@@ -195,6 +200,8 @@ exports.main = async (event) => {
       const f = await findBiz(id);
       if (!f) return { code: 404, msg: '记录不存在' };
       const d = clean(data); delete d.id;
+      const priceErr = applyScenicPrice(d, f, db);
+      if (priceErr) return { code: 400, msg: priceErr };
       await db.collection(COLL).doc(f._id).update({ data: d });
       return { code: 200, msg: '更新成功' };
     }
