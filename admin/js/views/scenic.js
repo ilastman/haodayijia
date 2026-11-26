@@ -16,6 +16,23 @@ const SCENIC_IMPORT_HEADERS = [
   { key: 'sort', title: '排序权重', headerText: '排序权重【选填】', aliases: ['排序'], desc: '数字，越大越靠前' }
 ];
 
+/* 与 cloudfunctions/scenicCRUD/price.js 的 classifyScenicPrice 保持一致。
+ * 空着返回 null；0 判为 zero（不入库）；「免费」「成人298」这类说明文字判为 invalid，不抽数字。 */
+function classifyScenicPrice(v) {
+  if (v == null) return { ok: true, value: null };
+  const s = String(v).trim();
+  if (!s) return { ok: true, value: null };
+  if (!/^(?:0|[1-9]\d*)(?:\.\d{1,2})?$/.test(s)) return { ok: false, reason: 'invalid' };
+  const n = Number(s);
+  if (!isFinite(n) || n <= 0) return { ok: false, reason: 'zero' };
+  return { ok: true, value: n };
+}
+function scenicPriceText(v) {
+  const c = classifyScenicPrice(v);
+  return c.ok && c.value != null ? String(c.value) : '';
+}
+window.ScenicPrice = { classifyScenicPrice, scenicPriceText };
+
 window.VIEWS.scenic = {
   nav: true, title: '景区管理', icon: '⛰',
   comp: {
@@ -160,7 +177,7 @@ window.VIEWS.scenic = {
           if (p) this.form.placeCatId = p.id;
         }
       },
-      openAdd() { this.form = { id: '', name: '', cover: '', album: [], intro: '', detailHtml: '', tags: [], dest: '', area: '', regionLevel1: '', regionCatId: '', typeName: '', typeCatId: '', placeCatId: '', subType: 'scenic', duration: '', bestSeason: '', lon: 100, lat: 27, weight: 1, online: true }; this.dlg = true; },
+      openAdd() { this.form = { id: '', name: '', cover: '', album: [], intro: '', detailHtml: '', tags: [], dest: '', area: '', regionLevel1: '', regionCatId: '', typeName: '', typeCatId: '', placeCatId: '', subType: 'scenic', duration: '', bestSeason: '', lon: 100, lat: 27, weight: 1, online: true, price: '' }; this.dlg = true; },
       openEdit(s) {
         this.form = JSON.parse(JSON.stringify(s));
         this.form.album = (s.album || []).slice();
@@ -171,6 +188,7 @@ window.VIEWS.scenic = {
         if (!this.form.typeCatId) this.form.typeCatId = '';
         if (!this.form.placeCatId) this.form.placeCatId = '';
         if (!this.form.typeName) this.form.typeName = this.form.subType === 'entertainment' ? '远野体验' : '景区';
+        this.form.price = scenicPriceText(s.price);
         this.bindScenicCats();
         this.dlg = true;
       },
@@ -179,6 +197,14 @@ window.VIEWS.scenic = {
         if (!String(this.form.regionLevel1 || '').trim()) { ElementPlus.ElMessage.warning('请选择一级大区'); return; }
         if (!String(this.form.typeName || this.form.typeCatId || '').trim()) { ElementPlus.ElMessage.warning('请选择类型'); return; }
         if (!String(this.form.dest || this.form.area || '').trim()) { ElementPlus.ElMessage.warning('请选择地点'); return; }
+        const priceCheck = classifyScenicPrice(this.form.price);
+        if (!priceCheck.ok) {
+          ElementPlus.ElMessage.warning(priceCheck.reason === 'zero'
+            ? '独立价格请留空，不要填 0'
+            : '独立价格只填大于 0 的数字，不填请留空');
+          return;
+        }
+        this.form.price = priceCheck.value;
         this.form.area = this.form.dest || '';
         if (this.form.id) { Store.update('scenic', this.form.id, this.form); ElementPlus.ElMessage.success('已保存'); }
         else { Store.add('scenic', this.form); ElementPlus.ElMessage.success('已新增'); }
@@ -317,6 +343,10 @@ window.VIEWS.scenic = {
               <el-select :model-value="form.placeCatId || form.dest" clearable filterable :allow-create="!useScenicTree" default-first-option style="width:100%" placeholder="先选类型，再选地点" @change="onScenicPlace">
                 <el-option v-for="p in scenicPlaces" :key="p.id || p.name" :label="p.name" :value="p.id || p.name" />
               </el-select>
+            </el-form-item>
+            <el-form-item label="独立价格">
+              <el-input v-model="form.price" clearable placeholder="选填，只填数字，如 298" style="width:220px" />
+              <span class="faint"> 元。留空表示未填，不会保存成 0。免费不要填 0</span>
             </el-form-item>
             <el-form-item label="景区标签">
               <el-select v-model="form.tags" multiple filterable allow-create default-first-option style="width:100%" placeholder="输入后回车创建">
