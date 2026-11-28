@@ -162,7 +162,9 @@ Page(share.install({
     travelView: clause.view(),
     carUseKnown: false,
     carUseCustom: false,
-    carUseOffsets: null
+    carUseOffsets: null,
+    carPackageSelections: [],
+    carCostOverride: ''
   },
 
   onLoad(query) {
@@ -215,6 +217,7 @@ Page(share.install({
       place: quote.tripPlace(plans, plansScenicMap(plans), plansHotelMap(plans))
     });
     const carUse = carUseState(base) || (!fromList ? carUseState(saved) : null) || { carUseKnown: false, carUseCustom: false, carUseOffsets: null };
+    const tripSrc = base || (!fromList ? saved : {}) || {};
     this._plans = plans;
     this.setData({
       days,
@@ -226,6 +229,8 @@ Page(share.install({
       carUseKnown: carUse.carUseKnown,
       carUseCustom: carUse.carUseCustom,
       carUseOffsets: carUse.carUseOffsets,
+      carPackageSelections: Array.isArray(tripSrc.carPackageSelections) ? tripSrc.carPackageSelections : [],
+      carCostOverride: tripSrc.carCostOverride || '',
       guestName,
       guestAdultPrice,
       guestChildPrice,
@@ -247,14 +252,14 @@ Page(share.install({
       isStaff: false,
       internalView: null
     });
-    this.refreshQuote();
+    const quoteReady = this.refreshQuote();
     if (query.trip && !base) this.loadShared(query.trip);
     else this.fillMissingSnaps(this._plans).then(ps => {
       this._plans = ps;
       this.setData({ heroTiles: this.buildHero(ps), dayList: ps.map((p, i) => this.buildDay(p, i, this.data.days)), overallTips: buildOverallTips(ps) });
     }).catch(() => {});
-    // 私人定制生成后直接进入预览：自动存入「我的行程」（本地 + 云端），避免用户未点保存导致列表为空
-    if (!query.trip && !fromList) this.saveToMine({ silent: true });
+    // 私人定制生成后直接进入预览：等内部核算结束再存，避免先写入三个 0
+    if (!query.trip && !fromList) quoteReady.then(() => this.saveToMine({ silent: true }));
   },
 
   async loadShared(id) {
@@ -350,12 +355,11 @@ Page(share.install({
       pace: this.data.pace || '',
       clauses: clause.normalizeClauses(this.data.clauses),
       plans: this._plans,
-      quote: (this.data.isStaff && this.data.internalView) ? {
-        hotel: this.data.internalView.hotel || 0,
-        ticket: this.data.internalView.ticket || 0,
-        total: this.data.internalView.total || 0
-      } : undefined
+      carPackageSelections: this.data.carPackageSelections || [],
+      carCostOverride: this.data.carCostOverride || ''
     };
+    const storedQuote = this.storedQuote();
+    if (storedQuote) body.quote = storedQuote;
     if (this.data.carUseKnown) {
       const packed = quote.packCarUse(this.data.carUseCustom, this.data.carUseOffsets);
       body.carUseCustom = packed.carUseCustom;
@@ -388,13 +392,30 @@ Page(share.install({
     wx.navigateTo({ url: '/pages/custom/custom?draft=1' });
   },
 
-  async refreshQuote() {
+  refreshQuote() {
+    const job = this._loadQuote().catch(() => { this._internalQuote = null; });
+    this._quotePromise = job;
+    return job;
+  },
+
+  storedQuote() {
+    if (!this.data.isStaff || !this._internalQuote) return null;
+    return quote.toStoredQuote(this._internalQuote);
+  },
+
+  async _loadQuote() {
     let idn = null;
     try { idn = await wb.identity(); } catch (e) { idn = null; }
     if (!idn || !idn.isStaff) {
+      this._internalQuote = null;
       this.setData({ isStaff: false, internalView: null });
       return;
     }
+    let vehicles = [];
+    try { vehicles = await api.vehicles(); } catch (e) { vehicles = []; }
+    if (!vehicles || !vehicles.length) vehicles = data.cars || [];
+    const vehiclesById = {};
+    (vehicles || []).forEach(v => { if (v && v.id) vehiclesById[v.id] = v; });
     const [hotels, scenics, priceList] = await Promise.all([
       api.hotels(),
       this.loadRawScenics(),
@@ -414,6 +435,7 @@ Page(share.install({
     const plans = (this._plans || []).map((p, i) => Object.assign({}, p, {
       checkinDate: quote.addDays(this.data.date, i)
     }));
+    const carUse = this.data.carUseKnown ? quote.packCarUse(this.data.carUseCustom, this.data.carUseOffsets) : {};
     const internal = quote.calcQuote({
       plans,
       hotelsById: calcHotelsById,
@@ -423,8 +445,14 @@ Page(share.install({
       adults: parseInt(this.data.adults, 10) || 0, /* ticketSplit */
       children: parseInt(this.data.children, 10) || 0,
       people: (parseInt(this.data.adults, 10) || 0) + (parseInt(this.data.children, 10) || 0),
-      carCost: 0
+      carCost: parseFloat(this.data.carCostOverride) || 0,
+      carId: this.data.carId || '',
+      carUseCustom: carUse.carUseCustom,
+      carUseOffsets: carUse.carUseOffsets,
+      vehiclesById,
+      carPackageSelections: this.data.carPackageSelections || []
     });
+    this._internalQuote = internal;
     this.setData({
       isStaff: true,
       internalView: quote.annotateQuote(internal, this.data.adults, this.data.children)
@@ -506,6 +534,11 @@ Page(share.install({
 
   saveToMine(opts) {
     const silent = !!(opts && opts.silent === true);
+    const wait = this._quotePromise ? Promise.resolve(this._quotePromise) : Promise.resolve();
+    this._saveQueue = Promise.resolve(this._saveQueue).then(() => wait).then(() => this._writeMine(silent)).catch(() => {});
+  },
+
+  _writeMine(silent) {
     if (this._saving) return;
     this._saving = true;
     try {
@@ -531,11 +564,7 @@ Page(share.install({
       clauses: clause.normalizeClauses(this.data.clauses),
       cover,
       carId: this.data.carId || '',
-      quote: (this.data.isStaff && this.data.internalView) ? {
-        hotel: this.data.internalView.hotel || 0,
-        ticket: this.data.internalView.ticket || 0,
-        total: this.data.internalView.total || 0
-      } : { hotel: 0, ticket: 0, total: 0 },
+      carPackageSelections: Array.isArray(this.data.carPackageSelections) ? this.data.carPackageSelections : [],
       heroTitle: this.data.heroTitle,
       plans: this._plans.map(p => ({
         scenicIds: (p.scenicIds || []).slice(),
@@ -545,12 +574,14 @@ Page(share.install({
         roomType: p.roomType || '',
         roomQty: Math.max(1, parseInt(p.roomQty, 10) || 1),
         hotelBookings: quote.bookingsOf(p),
+        packageSelections: Array.isArray(p.packageSelections) ? p.packageSelections : [],
         promoImgs: gallery.clipPromo(p.promoImgs),
         scenicSnaps: (Array.isArray(p.scenicSnaps) ? p.scenicSnaps : []).filter(x => x && x.id).slice(0, 20),
         hotelSnaps: (Array.isArray(p.hotelSnaps) ? p.hotelSnaps : []).filter(x => x && x.id).slice(0, 10)
       })),
       savedAt: TIME_STAMP
     };
+    if (this.data.carCostOverride !== undefined && this.data.carCostOverride !== '') trip.carCostOverride = this.data.carCostOverride;
     if (this.data.carUseKnown) {
       const packed = quote.packCarUse(this.data.carUseCustom, this.data.carUseOffsets);
       trip.carUseCustom = packed.carUseCustom;
@@ -559,6 +590,26 @@ Page(share.install({
     const trips = wx.getStorageSync('myTrips') || [];
     const idx = trips.findIndex(t => t.id === trip.id);
     const existed = idx > -1;
+    const prev = existed ? trips[idx] : null;
+    /* 员工：有核算就存完整快照；核算还没出来时沿用本地已有快照。客人不能带内部报价。绝不写三个 0。 */
+    if (this.data.isStaff) {
+      const storedQuote = this.storedQuote();
+      if (storedQuote) trip.quote = storedQuote;
+      else if (prev && quote.isStoredQuote(prev.quote)) trip.quote = prev.quote;
+    }
+    if (trip.quote && Array.isArray(trip.quote.breakdown)) {
+      const lines = trip.quote.breakdown.filter(b => b && b.type === 'hotel');
+      trip.plans.forEach(p => {
+        (p.hotelSnaps || []).forEach(h => {
+          if (!h || !h.id) return;
+          const line = lines.filter(b => b.hotelId === h.id)[0];
+          if (!line) return;
+          h.room = line.room || '';
+          h.nightPrice = line.unit;
+          h.date = line.date || '';
+        });
+      });
+    }
     if (existed) trips[idx] = trip;
     else trips.unshift(trip);
     wx.setStorageSync('myTrips', trips);

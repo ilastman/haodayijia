@@ -372,14 +372,16 @@ const api = {
       children: t.children,
       quote: t.quote || null,
       guestName: t.guestName || '',
+      guestAdultPrice: t.guestAdultPrice || 0,
+      guestChildPrice: t.guestChildPrice || 0,
       guestQuote: t.guestQuote || 0,
+      carCostOverride: t.carCostOverride || '',
       audience: t.audience || '',
       pace: t.pace || '',
       clauses: t.clauses || null,
       cover: t.cover || '',
       carId: t.carId || '',
       carPackageSelections: Array.isArray(t.carPackageSelections) ? t.carPackageSelections : [],
-      carCostOverride: t.carCostOverride || '',
       staffRemark: t.staffRemark || '',
       plans: (Array.isArray(t.plans) && t.plans.length)
         ? t.plans.map(p => ({

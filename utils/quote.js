@@ -644,7 +644,7 @@ function calcQuote(opts) {
       hotelTotal += sub;
       if (!info.exact) fuzzy.push({ type: 'hotelPrice', id: h.id, day: i + 1, date: checkinDate, room: roomType, reason: info.reason, ref: info.ref });
       breakdown.push({
-        day: dayLabel, type: 'hotel', name: h.name, room: roomType, date: checkinDate, unit: perNight, qty, subtotal: sub,
+        day: dayLabel, type: 'hotel', name: h.name, hotelId: h.id || bk.hotelId || '', room: roomType, date: checkinDate, unit: perNight, qty, subtotal: sub,
         fuzzy: !info.exact,
         fuzzyText: info.exact ? '' : ('价格模糊：' + checkinDate + ' ' + info.reason + (info.ref ? '；参考 ' + info.ref : '') + '，待与酒店确认')
       });
@@ -849,6 +849,50 @@ function guestTotalView(opts, adults, children) {
   };
 }
 
+/* 云端认的内部核算快照：必须带逐项 breakdown。三个数字、没有明细，不算快照。 */
+function isStoredQuote(q) {
+  if (!q || typeof q !== 'object' || Array.isArray(q)) return false;
+  return Array.isArray(q.breakdown) && q.breakdown.length > 0;
+}
+
+/* 把 calcQuote 结果收成可保存的快照。没有真实明细时返回 null，避免写成 {hotel:0,ticket:0,total:0}。
+ * 酒店或用车没有精确价时 status=pending，明细仍保留（含 0 元待确认的房费行）。 */
+function toStoredQuote(q) {
+  if (!q || typeof q !== 'object') return null;
+  const keys = ['day', 'type', 'name', 'hotelId', 'room', 'date', 'unit', 'qty', 'subtotal', 'fuzzy', 'fuzzyText', 'note', 'scenicId', 'packageId', 'vehicleId', 'pickKey', 'adultUnit', 'adultQty', 'childUnit', 'childQty', 'childRule'];
+  const breakdown = (Array.isArray(q.breakdown) ? q.breakdown : []).slice(0, 300).map(line => {
+    const b = {};
+    keys.forEach(k => { if (line && line[k] !== undefined) b[k] = line[k]; });
+    return b;
+  }).filter(b => b.type);
+  const fuzzy = Array.isArray(q.fuzzy) ? q.fuzzy.slice(0, 80) : [];
+  const hotelFuzzy = num(q.hotelFuzzy);
+  const carFuzzy = num(q.carFuzzy);
+  const pending = hotelFuzzy > 0 || carFuzzy > 0 || fuzzy.length > 0 || breakdown.some(b => b && b.fuzzy);
+  const hasAmount = num(q.hotel) > 0 || num(q.ticket) > 0 || num(q.package) > 0 || num(q.car) > 0 || num(q.carPackage) > 0 || num(q.total) > 0;
+  if (!breakdown.length && !hasAmount) return null;
+  return {
+    hotel: num(q.hotel),
+    ticket: num(q.ticket),
+    package: num(q.package),
+    car: num(q.car),
+    carPackage: num(q.carPackage),
+    carDays: num(q.carDays),
+    total: num(q.total),
+    nights: num(q.nights),
+    days: num(q.days),
+    people: num(q.people),
+    adults: num(q.adults),
+    children: num(q.children),
+    hotelFuzzy,
+    carFuzzy,
+    breakdown,
+    fuzzy,
+    missing: Array.isArray(q.missing) ? q.missing.slice(0, 80) : [],
+    status: pending ? 'pending' : 'complete'
+  };
+}
+
 /* 行程总价标注：金额 + 酒店/门票构成 + 成人/儿童人数。仅员工可见。 */
 function annotateQuote(q, adults, children) {
   const hotel = num(q && q.hotel);
@@ -878,6 +922,6 @@ module.exports = {
   sanitizeCarOffsets, hasCarUseField, packCarUse, pickCarUse, carryMissingCarUse, readCarUse, stepCarUse, toggleCarUseOffset,
   carUseAfterToggle, droppedCarDays,
   carUseDayViews, publicSharePayload, resolveCarOffsets,
-  deriveDays, calcQuote, publicHotelQuote, annotateQuote,
+  deriveDays, calcQuote, publicHotelQuote, annotateQuote, isStoredQuote, toStoredQuote,
   shareTitle, tripPlace, guestQuoteText, guestTotalView, calcGuestTotal
 };
