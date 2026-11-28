@@ -11,7 +11,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const { verifyAdminToken, resolveStaff } = require('./auth');
-const { packStoredCarUse, toPublicTrip } = require('./tripFields');
+const { packStoredCarUse, packStoredQuote, packCarPackages, toPublicTrip } = require('./tripFields');
 const COLL = 'userTrip';
 
 async function isAdmin(token) { return !!(await verifyAdminToken(token)); }
@@ -77,11 +77,6 @@ exports.main = async (event) => {
         audience: String(d.audience || '').trim().slice(0, 24),
         pace: String(d.pace || '').trim().slice(0, 24),
         clauses: (d.clauses && typeof d.clauses === 'object') ? d.clauses : null,
-        quote: (d.quote && typeof d.quote === 'object') ? {
-          hotel: Number(d.quote.hotel) || 0,
-          ticket: Number(d.quote.ticket) || 0,
-          total: Number(d.quote.total) || 0
-        } : { hotel: 0, ticket: 0, total: 0 },
         status: d.status || '',
         createTime: d.createTime || d.savedAt || Date.now(),
         updatedAt: Date.now()
@@ -94,6 +89,13 @@ exports.main = async (event) => {
         doc.carUseCustom = carUse.carUseCustom;
         doc.carUseOffsets = carUse.carUseOffsets;
       }
+      const carPackages = packCarPackages(d.carPackageSelections);
+      if (carPackages) doc.carPackageSelections = carPackages;
+      if (d.carCostOverride !== undefined) doc.carCostOverride = String(d.carCostOverride || '').slice(0, 24);
+      /* 客人不能写内部核算。不是完整快照时不带 quote，更新不会把已有快照盖成三个 0。 */
+      const staff = await resolveStaff(OPENID);
+      const packedQuote = packStoredQuote(d.quote, !!staff);
+      if (packedQuote) doc.quote = packedQuote;
 
       const exist = await db.collection(COLL).where({ openid: OPENID, id: doc.id }).limit(1).get();
       if (exist.data && exist.data.length) {
@@ -156,11 +158,8 @@ exports.main = async (event) => {
       if (d.guestChildPrice !== undefined) patch.guestChildPrice = Math.max(0, Number(d.guestChildPrice) || 0);
       if (d.guestQuote !== undefined) patch.guestQuote = Math.max(0, Number(d.guestQuote) || 0);
       if (d.quote && typeof d.quote === 'object') {
-        patch.quote = {
-          hotel: Number(d.quote.hotel) || 0,
-          ticket: Number(d.quote.ticket) || 0,
-          total: Number(d.quote.total) || 0
-        };
+        const packed = packStoredQuote(d.quote, true);
+        if (packed) patch.quote = packed;
       }
       await db.collection(COLL).doc(f._id).update({ data: patch });
       return { code: 200, msg: '已保存' };

@@ -493,12 +493,8 @@ Page(share.install({
   },
 
   quoteSnapshot() {
-    const q = this.data.internalQuote;
-    if (q) return { hotel: q.hotel, ticket: q.ticket, package: q.package || 0, car: q.car || 0, carPackage: q.carPackage || 0, total: q.total };
-    const hotelsById = {};
-    data.hotels.forEach(h => { if (h && h.id) hotelsById[h.id] = h; });
-    const pub = quote.publicHotelQuote(normalizePlans(this.data.plans, this.data.days), hotelsById);
-    return { hotel: pub.hotel, ticket: 0, total: pub.total };
+    if (!this.data.isStaff) return null;
+    return quote.toStoredQuote(this.data.internalQuote);
   },
 
   /* 预览页用静态 data 查不到云端景区/酒店 id，保存时附带快照 */
@@ -514,7 +510,7 @@ Page(share.install({
         };
       });
       const hotelSnaps = [p.hotelId].concat((p.hotelBookings || []).map(b => b && b.hotelId), p.altHotelIds || []).filter((x, k, a) => x && a.indexOf(x) === k).map(id => this.hotelById(id)).filter(Boolean)
-        .map(h => ({ id: h.id, name: h.name || '', image: h.image || h.cover || h.img || '', stars: h.stars || '', area: h.area || '', regionLevel1: h.regionLevel1 || '' }));
+        .map(h => ({ id: h.id, name: h.name || '', image: h.image || h.cover || h.img || '', stars: h.stars || '', area: h.area || '', regionLevel1: h.regionLevel1 || '', price: (h.price === 0 || h.price) ? h.price : '' }));
       return Object.assign({}, p, { scenicSnaps, hotelSnaps });
     });
   },
@@ -578,9 +574,10 @@ Page(share.install({
       guestName: this.data.guestName || '',
       guestAdultPrice: this.data.guestAdultPrice || '',
       guestChildPrice: this.data.guestChildPrice || '',
-      guestQuote: this.data.guestQuote || '',
-      quote: this.quoteSnapshot()
+      guestQuote: this.data.guestQuote || ''
     };
+    const snap = this.quoteSnapshot();
+    if (snap) record.quote = snap;
     wx.setStorageSync('lastCustomPlan', record);
     this.rememberCarUse(record.id, carPacked);
     this.mergeLocalTripCar(record.id, carPacked);

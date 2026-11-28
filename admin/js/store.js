@@ -182,8 +182,58 @@
     }
   }
 
+  /* 与 cloudfunctions/orderCRUD/freezeTrip.js 的 financeOfOrder 同一口径。
+   * 导入后订单上有 itinerary.importedTrip.quote 时，财务读这份冻结价，不读被清零的 pricing / costs。 */
+  function orderFinance(order) {
+    const n = v => { const x = Number(v); return isNaN(x) ? 0 : x; };
+    const snap = order && order.itinerary && order.itinerary.importedTrip;
+    const q = snap && snap.quote;
+    const real = !!(q && typeof q === 'object' && Array.isArray(q.breakdown) && q.breakdown.length);
+    if (snap && real) {
+      const guest = n(snap.guestQuote);
+      const cost = n(q.total);
+      return {
+        frozen: true,
+        quote: guest,
+        cost,
+        profit: Math.round((guest - cost) * 100) / 100,
+        est: Math.round((guest - cost) * 100) / 100,
+        hotel: n(q.hotel),
+        ticket: n(q.ticket),
+        package: n(q.package),
+        car: n(q.car),
+        carPackage: n(q.carPackage),
+        guestQuote: guest,
+        total: cost,
+        status: q.status || '',
+        guide: 0, meal: 0, misc: 0
+      };
+    }
+    const pricing = (order && order.pricing) || {};
+    const costs = (order && order.costs) || {};
+    const actual = n(pricing.actualProfit);
+    const estRaw = pricing.estProfit;
+    return {
+      frozen: false,
+      quote: n(pricing.quote),
+      cost: n(order && order.totalCost),
+      profit: actual,
+      est: (estRaw === null || estRaw === undefined || estRaw === '') ? actual : n(estRaw),
+      hotel: n(costs.hotel),
+      ticket: n(costs.ticket),
+      package: 0,
+      car: n(costs.car),
+      carPackage: 0,
+      guestQuote: n(pricing.quote),
+      total: n(order && order.totalCost),
+      status: '',
+      guide: n(costs.guide), meal: n(costs.meal), misc: n(costs.misc)
+    };
+  }
+
   const Store = {
     db,
+    orderFinance,
     uid,
     img,
     urlVersion,

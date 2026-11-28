@@ -14,6 +14,7 @@ const cloud = require('wx-server-sdk');
 cloud.init({ env: cloud.DYNAMIC_CURRENT_ENV });
 const db = cloud.database();
 const { verifyAdminToken, resolveStaff } = require('./auth');
+const { buildImportedTrip, financeOfOrder } = require('./freezeTrip');
 
 const COLL = 'order';
 const STAFF = 'staff';
@@ -257,6 +258,7 @@ exports.main = async (event) => {
       const { order, err } = await loadOwned(id, ctx, true);
       if (err) return err;
       const it = (data && data.itinerary) || event.itinerary || {};
+      if (it && Object.prototype.hasOwnProperty.call(it, 'importedTrip')) delete it.importedTrip;
       const prev = order.itinerary || {};
       const versions = (prev.versions || []).slice();
       versions.push({ id: 'v_' + Date.now().toString(36), time: Date.now(), operator: ctx.actor.name, snapshot: {
@@ -299,6 +301,7 @@ exports.main = async (event) => {
         notices: Object.assign({ tips: [], gear: [], refund: [] }, t.notices || {}),
         versions
       };
+      if (prev.importedTrip) next.importedTrip = prev.importedTrip;
       await db.collection(COLL).doc(order._id).update({ data: { itinerary: next, updatedAt: Date.now() } });
       await log(ctx.actor, 'saveItinerary', order.id, '复制线路模板生成行程单：' + (t.title || templateId));
       return { code: 200, msg: '已生成', data: { itinerary: next } };
@@ -329,6 +332,18 @@ exports.main = async (event) => {
       } });
       const next = Object.assign({}, prev, { source: 'mytrip', templateId: tripId, days, versions });
       next.notices = Object.assign({ tips: [], gear: [], refund: [] }, next.notices || {});
+      let dbTrip = null;
+      const clientTrip = (data && data.trip) || event.trip || null;
+      if (tripId) {
+        try {
+          const { OPENID } = cloud.getWXContext();
+          const where = { id: tripId };
+          if (!ctx.admin && OPENID) where.openid = OPENID;
+          const tr = await db.collection('userTrip').where(where).limit(1).get();
+          dbTrip = (tr.data && tr.data[0]) || null;
+        } catch (e) { dbTrip = null; }
+      }
+      next.importedTrip = buildImportedTrip(dbTrip, clientTrip, { tripId, title, days, now: Date.now() });
       order.itinerary = next;
       order.costs = normalizeCosts({});
       order.pricing = { quote: 0, estProfit: null, actualProfit: 0 };
@@ -339,7 +354,7 @@ exports.main = async (event) => {
         costs: order.costs, totalCost: order.totalCost, pricing: order.pricing, payments: order.payments,
         updatedAt: Date.now()
       } });
-      await log(ctx.actor, 'applyMyTrip', order.id, '复制我的行程生成行程单：' + (title || tripId) + '（已清空报价/成本/收款）');
+      await log(ctx.actor, 'applyMyTrip', order.id, '复制我的行程生成行程单：' + (title || tripId) + '（已清空报价/成本/收款，并冻结行程与内部报价）');
       return { code: 200, msg: '已生成', data: {
         itinerary: next, costs: order.costs, totalCost: order.totalCost, pricing: order.pricing, payments: order.payments
       } };
@@ -353,10 +368,11 @@ exports.main = async (event) => {
       const byStatus = {}; STATUSES.forEach(s => { byStatus[s] = 0; });
       const byStaff = {};
       let totalQuote = 0, totalCost = 0, totalEst = 0, totalActual = 0;
+      let displayQuote = 0, displayCost = 0, displayProfit = 0;
       list.forEach(o => {
         byStatus[o.status] = (byStatus[o.status] || 0) + 1;
         const sid = o.staffId || 'unknown';
-        if (!byStaff[sid]) byStaff[sid] = { staffId: sid, staffName: o.staffName || '', count: 0, quote: 0, cost: 0, est: 0, actual: 0 };
+        if (!byStaff[sid]) byStaff[sid] = { staffId: sid, staffName: o.staffName || '', count: 0, quote: 0, cost: 0, est: 0, actual: 0, displayQuote: 0, displayCost: 0, displayActual: 0 };
         const b = byStaff[sid];
         const quote = num(o.pricing && o.pricing.quote);
         const cost = num(o.totalCost);
@@ -366,12 +382,20 @@ exports.main = async (event) => {
         totalQuote += quote; totalCost += cost;
         totalEst += num(o.pricing && o.pricing.estProfit);
         totalActual += num(o.pricing && o.pricing.actualProfit);
+        const fin = financeOfOrder(o);
+        b.displayQuote += fin.quote;
+        b.displayCost += fin.cost;
+        b.displayActual += fin.profit;
+        displayQuote += fin.quote;
+        displayCost += fin.cost;
+        displayProfit += fin.profit;
       });
       return {
         code: 200,
         data: {
           count: list.length, totalQuote, totalCost, totalEst, totalActual,
           grossProfit: totalQuote - totalCost,
+          displayQuote, displayCost, displayProfit,
           byStatus, byStaff: Object.keys(byStaff).map(k => byStaff[k]),
           archived: list.filter(o => o.archived).length
         }

@@ -6,7 +6,7 @@
 const fs = require('fs');
 const path = require('path');
 const quote = require('../utils/quote.js');
-const { packStoredCarUse, toPublicTrip } = require('../cloudfunctions/userTripCRUD/tripFields.js');
+const { packStoredCarUse, packStoredQuote, toPublicTrip } = require('../cloudfunctions/userTripCRUD/tripFields.js');
 
 let pass = 0, fail = 0;
 function eq(actual, expected, label) {
@@ -114,6 +114,20 @@ const mine = fs.readFileSync(path.join(root, 'pages/my-trips/my-trips.js'), 'utf
 ok(crud.indexOf('const plan = d.plan') >= 0, 'plan 字段仍按原文保存');
 ok(preview.indexOf('scenicSnaps') >= 0 && preview.indexOf('hotelBookings: quote.bookingsOf') >= 0, 'saveToMine 仍带 snaps 和 hotelBookings');
 ok(preview.indexOf('if (this.data.carUseKnown)') >= 0, '预览保存会带上已知的计费日');
+ok(preview.indexOf('quoteReady.then') >= 0, '自动保存会等核算结束');
+ok(preview.indexOf('toStoredQuote') >= 0, '预览保存走完整快照');
+ok(preview.indexOf('{ hotel: 0, ticket: 0, total: 0 }') < 0, '预览不再写三个 0');
+ok(crud.indexOf('packStoredQuote') >= 0, '云保存用 packStoredQuote');
+
+console.log('== 内部报价：客人不能写，三个 0 不能盖掉快照 ==');
+const snap = quote.toStoredQuote(quoteOf(quote.packCarUse(true, [0, 2])));
+ok(packStoredQuote(snap, true) && packStoredQuote(snap, true).carPackage === 150, '员工保存保留接送机金额');
+ok(packStoredQuote(snap, true).breakdown.some(b => b.type === 'hotel' && b.room), '员工保存保留酒店房费行');
+eq(packStoredQuote(snap, false), undefined, '客人保存不写内部报价');
+eq(packStoredQuote({ hotel: 0, ticket: 0, total: 0 }, true), undefined, '三个 0 不入库');
+const pubQuote = toPublicTrip(Object.assign({}, stored, { quote: snap, carPackageSelections: [{ vehicleId: 'suv', items: [{ name: '接送机', price: '150' }] }] }));
+eq(pubQuote.quote, undefined, '分享仍去掉内部快照');
+eq(pubQuote.carPackageSelections, undefined, '分享不带车套票价格');
 ok(mine.indexOf('carryMissingCarUse') >= 0, '我的行程从云端补计费日');
 ok(mine.indexOf('staffRemark') >= 0, '员工备注回填还在');
 

@@ -218,7 +218,34 @@ Page(share.install({
     });
     if (!days.length) { wx.showToast({ title: '该行程没有可复制的天数', icon: 'none' }); return; }
     wx.showLoading({ title: '复制中' });
-    const res = await wb.applyMyTrip(this.data.id, { tripId: t.id, title: t.title, days });
+    const res = await wb.applyMyTrip(this.data.id, {
+      tripId: t.id,
+      title: t.title,
+      days,
+      trip: {
+        id: t.id,
+        title: t.title || '',
+        days: t.days,
+        date: t.date || '',
+        adults: t.adults,
+        children: t.children,
+        guestName: t.guestName || '',
+        guestAdultPrice: t.guestAdultPrice,
+        guestChildPrice: t.guestChildPrice,
+        guestQuote: t.guestQuote,
+        cover: t.cover || '',
+        audience: t.audience || '',
+        pace: t.pace || '',
+        clauses: t.clauses || null,
+        carId: t.carId || '',
+        carPackageSelections: t.carPackageSelections || [],
+        carCostOverride: t.carCostOverride || '',
+        carUseCustom: t.carUseCustom,
+        carUseOffsets: t.carUseOffsets,
+        plans: t.plans || [],
+        quote: t.quote || null
+      }
+    });
     wx.hideLoading();
     if (res && res.code === 200) {
       const nd = ((res.data && res.data.itinerary && res.data.itinerary.days) || days).map(d => Object.assign({}, d));

@@ -69,5 +69,51 @@ console.log('== 分享标题（不含天数晚数）==');
 eq(quote.shareTitle({ days: 5, guestName: '张先生', place: '海拉尔' }), '张先生的海拉尔行程', '有称呼的分享标题');
 eq(quote.shareTitle({ days: 4, place: '海拉尔' }), '海拉尔行程', '无称呼的分享标题');
 
+console.log('== 保存用的内部快照 ==');
+const vehicle = {
+  id: 'suv', name: '商务车', price: 0,
+  prices: [{ start: '2026-12-01', end: '2026-12-20', price: '600' }],
+  packages: [{ id: 'pickup', name: '接送机', price: '150' }]
+};
+const full = quote.calcQuote({
+  plans: [{
+    hotelId: 'h1', roomType: '标准间', roomQty: 1, checkinDate: '2026-12-01',
+    scenicIds: ['s1'],
+    packageSelections: [{ scenicId: 's1', items: [{ id: 'boat', name: '游船', price: '80' }] }]
+  }],
+  hotelsById,
+  scenicsById: { s1: { id: 's1', name: '湿地', ticketPrice: '120元', packages: [{ id: 'boat', name: '游船', price: '80' }] } },
+  departDate: '2026-12-01',
+  adults: 2, children: 0,
+  carId: 'suv',
+  vehiclesById: { suv: vehicle },
+  carPackageSelections: [{ vehicleId: 'suv', items: [{ id: 'pickup', name: '接送机', price: '150' }] }]
+});
+const stored = quote.toStoredQuote(full);
+eq(stored.status, 'complete', '精确价保存为 complete');
+eq(stored.hotel, 880, '快照带酒店合计');
+eq(stored.ticket > 0, true, '快照带门票合计');
+eq(stored.package, 160, '景区套餐按目录价×人数');
+eq(stored.carPackage, 150, '接送机 150');
+eq(stored.breakdown.filter(b => b.type === 'hotel' && b.room === '标准间' && b.unit === 880).length, 1, '酒店房费行在明细里');
+eq(stored.breakdown.filter(b => b.type === 'package' && b.unit === 80).length, 1, '套餐行在明细里');
+eq(stored.breakdown.filter(b => b.type === 'carPackage' && b.subtotal === 150).length, 1, '接送机行在明细里');
+eq(quote.isStoredQuote(stored), true, '完整快照可入库');
+eq(quote.isStoredQuote({ hotel: 0, ticket: 0, total: 0 }), false, '三个 0 不是快照');
+eq(quote.toStoredQuote(null), null, '没有核算就不造快照');
+
+const pendingCalc = quote.calcQuote({
+  plans: [{ hotelId: 'hx', roomType: '标准间', roomQty: 2, checkinDate: '2026-12-01', scenicIds: ['s1'] }],
+  hotelsById: { hx: { id: 'hx', name: '未定价酒店', prices: [] } },
+  scenicsById: { s1: { id: 's1', name: '湿地', ticketPrice: '120元' } },
+  departDate: '2026-12-01',
+  adults: 1, children: 0
+});
+const pending = quote.toStoredQuote(pendingCalc);
+eq(pending.status, 'pending', '没有精确房费时记 pending');
+eq(pending.hotel, 0, '模糊房费不编造成交价');
+eq(pending.breakdown.filter(b => b.type === 'hotel' && b.fuzzy && b.room === '标准间').length, 1, 'pending 仍保留房费明细');
+eq(pending.ticket > 0, true, 'pending 快照保留已算出的门票');
+
 console.log('\n通过 ' + pass + '，失败 ' + fail);
 process.exit(fail ? 1 : 0);

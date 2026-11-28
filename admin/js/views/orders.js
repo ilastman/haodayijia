@@ -28,8 +28,8 @@ window.VIEWS.orders = {
         return {
           total: all.length,
           archived: all.filter(o => o.archived).length,
-          quote: sum(o => (o.pricing && o.pricing.quote) || 0),
-          profit: sum(o => (o.pricing && o.pricing.actualProfit) || 0)
+          quote: sum(o => Store.orderFinance(o).quote),
+          profit: sum(o => Store.orderFinance(o).profit)
         };
       },
     },
@@ -37,6 +37,7 @@ window.VIEWS.orders = {
       cloudOn() { return window.Cloud && Cloud.enabled(); },
       n(v) { return Number(v) || 0; },
       staffName(id) { const s = (Store.db.staff || []).find(x => x.id === id); return (s && s.name) || id || '—'; },
+      money(o) { return Store.orderFinance(o); },
       open(o) { this.cur = o; this.tab = 'base'; this.dlg = true; },
       async setArchived(o, val) {
         const r = this.cloudOn() ? await Cloud.call('orderCRUD', { action: val ? 'archive' : 'unarchive', id: o.id }) : null;
@@ -113,8 +114,8 @@ window.VIEWS.orders = {
           <el-table-column label="状态" width="110"><template #default="{row}"><span class="chip">{{row.status}}</span></template></el-table-column>
           <el-table-column label="成交/成本/毛利" width="190">
             <template #default="{row}">
-              <div>¥{{(row.pricing && row.pricing.quote) || 0}}</div>
-              <div class="faint" style="font-size:12px">成本 ¥{{row.totalCost || 0}} · 毛利 ¥{{(row.pricing && row.pricing.actualProfit) || 0}}</div>
+              <div>¥{{money(row).quote}}</div>
+              <div class="faint" style="font-size:12px">成本 ¥{{money(row).cost}} · 毛利 ¥{{money(row).profit}}</div>
             </template>
           </el-table-column>
           <el-table-column label="归档" width="80" align="center"><template #default="{row}"><span class="st" :class="row.archived ? 'st-off' : 'st-on'">{{row.archived ? '已归档' : '进行中'}}</span></template></el-table-column>
@@ -172,7 +173,17 @@ window.VIEWS.orders = {
               </el-table>
             </el-tab-pane>
             <el-tab-pane label="成本 / 毛利" name="profit">
-              <el-descriptions :column="2" border size="small">
+              <el-descriptions v-if="money(cur).frozen" :column="2" border size="small">
+                <el-descriptions-item label="酒店">¥{{money(cur).hotel}}</el-descriptions-item>
+                <el-descriptions-item label="门票">¥{{money(cur).ticket}}</el-descriptions-item>
+                <el-descriptions-item label="景区套餐">¥{{money(cur).package}}</el-descriptions-item>
+                <el-descriptions-item label="用车">¥{{money(cur).car}}</el-descriptions-item>
+                <el-descriptions-item label="其中接送机/车套票">¥{{money(cur).carPackage}}</el-descriptions-item>
+                <el-descriptions-item label="内部合计">¥{{money(cur).cost}}</el-descriptions-item>
+                <el-descriptions-item label="对客成交价">¥{{money(cur).guestQuote}}</el-descriptions-item>
+                <el-descriptions-item label="毛利">¥{{money(cur).profit}}</el-descriptions-item>
+              </el-descriptions>
+              <el-descriptions v-else :column="2" border size="small">
                 <el-descriptions-item label="酒店">¥{{(cur.costs && cur.costs.hotel) || 0}}</el-descriptions-item>
                 <el-descriptions-item label="车辆">¥{{(cur.costs && cur.costs.car) || 0}}</el-descriptions-item>
                 <el-descriptions-item label="导游">¥{{(cur.costs && cur.costs.guide) || 0}}</el-descriptions-item>
